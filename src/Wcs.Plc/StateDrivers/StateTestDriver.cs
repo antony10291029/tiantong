@@ -59,28 +59,28 @@ namespace Wcs.Plc
 
     public Task SetWord(int data)
     {
-      WordStore.Add(Key, data);
+      WordStore[Key] = data;
 
       return Task.Delay(0);
     }
 
     public Task SetWords(string data)
     {
-      WordsStore.Add(Key, data);
+      WordsStore[Key] = data;
 
       return Task.Delay(0);
     }
 
     public Task SetBit(bool data)
     {
-      BitStore.Add(Key, data);
+      BitStore[Key] = data;
 
       return Task.Delay(0);
     }
 
     public Task SetBits(string data)
     {
-      BitsStore.Add(Key, data);
+      BitsStore[Key] = data;
 
       return Task.Delay(0);
     }
@@ -88,6 +88,7 @@ namespace Wcs.Plc
     public async Task<int> GetWord()
     {
       await Task.Delay(0);
+
       return WordStore[Key];
     }
 
