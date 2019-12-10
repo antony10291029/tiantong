@@ -4,7 +4,7 @@ namespace Wcs.Plc
 {
   public interface IStateWord : IState<int>
   {
-    IStateWord Heartbeat(int time = 1000);
+    IStateWord Heartbeat(int times = 1000, int maxTimes = 10000);
 
     Task UnheartbeatAsync();
 

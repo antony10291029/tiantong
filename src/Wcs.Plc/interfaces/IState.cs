@@ -5,6 +5,10 @@ namespace Wcs.Plc
 {
   public interface IState
   {
+    IContainer Container { get; }
+
+    void ResolveDriver();
+
     String Key { get; set; }
 
     int Length { get; set; }

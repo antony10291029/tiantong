@@ -104,7 +104,6 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateHearteatUnheartbeat()
     {
-      var flag = false;
       var container = Container.GetTestContainer();
       var state = new StateWord(container);
       var manager = container.IntervalManager;
@@ -112,12 +111,11 @@ namespace Wcs.Plc.Test
       SetState(state);
       state.Heartbeat(0);
       state.AddSetHook(value => {
-        flag = true;
-        state.UnheartbeatAsync();
+        if (value > 10) {
+          state.UnheartbeatAsync();
+        }
       });
-      manager.Start();
-      manager.Wait();
-      Assert.IsTrue(flag);
+      manager.Start().Wait();
     }
   }
 }

@@ -12,7 +12,7 @@ namespace Wcs.Plc
 
     private Hooks<T> _sethooks = new Hooks<T>();
 
-    private IContainer _container;
+    public IContainer Container { get; private set; }
 
     private int _id = 0;
 
@@ -26,7 +26,7 @@ namespace Wcs.Plc
 
     protected IIntervalManager _intervalManager
     {
-      get => _container.IntervalManager;
+      get => Container.IntervalManager;
     }
 
     public string Key
@@ -49,7 +49,7 @@ namespace Wcs.Plc
 
     public State(IContainer container)
     {
-      _container = container;
+      Container = container;
       ResolveDriver();
     }
 
@@ -63,7 +63,7 @@ namespace Wcs.Plc
     // @Methods
     public void ResolveDriver()
     {
-      _stateDriver = _container.StateDriver.Resolve();
+      _stateDriver = Container.StateDriver.Resolve();
     }
 
     public S Convert<S>() where S : IState

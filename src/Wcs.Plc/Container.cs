@@ -4,16 +4,22 @@ namespace Wcs.Plc
   {
     static public IContainer GetTestContainer()
     {
-      return new Container {
+      var container = new Container {
         Event = new Event(),
         StateDriver = new StateTestDriver(),
         IntervalManager = new IntervalManager()
       };
+
+      container.StateManager = new StateManager(container);
+
+      return container;
     }
 
     public IEvent Event { get; set; }
 
     public IStateDriver StateDriver { get; set; }
+
+    public IStateManager StateManager { get; set; }
 
     public IIntervalManager IntervalManager { get; set; }
   }
