@@ -10,7 +10,7 @@ namespace Wcs.Plc
     {
 
     }
-    
+
     ~StateWord()
     {
       if (_heartbeatIntervalId != 0) {
@@ -28,13 +28,18 @@ namespace Wcs.Plc
       return _stateDriver.SetWord(data);
     }
 
-    public IStateWord Heartbeat(int time = 1000)
+    public IStateWord Heartbeat(int time = 1000, int maxTimes = 10000)
     {
       var interval = new Interval();
-      var times = 1;
+      var times = 0;
 
       interval.SetTime(time);
-      interval.SetHandler(() => SetAsync(times++));
+      interval.SetHandler(() => {
+        if (times < maxTimes) times++;
+        else times = 1;
+
+        return SetAsync(times);
+      });
       _heartbeatIntervalId = _intervalManager.Add(interval);
 
       return this;
