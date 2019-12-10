@@ -8,7 +8,7 @@ namespace Wcs.Plc
   {
     public int Times { get; protected set; } = 0;
 
-    private int _time = 0;
+    private int _time = 1;
 
     private Func<Task> _handler;
 
@@ -42,7 +42,7 @@ namespace Wcs.Plc
 
     public IInterval SetTime(int time)
     {
-      _time = time;
+      _time = time < 1 ? 1 : time;
 
       return this;
     }
@@ -91,7 +91,10 @@ namespace Wcs.Plc
     public IInterval Start()
     {
       _tokenSource = new CancellationTokenSource();
-      _task = RunTask();
+      _task = RunTask().ContinueWith(_ => {
+        _task = null;
+        _tokenSource = null;
+      });
 
       return this;
     }
@@ -100,8 +103,6 @@ namespace Wcs.Plc
     {
       if (_task != null) {
         await _task;
-        _task = null;
-        _tokenSource = null;
       }
     }
 
@@ -118,9 +119,6 @@ namespace Wcs.Plc
       if (_task != null) {
         await _task;
       }
-
-      _task = null;
-      _tokenSource = null;
     }
 
     public void Stop()
