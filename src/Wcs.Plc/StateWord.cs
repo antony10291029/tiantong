@@ -4,7 +4,7 @@ namespace Wcs.Plc
 {
   public class StateWord : State<int>, IStateWord
   {
-    protected int _heartbeatIntervalId = 0;
+    private IInterval _interval;
 
     public StateWord(IContainer container): base(container)
     {
@@ -13,7 +13,7 @@ namespace Wcs.Plc
 
     ~StateWord()
     {
-      if (_heartbeatIntervalId != 0) {
+      if (_interval != null) {
         Unheartbeat();
       }
     }
@@ -30,24 +30,26 @@ namespace Wcs.Plc
 
     public IStateWord Heartbeat(int time = 1000, int maxTimes = 10000)
     {
-      var interval = new Interval();
       var times = 0;
 
-      interval.SetTime(time);
-      interval.SetHandler(() => {
+      _interval = new Interval();
+      _interval.SetTime(time);
+      _interval.SetHandler(() => {
         if (times < maxTimes) times++;
         else times = 1;
 
         return SetAsync(times);
       });
-      _heartbeatIntervalId = _intervalManager.Add(interval);
+      _intervalManager.Add(_interval);
 
       return this;
     }
 
     public Task UnheartbeatAsync()
     {
-      return _intervalManager.RemoveAsync(_heartbeatIntervalId);
+      _intervalManager.Remove(_interval);
+
+      return _interval.WaitAsync();
     }
 
     public void Unheartbeat()

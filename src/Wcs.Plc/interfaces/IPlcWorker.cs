@@ -37,12 +37,16 @@ namespace Wcs.Plc
 
     IWatcher<T> Watch<T>(string key, string opt, T value) where T : IComparable<T>;
 
+    IPlcWorker Start();
+
+    IPlcWorker Stop();
+
+    Task WaitAsync();
+
+    void Wait();
+
     Task RunAsync();
 
     void Run();
-
-    Task StopAsync();
-
-    void Stop();
   }
 }

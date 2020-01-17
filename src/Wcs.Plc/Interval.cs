@@ -6,11 +6,13 @@ namespace Wcs.Plc
 {
   public class Interval : IInterval
   {
+    public int Id { get; set; }
+
     public int Times { get; protected set; } = 0;
 
     private int _time = 1;
 
-    private Func<Task> _handler;
+    private Func<CancellationToken, Task> _handler;
 
     private Task _task;
 
@@ -42,7 +44,7 @@ namespace Wcs.Plc
 
     public IInterval SetTime(int time)
     {
-      _time = time < 1 ? 1 : time;
+      _time = Math.Max(time, 1);
 
       return this;
     }
@@ -56,12 +58,19 @@ namespace Wcs.Plc
 
     public IInterval SetHandler(Action handler)
     {
-      _handler = () => Task.Run(handler);
+      _handler = _ => Task.Run(handler);
 
       return this;
     }
 
     public IInterval SetHandler(Func<Task> handler)
+    {
+      _handler = _ => handler();
+
+      return this;
+    }
+
+    public IInterval SetHandler(Func<CancellationToken, Task> handler)
     {
       _handler = handler;
 
@@ -81,7 +90,7 @@ namespace Wcs.Plc
           if (times < Times) times++;
           else break;
         }
-        await _handler();
+        await _handler(_tokenSource.Token);
         try {
           await Task.Delay(_time, _tokenSource.Token);
         } catch (TaskCanceledException) {}
@@ -99,6 +108,15 @@ namespace Wcs.Plc
       return this;
     }
 
+    public IInterval Stop()
+    {
+      if (_tokenSource != null) {
+        _tokenSource.Cancel();
+      }
+
+      return this;
+    }
+
     public async Task WaitAsync()
     {
       if (_task != null) {
@@ -111,19 +129,14 @@ namespace Wcs.Plc
       WaitAsync().GetAwaiter().GetResult();
     }
 
-    public async Task StopAsync()
+    public Task RunAsync()
     {
-      if (_tokenSource != null) {
-        _tokenSource.Cancel();
-      }
-      if (_task != null) {
-        await _task;
-      }
+      return Start().WaitAsync();
     }
 
-    public void Stop()
+    public void Run()
     {
-      StopAsync().GetAwaiter().GetResult();
+      Start().Wait();
     }
   }
 }

@@ -156,48 +156,38 @@ namespace Wcs.Plc
 
     //
 
-    private async Task RunTask()
+    public IPlcWorker Start()
     {
       IntervalManager.Start();
 
-      while (!_tokenSource.Token.IsCancellationRequested) {
-        await Task.Delay(5000, _tokenSource.Token);
-      }
+      return this;
+    }
 
-      await IntervalManager.WaitAsync();
+    public IPlcWorker Stop()
+    {
+      IntervalManager.Stop();
+
+      return this;
+    }
+
+    public Task WaitAsync()
+    {
+      return IntervalManager.WaitAsync();
+    }
+
+    public void Wait()
+    {
+      IntervalManager.Wait();
     }
 
     public Task RunAsync()
     {
-      _tokenSource = new CancellationTokenSource();
-      _task = RunTask().ContinueWith(_ => {
-        _task = null;
-        _tokenSource = null;
-      });
-
-      return _task;
+      return IntervalManager.RunAsync();
     }
 
     public void Run()
     {
-      RunAsync().GetAwaiter().GetResult();
-    }
-
-    public async Task StopAsync()
-    {
-      await IntervalManager.StopAsync();
-
-      if (_tokenSource != null) {
-        _tokenSource.Cancel();
-      }
-      if (_task != null) {
-        await _task;
-      }
-    }
-
-    public void Stop()
-    {
-      StopAsync().GetAwaiter().GetResult();
+      IntervalManager.Run();
     }
   }
 }

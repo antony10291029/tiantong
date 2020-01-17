@@ -1,8 +1,5 @@
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System;
 using System.Threading;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace Wcs.Plc.Test
@@ -68,18 +65,19 @@ namespace Wcs.Plc.Test
     public void TestRemove(int n)
     {
       var times = 0;
-      var arr = new int[n];
+      var intervals = new Interval[n];
       var manager = new IntervalManager();
 
       for (var i = 0; i < n; i++) {
-        var interval = new Interval();
-        interval.SetHandler(() => times++);
-        arr[i] = manager.Add(interval);        
+        intervals[i] = new Interval();
+        intervals[i].SetHandler(() => times++);
+        manager.Add(intervals[i]);
       }
 
       manager.Start();
       for (var i = 0; i < n; i++) {
-        manager.Remove(arr[i]);
+        var interval = intervals[i];
+        manager.Remove(interval);
       }
       manager.Wait();
 

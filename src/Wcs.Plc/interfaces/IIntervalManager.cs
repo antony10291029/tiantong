@@ -4,26 +4,24 @@ namespace Wcs.Plc
 {
   public interface IIntervalManager
   {
-    int Add(IInterval interval);
+    void Add(IInterval interval);
 
-    Task RemoveAsync(int id);
-
-    void Remove(int id);
+    void Remove(IInterval interval);
 
     bool IsRunning();
 
     IIntervalManager Start();
 
-    Task StopAsync();
+    IIntervalManager Stop();
 
-    void Stop();
-
-    Task ClearAsync();
-
-    void Clear();
+    IIntervalManager Clear();
 
     Task WaitAsync();
 
     void Wait();
+
+    Task RunAsync();
+
+    void Run();
   }
 }

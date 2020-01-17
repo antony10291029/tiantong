@@ -12,28 +12,21 @@ namespace Wcs.Plc
 
     private Intervals intervals = new Intervals();
 
-    public int Add(IInterval interval)
+    public void Add(IInterval interval)
     {
       var id = _id++;
+      interval.Id = id;
       intervals.Add(id, interval);
-
-      return id;
     }
 
-    public async Task RemoveAsync(int id)
+    public void Remove(IInterval interval)
     {
-      var interval = intervals[id];
-
-      if (interval.IsRunning()) {
-        await interval.StopAsync();
-      }
-
-      intervals.Remove(id);
-    }
-
-    public void Remove(int id)
-    {
-      RemoveAsync(id).GetAwaiter().GetResult();
+      var id = interval.Id;
+      interval.Stop();
+      interval.WaitAsync().ContinueWith(_ => {
+        interval.Id = 0;
+        intervals.Remove(id);
+      });
     }
 
     public bool IsRunning()
@@ -56,22 +49,24 @@ namespace Wcs.Plc
       return this;
     }
 
-    public Task StopAsync()
+    public IIntervalManager Stop()
     {
-      var tasks = new Tasks();
-
       foreach (var interval in intervals.Values) {
         if (interval.IsRunning()) {
-          tasks.Add(interval.StopAsync());
+          interval.Stop();
         }
       }
 
-      return Task.WhenAll(tasks);
+      return this;
     }
 
-    public void Stop()
+    public IIntervalManager Clear()
     {
-      StopAsync().GetAwaiter().GetResult();
+      foreach (var interval in intervals.Values) {
+        Remove(interval);
+      }
+
+      return this;
     }
 
     public Task WaitAsync()
@@ -90,15 +85,14 @@ namespace Wcs.Plc
       WaitAsync().GetAwaiter().GetResult();
     }
 
-    public async Task ClearAsync()
+    public Task RunAsync()
     {
-      await StopAsync();
-      intervals = new Intervals();
+      return Start().WaitAsync();
     }
 
-    public void Clear()
+    public void Run()
     {
-      ClearAsync().GetAwaiter().GetResult();
+      Start().Wait();
     }
   }
 }

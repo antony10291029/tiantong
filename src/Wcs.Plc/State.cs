@@ -20,7 +20,7 @@ namespace Wcs.Plc
 
     private int _length;
 
-    private int _collectIntervalId = 0;
+    private IInterval _interval;
 
     protected IStateDriver _stateDriver;
 
@@ -55,7 +55,7 @@ namespace Wcs.Plc
 
     ~State()
     {
-      if (_collectIntervalId != 0) {
+      if (_interval != null) {
         Uncollect();
       }
     }
@@ -109,24 +109,27 @@ namespace Wcs.Plc
 
     public IState Collect(int time = 1000)
     {
-      var interval = new Interval();
-
-      interval.SetTime(time);
-      interval.SetHandler(GetAsync);
-
-      _collectIntervalId = _intervalManager.Add(interval);
+      _interval = new Interval();
+      _interval.SetTime(time);
+      _interval.SetHandler(GetAsync);
+      _intervalManager.Add(_interval);
 
       return this;
     }
 
     public Task UncollectAsync()
     {
-      return _intervalManager.RemoveAsync(_collectIntervalId);
+      Uncollect();
+
+      return _interval.WaitAsync();
     }
 
     public void Uncollect()
     {
-      UncollectAsync().GetAwaiter().GetResult();
+      _intervalManager.Remove(_interval);
+      _interval.WaitAsync().ContinueWith(_ => {
+        _interval = null;
+      });
     }
 
     public async Task SetAsync(T data)
