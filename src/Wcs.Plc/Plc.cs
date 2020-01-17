@@ -134,7 +134,7 @@ namespace Wcs.Plc
 
     public IWatcher<T> Watch<T>(string key, string opt, T value) where T : IComparable<T>
     {
-      return CreateComparableWatcher<T>(key).When(opt, value).Event(key);
+      return CreateComparableWatcher<T>(key).When(opt, value);
     }
 
     public IWatcher<T> Watch<T>(string key, Func<T, bool> handler)

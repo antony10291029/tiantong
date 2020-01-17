@@ -12,15 +12,15 @@ namespace Wcs.Plc
 
     void Cancel();
 
-    IWatcher<T> Event(string key);
+    void Event(string key);
 
-    IWatcher<T> EventVoid(string key);
+    void EventVoid(string key);
 
-    IWatcher<T> Event<R>(string key, R payload);
+    void Event<R>(string key, R payload);
 
-    IWatcher<T> Event(string key, Func<T, T> handler);
+    void Event(string key, Func<T, T> handler);
 
-    IWatcher<T> Event<R>(string key, Func<T, R> handler);
+    void Event<R>(string key, Func<T, R> handler);
   }
 
   public interface IComparableWatcher<T> : IWatcher<T>
