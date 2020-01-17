@@ -23,10 +23,6 @@ namespace Wcs.Plc
       get => Container.StateManager;
     }
 
-    private Task _task;
-
-    private CancellationTokenSource _tokenSource;
-
     public Plc()
     {
       var container = new Container() {
