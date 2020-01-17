@@ -8,7 +8,7 @@ namespace Wcs.Plc
     [Test]
     public void TestManagerStates()
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var manager = new StateManager(container);
       var states = manager.States;
 
@@ -36,7 +36,7 @@ namespace Wcs.Plc
     [Test]
     public void TestManagerRemove()
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var manager = new StateManager(container);
       var states = manager.States;
 

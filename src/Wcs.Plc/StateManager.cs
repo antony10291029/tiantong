@@ -6,15 +6,15 @@ namespace Wcs.Plc
 
   public class StateManager : IStateManager
   {
-    private IContainer _container;
+    private IPlcContainer _services;
 
     public States States { get; } = new States();
 
     public string Name { get; set; }
 
-    public StateManager(IContainer container)
+    public StateManager(IPlcContainer services)
     {
-      _container = container;
+      _services = services;
     }
 
     public IStateManager SetName(string name)
@@ -26,7 +26,7 @@ namespace Wcs.Plc
 
     public IStateBit Bit(string key)
     {
-      var state = new StateBit(_container) {
+      var state = new StateBit(_services) {
         Key = key,
         Length = 1,
       };
@@ -38,7 +38,7 @@ namespace Wcs.Plc
 
     public IStateBits Bits(string key, int length = 1)
     {
-      var state = new StateBits(_container) {
+      var state = new StateBits(_services) {
         Key = key,
         Length = length,
       };
@@ -50,7 +50,7 @@ namespace Wcs.Plc
 
     public IStateWord Word(string key)
     {
-      var state = new StateWord(_container) {
+      var state = new StateWord(_services) {
         Key = key,
         Length = 1,
       };
@@ -62,7 +62,7 @@ namespace Wcs.Plc
 
     public IStateWords Words(string key, int length = 1)
     {
-      var state = new StateWords(_container) {
+      var state = new StateWords(_services) {
         Key = key,
         Length = length,
       };

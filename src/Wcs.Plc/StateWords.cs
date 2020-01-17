@@ -4,7 +4,7 @@ namespace Wcs.Plc
 {
   public class StateWords : State<string>, IStateWords
   {
-    public StateWords(IContainer container): base(container)
+    public StateWords(IPlcContainer services): base(services)
     {
 
     }

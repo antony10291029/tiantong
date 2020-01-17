@@ -1,7 +1,9 @@
 namespace Wcs.Plc
 {
-  public interface IContainer
+  public interface IPlcContainer
   {
+    IPlc Plc { get; set; }
+
     IEvent Event { get; }
 
     IStateDriver StateDriver { get; }

@@ -14,7 +14,7 @@ namespace Wcs.Plc.Test
     [TestCase(0)]
     public void TestWordState(int value)
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateWord(container);
 
       SetState(state);
@@ -27,7 +27,7 @@ namespace Wcs.Plc.Test
     [TestCase("happy hacking")]
     public void TestWordsState(string value)
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateWords(container);
 
       SetState(state);
@@ -40,7 +40,7 @@ namespace Wcs.Plc.Test
     [TestCase(true)]
     public void TestBitState(bool value)
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateBit(container);
 
       SetState(state);
@@ -53,7 +53,7 @@ namespace Wcs.Plc.Test
     [TestCase("0011")]
     public void TestBitsState(string value)
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateBits(container);
 
       SetState(state);
@@ -68,7 +68,7 @@ namespace Wcs.Plc.Test
     {
       var getHookData = 0;
       var setHookData = 0;
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateWord(container);
 
       SetState(state);
@@ -85,7 +85,7 @@ namespace Wcs.Plc.Test
     public void TestStateCollectAndUncollect()
     {
       var flag = false;
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateWord(container);
       var manager = container.IntervalManager;
 
@@ -104,7 +104,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateHearteatUnheartbeat()
     {
-      var container = Container.GetTestContainer();
+      var container = new PlcContainer();
       var state = new StateWord(container);
       var manager = container.IntervalManager;
 
