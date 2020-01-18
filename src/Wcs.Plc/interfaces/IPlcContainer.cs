@@ -1,3 +1,6 @@
+using Wcs.Plc.Database;
+using Wcs.Plc.Entities;
+
 namespace Wcs.Plc
 {
   public interface IPlcContainer
@@ -10,6 +13,12 @@ namespace Wcs.Plc
 
     IStateManager StateManager { get; }
 
+    PlcConnection PlcConnection { get; }
+
     IIntervalManager IntervalManager { get; }
+
+    DbContext ResolveDbContext();
+
+    void ResolvePlcConnection();
   }
 }

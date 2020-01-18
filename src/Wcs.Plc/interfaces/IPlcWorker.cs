@@ -5,7 +5,9 @@ namespace Wcs.Plc
 {
   public interface IPlcWorker
   {
-    IPlcWorker Mode(string key);
+    IPlcWorker Id(int id);
+
+    IPlcWorker Model(string key);
 
     IPlcWorker Name(string key);
 

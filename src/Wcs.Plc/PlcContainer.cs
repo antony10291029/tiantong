@@ -1,3 +1,9 @@
+using System;
+using System.Linq;
+using Wcs.Plc.Database;
+using Wcs.Plc.Entities;
+using Wcs.Plc.DB.Sqlite;
+
 namespace Wcs.Plc
 {
   public class PlcContainer : IPlcContainer
@@ -10,14 +16,55 @@ namespace Wcs.Plc
 
     public IStateManager StateManager { get; set; }
 
+    public PlcConnection PlcConnection { get; set; }
+
     public IIntervalManager IntervalManager { get; set; }
 
     public PlcContainer()
     {
       Event = new Event();
       StateDriver = new StateTestDriver();
+      PlcConnection = new PlcConnection();
       StateManager = new StateManager(this);
       IntervalManager = new IntervalManager();
     }
+
+    public virtual DbContext ResolveDbContext()
+    {
+      return new SqliteDbContext();
+    }
+
+    public virtual void ResolvePlcConnection()
+    {
+      var db = ResolveDbContext();
+      var id = PlcConnection.Id;
+      var name = PlcConnection.Name;
+
+      if (id != 0) {
+        var conn = db.PlcConnections.SingleOrDefault(item => item.Id == id);
+
+        if (conn != null) {
+          PlcConnection = conn;
+        } else {
+          throw new Exception($"PlcConnection Id({id}) does not existed");
+        }
+      } else if (name != null) {
+        var conn = db.PlcConnections.SingleOrDefault(item => item.Name == name);
+
+        if (conn == null) {
+          db.PlcConnections.Add(PlcConnection);
+        } else {
+          conn.Model = PlcConnection.Model;
+          conn.Host = PlcConnection.Host;
+          conn.Port = PlcConnection.Port;
+          PlcConnection = conn;
+        }
+
+        db.SaveChanges();
+      } else {
+        throw new Exception("Plc Connection Id or Name does not existed");
+      }
+    }
+
   }
 }

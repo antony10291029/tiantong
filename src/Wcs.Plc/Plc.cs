@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Wcs.Plc
@@ -36,23 +35,38 @@ namespace Wcs.Plc
       return new PlcContainer();
     }
 
-    public IPlcWorker Model(string mode)
+    public IPlcWorker Id(int id)
     {
+      Container.PlcConnection.Id = id;
+
+      return this;
+    }
+
+    public IPlcWorker Model(string model)
+    {
+      Container.PlcConnection.Model = model;
+
       return this;
     }
 
     public IPlcWorker Name(string name)
     {
+      Container.PlcConnection.Name = name;
+
       return this;
     }
 
     public IPlcWorker Host(string host)
     {
+      Container.PlcConnection.Host = host;
+      
       return this;
     }
 
     public IPlcWorker Port(string port)
     {
+      Container.PlcConnection.Port = port;
+
       return this;
     }
 
