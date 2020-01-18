@@ -25,18 +25,18 @@ namespace Wcs.Plc
 
     public Plc()
     {
-      Container = UseContainer();
+      Container = ResolveContainer();
       Container.Plc = this;
     }
 
     //
 
-    protected virtual IPlcContainer UseContainer()
+    protected virtual IPlcContainer ResolveContainer()
     {
       return new PlcContainer();
     }
 
-    public IPlcWorker Mode(string mode)
+    public IPlcWorker Model(string mode)
     {
       return this;
     }
