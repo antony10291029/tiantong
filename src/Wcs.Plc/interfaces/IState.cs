@@ -5,8 +5,6 @@ namespace Wcs.Plc
 {
   public interface IState
   {
-    void ResolveDriver();
-
     String Key { get; set; }
 
     int Length { get; set; }

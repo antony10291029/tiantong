@@ -12,7 +12,7 @@ namespace Wcs.Plc
 
     private Hooks<T> _sethooks = new Hooks<T>();
 
-    public IPlcContainer Services { get; private set; }
+    public IPlcContainer Container { get; private set; }
 
     private int _id = 0;
 
@@ -26,7 +26,7 @@ namespace Wcs.Plc
 
     protected IIntervalManager _intervalManager
     {
-      get => Services.IntervalManager;
+      get => Container.IntervalManager;
     }
 
     public string Key
@@ -34,7 +34,7 @@ namespace Wcs.Plc
       get => _key;
       set {
         _key = value;
-        _stateDriver.HandleStateSetKey(value);
+        _stateDriver.SetKey(value);
       }
     }
 
@@ -43,14 +43,14 @@ namespace Wcs.Plc
       get => _length;
       set {
         _length = value;
-        _stateDriver.HandleStateSetLength(value);
+        _stateDriver.SetLength(value);
       }
     }
 
-    public State(IPlcContainer services)
+    public State(IPlcContainer container)
     {
-      Services = services;
-      ResolveDriver();
+      Container = container;
+      _stateDriver = Container.StateDriverProvider.Resolve();
     }
 
     ~State()
@@ -61,11 +61,6 @@ namespace Wcs.Plc
     }
 
     //
-
-    public void ResolveDriver()
-    {
-      _stateDriver = Services.StateDriver.Resolve();
-    }
 
     public S Convert<S>() where S : IState
     {
@@ -135,10 +130,7 @@ namespace Wcs.Plc
 
     public async Task SetAsync(T data)
     {
-      _stateDriver.BeforeMessage(this);
-
       var tasks = new List<Task>();
-
       await HandleSet(data);
 
       foreach (var hook in _sethooks.Values) {
@@ -155,8 +147,6 @@ namespace Wcs.Plc
 
     public async Task<T> GetAsync()
     {
-      _stateDriver.BeforeMessage(this);
-
       var tasks = new List<Task>();
       var data = await HandleGet();
 

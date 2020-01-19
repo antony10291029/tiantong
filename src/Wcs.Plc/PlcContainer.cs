@@ -20,18 +20,25 @@ namespace Wcs.Plc
 
     public IIntervalManager IntervalManager { get; set; }
 
+    public IStateDriverProvider StateDriverProvider { get; set; }
+
     public PlcContainer()
     {
       Event = new Event();
-      StateDriver = new StateTestDriver();
       PlcConnection = new PlcConnection();
       StateManager = new StateManager(this);
       IntervalManager = new IntervalManager();
+      StateDriverProvider = ResolveStateDriverProvider();
     }
 
     public virtual DbContext ResolveDbContext()
     {
       return new SqliteDbContext();
+    }
+
+    public virtual IStateDriverProvider ResolveStateDriverProvider()
+    {
+      return new StateTestDriverProvider();
     }
 
     public virtual void ResolvePlcConnection()

@@ -4,16 +4,6 @@ namespace Wcs.Plc
 {
   public interface IStateDriver
   {
-    IStateDriver Resolve();
-
-    void BeforeMessage(IState state);
-
-    void HandleStateSetKey(string key);
-
-    void HandleStateSetLength(int length);
-
-    //
-
     IStateDriver SetKey(string key);
 
     IStateDriver SetLength(int length);

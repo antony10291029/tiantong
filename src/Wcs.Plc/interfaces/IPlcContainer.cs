@@ -9,13 +9,13 @@ namespace Wcs.Plc
 
     IEvent Event { get; }
 
-    IStateDriver StateDriver { get; }
-
     IStateManager StateManager { get; }
 
     PlcConnection PlcConnection { get; }
 
     IIntervalManager IntervalManager { get; }
+
+    IStateDriverProvider StateDriverProvider { get; }
 
     DbContext ResolveDbContext();
 

@@ -10,38 +10,11 @@ namespace Wcs.Plc
 
   public class StateTestDriver : IStateDriver
   {
+    public StateTestDriverStore Store;
+
     private string Key;
 
     private int Length;
-
-    public BitStore BitStore = new BitStore();
-
-    public BitsStore BitsStore = new BitsStore();
-
-    public WordStore WordStore = new WordStore();
-
-    public WordsStore WordsStore = new WordsStore();
-
-    public IStateDriver Resolve()
-    {
-      return this;
-    }
-
-    public void BeforeMessage(IState state)
-    {
-      SetKey(state.Key);
-      SetLength(state.Length);
-    }
-
-    public void HandleStateSetKey(string key)
-    {
-
-    }
-
-    public void HandleStateSetLength(int length)
-    {
-
-    }
 
     public IStateDriver SetKey(string key)
     {
@@ -59,28 +32,28 @@ namespace Wcs.Plc
 
     public Task SetWord(int data)
     {
-      WordStore[Key] = data;
+      Store.Set(Key, data);
 
       return Task.Delay(0);
     }
 
     public Task SetWords(string data)
     {
-      WordsStore[Key] = data;
+      Store.Set(Key, data);
 
       return Task.Delay(0);
     }
 
     public Task SetBit(bool data)
     {
-      BitStore[Key] = data;
+      Store.Set(Key, data);
 
       return Task.Delay(0);
     }
 
     public Task SetBits(string data)
     {
-      BitsStore[Key] = data;
+      Store.Set(Key, data);
 
       return Task.Delay(0);
     }
@@ -89,25 +62,28 @@ namespace Wcs.Plc
     {
       await Task.Delay(0);
 
-      return WordStore[Key];
+      return Store.Get<int>(Key);
     }
 
     public async Task<string> GetWords()
     {
       await Task.Delay(0);
-      return WordsStore[Key];
+
+      return Store.Get<string>(Key);
     }
 
     public async Task<bool> GetBit()
     {
       await Task.Delay(0);
-      return BitStore[Key];
+
+      return Store.Get<bool>(Key);
     }
 
     public async Task<string> GetBits()
     {
       await Task.Delay(0);
-      return BitsStore[Key];
+
+      return Store.Get<string>(Key);
     }
   }
 }
