@@ -20,5 +20,11 @@ namespace Wcs.Plc.Test
 
       return _db;
     }
+
+    /// EventLogger 将被单独测试
+    public override void UseEventLogger()
+    {
+
+    }
   }
 }

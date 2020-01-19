@@ -29,6 +29,8 @@ namespace Wcs.Plc
       StateManager = new StateManager(this);
       IntervalManager = new IntervalManager();
       StateDriverProvider = ResolveStateDriverProvider();
+
+      UseEventLogger();
     }
 
     public virtual DbContext ResolveDbContext()
@@ -39,6 +41,13 @@ namespace Wcs.Plc
     public virtual IStateDriverProvider ResolveStateDriverProvider()
     {
       return new StateTestDriverProvider();
+    }
+
+    public virtual void UseEventLogger()
+    {
+      var logger = new EventLogger(this);
+
+      Event.Use(logger);
     }
 
     public virtual void ResolvePlcConnection()

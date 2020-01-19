@@ -19,7 +19,7 @@ namespace Wcs.Plc
 
     private GlobalHandlers _globalHandlers = new GlobalHandlers();
 
-    public void Use(EventPlugin plugin)
+    public void Use(IEventPlugin plugin)
     {
       plugin.Install(this);
     }
