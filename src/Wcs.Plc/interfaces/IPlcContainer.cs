@@ -9,7 +9,11 @@ namespace Wcs.Plc
 
     IEvent Event { get; }
 
+    IStateDriver StateDriver { get; }
+
     IStateManager StateManager { get; }
+
+    IStatePlugin StateLogger { get; }
 
     PlcConnection PlcConnection { get; }
 

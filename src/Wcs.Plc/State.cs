@@ -29,6 +29,8 @@ namespace Wcs.Plc
       get => Container.IntervalManager;
     }
 
+    public string Name { get; set; }
+
     public string Key
     {
       get => _key;
@@ -51,6 +53,9 @@ namespace Wcs.Plc
     {
       Container = container;
       _stateDriver = Container.StateDriverProvider.Resolve();
+      if (Container.StateLogger != null) {
+        Use(container.StateLogger);
+      }
     }
 
     ~State()
@@ -61,6 +66,11 @@ namespace Wcs.Plc
     }
 
     //
+
+    public void Use(IStatePlugin plugin)
+    {
+      plugin.Install(this);
+    }
 
     public S Convert<S>() where S : IState
     {

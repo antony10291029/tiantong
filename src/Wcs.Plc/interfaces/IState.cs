@@ -5,6 +5,8 @@ namespace Wcs.Plc
 {
   public interface IState
   {
+    String Name { get; set; }
+
     String Key { get; set; }
 
     int Length { get; set; }

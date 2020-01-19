@@ -26,5 +26,11 @@ namespace Wcs.Plc.Test
     {
 
     }
+
+    /// StateLogger 将被单独测试
+    public override void UseStateLogger()
+    {
+
+    }
   }
 }

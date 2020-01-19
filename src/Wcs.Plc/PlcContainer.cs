@@ -14,6 +14,8 @@ namespace Wcs.Plc
 
     public IStateDriver StateDriver { get; set; }
 
+    public IStatePlugin StateLogger { get; set; }
+
     public IStateManager StateManager { get; set; }
 
     public PlcConnection PlcConnection { get; set; }
@@ -31,6 +33,7 @@ namespace Wcs.Plc
       StateDriverProvider = ResolveStateDriverProvider();
 
       UseEventLogger();
+      UseStateLogger();
     }
 
     public virtual DbContext ResolveDbContext()
@@ -48,6 +51,13 @@ namespace Wcs.Plc
       var logger = new EventLogger(this);
 
       Event.Use(logger);
+    }
+
+    public virtual void UseStateLogger()
+    {
+      var logger = new StateLogger(this);
+
+      StateLogger = logger;
     }
 
     public virtual void ResolvePlcConnection()
