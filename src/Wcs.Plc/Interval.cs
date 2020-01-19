@@ -12,11 +12,11 @@ namespace Wcs.Plc
 
     private int _time = 1;
 
+    private Task _task = Task.Delay(0);
+
     private Func<CancellationToken, Task> _handler;
 
-    private Task _task;
-
-    private CancellationTokenSource _tokenSource;
+    private CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
     public Interval()
     {
@@ -85,12 +85,18 @@ namespace Wcs.Plc
     private async Task RunTask()
     {
       var times = 0;
+
       while (!_tokenSource.Token.IsCancellationRequested) {
         if (Times != 0) {
           if (times < Times) times++;
           else break;
         }
-        await _handler(_tokenSource.Token);
+        try {
+          await _handler(_tokenSource.Token);
+        } catch (Exception e) {
+          Console.WriteLine(e);
+          break;
+        }
         try {
           await Task.Delay(_time, _tokenSource.Token);
         } catch (TaskCanceledException) {}
@@ -100,28 +106,21 @@ namespace Wcs.Plc
     public IInterval Start()
     {
       _tokenSource = new CancellationTokenSource();
-      _task = RunTask().ContinueWith(_ => {
-        _task = null;
-        _tokenSource = null;
-      });
+      _task = RunTask();
 
       return this;
     }
 
     public IInterval Stop()
     {
-      if (_tokenSource != null) {
-        _tokenSource.Cancel();
-      }
+      _tokenSource.Cancel();
 
       return this;
     }
 
-    public async Task WaitAsync()
+    public Task WaitAsync()
     {
-      if (_task != null) {
-        await _task;
-      }
+      return _task;
     }
 
     public void Wait()
