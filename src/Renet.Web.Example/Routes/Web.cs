@@ -7,6 +7,8 @@ namespace Renet.Web.Example
       Get("/", "App.Home");
       Post("/", "App.Post");
       Get("/users", "App.Users");
+      Get("/error", "App.Error");
+      Get("/error/unexpected", "App.UnexpectedError");
     }
   }
 }

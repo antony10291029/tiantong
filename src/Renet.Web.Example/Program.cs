@@ -14,6 +14,7 @@ namespace Renet.Web.Example
     public static IHostBuilder CreateHostBuilder(string[] args)
     {
       return Host.CreateDefaultBuilder(args)
+        .UseEnvironment("Development")
         .ConfigureWebHostDefaults(builder => {
           builder.UseStartup<Startup>();
         });
