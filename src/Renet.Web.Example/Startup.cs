@@ -12,6 +12,7 @@ namespace Renet.Web.Example
 
     public void Configure(IApplicationBuilder app)
     {
+      app.UseMiddleware<JsonBody>();
       app.UseRouting();
       app.UseProvider<TestAppProvider>();
       app.UseProvider<WebRoutes>();
