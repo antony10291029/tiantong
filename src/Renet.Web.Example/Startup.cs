@@ -7,12 +7,14 @@ namespace Renet.Web.Example
   {
     public void ConfigureServices(IServiceCollection services)
     {
-
+      services.AddControllers();
     }
 
     public void Configure(IApplicationBuilder app)
     {
+      app.UseRouting();
       app.UseProvider<TestAppProvider>();
+      app.UseProvider<WebRoutes>();
     }
   }
 }
