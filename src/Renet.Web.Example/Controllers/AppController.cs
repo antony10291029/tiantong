@@ -32,5 +32,29 @@ namespace Renet.Web.Example
 
       a = a / b;
     }
+
+    public new class User
+    {
+      [Required]
+      public int? Id { get; set; }
+
+      [Required]
+      public string Name { get; set; }
+    }
+
+    public User Validate([FromBody] User user)
+    {
+
+      return user;
+    }
+
+    public void CustomerValidate()
+    {
+      var ex = new HttpValidationException();
+
+      ex.AddDetails("id", "id field is required", "id must be integer");
+
+      throw ex;
+    }
   }
 }

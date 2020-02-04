@@ -3,7 +3,6 @@ using System.Text.Json;
 
 namespace Renet.Web
 {
-
   public class HttpException : Exception, IHttpException
   {
     public int Status { get; set; }
