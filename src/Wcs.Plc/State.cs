@@ -6,7 +6,7 @@ namespace Wcs.Plc
 {
   class Hooks<T> : Dictionary<int, Func<T, Task>> {};
 
-  public abstract class State<T> : IState<T> where T : IComparable
+  public abstract class State<T> : IState<T>
   {
     private Hooks<T> _gethooks = new Hooks<T>();
 
@@ -115,7 +115,7 @@ namespace Wcs.Plc
       _sethooks.Remove(id);
     }
 
-    private IWatcher<T> CreateWatcher()
+    protected IWatcher<T> CreateWatcher()
     {
       var watcher = new Watcher<T>(Event);
 
@@ -131,7 +131,7 @@ namespace Wcs.Plc
 
     public IWatcher<T> Watch(T value)
     {
-      return CreateWatcher().When(data => data.CompareTo(value) == 0);
+      return CreateWatcher().When(data => CompareDataTo(data, value) == 0);
     }
 
     public IWatcher<T> Watch(Func<T, bool> cmp)
@@ -141,8 +141,29 @@ namespace Wcs.Plc
 
     public IWatcher<T> Watch(string opt, T value)
     {
-      return CreateWatcher().When(opt, value);
+      return CreateWatcher().When(data => {
+        switch (opt) {
+          case ">":
+            return CompareDataTo(data, value) > 0;
+          case "<":
+            return CompareDataTo(data, value) < 0;
+          case "=":
+          case "==":
+            return CompareDataTo(data, value) == 0;
+          case ">=":
+            return CompareDataTo(data, value) >= 0;
+          case "<=":
+            return CompareDataTo(data, value) <= 0;
+          case "!=":
+          case "<>":
+            return CompareDataTo(data, value) != 0;
+          default:
+            throw new Exception($"Watcher operation '{opt}' is invalid");
+        }
+      });
     }
+
+    protected abstract int CompareDataTo(T data, T value);
 
     public IState Collect(int time = 1000)
     {

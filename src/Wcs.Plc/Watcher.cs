@@ -2,7 +2,7 @@ using System;
 
 namespace Wcs.Plc
 {
-  public class Watcher<T> : IWatcher<T> where T : IComparable
+  public class Watcher<T> : IWatcher<T>
   {
     private IEvent _event;
 
@@ -37,32 +37,6 @@ namespace Wcs.Plc
     public IWatcher<T> When(Func<T, bool> when)
     {
       _when = when;
-
-      return this;
-    }
-
-    public IWatcher<T> When(string opt, T value)
-    {
-      switch (opt) {
-        case ">":
-          _when = data => data.CompareTo(value) > 0;
-          break;
-        case "<":
-          _when = data => data.CompareTo(value) < 0;
-          break;
-        case ">=":
-          _when = data => data.CompareTo(value) >= 0;
-          break;
-        case "<=":
-          _when = data => data.CompareTo(value) <= 0;
-          break;
-        case "!=":
-          _when = data => data.CompareTo(value) != 0;
-          break;
-        default:
-          _when = data => data.CompareTo(value) == 0;
-          break;
-      }
 
       return this;
     }

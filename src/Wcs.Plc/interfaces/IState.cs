@@ -20,7 +20,7 @@ namespace Wcs.Plc
     S Convert<S>() where S : IState;
   }
 
-  public interface IState<T> : IState where T : IComparable
+  public interface IState<T> : IState
   {
     IStateHook<T> AddGetHook(Action<T> hook);
 

@@ -9,6 +9,11 @@ namespace Wcs.Plc
 
     }
 
+    protected override int CompareDataTo(bool data, bool value)
+    {
+      return data.CompareTo(value);
+    }
+
     protected override Task<bool> HandleGet()
     {
       return _stateDriver.GetBit();

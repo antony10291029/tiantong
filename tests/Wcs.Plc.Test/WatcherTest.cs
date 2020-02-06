@@ -41,37 +41,5 @@ namespace Wcs.Plc.Test
       watcher.Handle(user);
       Assert.AreEqual(result, 10);
     }
-
-    [Test]
-    public void TestCompare()
-    {
-      var result = 0;
-      var event_ = new Event();
-      var watcher = new Watcher<int>(event_);
-      var listener = event_.On<int>("event", value => result = value);
-
-      watcher.Event("event");
-
-      watcher.When("!=", 0).Handle(1);
-      Assert.AreEqual(result, 1);
-
-      watcher.When("==", 0).Handle(0);
-      Assert.AreEqual(result, 0);
-
-      watcher.When(">", 0).Handle(10);
-      Assert.AreEqual(result, 10);
-
-      watcher.When(">=", 0).Handle(0);
-      Assert.AreEqual(result, 0);
-
-      watcher.When("<", 0).Handle(-10);
-      Assert.AreEqual(result, -10);
-
-      watcher.When("<=", 0).Handle(0);
-      Assert.AreEqual(result, 0);
-
-      watcher.When("??", 1).Handle(1);
-      Assert.AreEqual(result, 1);
-    }
   }
 }

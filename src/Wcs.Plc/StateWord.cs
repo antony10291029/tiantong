@@ -18,6 +18,11 @@ namespace Wcs.Plc
       }
     }
 
+    protected override int CompareDataTo(int data, int value)
+    {
+      return data.CompareTo(value);
+    }
+
     protected override Task<int> HandleGet()
     {
       return _stateDriver.GetWord();

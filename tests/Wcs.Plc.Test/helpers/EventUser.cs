@@ -1,8 +1,6 @@
-using System;
-
 namespace Wcs.Plc.Test
 {
-  public class EventUser : IComparable
+  public class EventUser
   {
     public int Id { get; set; }
 

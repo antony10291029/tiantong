@@ -40,7 +40,7 @@ namespace Wcs.Plc
       _db.SaveChanges();
     }
 
-    public void Install<T>(IState<T> state) where T : IComparable
+    public void Install<T>(IState<T> state)
     {
       state.AddGetHook(value => {
         var log = new PlcStateLog {
