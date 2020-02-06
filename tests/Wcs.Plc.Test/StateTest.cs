@@ -117,5 +117,22 @@ namespace Wcs.Plc.Test
       });
       manager.Start().Wait();
     }
+
+    [Test]
+    public void TestWatcher()
+    {
+      var container = new PlcContainer();
+      var state = new StateWord(container);
+      var manager = container.IntervalManager;
+      var event_ = new Event();
+
+      SetState(state);
+      state.Event = event_;
+      event_.On<int>("watch", _ => state.Uncollect());
+      state.Watch().Event("watch");
+      state.Collect(0);
+      state.Set(1);
+      manager.Start().Wait();
+    }
   }
 }
