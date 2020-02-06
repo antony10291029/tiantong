@@ -47,7 +47,7 @@ namespace Wcs.Plc.Test
     {
       var result = 0;
       var event_ = new Event();
-      var watcher = new ComparableWatcher<int>(event_);
+      var watcher = new Watcher<int>(event_);
       var listener = event_.On<int>("event", value => result = value);
 
       watcher.Event("event");

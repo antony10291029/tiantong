@@ -2,9 +2,11 @@ using System;
 
 namespace Wcs.Plc
 {
-  public interface IWatcher<T>
+  public interface IWatcher<T> where T : IComparable
   {
-    IWatcher<T> When(Func<T, bool> comparer);
+    IWatcher<T> When(Func<T, bool> when);
+
+    IWatcher<T> When(string opt, T value);
 
     void Handle(T value);
 
@@ -21,10 +23,5 @@ namespace Wcs.Plc
     void Event(string key, Func<T, T> handler);
 
     void Event<R>(string key, Func<T, R> handler);
-  }
-
-  public interface IComparableWatcher<T> : IWatcher<T>
-  {
-    IWatcher<T> When(string opt, T value);
   }
 }

@@ -123,16 +123,7 @@ namespace Wcs.Plc
 
     //
 
-    public IComparableWatcher<T> CreateComparableWatcher<T>(string key) where T : IComparable<T>
-    {
-      var watcher = new ComparableWatcher<T>(_event);
-      var state = _stateManager.States[key].Convert<IState<T>>();
-      var hook = state.AddGetHook(value => watcher.Handle(value));
-
-      return watcher;
-    }
-
-    private IWatcher<T> CreateWatcher<T>(string key)
+    private IWatcher<T> CreateWatcher<T>(string key) where T : IComparable
     {
       var watcher = new Watcher<T>(_event);
       var state = _stateManager.States[key].Convert<IState<T>>();
@@ -141,19 +132,19 @@ namespace Wcs.Plc
       return watcher;
     }
 
-    public IWatcher<T> Watch<T>(string key, T value) where T : IComparable<T>
+    public IWatcher<T> Watch<T>(string key, T value) where T : IComparable
     {
-      return CreateComparableWatcher<T>(key).When(data => data.CompareTo(value) == 0);
+      return CreateWatcher<T>(key).When(data => data.CompareTo(value) == 0);
     }
 
-    public IWatcher<T> Watch<T>(string key, string opt, T value) where T : IComparable<T>
+    public IWatcher<T> Watch<T>(string key, Func<T, bool> when) where T : IComparable
     {
-      return CreateComparableWatcher<T>(key).When(opt, value);
+      return CreateWatcher<T>(key).When(when);
     }
 
-    public IWatcher<T> Watch<T>(string key, Func<T, bool> handler)
+    public IWatcher<T> Watch<T>(string key, string opt, T value) where T : IComparable
     {
-      return CreateWatcher<T>(key).When(handler);
+      return CreateWatcher<T>(key).When(opt, value);
     }
 
     //

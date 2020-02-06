@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public class Watcher<T> : IWatcher<T>
+  public class Watcher<T> : IWatcher<T> where T : IComparable
   {
     private IEvent _event;
 
@@ -35,44 +35,11 @@ namespace Wcs.Plc
       _cancel();
     }
 
-    public IWatcher<T> When(Func<T, bool> comparer)
+    public IWatcher<T> When(Func<T, bool> when)
     {
-      _when = comparer;
+      _when = when;
 
       return this;
-    }
-
-    public void Event(string key)
-    {
-      _emmiter = value => _event.Emit(key, value);
-    }
-
-    public void EventVoid(string key)
-    {
-      _emmiter = _ => _event.Emit(key);
-    }
-
-    public void Event<R>(string key, R payload)
-    {
-      _emmiter = _ => _event.Emit<R>(key, payload);
-    }
-
-    public void Event(string key, Func<T, T> handler)
-    {
-      _emmiter = value => _event.Emit(key, handler(value));
-    }
-
-    public void Event<R>(string key, Func<T, R> handler)
-    {
-      _emmiter = value => _event.Emit<R>(key, handler(value));
-    }
-  }
-
-  public class ComparableWatcher<T> : Watcher<T>, IComparableWatcher<T> where T : IComparable<T>
-  {
-    public ComparableWatcher(IEvent event_) : base(event_)
-    {
-
     }
 
     public IWatcher<T> When(string opt, T value)
@@ -100,6 +67,31 @@ namespace Wcs.Plc
       }
 
       return this;
+    }
+
+    public void Event(string key)
+    {
+      _emmiter = value => _event.Emit(key, value);
+    }
+
+    public void EventVoid(string key)
+    {
+      _emmiter = _ => _event.Emit(key);
+    }
+
+    public void Event<R>(string key, R payload)
+    {
+      _emmiter = _ => _event.Emit<R>(key, payload);
+    }
+
+    public void Event(string key, Func<T, T> handler)
+    {
+      _emmiter = value => _event.Emit(key, handler(value));
+    }
+
+    public void Event<R>(string key, Func<T, R> handler)
+    {
+      _emmiter = value => _event.Emit<R>(key, handler(value));
     }
   }
 }
