@@ -33,12 +33,6 @@ namespace Wcs.Plc
 
     void On(string key, Action handler);
 
-    IWatcher<T> Watch<T>(string key, T value) where T : IComparable;
-
-    IWatcher<T> Watch<T>(string key, Func<T, bool> when) where T : IComparable;
-
-    IWatcher<T> Watch<T>(string key, string opt, T value) where T : IComparable;
-
     IPlcWorker Start();
 
     IPlcWorker Stop();

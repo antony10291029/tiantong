@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
@@ -44,8 +43,7 @@ namespace Wcs.Plc
 
     public IWatcher<T> When(string opt, T value)
     {
-      switch (opt)
-      {
+      switch (opt) {
         case ">":
           _when = data => data.CompareTo(value) > 0;
           break;

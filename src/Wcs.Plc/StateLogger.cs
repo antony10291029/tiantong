@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using System.Collections.Generic;
 using Wcs.Plc.Database;
@@ -39,7 +40,7 @@ namespace Wcs.Plc
       _db.SaveChanges();
     }
 
-    public void Install<T>(IState<T> state)
+    public void Install<T>(IState<T> state) where T : IComparable
     {
       state.AddGetHook(value => {
         var log = new PlcStateLog {

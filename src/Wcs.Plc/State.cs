@@ -6,7 +6,7 @@ namespace Wcs.Plc
 {
   class Hooks<T> : Dictionary<int, Func<T, Task>> {};
 
-  public abstract class State<T> : IState<T>
+  public abstract class State<T> : IState<T> where T : IComparable
   {
     private Hooks<T> _gethooks = new Hooks<T>();
 
@@ -48,6 +48,8 @@ namespace Wcs.Plc
         _stateDriver.SetLength(value);
       }
     }
+
+    public IEvent Event;
 
     public State(IPlcContainer container)
     {
@@ -111,6 +113,35 @@ namespace Wcs.Plc
     private void RemoveGetHook(int id)
     {
       _sethooks.Remove(id);
+    }
+
+    private IWatcher<T> CreateWatcher()
+    {
+      var watcher = new Watcher<T>(Event);
+
+      AddGetHook(value => watcher.Handle(value));
+
+      return watcher;
+    }
+
+    public IWatcher<T> Watch()
+    {
+      return CreateWatcher().When(_ => true);
+    }
+
+    public IWatcher<T> Watch(T value)
+    {
+      return CreateWatcher().When(data => data.CompareTo(value) == 0);
+    }
+
+    public IWatcher<T> Watch(Func<T, bool> cmp)
+    {
+      return CreateWatcher().When(cmp);
+    }
+
+    public IWatcher<T> Watch(string opt, T value)
+    {
+      return CreateWatcher().When(opt, value);
     }
 
     public IState Collect(int time = 1000)

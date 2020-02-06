@@ -30,6 +30,7 @@ namespace Wcs.Plc
         Key = key,
         Name = Name,
         Length = 1,
+        Event = Container.Event,
       };
 
       States.Add(Name, state);
@@ -43,6 +44,7 @@ namespace Wcs.Plc
         Key = key,
         Name = Name,
         Length = length,
+        Event = Container.Event,
       };
 
       States.Add(Name, state);
@@ -56,6 +58,7 @@ namespace Wcs.Plc
         Key = key,
         Name = Name,
         Length = 1,
+        Event = Container.Event,
       };
 
       States.Add(Name, state);
@@ -69,6 +72,7 @@ namespace Wcs.Plc
         Key = key,
         Name = Name,
         Length = length,
+        Event = Container.Event,
       };
 
       States.Add(Name, state);

@@ -20,11 +20,19 @@ namespace Wcs.Plc
     S Convert<S>() where S : IState;
   }
 
-  public interface IState<T> : IState
+  public interface IState<T> : IState where T : IComparable
   {
     IStateHook<T> AddGetHook(Action<T> hook);
 
     IStateHook<T> AddSetHook(Action<T> hook);
+
+    IWatcher<T> Watch();
+
+    IWatcher<T> Watch(T value);
+
+    IWatcher<T> Watch(Func<T, bool> cmp);
+
+    IWatcher<T> Watch(string opt, T value);
 
     Task SetAsync(T data);
 
