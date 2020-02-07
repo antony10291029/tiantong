@@ -6,12 +6,6 @@ namespace Wcs.Plc
   {
     IWatcher<T> When(Func<T, bool> when);
 
-    void Handle(T value);
-
-    void OnCancel(Action cancel);
-
-    void Cancel();
-
     void Event(string key);
 
     void EventVoid(string key);
