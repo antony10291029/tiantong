@@ -35,35 +35,35 @@ namespace Wcs.Plc
       return new PlcContainer();
     }
 
-    public IPlcWorker Id(int id)
+    public IPlc Id(int id)
     {
       Container.PlcConnection.Id = id;
 
       return this;
     }
 
-    public IPlcWorker Model(string model)
+    public IPlc Model(string model)
     {
       Container.PlcConnection.Model = model;
 
       return this;
     }
 
-    public IPlcWorker Name(string name)
+    public IPlc Name(string name)
     {
       Container.PlcConnection.Name = name;
 
       return this;
     }
 
-    public IPlcWorker Host(string host)
+    public IPlc Host(string host)
     {
       Container.PlcConnection.Host = host;
       
       return this;
     }
 
-    public IPlcWorker Port(string port)
+    public IPlc Port(string port)
     {
       Container.PlcConnection.Port = port;
 
@@ -123,14 +123,14 @@ namespace Wcs.Plc
 
     //
 
-    public IPlcWorker Start()
+    public IPlc Start()
     {
       _intervalManager.Start();
 
       return this;
     }
 
-    public IPlcWorker Stop()
+    public IPlc Stop()
     {
       _intervalManager.Stop();
 
