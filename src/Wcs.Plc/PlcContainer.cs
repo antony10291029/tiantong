@@ -12,8 +12,6 @@ namespace Wcs.Plc
 
     public Event Event { get; set; }
 
-    public IStateDriver StateDriver { get; set; }
-
     public IStatePlugin StateLogger { get; set; }
 
     public StateManager StateManager { get; set; }
@@ -22,7 +20,7 @@ namespace Wcs.Plc
 
     public IntervalManager IntervalManager { get; set; }
 
-    public IStateDriverProvider StateDriverProvider { get; set; }
+    public IStateClientProvider StateClientProvider { get; set; }
 
     public PlcContainer()
     {
@@ -30,7 +28,7 @@ namespace Wcs.Plc
       PlcConnection = new PlcConnection();
       StateManager = new StateManager(this);
       IntervalManager = new IntervalManager();
-      StateDriverProvider = ResolveStateDriverProvider();
+      StateClientProvider = ResolveStateClientProvider();
 
       UseEventLogger();
       UseStateLogger();
@@ -41,9 +39,9 @@ namespace Wcs.Plc
       return new SqliteDbContext();
     }
 
-    public virtual IStateDriverProvider ResolveStateDriverProvider()
+    public virtual IStateClientProvider ResolveStateClientProvider()
     {
-      return new StateTestDriverProvider();
+      return new StateTestClientProvider();
     }
 
     public virtual void UseEventLogger()

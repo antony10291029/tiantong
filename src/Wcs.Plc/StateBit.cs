@@ -16,12 +16,12 @@ namespace Wcs.Plc
 
     protected override Task<bool> HandleGet()
     {
-      return _stateDriver.GetBit();
+      return _stateClient.GetBit();
     }
 
     protected override Task HandleSet(bool data)
     {
-      return _stateDriver.SetBit(data);
+      return _stateClient.SetBit(data);
     }
   }
 }

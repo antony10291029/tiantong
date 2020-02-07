@@ -22,7 +22,7 @@ namespace Wcs.Plc
 
     private Interval _interval;
 
-    protected IStateDriver _stateDriver;
+    protected IStateClient _stateClient;
 
     protected IntervalManager _intervalManager
     {
@@ -36,7 +36,7 @@ namespace Wcs.Plc
       get => _key;
       set {
         _key = value;
-        _stateDriver.SetKey(value);
+        _stateClient.SetKey(value);
       }
     }
 
@@ -45,7 +45,7 @@ namespace Wcs.Plc
       get => _length;
       set {
         _length = value;
-        _stateDriver.SetLength(value);
+        _stateClient.SetLength(value);
       }
     }
 
@@ -54,7 +54,7 @@ namespace Wcs.Plc
     public State(PlcContainer container)
     {
       Container = container;
-      _stateDriver = Container.StateDriverProvider.Resolve();
+      _stateClient = Container.StateClientProvider.Resolve();
       if (Container.StateLogger != null) {
         Use(container.StateLogger);
       }

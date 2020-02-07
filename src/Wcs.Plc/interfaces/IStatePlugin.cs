@@ -1,5 +1,3 @@
-using System;
-
 namespace Wcs.Plc
 {
   public interface IStatePlugin

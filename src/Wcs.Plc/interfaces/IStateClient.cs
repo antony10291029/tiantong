@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public interface IStateDriver
+  public interface IStateClient
   {
-    IStateDriver SetKey(string key);
+    IStateClient SetKey(string key);
 
-    IStateDriver SetLength(int length);
+    IStateClient SetLength(int length);
 
     Task SetWord(int data);
 

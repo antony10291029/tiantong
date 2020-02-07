@@ -1,29 +1,23 @@
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Wcs.Plc
 {
-  using BitStore = Dictionary<string, bool>;
-  using BitsStore = Dictionary<string, string>;
-  using WordStore = Dictionary<string, int>;
-  using WordsStore = Dictionary<string, string>;
-
-  public class StateTestDriver : IStateDriver
+  public class StateTestClient : IStateClient
   {
-    public StateTestDriverStore Store;
+    public StateTestClientStore Store;
 
     private string Key;
 
     private int Length;
 
-    public IStateDriver SetKey(string key)
+    public IStateClient SetKey(string key)
     {
       Key = key;
 
       return this;
     }
 
-    public IStateDriver SetLength(int length)
+    public IStateClient SetLength(int length)
     {
       Length = length;
 

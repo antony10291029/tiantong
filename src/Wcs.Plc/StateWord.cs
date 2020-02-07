@@ -25,12 +25,12 @@ namespace Wcs.Plc
 
     protected override Task<int> HandleGet()
     {
-      return _stateDriver.GetWord();
+      return _stateClient.GetWord();
     }
 
     protected override Task HandleSet(int data)
     {
-      return _stateDriver.SetWord(data);
+      return _stateClient.SetWord(data);
     }
 
     public IStateWord Heartbeat(int time = 1000, int maxTimes = 10000)

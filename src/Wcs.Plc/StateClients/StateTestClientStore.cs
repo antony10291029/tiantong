@@ -1,10 +1,9 @@
-using System;
 using System.Text.Json;
 using System.Collections.Generic;
 
 namespace Wcs.Plc
 {
-  public class StateTestDriverStore
+  public class StateTestClientStore
   {
     private Dictionary<string, string> _store = new Dictionary<string, string>();
 
