@@ -9,14 +9,14 @@ namespace App.CommandLine
     {
       var plc = new Plc();
 
-      plc.State("hb").Word("D1").Heartbeat(1).Collect(1);
-      plc.State("scanner").Words("D2").Collect(1);
+      plc.State("hb").Word("D1").Heartbeat(100).Collect(100);
+      plc.State("scanner").Words("D2").Collect(100);
 
       plc.Word("hb").Watch(value => value > 0).Event("event");
       plc.Words("scanner").Watch(value => value != null).Event("scanning");
 
-      plc.On<int>("event", value => Console.WriteLine(value));
-      plc.On<string>("scanning", value => {});
+      plc.Word("hb").On("event", value => Console.WriteLine(value));
+      plc.Words("scanner").On("scanning", value => {});
 
       plc.Words("scanner").Set("ojbk");
 
