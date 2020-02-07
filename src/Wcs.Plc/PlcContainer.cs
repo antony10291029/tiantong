@@ -16,7 +16,7 @@ namespace Wcs.Plc
 
     public IStatePlugin StateLogger { get; set; }
 
-    public IStateManager StateManager { get; set; }
+    public StateManager StateManager { get; set; }
 
     public PlcConnection PlcConnection { get; set; }
 

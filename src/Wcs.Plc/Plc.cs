@@ -17,7 +17,7 @@ namespace Wcs.Plc
       get => Container.IntervalManager;
     }
 
-    private IStateManager _stateManager
+    private StateManager _stateManager
     {
       get => Container.StateManager;
     }
