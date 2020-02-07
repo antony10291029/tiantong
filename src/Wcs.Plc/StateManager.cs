@@ -6,13 +6,13 @@ namespace Wcs.Plc
 
   public class StateManager : IStateManager
   {
-    private IPlcContainer Container;
+    private PlcContainer Container;
 
     public States States { get; } = new States();
 
     public string Name { get; set; }
 
-    public StateManager(IPlcContainer container)
+    public StateManager(PlcContainer container)
     {
       Container = container;
     }

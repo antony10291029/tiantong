@@ -6,7 +6,7 @@ namespace Wcs.Plc
   {
     private IInterval _interval;
 
-    public StateWord(IPlcContainer services): base(services)
+    public StateWord(PlcContainer services): base(services)
     {
 
     }

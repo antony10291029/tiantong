@@ -4,7 +4,7 @@ namespace Wcs.Plc
 {
   public class StateBit : State<bool>, IStateBit
   {
-    public StateBit(IPlcContainer services): base(services)
+    public StateBit(PlcContainer services): base(services)
     {
 
     }

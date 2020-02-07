@@ -2,7 +2,7 @@ namespace Wcs.Plc.Test
 {
   public class Plc : Wcs.Plc.Plc
   {
-    protected override IPlcContainer ResolveContainer()
+    protected override Wcs.Plc.PlcContainer ResolveContainer()
     {
       return new PlcContainer();
     }

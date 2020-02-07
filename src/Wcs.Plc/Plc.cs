@@ -5,7 +5,7 @@ namespace Wcs.Plc
 {
   public class Plc : IPlc
   {
-    public IPlcContainer Container { get; set; }
+    public PlcContainer Container { get; set; }
 
     private IEvent _event
     {
@@ -30,7 +30,7 @@ namespace Wcs.Plc
 
     //
 
-    protected virtual IPlcContainer ResolveContainer()
+    protected virtual PlcContainer ResolveContainer()
     {
       return new PlcContainer();
     }

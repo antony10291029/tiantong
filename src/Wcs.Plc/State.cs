@@ -12,7 +12,7 @@ namespace Wcs.Plc
 
     private Hooks<T> _sethooks = new Hooks<T>();
 
-    public IPlcContainer Container { get; private set; }
+    public PlcContainer Container { get; private set; }
 
     private int _id = 0;
 
@@ -51,7 +51,7 @@ namespace Wcs.Plc
 
     public IEvent Event;
 
-    public State(IPlcContainer container)
+    public State(PlcContainer container)
     {
       Container = container;
       _stateDriver = Container.StateDriverProvider.Resolve();

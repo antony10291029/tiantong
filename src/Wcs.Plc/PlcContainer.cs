@@ -6,7 +6,7 @@ using Wcs.Plc.DB.Sqlite;
 
 namespace Wcs.Plc
 {
-  public class PlcContainer : IPlcContainer
+  public class PlcContainer
   {
     public IPlc Plc { get; set; }
 

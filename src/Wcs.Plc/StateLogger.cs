@@ -10,13 +10,13 @@ namespace Wcs.Plc
   {
     private DbContext _db;
 
-    private IPlcContainer _container;
+    private PlcContainer _container;
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
     public IInterval Interval;
 
-    public StateLogger(IPlcContainer container)
+    public StateLogger(PlcContainer container)
     {
       _container = container;
       _db = container.ResolveDbContext();

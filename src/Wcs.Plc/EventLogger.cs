@@ -14,7 +14,7 @@ namespace Wcs.Plc
 
     public IInterval Interval;
 
-    public EventLogger(IPlcContainer container)
+    public EventLogger(PlcContainer container)
     {
       Interval = new Interval();
       _eventLogs = new List<EventLog>();
