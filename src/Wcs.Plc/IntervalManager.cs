@@ -4,22 +4,22 @@ using System.Collections.Generic;
 namespace Wcs.Plc
 {
   using Tasks = List<Task>;
-  using Intervals = Dictionary<int, IInterval>;
+  using Intervals = Dictionary<int, Interval>;
 
-  public class IntervalManager : IIntervalManager
+  public class IntervalManager
   {
     private int _id = 0;
 
     private Intervals intervals = new Intervals();
 
-    public void Add(IInterval interval)
+    public void Add(Interval interval)
     {
       var id = _id++;
       interval.Id = id;
       intervals.Add(id, interval);
     }
 
-    public void Remove(IInterval interval)
+    public void Remove(Interval interval)
     {
       var id = interval.Id;
       interval.Stop();
@@ -40,7 +40,7 @@ namespace Wcs.Plc
       return false;
     }
 
-    public IIntervalManager Start()
+    public IntervalManager Start()
     {
       foreach (var interval in intervals.Values) {
         interval.Start();
@@ -49,7 +49,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    public IIntervalManager Stop()
+    public IntervalManager Stop()
     {
       foreach (var interval in intervals.Values) {
         if (interval.IsRunning()) {
@@ -60,7 +60,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    public IIntervalManager Clear()
+    public IntervalManager Clear()
     {
       foreach (var interval in intervals.Values) {
         Remove(interval);

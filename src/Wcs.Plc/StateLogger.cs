@@ -14,7 +14,7 @@ namespace Wcs.Plc
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
-    public IInterval Interval;
+    public Interval Interval;
 
     public StateLogger(PlcContainer container)
     {

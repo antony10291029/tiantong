@@ -12,7 +12,7 @@ namespace Wcs.Plc
 
     private List<EventLog> _eventLogs;
 
-    public IInterval Interval;
+    public Interval Interval;
 
     public EventLogger(PlcContainer container)
     {

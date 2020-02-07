@@ -20,7 +20,7 @@ namespace Wcs.Plc
 
     public PlcConnection PlcConnection { get; set; }
 
-    public IIntervalManager IntervalManager { get; set; }
+    public IntervalManager IntervalManager { get; set; }
 
     public IStateDriverProvider StateDriverProvider { get; set; }
 

@@ -12,7 +12,7 @@ namespace Wcs.Plc
       get => Container.Event;
     }
 
-    private IIntervalManager _intervalManager
+    private IntervalManager _intervalManager
     {
       get => Container.IntervalManager;
     }

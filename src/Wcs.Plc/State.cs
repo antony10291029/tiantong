@@ -20,11 +20,11 @@ namespace Wcs.Plc
 
     private int _length;
 
-    private IInterval _interval;
+    private Interval _interval;
 
     protected IStateDriver _stateDriver;
 
-    protected IIntervalManager _intervalManager
+    protected IntervalManager _intervalManager
     {
       get => Container.IntervalManager;
     }

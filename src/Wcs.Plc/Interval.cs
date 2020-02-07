@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public class Interval : IInterval
+  public class Interval
   {
     public int Id { get; set; }
 
@@ -42,35 +42,35 @@ namespace Wcs.Plc
       SetHandler(handler);
     }
 
-    public IInterval SetTime(int time)
+    public Interval SetTime(int time)
     {
       _time = Math.Max(time, 1);
 
       return this;
     }
 
-    public IInterval SetTimes(int times)
+    public Interval SetTimes(int times)
     {
       Times = times;
 
       return this;
     }
 
-    public IInterval SetHandler(Action handler)
+    public Interval SetHandler(Action handler)
     {
       _handler = _ => Task.Run(handler);
 
       return this;
     }
 
-    public IInterval SetHandler(Func<Task> handler)
+    public Interval SetHandler(Func<Task> handler)
     {
       _handler = _ => handler();
 
       return this;
     }
 
-    public IInterval SetHandler(Func<CancellationToken, Task> handler)
+    public Interval SetHandler(Func<CancellationToken, Task> handler)
     {
       _handler = handler;
 
@@ -103,7 +103,7 @@ namespace Wcs.Plc
       }
     }
 
-    public IInterval Start()
+    public Interval Start()
     {
       _tokenSource = new CancellationTokenSource();
       _task = RunTask();
@@ -111,7 +111,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    public IInterval Stop()
+    public Interval Stop()
     {
       _tokenSource.Cancel();
 

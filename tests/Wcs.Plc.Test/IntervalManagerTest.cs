@@ -7,7 +7,7 @@ namespace Wcs.Plc.Test
   [TestFixture]
   public class IntervalManagerTest
   {
-    private IIntervalManager GetManager(int n, int time, Action handler)
+    private IntervalManager GetManager(int n, int time, Action handler)
     {
       var manager = new IntervalManager();
       for (var i = 0; i < n; i++) {

@@ -4,7 +4,7 @@ namespace Wcs.Plc
 {
   public class StateWord : State<int>, IStateWord
   {
-    private IInterval _interval;
+    private Interval _interval;
 
     public StateWord(PlcContainer services): base(services)
     {
