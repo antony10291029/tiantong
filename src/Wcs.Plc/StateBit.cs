@@ -4,9 +4,11 @@ namespace Wcs.Plc
 {
   public class StateBit : State<bool>, IStateBit
   {
-    public StateBit(PlcContainer services): base(services)
-    {
+    public override string Type { get => "Bit"; }
 
+    public override IStateBit ToBit()
+    {
+      return this;
     }
 
     protected override int CompareDataTo(bool data, bool value)
@@ -16,12 +18,12 @@ namespace Wcs.Plc
 
     protected override Task<bool> HandleGet()
     {
-      return _stateClient.GetBit();
+      return StateClient.GetBit();
     }
 
     protected override Task HandleSet(bool data)
     {
-      return _stateClient.SetBit(data);
+      return StateClient.SetBit(data);
     }
   }
 }

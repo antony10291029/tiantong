@@ -1,3 +1,4 @@
+using System.Reflection;
 using NUnit.Framework;
 
 namespace Wcs.Plc.Test
@@ -5,19 +6,76 @@ namespace Wcs.Plc.Test
   [TestFixture]
   public class StateTest
   {
-    private void SetState(IState state)
+    public T ResolveState<T>() where T : State, new()
     {
-      state.Key = "D100";
+      var state = new T();
+      var client = new StateTestClient() {
+        Store = new StateTestClientStore()
+      };
+
+      state.StateClient = client;
+      state.Event = new Event();
+      state.IntervalManager = new IntervalManager();
       state.Length = 1;
+      state.Key = "D100";
+      state.Name = "test";
+
+      return state;
+    }
+
+    [Test]
+    public void TestConvertException()
+    {
+      State state = new StateWord();
+
+      state.ToWord();
+      try {
+        state.ToBit();
+      } catch (StateConversationException ex) {
+        Assert.AreEqual(ex.From, "Word");
+        Assert.AreEqual(ex.To, "Bit");
+      }
+      try {
+        state.ToBits();
+      } catch (StateConversationException ex) {
+        Assert.AreEqual(ex.From, "Word");
+        Assert.AreEqual(ex.To, "Bits");
+      }
+      try {
+        state.ToWords();
+      } catch (StateConversationException ex) {
+        Assert.AreEqual(ex.From, "Word");
+        Assert.AreEqual(ex.To, "Words");
+      }
+    }
+
+    [Test]
+    public void TestConvertWord()
+    {
+      var types = new [] { "Bit", "Bits", "Word", "Words" };
+      var states = new State[] { new StateBit(), new StateBits(), new StateWord(), new StateWords() };
+
+      foreach (var state in states) {
+        foreach (var type in types) {
+          try {
+            try {
+              typeof(State).GetMethod($"To{type}").Invoke(state, null);
+            } catch (TargetInvocationException ex) { throw ex.GetBaseException(); }
+            if (state.Type != type) {
+              Assert.Fail($"convert state from {state.Type} to {type} should be failed");
+            }
+          } catch (StateConversationException ex) {
+            Assert.AreEqual(ex.To, type);
+            Assert.AreEqual(ex.From, state.Type);
+          }
+        }
+      }
     }
 
     [TestCase(0)]
     public void TestWordState(int value)
     {
-      var container = new PlcContainer();
-      var state = new StateWord(container);
-
-      SetState(state);
+      var state = ResolveState<StateWord>();
       state.Set(value);
       var result = state.Get();
 
@@ -27,10 +85,7 @@ namespace Wcs.Plc.Test
     [TestCase("happy hacking")]
     public void TestWordsState(string value)
     {
-      var container = new PlcContainer();
-      var state = new StateWords(container);
-
-      SetState(state);
+      var state = ResolveState<StateWords>();
       state.Set(value);
       var result = state.Get();
 
@@ -40,10 +95,7 @@ namespace Wcs.Plc.Test
     [TestCase(true)]
     public void TestBitState(bool value)
     {
-      var container = new PlcContainer();
-      var state = new StateBit(container);
-
-      SetState(state);
+      var state = ResolveState<StateBit>();
       state.Set(value);
       var result = state.Get();
 
@@ -53,10 +105,7 @@ namespace Wcs.Plc.Test
     [TestCase("0011")]
     public void TestBitsState(string value)
     {
-      var container = new PlcContainer();
-      var state = new StateBits(container);
-
-      SetState(state);
+      var state = ResolveState<StateBits>();
       state.Set(value);
       var result = state.Get();
 
@@ -68,10 +117,8 @@ namespace Wcs.Plc.Test
     {
       var getHookData = 0;
       var setHookData = 0;
-      var container = new PlcContainer();
-      var state = new StateWord(container);
+      var state = ResolveState<StateWord>();
 
-      SetState(state);
       state.AddSetHook(data => setHookData = data);
       state.Set(value);
       Assert.AreEqual(value, setHookData);
@@ -84,31 +131,22 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateCollectAndUncollect()
     {
-      var flag = false;
-      var container = new PlcContainer();
-      var state = new StateWord(container);
-      var manager = container.IntervalManager;
+      var state = ResolveState<StateWord>();
 
-      SetState(state);
       state.Collect(0);
       state.AddGetHook(value => {
-        flag = true;
         state.UncollectAsync();
       });
       state.Set(100);
-      manager.Start();
-      manager.Wait();
-      Assert.IsTrue(flag);
+      state.IntervalManager.Start().Wait();
     }
 
     [Test]
     public void TestStateHearteatUnheartbeat()
     {
-      var container = new PlcContainer();
-      var state = new StateWord(container);
-      var manager = container.IntervalManager;
+      var state = ResolveState<StateWord>();
+      var manager = state.IntervalManager;
 
-      SetState(state);
       state.Heartbeat(0);
       state.AddSetHook(value => {
         if (value > 10) {
@@ -121,18 +159,15 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestWatcher()
     {
-      var container = new PlcContainer();
-      var state = new StateWord(container);
-      var manager = container.IntervalManager;
+      var state = ResolveState<StateWord>();
       var event_ = new Event();
 
-      SetState(state);
       state.Event = event_;
       event_.On<int>("watch", _ => state.Uncollect());
       state.Watch().Event("watch");
       state.Collect(0);
       state.Set(1);
-      manager.Start().Wait();
+      state.IntervalManager.Start().Wait();
     }
   }
 }

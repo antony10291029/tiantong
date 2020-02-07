@@ -13,10 +13,13 @@ namespace Wcs.Plc.Test
       var container = new PlcContainer();
       var logger = new StateLogger(container);
       var db = container.ResolveDbContext();
-      var state = new StateWord(container);
+      var state = new StateWord() {
+        Event = new Event(),
+        IntervalManager = new IntervalManager(),
+        StateClient = new StateTestClient() { Store = new StateTestClientStore() }
+      };
       var connection = new PlcConnection() { Id = 1 };
       var count = 0;
-
       container.PlcConnection = connection;
       state.Use(logger);
 

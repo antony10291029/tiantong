@@ -6,9 +6,11 @@ namespace Wcs.Plc
   {
     private Interval _interval;
 
-    public StateWord(PlcContainer services): base(services)
-    {
+    public override string Type { get => "Word"; }
 
+    public override IStateWord ToWord()
+    {
+      return this;
     }
 
     ~StateWord()
@@ -25,12 +27,12 @@ namespace Wcs.Plc
 
     protected override Task<int> HandleGet()
     {
-      return _stateClient.GetWord();
+      return StateClient.GetWord();
     }
 
     protected override Task HandleSet(int data)
     {
-      return _stateClient.SetWord(data);
+      return StateClient.SetWord(data);
     }
 
     public IStateWord Heartbeat(int time = 1000, int maxTimes = 10000)
@@ -45,14 +47,14 @@ namespace Wcs.Plc
 
         return SetAsync(times);
       });
-      _intervalManager.Add(_interval);
+      IntervalManager.Add(_interval);
 
       return this;
     }
 
     public Task UnheartbeatAsync()
     {
-      _intervalManager.Remove(_interval);
+      IntervalManager.Remove(_interval);
 
       return _interval.WaitAsync();
     }

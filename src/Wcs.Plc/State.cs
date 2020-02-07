@@ -6,13 +6,71 @@ namespace Wcs.Plc
 {
   class Hooks<T> : Dictionary<int, Func<T, Task>> {};
 
-  public abstract class State<T> : IState<T>
+  public abstract class State
+  {
+    public string Name;
+
+    public Event Event;
+
+    public IStateClient StateClient;
+
+    public IntervalManager IntervalManager;
+
+    public abstract string Key { get; set; }
+
+    public abstract int Length { get; set; }
+
+    public abstract string Type { get; }
+
+    public virtual IStateBit ToBit()
+    {
+      throw new StateConversationException(Type, "Bit");
+    }
+
+    public virtual IStateBits ToBits()
+    {
+      throw new StateConversationException(Type, "Bits");
+    }
+
+    public virtual IStateWord ToWord()
+    {
+      throw new StateConversationException(Type, "Word");
+    }
+
+    public virtual IStateWords ToWords()
+    {
+      throw new StateConversationException(Type, "Words");
+    }
+  }
+
+  public class StateConversationException : Exception
+  {
+    public string From;
+
+    public string To;
+
+    public override string Message
+    {
+      get => $"fail to convert state from `{From}` to `{To}`";
+    }
+
+    public StateConversationException()
+    {
+
+    }
+
+    public StateConversationException(string from, string to)
+    {
+      To = to;
+      From = from;
+    }
+  }
+
+  public abstract class State<T> : State, IState<T>
   {
     private Hooks<T> _gethooks = new Hooks<T>();
 
     private Hooks<T> _sethooks = new Hooks<T>();
-
-    public PlcContainer Container { get; private set; }
 
     private int _id = 0;
 
@@ -22,41 +80,21 @@ namespace Wcs.Plc
 
     private Interval _interval;
 
-    protected IStateClient _stateClient;
-
-    protected IntervalManager _intervalManager
-    {
-      get => Container.IntervalManager;
-    }
-
-    public string Name { get; set; }
-
-    public string Key
+    public override string Key
     {
       get => _key;
       set {
         _key = value;
-        _stateClient.SetKey(value);
+        StateClient.SetKey(value);
       }
     }
 
-    public int Length
+    public override int Length
     {
       get => _length;
       set {
         _length = value;
-        _stateClient.SetLength(value);
-      }
-    }
-
-    public Event Event;
-
-    public State(PlcContainer container)
-    {
-      Container = container;
-      _stateClient = Container.StateClientProvider.Resolve();
-      if (Container.StateLogger != null) {
-        Use(container.StateLogger);
+        StateClient.SetLength(value);
       }
     }
 
@@ -71,7 +109,9 @@ namespace Wcs.Plc
 
     public void Use(IStatePlugin plugin)
     {
-      plugin.Install(this);
+      if (plugin != null) {
+        plugin.Install(this);
+      }
     }
 
     public S Convert<S>() where S : IState
@@ -170,7 +210,7 @@ namespace Wcs.Plc
       _interval = new Interval();
       _interval.SetTime(time);
       _interval.SetHandler(GetAsync);
-      _intervalManager.Add(_interval);
+      IntervalManager.Add(_interval);
 
       return this;
     }
@@ -184,7 +224,7 @@ namespace Wcs.Plc
 
     public void Uncollect()
     {
-      _intervalManager.Remove(_interval);
+      IntervalManager.Remove(_interval);
       _interval.WaitAsync().ContinueWith(_ => {
         _interval = null;
       });

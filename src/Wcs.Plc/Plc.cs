@@ -81,22 +81,22 @@ namespace Wcs.Plc
 
     public IStateWord Word(string name)
     {
-      return _stateManager.States[name].Convert<IStateWord>();
+      return _stateManager.States[name].ToWord();
     }
 
     public IStateWords Words(string name)
     {
-      return _stateManager.States[name].Convert<IStateWords>();
+      return _stateManager.States[name].ToWords();
     }
 
     public IStateBit Bit(string name)
     {
-      return _stateManager.States[name].Convert<IStateBit>();
+      return _stateManager.States[name].ToBit();
     }
 
     public IStateBits Bits(string name)
     {
-      return _stateManager.States[name].Convert<IStateBits>();
+      return _stateManager.States[name].ToBits();
     }
 
     //

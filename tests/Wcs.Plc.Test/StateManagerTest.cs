@@ -17,10 +17,10 @@ namespace Wcs.Plc
       manager.SetName("word").Word("D3");
       manager.SetName("words").Words("D4");
 
-      var bit = states["bit"].Convert<IStateBit>();
-      var bits = states["bits"].Convert<IStateBits>();
-      var word = states["word"].Convert<IStateWord>();
-      var words = states["words"].Convert<IStateWords>();
+      var bit = states["bit"].ToBit();
+      var bits = states["bits"].ToBits();
+      var word = states["word"].ToWord();
+      var words = states["words"].ToWords();
 
       bit.Set(true);
       bits.Set("0101");

@@ -4,9 +4,11 @@ namespace Wcs.Plc
 {
   public class StateWords : State<string>, IStateWords
   {
-    public StateWords(PlcContainer services): base(services)
-    {
+    public override string Type { get => "Words"; }
 
+    public override IStateWords ToWords()
+    {
+      return this;
     }
 
     protected override int CompareDataTo(string data, string value)
@@ -16,12 +18,12 @@ namespace Wcs.Plc
 
     protected override Task<string> HandleGet()
     {
-      return _stateClient.GetWords();
+      return StateClient.GetWords();
     }
 
     protected override Task HandleSet(string data)
     {
-      return _stateClient.SetWords(data);
+      return StateClient.SetWords(data);
     }
   }
 }
