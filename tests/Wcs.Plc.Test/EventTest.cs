@@ -10,10 +10,10 @@ namespace Wcs.Plc.Test
   public class EventTest
   {
     // 使用 Use 安装插件
-    static (Event, List<IEventArgs>) GetLoggedEvent()
+    static (Event, List<EventArgs>) GetLoggedEvent()
     {
       var event_ = new Event();
-      var plugin = new EventTestPlugin();
+      var plugin = new TestEventPlugin();
       event_.Use(plugin);
 
       return (event_, plugin.Logs);

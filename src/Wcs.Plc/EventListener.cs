@@ -2,7 +2,7 @@ using System;
 
 namespace Wcs.Plc
 {
-  public class EventListener : IEventListener
+  public class EventListener
   {
     private Action _cancel;
 

@@ -7,7 +7,7 @@ namespace Wcs.Plc
   {
     public PlcContainer Container { get; set; }
 
-    private IEvent _event
+    private Event _event
     {
       get => Container.Event;
     }

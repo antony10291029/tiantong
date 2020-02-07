@@ -9,9 +9,9 @@ namespace Wcs.Plc
   using Handler = Func<string, Task>;
   using Handlers = Dictionary<int, Func<string, Task>>;
   using EventPool = Dictionary<string, Dictionary<int, Func<string, Task>>>;
-  using GlobalHandlers = Dictionary<int, Func<IEventArgs, Task>>;
+  using GlobalHandlers = Dictionary<int, Func<EventArgs, Task>>;
 
-  public class Event : IEvent
+  public class Event
   {
     private int _id = 0;
 
@@ -19,7 +19,7 @@ namespace Wcs.Plc
 
     private GlobalHandlers _globalHandlers = new GlobalHandlers();
 
-    public void Use(IEventPlugin plugin)
+    public void Use(EventPlugin plugin)
     {
       plugin.Install(this);
     }
@@ -38,7 +38,7 @@ namespace Wcs.Plc
       return JsonSerializer.Deserialize<T>(payload);
     }
 
-    private IEventListener AddHandler(string key, Handler handler)
+    private EventListener AddHandler(string key, Handler handler)
     {
       var id = _id++;
       var listener = new EventListener(() => RemoveHandler(key, id));
@@ -47,7 +47,7 @@ namespace Wcs.Plc
       return listener;
     }
 
-    private IEventListener AddOnceHandler(string key, Handler handler)
+    private EventListener AddOnceHandler(string key, Handler handler)
     {
       var id = _id++;
       var listener = new EventListener(() => RemoveHandler(key, id));
@@ -59,7 +59,7 @@ namespace Wcs.Plc
       return listener;
     }
 
-    private IEventListener AddGlobalHandler(Func<IEventArgs, Task> handler)
+    private EventListener AddGlobalHandler(Func<EventArgs, Task> handler)
     {
       var id = _id++;
       var listener = new EventListener(() => _globalHandlers.Remove(id));
@@ -94,52 +94,52 @@ namespace Wcs.Plc
       return Task.WhenAll(tasks);
     }
 
-    public IEventListener All(Func<IEventArgs, Task> handler)
+    public EventListener All(Func<EventArgs, Task> handler)
     {
       return AddGlobalHandler(handler);
     }
 
-    public IEventListener All(Action<IEventArgs> handler)
+    public EventListener All(Action<EventArgs> handler)
     {
       return All(args => Task.Run(() => handler(args)));
     }
 
-    public IEventListener On<T>(string key, Func<T, Task> handler)
+    public EventListener On<T>(string key, Func<T, Task> handler)
     {
       return AddHandler(key, payload => handler(Decode<T>(payload)));
     }
 
-    public IEventListener On(string key, Func<Task> handler)
+    public EventListener On(string key, Func<Task> handler)
     {
       return On<string>(key, _ => handler());
     }
 
-    public IEventListener On<T>(string key, Action<T> handler)
+    public EventListener On<T>(string key, Action<T> handler)
     {
       return On<T>(key, payload => Task.Run(() => handler(payload)));
     }
 
-    public IEventListener On(string key, Action handler)
+    public EventListener On(string key, Action handler)
     {
       return On<string>(key, _ => Task.Run(() => handler()));
     }
 
-    public IEventListener Once<T>(string key, Func<T, Task> handler)
+    public EventListener Once<T>(string key, Func<T, Task> handler)
     {
       return AddOnceHandler(key, payload => handler(Decode<T>(payload)));
     }
 
-    public IEventListener Once(string key, Func<Task> handler)
+    public EventListener Once(string key, Func<Task> handler)
     {
       return Once<string>(key, _ => handler());
     }
 
-    public IEventListener Once<T>(string key, Action<T> handler)
+    public EventListener Once<T>(string key, Action<T> handler)
     {
       return Once<T>(key, payload => Task.Run(() => handler(payload)));
     }
 
-    public IEventListener Once(string key, Action handler)
+    public EventListener Once(string key, Action handler)
     {
       return Once<string>(key, _ => Task.Run(handler));
     }

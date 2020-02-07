@@ -1,7 +1,5 @@
-using System.Threading.Tasks;
 using System.Linq;
 using NUnit.Framework;
-using Wcs.Plc.Database;
 
 namespace Wcs.Plc.Test
 {

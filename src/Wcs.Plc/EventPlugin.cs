@@ -1,7 +1,7 @@
 namespace Wcs.Plc
 {
-  public abstract class EventPlugin : IEventPlugin
+  public abstract class EventPlugin
   {
-    public abstract void Install(IEvent event_);
+    public abstract void Install(Event event_);
   }
 }

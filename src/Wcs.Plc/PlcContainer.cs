@@ -10,7 +10,7 @@ namespace Wcs.Plc
   {
     public IPlc Plc { get; set; }
 
-    public IEvent Event { get; set; }
+    public Event Event { get; set; }
 
     public IStateDriver StateDriver { get; set; }
 

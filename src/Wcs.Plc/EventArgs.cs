@@ -1,6 +1,6 @@
 namespace Wcs.Plc
 {
-  public class EventArgs : IEventArgs
+  public class EventArgs
   {
     public string Key { get; set; }
 

@@ -4,7 +4,7 @@ namespace Wcs.Plc
 {
   public class Watcher<T> : IWatcher<T>
   {
-    private IEvent _event;
+    private Event _event;
 
     private Action _cancel;
 
@@ -12,7 +12,7 @@ namespace Wcs.Plc
 
     protected Func<T, bool> _when;
 
-    public Watcher(IEvent event_)
+    public Watcher(Event event_)
     {
       _event = event_;
     }

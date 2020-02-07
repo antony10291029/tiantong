@@ -6,7 +6,7 @@ using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
-  public class EventLogger : IEventPlugin
+  public class EventLogger : EventPlugin
   {
     private DbContext _db;
 
@@ -38,7 +38,7 @@ namespace Wcs.Plc
       _db.SaveChanges();
     }
 
-    public void Install(IEvent event_)
+    public override void Install(Event event_)
     {
       event_.All(args => {
         var log = new EventLog {

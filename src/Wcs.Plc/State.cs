@@ -49,7 +49,7 @@ namespace Wcs.Plc
       }
     }
 
-    public IEvent Event;
+    public Event Event;
 
     public State(PlcContainer container)
     {
