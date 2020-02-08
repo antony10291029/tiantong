@@ -9,7 +9,7 @@ namespace App.CommandLine
     {
       var plc = new Plc();
 
-      plc.State("hb").Word("D1").Heartbeat(100).Collect(100);
+      plc.State("hb").Word("D1").Heartbeat(1).Collect(1);
       plc.State("scanner").Words("D2").Collect(100);
 
       plc.Word("hb").Watch(value => value > 0).Event("event");

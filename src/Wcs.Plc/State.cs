@@ -210,19 +210,9 @@ namespace Wcs.Plc
       Event.On<T>(key, handler);
     }
 
-    public void On(string key, Func<Task> handler)
-    {
-      Event.On(key, handler);
-    }
-
     public void On(string key, Action<T> handler)
     {
       Event.On<T>(key, handler);
-    }
-
-    public void On(string key, Action handler)
-    {
-      Event.On(key, handler);
     }
 
     public IState Collect(int time = 1000)

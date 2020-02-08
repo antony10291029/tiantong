@@ -8,6 +8,20 @@ namespace Wcs.Plc.Test
   public class PlcTest
   {
     [Test]
+    public void TestTryWait()
+    {
+      var plc = new Plc();
+
+      plc.State("hb").Word("D1").Collect(0);
+      plc.Word("hb").Set(1);
+
+      try {
+        plc.Start().TryWait(1);
+        Assert.Fail("except to throw exception when Plc.TryWait is timeout");
+      } catch {}
+    }
+
+    [Test]
     public void TestPlcCollectRunStop()
     {
       var plc = new Plc();
@@ -15,11 +29,11 @@ namespace Wcs.Plc.Test
       plc.State("bit data").Bit("D1").Collect(0);
       plc.Bit("bit data").Watch("==", true).Event("event");
       plc.Bit("bit data").Set(true);
-      plc.On<bool>("event", val => {
+      plc.On<bool>("event", _ => {
         plc.Stop();
       });
 
-      plc.Run();
+      plc.Start().TryWait();
     }
 
     [Test]
@@ -28,11 +42,11 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.State("hb").Word("D1").Heartbeat(0).Collect(0);
-      plc.Word("hb").Watch(value => value > 10).Event("stop");
-      plc.On<int>("stop", val => {
+      plc.Word("hb").Watch(value => value > 1).Event("stop");
+      plc.On<int>("stop", _ => {
         plc.Stop();
       });
-      plc.Run();
+      plc.Start().TryWait();
     }
 
     [Test]

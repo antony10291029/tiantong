@@ -30,11 +30,7 @@ namespace Wcs.Plc
 
     void On(string key, Func<T, Task> handler);
 
-    void On(string key, Func<Task> handler);
-
     void On(string key, Action<T> handler);
-
-    void On(string key, Action handler);
 
     Task SetAsync(T data);
 

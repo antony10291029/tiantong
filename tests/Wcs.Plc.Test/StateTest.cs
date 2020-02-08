@@ -24,33 +24,7 @@ namespace Wcs.Plc.Test
     }
 
     [Test]
-    public void TestConvertException()
-    {
-      State state = new StateWord();
-
-      state.ToWord();
-      try {
-        state.ToBit();
-      } catch (StateConversationException ex) {
-        Assert.AreEqual(ex.From, "Word");
-        Assert.AreEqual(ex.To, "Bit");
-      }
-      try {
-        state.ToBits();
-      } catch (StateConversationException ex) {
-        Assert.AreEqual(ex.From, "Word");
-        Assert.AreEqual(ex.To, "Bits");
-      }
-      try {
-        state.ToWords();
-      } catch (StateConversationException ex) {
-        Assert.AreEqual(ex.From, "Word");
-        Assert.AreEqual(ex.To, "Words");
-      }
-    }
-
-    [Test]
-    public void TestConvertWord()
+    public void TestConversation()
     {
       var types = new [] { "Bit", "Bits", "Word", "Words" };
       var states = new State[] { new StateBit(), new StateBits(), new StateWord(), new StateWords() };
@@ -134,11 +108,9 @@ namespace Wcs.Plc.Test
       var state = ResolveState<StateWord>();
 
       state.Collect(0);
-      state.AddGetHook(value => {
-        state.UncollectAsync();
-      });
+      state.AddGetHook(_ => state.UncollectAsync());
       state.Set(100);
-      state.IntervalManager.Start().Wait();
+      state.IntervalManager.Start().TryWait();
     }
 
     [Test]
@@ -148,12 +120,8 @@ namespace Wcs.Plc.Test
       var manager = state.IntervalManager;
 
       state.Heartbeat(0);
-      state.AddSetHook(value => {
-        if (value > 10) {
-          state.UnheartbeatAsync();
-        }
-      });
-      manager.Start().Wait();
+      state.AddSetHook(value => state.UnheartbeatAsync());
+      manager.Start().TryWait();
     }
 
     [Test]
@@ -167,7 +135,7 @@ namespace Wcs.Plc.Test
       state.Watch().Event("watch");
       state.Collect(0);
       state.Set(1);
-      state.IntervalManager.Start().Wait();
+      state.IntervalManager.Start().TryWait();
     }
   }
 }

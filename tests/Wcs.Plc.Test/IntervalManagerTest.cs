@@ -20,9 +20,22 @@ namespace Wcs.Plc.Test
       return manager;
     }
 
+    [Test]
+    public void TestTryWait()
+    {
+      var manager = new IntervalManager();
+
+      manager.Add(new Interval(() => {}, 100));
+
+      try {
+        manager.Start().TryWait(1);
+        Assert.Fail("except to throw exception when IntervalManager.TryWait is timeout");
+      } catch {};
+    }
+
     [TestCase(0, 0, 1)]
     [TestCase(1, 1, 1)]
-    [TestCase(10, 10, 10)]
+    [TestCase(10, 10, 1)]
     public void TestRun(int n, int m, int time)
     {
       var times = 0;
@@ -31,7 +44,7 @@ namespace Wcs.Plc.Test
       });
 
       for (var i = 0; i < n; i++) {
-        manager.Start().Wait();
+        manager.Start().TryWait();
       }
 
       Assert.AreEqual(n * m * time, times);
@@ -39,7 +52,7 @@ namespace Wcs.Plc.Test
 
     [TestCase(0, 0, 0)]
     [TestCase(1, 1, 1)]
-    [TestCase(10, 10, 500)]
+    [TestCase(10, 10, 1)]
     public void TestStop(int n, int m, int time)
     {
       var times = 0;
@@ -47,7 +60,7 @@ namespace Wcs.Plc.Test
 
       for (var i = 0; i < n; i++) {
         var interval = new Interval();
-        interval.SetTime(500);
+        interval.SetTime(time);
         interval.SetHandler(() => times++);
         manager.Add(interval);
       }
@@ -79,14 +92,14 @@ namespace Wcs.Plc.Test
         var interval = intervals[i];
         manager.Remove(interval);
       }
-      manager.Wait();
+      manager.TryWait();
 
       Assert.IsTrue(true);
     }
 
+    [TestCase(0)]
     [TestCase(1)]
     [TestCase(10)]
-    [TestCase(100)]
     public void TestRunClear(int n)
     {
       var times = 0;
@@ -100,6 +113,7 @@ namespace Wcs.Plc.Test
 
       manager.Start();
       manager.Clear();
+      manager.TryWait();
 
       Assert.IsTrue(true);
     }

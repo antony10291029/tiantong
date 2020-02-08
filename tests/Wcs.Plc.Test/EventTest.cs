@@ -21,7 +21,7 @@ namespace Wcs.Plc.Test
 
     [TestCase(0)]
     [TestCase(1)]
-    [TestCase(99)]
+    [TestCase(10)]
     public void TestEmit(int n)
     {
       var (event_, logs) = GetLoggedEvent();
@@ -46,7 +46,7 @@ namespace Wcs.Plc.Test
     // require deadlock
     [TestCase(0)]
     [TestCase(1)]
-    [TestCase(99)]
+    [TestCase(10)]
     public void TestOn(int n)
     {
       var times = 0;
@@ -64,7 +64,7 @@ namespace Wcs.Plc.Test
     // no deadlock
     [TestCase(0)]
     [TestCase(1)]
-    [TestCase(99)]
+    [TestCase(10)]
     public void TestOnEmit(int n)
     {
       var times = 0;
@@ -80,7 +80,7 @@ namespace Wcs.Plc.Test
 
     [TestCase(0)]
     [TestCase(1)]
-    [TestCase(99)]
+    [TestCase(10)]
     public void TestOnce(int n)
     {
       var times = 0;
