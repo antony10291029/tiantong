@@ -227,9 +227,8 @@ namespace Wcs.Plc
 
     public IState Collect(int time = 1000)
     {
-      _interval = new Interval();
-      _interval.SetTime(time);
-      _interval.SetHandler(GetAsync);
+      time = Math.Max(time, 1);
+      _interval = new Interval(GetAsync, time);
       IntervalManager.Add(_interval);
 
       return this;

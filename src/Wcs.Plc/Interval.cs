@@ -16,11 +16,27 @@ namespace Wcs.Plc
 
     private Func<CancellationToken, Task> _handler;
 
+    private Func<CancellationToken, Task> _delayer;
+
     private CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
     public Interval()
     {
+      ResolveDelayer();
+    }
 
+    public Interval(Func<Task> handler, int time = 1000)
+    {
+      SetTime(time);
+      SetHandler(handler);
+      ResolveDelayer();
+    }
+
+    public Interval(Action handler, int time = 1000)
+    {
+      SetTime(time);
+      SetHandler(handler);
+      ResolveDelayer();
     }
 
     ~Interval()
@@ -30,21 +46,23 @@ namespace Wcs.Plc
       }
     }
 
-    public Interval(Func<Task> handler, int time = 500)
+    private void ResolveDelayer()
     {
-      SetTime(time);
-      SetHandler(handler);
+      if (_time > 0) {
+        _delayer = token => Task.Delay(_time, token);
+      }
     }
 
-    public Interval(Action handler, int time = 500)
+    public Interval UseDelayer(Func<CancellationToken, Task> delayer)
     {
-      SetTime(time);
-      SetHandler(handler);
+      _delayer = delayer;
+
+      return this;
     }
 
     public Interval SetTime(int time)
     {
-      _time = Math.Max(time, 1);
+      _time = Math.Max(time, 0);
 
       return this;
     }
@@ -97,9 +115,11 @@ namespace Wcs.Plc
           Console.WriteLine(e);
           break;
         }
-        try {
-          await Task.Delay(_time, _tokenSource.Token);
-        } catch (TaskCanceledException) {}
+        if (_delayer != null) {
+          try {
+            await _delayer(_tokenSource.Token);
+          } catch (TaskCanceledException) {}
+        }
       }
     }
 

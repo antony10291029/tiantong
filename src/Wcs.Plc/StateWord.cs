@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Wcs.Plc
@@ -39,6 +40,7 @@ namespace Wcs.Plc
     {
       var times = 0;
 
+      time = Math.Max(time, 1);
       _interval = new Interval();
       _interval.SetTime(time);
       _interval.SetHandler(() => {
