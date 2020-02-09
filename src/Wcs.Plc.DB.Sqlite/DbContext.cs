@@ -1,5 +1,4 @@
-﻿using System.IO;
-using DBCore.Sqlite;
+﻿using DBCore.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Wcs.Plc.DB.Sqlite
@@ -10,13 +9,14 @@ namespace Wcs.Plc.DB.Sqlite
 
     public SqliteDbContext()
     {
-      if (!Directory.Exists("./DataSource")) {
-        Directory.CreateDirectory("./DataSource");
-      }
-
       _builder = new SqliteBuilder();
 
-      _builder.UseDbFile("./DataSource/sqlite.db");
+      _builder.UseDbFile("./sqlite.db");
+    }
+
+    public void UseFile(string path)
+    {
+      _builder.UseDbFile(path);
     }
 
     public void UseInMemory()

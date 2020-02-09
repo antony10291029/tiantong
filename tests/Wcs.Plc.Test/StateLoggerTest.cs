@@ -10,9 +10,11 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestLogger()
     {
-      var container = new PlcContainer();
-      var logger = new StateLogger(container);
-      var db = container.ResolveDbContext();
+      var manager = new IntervalManager();
+      var dbProvider = new TestDatabaseProvider();
+      var db = dbProvider.Resolve();
+      var plcConnection = new PlcConnection();
+      var logger = new StateLogger(manager, db, plcConnection);
       var state = new StateWord() {
         Event = new Event(),
         IntervalManager = new IntervalManager(),
@@ -20,9 +22,11 @@ namespace Wcs.Plc.Test
       };
       var connection = new PlcConnection() { Id = 1 };
       var count = 0;
-      container.PlcConnection = connection;
-      state.Use(logger);
 
+      dbProvider.Migrate();
+      plcConnection = connection;
+
+      state.Use(logger);
       state.Name = "test";
       state.Key = "D1";
       state.Length = 1;

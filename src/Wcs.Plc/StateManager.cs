@@ -6,15 +6,24 @@ namespace Wcs.Plc
 
   public class StateManager : IStateManager
   {
-    private PlcContainer Container;
+    private Event _event;
+
+    private IStatePlugin _stateLogger;
+
+    private IntervalManager _intervalManager;
+
+    private IStateClientProvider _stateClientProvider;
 
     public States States { get; } = new States();
 
     public string Name { get; set; }
 
-    public StateManager(PlcContainer container)
+    public StateManager(Event event_, IntervalManager manager, IStateClientProvider provider, IStatePlugin stateLogger)
     {
-      Container = container;
+      _event = event_;
+      _stateLogger = stateLogger;
+      _intervalManager = manager;
+      _stateClientProvider = provider;
     }
 
     public IStateManager SetName(string name)
@@ -27,9 +36,9 @@ namespace Wcs.Plc
     private T ResolveState<T>(string key, int length) where T : State, new()
     {
       var state = new T() {
-        Event = Container.Event,
-        IntervalManager = Container.IntervalManager,
-        StateClient = Container.StateClientProvider.Resolve()
+        Event = _event,
+        IntervalManager = _intervalManager,
+        StateClient = _stateClientProvider.Resolve()
       };
 
       state.Key = key;
@@ -44,7 +53,7 @@ namespace Wcs.Plc
     {
       var state = ResolveState<StateBit>(key, 1);
 
-      state.Use(Container.StateLogger);
+      state.Use(_stateLogger);
 
       return state;
     }
@@ -53,7 +62,7 @@ namespace Wcs.Plc
     {
       var state = ResolveState<StateBits>(key, length);
 
-      state.Use(Container.StateLogger);
+      state.Use(_stateLogger);
 
       return state;
     }
@@ -62,7 +71,7 @@ namespace Wcs.Plc
     {
       var state = ResolveState<StateWord>(key, 1);
 
-      state.Use(Container.StateLogger);
+      state.Use(_stateLogger);
 
       return state;
     }
@@ -71,7 +80,7 @@ namespace Wcs.Plc
     {
       var state = ResolveState<StateWords>(key, length);
 
-      state.Use(Container.StateLogger);
+      state.Use(_stateLogger);
 
       return state;
     }

@@ -11,10 +11,10 @@ namespace Wcs.Plc.Test
     [TestCase(10)]
     public void TestLogger(int n)
     {
-      var container = new PlcContainer();
-      var logger = new EventLogger(container);
+      var db = (new TestDatabaseProvider()).Resolve();
+      var manager = new IntervalManager();
+      var logger = new EventLogger(manager, db);
       var event_ = new Event();
-      var db = container.ResolveDbContext();
 
       event_.Use(logger);
       logger.Interval.SetTime(0);

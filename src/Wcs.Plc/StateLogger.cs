@@ -9,21 +9,20 @@ namespace Wcs.Plc
   {
     private DbContext _db;
 
-    private PlcContainer _container;
+    private PlcConnection _plcConnection;
+
+    public Interval Interval = new Interval();
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
-    public Interval Interval;
-
-    public StateLogger(PlcContainer container)
+    public StateLogger(IntervalManager manager, DbContext dbContext, PlcConnection plcConnection)
     {
-      _container = container;
-      _db = container.ResolveDbContext();
+      _db = dbContext;
+      _plcConnection = plcConnection;
 
-      Interval = new Interval();
+      manager.Add(Interval);
       Interval.SetTime(500);
       Interval.SetHandler(HandleStateLogs);
-      container.IntervalManager.Add(Interval);
     }
 
     public void HandleStateLogs()
@@ -44,7 +43,7 @@ namespace Wcs.Plc
       state.AddGetHook(value => {
         var log = new PlcStateLog {
           Operation = "read",
-          PlcId = _container.PlcConnection.Id,
+          PlcId = _plcConnection.Id,
           Name = state.Name,
           Key = state.Key,
           Length = state.Length,
@@ -59,7 +58,7 @@ namespace Wcs.Plc
       state.AddSetHook(value => {
         var log = new PlcStateLog {
           Operation = "write",
-          PlcId = _container.PlcConnection.Id,
+          PlcId = _plcConnection.Id,
           Name = state.Name,
           Key = state.Key,
           Length = state.Length,

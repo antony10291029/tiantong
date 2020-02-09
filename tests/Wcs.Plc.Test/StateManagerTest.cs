@@ -1,15 +1,28 @@
 using NUnit.Framework;
+using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
   [TestFixture]
   public class StateManagerTest
   {
+    private StateManager ResolveManager()
+    {
+      var event_ = new Event();
+      var plcConnection = new PlcConnection();
+      var db = (new DatabaseProvider()).Resolve();
+      var intervalManager = new IntervalManager();
+      var clientProvider = new StateTestClientProvider();
+      var logger = new StateLogger(intervalManager, db, plcConnection);
+      var manager = new StateManager(event_, intervalManager, clientProvider,logger);
+
+      return manager;
+    }
+
     [Test]
     public void TestManagerStates()
     {
-      var container = new PlcContainer();
-      var manager = new StateManager(container);
+      var manager = ResolveManager();
       var states = manager.States;
 
       manager.SetName("bit").Bit("D1");
@@ -36,8 +49,7 @@ namespace Wcs.Plc
     [Test]
     public void TestManagerRemove()
     {
-      var container = new PlcContainer();
-      var manager = new StateManager(container);
+      var manager = ResolveManager();
       var states = manager.States;
 
       manager.SetName("bit").Bit("D1");

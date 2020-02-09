@@ -3,11 +3,11 @@ using Wcs.Plc.DB.Sqlite;
 
 namespace Wcs.Plc.Test
 {
-  public class PlcContainer : Wcs.Plc.PlcContainer
+  public class TestDatabaseProvider : DatabaseProvider
   {
     private DbContext _db;
 
-    public override DbContext ResolveDbContext()
+    public override DbContext Resolve()
     {
       if (_db == null) {
         var db = new SqliteDbContext();
@@ -19,18 +19,6 @@ namespace Wcs.Plc.Test
       }
 
       return _db;
-    }
-
-    /// EventLogger 将被单独测试
-    public override void UseEventLogger()
-    {
-
-    }
-
-    /// StateLogger 将被单独测试
-    public override void UseStateLogger()
-    {
-
     }
   }
 }

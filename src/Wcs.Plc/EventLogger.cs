@@ -10,19 +10,16 @@ namespace Wcs.Plc
   {
     private DbContext _db;
 
-    private List<EventLog> _eventLogs;
+    public Interval Interval = new Interval();
 
-    public Interval Interval;
+    private List<EventLog> _eventLogs = new List<EventLog>();
 
-    public EventLogger(PlcContainer container)
+    public EventLogger(IntervalManager manager, DbContext database)
     {
-      Interval = new Interval();
-      _eventLogs = new List<EventLog>();
-      _db = container.ResolveDbContext();
-
+      _db = database;
+      manager.Add(Interval);
       Interval.SetTime(500);
       Interval.SetHandler(HandleEventLogs);
-      container.IntervalManager.Add(Interval);
     }
 
     public void HandleEventLogs()

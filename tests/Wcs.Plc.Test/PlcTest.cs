@@ -56,7 +56,7 @@ namespace Wcs.Plc.Test
 
       plc.Id(100);
       try {
-        plc.Container.ResolvePlcConnection();
+        plc.HandlePlcConnection();
         Assert.Fail("Exception should be thrown when Id does not existed");
       } catch {}
     }
@@ -65,7 +65,7 @@ namespace Wcs.Plc.Test
     public void TestPlcConnectionId()
     {
       var plc = new Plc();
-      var db = plc.Container.ResolveDbContext();
+      var db = plc.DatabaseProvider.Resolve();
       var connection = new PlcConnection {
         Id = 10,
         Name = "test",
@@ -78,8 +78,8 @@ namespace Wcs.Plc.Test
       db.SaveChanges();
 
       plc.Id(10);
-      plc.Container.ResolvePlcConnection();
-      connection = plc.Container.PlcConnection;
+      plc.HandlePlcConnection();
+      connection = plc.PlcConnection;
 
       Assert.AreEqual("test", connection.Name);
       Assert.AreEqual("melsec", connection.Model);
@@ -93,16 +93,16 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.Name("test").Model("melsec").Host("localhost").Port("1234");
-      plc.Container.ResolvePlcConnection();
+      plc.HandlePlcConnection();
 
-      Assert.AreNotEqual(plc.Container.PlcConnection.Id, 0);
+      Assert.AreNotEqual(plc.PlcConnection.Id, 0);
     }
 
     [Test]
     public void TestPlcConnectionNameExisted()
     {
       var plc = new Plc();
-      var db = plc.Container.ResolveDbContext();
+      var db = plc.DatabaseProvider.Resolve();
       var connection = new PlcConnection {
         Name = "test",
         Model = "melsec",
@@ -111,7 +111,7 @@ namespace Wcs.Plc.Test
       };
 
       plc.Name("test").Model("siemens").Host("localhost").Port("1234");
-      plc.Container.ResolvePlcConnection();
+      plc.HandlePlcConnection();
 
       connection = db.PlcConnections.Single(item => item.Name == "test");
 

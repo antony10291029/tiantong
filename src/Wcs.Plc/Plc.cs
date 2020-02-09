@@ -1,160 +1,224 @@
+using System.Diagnostics;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Wcs.Plc.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Wcs.Plc
 {
   public class Plc : IPlc
   {
-    public PlcContainer Container { get; set; }
+    public EventPlugin EventLogger;
 
-    private Event _event
-    {
-      get => Container.Event;
-    }
+    public IStatePlugin StateLogger;
 
-    private IntervalManager _intervalManager
-    {
-      get => Container.IntervalManager;
-    }
+    public StateManager StateManager;
 
-    private StateManager _stateManager
-    {
-      get => Container.StateManager;
-    }
+    public Event Event = new Event();
+
+    public PlcConnection PlcConnection = new PlcConnection();
+
+    public IntervalManager IntervalManager = new IntervalManager();
+
+    public DatabaseProvider DatabaseProvider;
+
+    public IStateClientProvider StateClientProvider;
 
     public Plc()
     {
-      Container = ResolveContainer();
-      Container.Plc = this;
+      DatabaseProvider = ResolveDatabaseProvider();
+      StateClientProvider = ResolveStateClientProvider();
+      EventLogger = ResolveEventLogger();
+      StateLogger = ResolveStateLogger();
+      StateManager = ResolveStateManager();
+
+      DatabaseProvider.Migrate();
     }
 
     //
 
-    protected virtual PlcContainer ResolveContainer()
+    public virtual DatabaseProvider ResolveDatabaseProvider()
     {
-      return new PlcContainer();
+      return new DatabaseProvider();
+    }
+
+    public virtual IStateClientProvider ResolveStateClientProvider()
+    {
+      return new StateTestClientProvider();
+    }
+
+    public virtual EventPlugin ResolveEventLogger()
+    {
+      var logger = new EventLogger(IntervalManager, DatabaseProvider.Resolve());
+
+      Event.Use(logger);
+
+      return logger;
+    }
+
+    public virtual IStatePlugin ResolveStateLogger()
+    {
+      return new StateLogger(IntervalManager, DatabaseProvider.Resolve(), PlcConnection);
+    }
+
+    public virtual StateManager ResolveStateManager()
+    {
+      return new StateManager(Event, IntervalManager, StateClientProvider, StateLogger);
+    }
+
+    public virtual void HandlePlcConnection()
+    {
+      var id = PlcConnection.Id;
+      var name = PlcConnection.Name;
+      var db = DatabaseProvider.Resolve();
+
+      if (id != 0) {
+        var conn = db.PlcConnections.SingleOrDefault(item => item.Id == id);
+
+        if (conn != null) {
+          PlcConnection = conn;
+        } else {
+          throw new Exception($"PlcConnection Id({id}) does not existed");
+        }
+      } else if (name != null) {
+        var conn = db.PlcConnections.SingleOrDefault(item => item.Name == name);
+
+        if (conn == null) {
+          db.PlcConnections.Add(PlcConnection);
+        } else {
+          conn.Model = PlcConnection.Model;
+          conn.Host = PlcConnection.Host;
+          conn.Port = PlcConnection.Port;
+          PlcConnection = conn;
+        }
+
+        db.SaveChanges();
+      } else {
+        throw new Exception("Plc Connection Id or Name does not existed");
+      }
     }
 
     public IPlc Id(int id)
     {
-      Container.PlcConnection.Id = id;
+      PlcConnection.Id = id;
 
       return this;
     }
 
     public IPlc Model(string model)
     {
-      Container.PlcConnection.Model = model;
+      PlcConnection.Model = model;
 
       return this;
     }
 
     public IPlc Name(string name)
     {
-      Container.PlcConnection.Name = name;
+      PlcConnection.Name = name;
 
       return this;
     }
 
     public IPlc Host(string host)
     {
-      Container.PlcConnection.Host = host;
+      PlcConnection.Host = host;
       
       return this;
     }
 
     public IPlc Port(string port)
     {
-      Container.PlcConnection.Port = port;
+      PlcConnection.Port = port;
 
       return this;
     }
 
     public IStateManager State(string name)
     {
-      _stateManager.Name = name;
+      StateManager.Name = name;
 
-      return _stateManager;
+      return StateManager;
     }
 
     //
 
     public IStateWord Word(string name)
     {
-      return _stateManager.States[name].ToWord();
+      return StateManager.States[name].ToWord();
     }
 
     public IStateWords Words(string name)
     {
-      return _stateManager.States[name].ToWords();
+      return StateManager.States[name].ToWords();
     }
 
     public IStateBit Bit(string name)
     {
-      return _stateManager.States[name].ToBit();
+      return StateManager.States[name].ToBit();
     }
 
     public IStateBits Bits(string name)
     {
-      return _stateManager.States[name].ToBits();
+      return StateManager.States[name].ToBits();
     }
 
     //
 
     public void On<T>(string key, Func<T, Task> handler)
     {
-      _event.On<T>(key, handler);
+      Event.On<T>(key, handler);
     }
 
     public void On(string key, Func<Task> handler)
     {
-      _event.On(key, handler);
+      Event.On(key, handler);
     }
 
     public void On<T>(string key, Action<T> handler)
     {
-      _event.On<T>(key, handler);
+      Event.On<T>(key, handler);
     }
 
     public void On(string key, Action handler)
     {
-      _event.On(key, handler);
+      Event.On(key, handler);
     }
 
     //
 
     public IPlc Start()
     {
-      _intervalManager.Start();
+      IntervalManager.Start();
 
       return this;
     }
 
     public IPlc Stop()
     {
-      _intervalManager.Stop();
+      IntervalManager.Stop();
 
       return this;
     }
 
     public Task WaitAsync()
     {
-      return _intervalManager.WaitAsync();
+      return IntervalManager.WaitAsync();
     }
 
     public void Wait()
     {
-      _intervalManager.Wait();
+      IntervalManager.Wait();
     }
 
     public Task RunAsync()
     {
-      return _intervalManager.RunAsync();
+      return IntervalManager.RunAsync();
     }
 
     public void Run()
     {
-      _intervalManager.Run();
+      IntervalManager.Run();
     }
   }
 }
