@@ -26,14 +26,14 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestConversation()
     {
-      var types = new [] { "Bit", "Bits", "Word", "Words" };
-      var states = new State[] { new StateBit(), new StateBits(), new StateWord(), new StateWords() };
+      var types = new [] { "Bool", "Int", "String" };
+      var states = new State[] { new StateBool(), new StateInt(), new StateString() };
 
       foreach (var state in states) {
         foreach (var type in types) {
           try {
             try {
-              typeof(State).GetMethod($"To{type}").Invoke(state, null);
+              typeof(State).GetMethod($"ToState{type}").Invoke(state, null);
             } catch (TargetInvocationException ex) { throw ex.GetBaseException(); }
             if (state.Type != type) {
               Assert.Fail($"convert state from {state.Type} to {type} should be failed");
@@ -47,9 +47,9 @@ namespace Wcs.Plc.Test
     }
 
     [TestCase(0)]
-    public void TestWordState(int value)
+    public void TestStateInt(int value)
     {
-      var state = ResolveState<StateWord>();
+      var state = ResolveState<StateInt>();
       state.Set(value);
       var result = state.Get();
 
@@ -57,9 +57,9 @@ namespace Wcs.Plc.Test
     }
 
     [TestCase("happy hacking")]
-    public void TestWordsState(string value)
+    public void TestStateString(string value)
     {
-      var state = ResolveState<StateWords>();
+      var state = ResolveState<StateString>();
       state.Set(value);
       var result = state.Get();
 
@@ -67,19 +67,9 @@ namespace Wcs.Plc.Test
     }
 
     [TestCase(true)]
-    public void TestBitState(bool value)
+    public void TestStateBool(bool value)
     {
-      var state = ResolveState<StateBit>();
-      state.Set(value);
-      var result = state.Get();
-
-      Assert.AreEqual(value, result);
-    }
-
-    [TestCase("0011")]
-    public void TestBitsState(string value)
-    {
-      var state = ResolveState<StateBits>();
+      var state = ResolveState<StateBool>();
       state.Set(value);
       var result = state.Get();
 
@@ -91,7 +81,7 @@ namespace Wcs.Plc.Test
     {
       var getHookData = 0;
       var setHookData = 0;
-      var state = ResolveState<StateWord>();
+      var state = ResolveState<StateInt>();
 
       state.AddSetHook(data => setHookData = data);
       state.Set(value);
@@ -105,7 +95,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateCollectAndUncollect()
     {
-      var state = ResolveState<StateWord>();
+      var state = ResolveState<StateInt>();
 
       state.Collect(0);
       state.AddGetHook(_ => state.UncollectAsync());
@@ -116,7 +106,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateHearteatUnheartbeat()
     {
-      var state = ResolveState<StateWord>();
+      var state = ResolveState<StateInt>();
       var manager = state.IntervalManager;
 
       state.Heartbeat(0);
@@ -127,7 +117,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestWatcher()
     {
-      var state = ResolveState<StateWord>();
+      var state = ResolveState<StateInt>();
       var event_ = new Event();
 
       state.Event = event_;

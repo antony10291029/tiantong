@@ -15,7 +15,7 @@ namespace Wcs.Plc.Test
       var db = dbProvider.Resolve();
       var plcConnection = new PlcConnection();
       var logger = new StateLogger(manager, db, plcConnection);
-      var state = new StateWord() {
+      var state = new StateInt() {
         Event = new Event(),
         IntervalManager = new IntervalManager(),
         StateClient = new StateTestClient() { Store = new StateTestClientStore() }

@@ -22,24 +22,19 @@ namespace Wcs.Plc
 
     public abstract string Type { get; }
 
-    public virtual IStateBit ToBit()
+    public virtual IStateBool ToStateBool()
     {
-      throw new StateConversationException(Type, "Bit");
+      throw new StateConversationException(Type, "Bool");
     }
 
-    public virtual IStateBits ToBits()
+    public virtual IStateInt ToStateInt()
     {
-      throw new StateConversationException(Type, "Bits");
+      throw new StateConversationException(Type, "Int");
     }
 
-    public virtual IStateWord ToWord()
+    public virtual IStateString ToStateString()
     {
-      throw new StateConversationException(Type, "Word");
-    }
-
-    public virtual IStateWords ToWords()
-    {
-      throw new StateConversationException(Type, "Words");
+      throw new StateConversationException(Type, "String");
     }
   }
 

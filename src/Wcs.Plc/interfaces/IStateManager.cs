@@ -2,12 +2,10 @@ namespace Wcs.Plc
 {
   public interface IStateManager
   {
-    IStateBit Bit(string bit);
+    IStateBool Bool(string key);
 
-    IStateBits Bits(string bits, int length = 1);
+    IStateInt Int(string key);
 
-    IStateWord Word(string key);
-
-    IStateWords Words(string key, int length = 1);
+    IStateString String(string key, int length = 1);
   }
 }

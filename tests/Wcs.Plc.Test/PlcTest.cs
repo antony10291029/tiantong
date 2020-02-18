@@ -12,8 +12,8 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
-      plc.State("hb").Word("D1").Collect(0);
-      plc.Word("hb").Set(1);
+      plc.State("hb").Int("D1").Collect(0);
+      plc.Int("hb").Set(1);
 
       try {
         plc.Start().TryWait(1);
@@ -26,9 +26,9 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
-      plc.State("bit data").Bit("D1").Collect(0);
-      plc.Bit("bit data").Watch("==", true).Event("event");
-      plc.Bit("bit data").Set(true);
+      plc.State("bool data").Bool("D1").Collect(0);
+      plc.Bool("bool data").Watch("==", true).Event("event");
+      plc.Bool("bool data").Set(true);
       plc.On<bool>("event", _ => {
         plc.Stop();
       });
@@ -41,8 +41,8 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
-      plc.State("hb").Word("D1").Heartbeat(0).Collect(0);
-      plc.Word("hb").Watch(value => value > 1).Event("stop");
+      plc.State("hb").Int("D1").Heartbeat(0).Collect(0);
+      plc.Int("hb").Watch(value => value > 1).Event("stop");
       plc.On<int>("stop", _ => {
         plc.Stop();
       });

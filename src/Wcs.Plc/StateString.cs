@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public class StateBits : State<string>, IStateBits
+  public class StateString : State<string>, IStateString
   {
-    public override string Type { get => "Bits"; }
+    public override string Type { get => "String"; }
 
-    public override IStateBits ToBits()
+    public override IStateString ToStateString()
     {
       return this;
     }
@@ -18,12 +18,12 @@ namespace Wcs.Plc
 
     protected override Task<string> HandleGet()
     {
-      return StateClient.GetBits();
+      return StateClient.GetString();
     }
 
     protected override Task HandleSet(string data)
     {
-      return StateClient.SetBits(data);
+      return StateClient.SetString(data);
     }
   }
 }

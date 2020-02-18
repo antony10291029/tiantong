@@ -17,13 +17,11 @@ namespace Wcs.Plc
 
     IStateManager State(string key);
 
-    IStateWord Word(string key);
+    IStateBool Bool(string key);
 
-    IStateWords Words(string key);
+    IStateInt Int(string key);
 
-    IStateBit Bit(string key);
-
-    IStateBits Bits(string key);
+    IStateString String(string key);
 
     void On<T>(string key, Func<T, Task> handler);
 

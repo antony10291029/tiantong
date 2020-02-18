@@ -3,18 +3,18 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public class StateWord : State<int>, IStateWord
+  public class StateInt : State<int>, IStateInt
   {
     private Interval _interval;
 
-    public override string Type { get => "Word"; }
+    public override string Type { get => "Int"; }
 
-    public override IStateWord ToWord()
+    public override IStateInt ToStateInt()
     {
       return this;
     }
 
-    ~StateWord()
+    ~StateInt()
     {
       if (_interval != null) {
         Unheartbeat();
@@ -28,15 +28,15 @@ namespace Wcs.Plc
 
     protected override Task<int> HandleGet()
     {
-      return StateClient.GetWord();
+      return StateClient.GetInt();
     }
 
     protected override Task HandleSet(int data)
     {
-      return StateClient.SetWord(data);
+      return StateClient.SetInt(data);
     }
 
-    public IStateWord Heartbeat(int time = 1000, int maxTimes = 10000)
+    public IStateInt Heartbeat(int time = 1000, int maxTimes = 10000)
     {
       var times = 0;
 

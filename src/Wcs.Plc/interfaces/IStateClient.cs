@@ -8,20 +8,17 @@ namespace Wcs.Plc
 
     IStateClient SetLength(int length);
 
-    Task SetWord(int data);
+    Task SetInt(int data);
 
-    Task SetWords(string data);
+    Task SetString(string data);
 
-    Task SetBit(bool data);
+    Task SetBool(bool data);
 
-    Task SetBits(string data);
+    Task<int> GetInt();
 
-    Task<int> GetWord();
+    Task<string> GetString();
 
-    Task<string> GetWords();
+    Task<bool> GetBool();
 
-    Task<bool> GetBit();
-
-    Task<string> GetBits();
   }
 }

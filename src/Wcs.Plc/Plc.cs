@@ -143,24 +143,19 @@ namespace Wcs.Plc
 
     //
 
-    public IStateWord Word(string name)
+    public IStateBool Bool(string name)
     {
-      return StateManager.States[name].ToWord();
+      return StateManager.States[name].ToStateBool();
     }
 
-    public IStateWords Words(string name)
+    public IStateInt Int(string name)
     {
-      return StateManager.States[name].ToWords();
+      return StateManager.States[name].ToStateInt();
     }
 
-    public IStateBit Bit(string name)
+    public IStateString String(string name)
     {
-      return StateManager.States[name].ToBit();
-    }
-
-    public IStateBits Bits(string name)
-    {
-      return StateManager.States[name].ToBits();
+      return StateManager.States[name].ToStateString();
     }
 
     //

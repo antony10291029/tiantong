@@ -25,25 +25,21 @@ namespace Wcs.Plc
       var manager = ResolveManager();
       var states = manager.States;
 
-      manager.SetName("bit").Bit("D1");
-      manager.SetName("bits").Bits("D2");
-      manager.SetName("word").Word("D3");
-      manager.SetName("words").Words("D4");
+      manager.SetName("bool").Bool("D1");
+      manager.SetName("int").Int("D3");
+      manager.SetName("string").String("D4");
 
-      var bit = states["bit"].ToBit();
-      var bits = states["bits"].ToBits();
-      var word = states["word"].ToWord();
-      var words = states["words"].ToWords();
+      var bool_ = states["bool"].ToStateBool();
+      var int_ = states["int"].ToStateInt();
+      var string_ = states["string"].ToStateString();
 
-      bit.Set(true);
-      bits.Set("0101");
-      word.Set(100);
-      words.Set("AAAA");
+      bool_.Set(true);
+      int_.Set(100);
+      string_.Set("AAAA");
 
-      Assert.AreEqual(bit.Get(), true);
-      Assert.AreEqual(bits.Get(), "0101");
-      Assert.AreEqual(word.Get(), 100);
-      Assert.AreEqual(words.Get(), "AAAA");
+      Assert.AreEqual(bool_.Get(), true);
+      Assert.AreEqual(int_.Get(), 100);
+      Assert.AreEqual(string_.Get(), "AAAA");
     }
 
     [Test]
@@ -52,7 +48,7 @@ namespace Wcs.Plc
       var manager = ResolveManager();
       var states = manager.States;
 
-      manager.SetName("bit").Bit("D1");
+      manager.SetName("bool").Bool("D1");
       states.Remove("D1");
 
       try {

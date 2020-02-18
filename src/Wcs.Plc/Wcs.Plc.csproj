@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Wcs.Plc.DB.Sqlite\Wcs.Plc.DB.Sqlite.csproj" />
     <ProjectReference Include="..\Wcs.Plc.Database\Wcs.Plc.Database.csproj" />
+    <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
   </ItemGroup>
 </Project>

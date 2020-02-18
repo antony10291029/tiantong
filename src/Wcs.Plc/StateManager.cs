@@ -49,36 +49,27 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateBit Bit(string key)
+    public IStateBool Bool(string key)
     {
-      var state = ResolveState<StateBit>(key, 1);
+      var state = ResolveState<StateBool>(key, 1);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateBits Bits(string key, int length = 1)
+    public IStateInt Int(string key)
     {
-      var state = ResolveState<StateBits>(key, length);
+      var state = ResolveState<StateInt>(key, 1);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateWord Word(string key)
+    public IStateString String(string key, int length = 1)
     {
-      var state = ResolveState<StateWord>(key, 1);
-
-      state.Use(_stateLogger);
-
-      return state;
-    }
-
-    public IStateWords Words(string key, int length = 1)
-    {
-      var state = ResolveState<StateWords>(key, length);
+      var state = ResolveState<StateString>(key, length);
 
       state.Use(_stateLogger);
 

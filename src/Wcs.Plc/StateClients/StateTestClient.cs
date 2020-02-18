@@ -24,60 +24,46 @@ namespace Wcs.Plc
       return this;
     }
 
-    public Task SetWord(int data)
+    public Task SetInt(int data)
     {
       Store.Set(Key, data);
 
       return Task.Delay(0);
     }
 
-    public Task SetWords(string data)
+    public Task SetString(string data)
     {
       Store.Set(Key, data);
 
       return Task.Delay(0);
     }
 
-    public Task SetBit(bool data)
+    public Task SetBool(bool data)
     {
       Store.Set(Key, data);
 
       return Task.Delay(0);
     }
 
-    public Task SetBits(string data)
-    {
-      Store.Set(Key, data);
-
-      return Task.Delay(0);
-    }
-
-    public async Task<int> GetWord()
+    public async Task<int> GetInt()
     {
       await Task.Delay(0);
 
       return Store.Get<int>(Key);
     }
 
-    public async Task<string> GetWords()
+    public async Task<string> GetString()
     {
       await Task.Delay(0);
 
       return Store.Get<string>(Key);
     }
 
-    public async Task<bool> GetBit()
+    public async Task<bool> GetBool()
     {
       await Task.Delay(0);
 
       return Store.Get<bool>(Key);
-    }
-
-    public async Task<string> GetBits()
-    {
-      await Task.Delay(0);
-
-      return Store.Get<string>(Key);
     }
   }
 }
