@@ -42,7 +42,7 @@ namespace Wcs.Plc.Snap7
       return Encoding.ASCII.GetString(Data, 1, Data.Length - 1);
     }
 
-    public bool ToBoolean()
+    public bool ToBool()
     {
       if (Data.Length != 1) {
         throw new Exception("byte array length is not 1");

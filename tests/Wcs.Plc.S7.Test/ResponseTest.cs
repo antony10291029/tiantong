@@ -47,7 +47,7 @@ namespace Wcs.Plc.Snap7.Test
       var res = new S7Response();
 
       res.SetMessage(message);
-      Assert.AreEqual(res.ToBoolean(), true);
+      Assert.AreEqual(res.ToBool(), true);
     }
   } 
 }
