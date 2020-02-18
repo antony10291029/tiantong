@@ -32,11 +32,7 @@ namespace Wcs.Plc
 
     void On(string key, Action<T> handler);
 
-    Task SetAsync(T data);
-
     void Set(T data);
-
-    Task<T> GetAsync();
 
     T Get();
   }

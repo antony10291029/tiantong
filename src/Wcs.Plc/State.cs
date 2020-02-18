@@ -16,6 +16,8 @@ namespace Wcs.Plc
 
     public IntervalManager IntervalManager;
 
+    public Task HookTasks;
+
     public abstract string Key { get; set; }
 
     public abstract int Length { get; set; }
@@ -213,7 +215,7 @@ namespace Wcs.Plc
     public IState Collect(int time = 1000)
     {
       time = Math.Max(time, 1);
-      _interval = new Interval(GetAsync, time);
+      _interval = new Interval(() => Get(), time);
       IntervalManager.Add(_interval);
 
       return this;
@@ -234,43 +236,30 @@ namespace Wcs.Plc
       });
     }
 
-    public async Task SetAsync(T data)
-    {
-      var tasks = new List<Task>();
-      await HandleSet(data);
-
-      foreach (var hook in _sethooks.Values) {
-        tasks.Add(hook(data));
-      }
-
-      await Task.WhenAll(tasks);
-    }
-
     public void Set(T data)
     {
-      SetAsync(data).GetAwaiter().GetResult();
-    }
-
-    public async Task<T> GetAsync()
-    {
       var tasks = new List<Task>();
-      var data = await HandleGet();
+      HandleSet(data);
 
-      foreach (var hook in _gethooks.Values) {
-        tasks.Add(hook(data));
+      foreach (var hook in _sethooks.Values) {
+        hook(data);
       }
-      await Task.WhenAll(tasks);
-
-      return data;
     }
 
     public T Get()
     {
-      return GetAsync().GetAwaiter().GetResult();
+      var tasks = new List<Task>();
+      var data = HandleGet();
+
+      foreach (var hook in _gethooks.Values) {
+        hook(data);
+      }
+
+      return data;
     }
 
-    protected abstract Task<T> HandleGet();
+    protected abstract T HandleGet();
 
-    protected abstract Task HandleSet(T data);
+    protected abstract void HandleSet(T data);
   }
 }

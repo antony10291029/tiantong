@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -85,10 +86,12 @@ namespace Wcs.Plc.Test
 
       state.AddSetHook(data => setHookData = data);
       state.Set(value);
+      Task.Delay(3).GetAwaiter().GetResult();
       Assert.AreEqual(value, setHookData);
 
       state.AddGetHook(data => getHookData = data);
       state.Get();
+      Task.Delay(3).GetAwaiter().GetResult();
       Assert.AreEqual(value, getHookData);
     }
 

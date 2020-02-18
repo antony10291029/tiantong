@@ -26,14 +26,14 @@ namespace Wcs.Plc
       return data.CompareTo(value);
     }
 
-    protected override Task<int> HandleGet()
+    protected override int HandleGet()
     {
       return StateClient.GetInt();
     }
 
-    protected override Task HandleSet(int data)
+    protected override void HandleSet(int data)
     {
-      return StateClient.SetInt(data);
+      StateClient.SetInt(data);
     }
 
     public IStateInt Heartbeat(int time = 1000, int maxTimes = 10000)
@@ -47,7 +47,7 @@ namespace Wcs.Plc
         if (times < maxTimes) times++;
         else times = 1;
 
-        return SetAsync(times);
+        Set(times);
       });
       IntervalManager.Add(_interval);
 

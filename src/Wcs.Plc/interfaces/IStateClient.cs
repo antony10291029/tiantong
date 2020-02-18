@@ -1,24 +1,22 @@
-using System.Threading.Tasks;
-
 namespace Wcs.Plc
 {
   public interface IStateClient
   {
-    IStateClient SetKey(string key);
+    void SetKey(string key);
 
-    IStateClient SetLength(int length);
+    void SetLength(int length);
 
-    Task SetInt(int data);
+    void SetBool(bool data);
 
-    Task SetString(string data);
+    void SetInt(int data);
 
-    Task SetBool(bool data);
+    void SetString(string data);
 
-    Task<int> GetInt();
+    bool GetBool();
 
-    Task<string> GetString();
+    int GetInt();
 
-    Task<bool> GetBool();
+    string GetString();
 
   }
 }

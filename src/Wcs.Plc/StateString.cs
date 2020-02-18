@@ -16,14 +16,14 @@ namespace Wcs.Plc
       return data.CompareTo(value);
     }
 
-    protected override Task<string> HandleGet()
+    protected override string HandleGet()
     {
       return StateClient.GetString();
     }
 
-    protected override Task HandleSet(string data)
+    protected override void HandleSet(string data)
     {
-      return StateClient.SetString(data);
+      StateClient.SetString(data);
     }
   }
 }

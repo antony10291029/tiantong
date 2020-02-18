@@ -10,59 +10,43 @@ namespace Wcs.Plc
 
     private int Length;
 
-    public IStateClient SetKey(string key)
+    public void SetKey(string key)
     {
       Key = key;
-
-      return this;
     }
 
-    public IStateClient SetLength(int length)
+    public void SetLength(int length)
     {
       Length = length;
-
-      return this;
     }
 
-    public Task SetInt(int data)
+    public void SetInt(int data)
     {
       Store.Set(Key, data);
-
-      return Task.Delay(0);
     }
 
-    public Task SetString(string data)
+    public void SetString(string data)
     {
       Store.Set(Key, data);
-
-      return Task.Delay(0);
     }
 
-    public Task SetBool(bool data)
+    public void SetBool(bool data)
     {
       Store.Set(Key, data);
-
-      return Task.Delay(0);
     }
 
-    public async Task<int> GetInt()
+    public int GetInt()
     {
-      await Task.Delay(0);
-
       return Store.Get<int>(Key);
     }
 
-    public async Task<string> GetString()
+    public string GetString()
     {
-      await Task.Delay(0);
-
       return Store.Get<string>(Key);
     }
 
-    public async Task<bool> GetBool()
+    public bool GetBool()
     {
-      await Task.Delay(0);
-
       return Store.Get<bool>(Key);
     }
   }
