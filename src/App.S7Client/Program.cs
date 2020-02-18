@@ -1,6 +1,7 @@
 using System;
-using System.Net.Sockets;
+using System.Threading.Tasks;
 using Wcs.Plc.Snap7;
+using Renet.Tcp;
 
 namespace dotnet_tcp_client
 {
@@ -8,47 +9,38 @@ namespace dotnet_tcp_client
   {
     static void Main(string[] args)
     {
-      var client = new TcpClient("192.168.20.3", 102);
-      var response = new byte[50];
-      var stream = client.GetStream();
+      var client = new RenetTcpClient("192.168.20.3", 102);
       var req = new S7Request();
       var res = new S7Response();
 
+      client.Connected = _ => {
+        try {
+          var msg = client.Send(req.CheckHead1);
+          msg = client.Send(req.CheckHead2);
+
+          return false;
+        } catch {
+          return true;
+        }
+      };
+
       req.Use200Smart();
-      req.UseAddress("D1.100", 1);
-      req.UseData(true);
+      req.UseAddress("D1.100", 4);
+      req.UseData(2000);
 
-      var msg = req.WriteMessage;
+      client.Connect();
 
-      stream.Write(req.CheckHead1, 0, req.CheckHead1.Length);
-      stream.Read(response, 0, response.Length);
-
-      stream.Write(req.CheckHead2, 0, req.CheckHead2.Length);
-      stream.Read(response, 0, response.Length);
-
-      try {
-        stream.Write(msg, 0, msg.Length);
-        stream.Read(response, 0, response.Length);
-      } catch {
-        Console.WriteLine("error");
-      }
-
-      res.SetMessage(response);
+      var data = client.TrySend(req.WriteMessage);
+      res.SetMessage(data);
       Console.WriteLine(res.DataCode);
 
-      Console.WriteLine("Write request: " + BitConverter.ToString(msg));
-      Console.WriteLine("Write response: " + BitConverter.ToString(response));
+      for (var i = 0; i < 10000; i++) {
+        data = client.TrySend(req.ReadMessage);
+        res.SetMessage(data);
+        Console.WriteLine($"{i}: {res.ToInt32()}");
+        Task.Delay(1000).GetAwaiter().GetResult();
+      }
 
-      Console.WriteLine(req.ReadMessage);
-      req.ReadMessage[27] = 0x99;
-      stream.Write(req.ReadMessage, 0, req.ReadMessage.Length);
-      stream.Read(response, 0, 50);
-
-      res.SetMessage(response);
-      Console.WriteLine("Read Request: " + BitConverter.ToString(req.ReadMessage));
-      Console.WriteLine("Read Response: " + BitConverter.ToString(response));
-
-      stream.Close();
       client.Close();
     }
   }

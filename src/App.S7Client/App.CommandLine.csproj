@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
     <ProjectReference Include="..\Wcs.Plc.Snap7\Wcs.Plc.Snap7.csproj" />
   </ItemGroup>
 </Project>
