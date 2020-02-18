@@ -10,13 +10,9 @@ namespace Wcs.Plc
 
     private int Length;
 
-    public void SetKey(string key)
+    public void SetAddress(string key, int length)
     {
       Key = key;
-    }
-
-    public void SetLength(int length)
-    {
       Length = length;
     }
 

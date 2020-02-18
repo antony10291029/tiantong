@@ -24,6 +24,13 @@ namespace Wcs.Plc
 
     public abstract string Type { get; }
 
+    public void UseAddress(string key, int length)
+    {
+      Key = key;
+      Length = length;
+      StateClient.SetAddress(key, length);
+    }
+
     public virtual IStateBool ToStateBool()
     {
       throw new StateConversationException(Type, "Bool");
@@ -71,29 +78,11 @@ namespace Wcs.Plc
 
     private int _id = 0;
 
-    private string _key;
-
-    private int _length;
-
     private Interval _interval;
 
-    public override string Key
-    {
-      get => _key;
-      set {
-        _key = value;
-        StateClient.SetKey(value);
-      }
-    }
+    public override string Key { get; set; }
 
-    public override int Length
-    {
-      get => _length;
-      set {
-        _length = value;
-        StateClient.SetLength(value);
-      }
-    }
+    public override int Length { get; set; }
 
     ~State()
     {

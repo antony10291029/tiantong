@@ -41,9 +41,8 @@ namespace Wcs.Plc
         StateClient = _stateClientProvider.Resolve()
       };
 
-      state.Key = key;
       state.Name = Name;
-      state.Length = length;
+      state.UseAddress(key, length);
       States.Add(Name, state);
 
       return state;

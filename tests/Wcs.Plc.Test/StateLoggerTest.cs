@@ -28,8 +28,7 @@ namespace Wcs.Plc.Test
 
       state.Use(logger);
       state.Name = "test";
-      state.Key = "D1";
-      state.Length = 1;
+      state.UseAddress("D1", 1);
       state.Set(100);
       state.Get();
       logger.HandleStateLogs();

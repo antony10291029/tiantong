@@ -17,9 +17,8 @@ namespace Wcs.Plc.Test
       state.StateClient = client;
       state.Event = new Event();
       state.IntervalManager = new IntervalManager();
-      state.Length = 1;
-      state.Key = "D100";
       state.Name = "test";
+      state.UseAddress("D100", 1);
 
       return state;
     }

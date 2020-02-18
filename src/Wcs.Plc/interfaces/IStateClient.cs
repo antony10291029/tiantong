@@ -2,9 +2,7 @@ namespace Wcs.Plc
 {
   public interface IStateClient
   {
-    void SetKey(string key);
-
-    void SetLength(int length);
+    void SetAddress(string key, int length);
 
     void SetBool(bool data);
 
