@@ -15,8 +15,6 @@ namespace Renet.Tcp
 
     private TcpClient _client;
 
-    public Func<int, bool> Connected;
-
     private int BufferLength = 1024;
 
     private int ReconnectInterval = 1000;
@@ -39,10 +37,15 @@ namespace Renet.Tcp
     {
       var buffer = new byte[BufferLength];
 
-      _stream.Write(message, 0, message.Length);
-      _stream.Read(buffer, 0, buffer.Length);
+      SendMessage(message, buffer);
 
       return buffer;
+    }
+
+    public void SendMessage(byte[] message, byte[] buffer)
+    {
+      _stream.Write(message, 0, message.Length);
+      _stream.Read(buffer, 0, buffer.Length);
     }
 
     public byte[] TrySend(byte[] message)
@@ -56,49 +59,21 @@ namespace Renet.Tcp
       }
     }
 
-    public void SendMessage(byte[] message, byte[] buffer)
+    public virtual bool Connect(int time = 0)
     {
-
-    }
-
-    public bool Connect(int time = 0)
-    {
-      if (Connected != null) {
-        return Connected(time);
-      } else {
-        return true;
-      }
+      return true;
     }
 
     public void Reconnect()
     {
+      Console.WriteLine("连接已断开，正在重连...");
       for (var i = 0; ; i++) {
         Console.WriteLine("重连中: " + i);
-        if (Connected(i)) {
+        if (Connect(i)) {
           break;
         }
         Task.Delay(ReconnectInterval);
       };
-    }
-
-    private void HandleSend(byte[] message, byte[] buffer)
-    {
-      var str = BitConverter.ToString(message);
-
-      Console.WriteLine(str);
-
-      while (true) {
-        try {
-          SendMessage(message, buffer);
-        } catch (Exception e) {
-          if (HandleError(e)) {
-            Task.Delay(ReconnectInterval).GetAwaiter().GetResult();
-            for (var i = 0; Connect(i); i++);
-          } else {
-            break;
-          }
-        }
-      }
     }
 
     protected virtual bool HandleError(Exception exception)

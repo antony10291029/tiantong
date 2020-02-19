@@ -6,5 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
   </ItemGroup>
+
 </Project>
