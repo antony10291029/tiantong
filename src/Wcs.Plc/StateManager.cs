@@ -48,25 +48,25 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateBool Bool(string key)
+    public IStateBool Bool(string key, int length = 1)
     {
-      var state = ResolveState<StateBool>(key, 1);
+      var state = ResolveState<StateBool>(key, length);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateInt Int(string key)
+    public IStateInt Int(string key, int length = 4)
     {
-      var state = ResolveState<StateInt>(key, 1);
+      var state = ResolveState<StateInt>(key, 4);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateString String(string key, int length = 1)
+    public IStateString String(string key, int length = 10)
     {
       var state = ResolveState<StateString>(key, length);
 
