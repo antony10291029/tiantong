@@ -28,7 +28,8 @@ namespace Wcs.Plc
     public Plc()
     {
       DatabaseProvider = ResolveDatabaseProvider();
-      StateClientProvider = ResolveStateClientProvider();
+      // StateClientProvider = ResolveDefaultStateClientProvider();
+      UseS7200Smart();
       EventLogger = ResolveEventLogger();
       StateLogger = ResolveStateLogger();
       StateManager = ResolveStateManager();
@@ -43,9 +44,14 @@ namespace Wcs.Plc
       return new DatabaseProvider();
     }
 
-    public virtual IStateClientProvider ResolveStateClientProvider()
+    public virtual IStateClientProvider ResolveDefaultStateClientProvider()
     {
       return new StateTestClientProvider();
+    }
+
+    public virtual void UseS7200Smart()
+    {
+      StateClientProvider = new S7ClientProvider();
     }
 
     public virtual EventPlugin ResolveEventLogger()

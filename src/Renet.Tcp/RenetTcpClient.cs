@@ -19,6 +19,8 @@ namespace Renet.Tcp
 
     private int ReconnectInterval = 1000;
 
+    private readonly object _sandLock = new {};
+
     public RenetTcpClient(string host, int port)
     {
       _host = host;
@@ -44,8 +46,10 @@ namespace Renet.Tcp
 
     public void SendMessage(byte[] message, byte[] buffer)
     {
-      _stream.Write(message, 0, message.Length);
-      _stream.Read(buffer, 0, buffer.Length);
+      lock (_sandLock) {
+        _stream.Write(message, 0, message.Length);
+        _stream.Read(buffer, 0, buffer.Length);
+      }
     }
 
     public byte[] TrySend(byte[] message)
