@@ -13,7 +13,9 @@ namespace Wcs.Plc
 
     IPlc Host(string host);
 
-    IPlc Port(string port);
+    IPlc Port(int port);
+
+    IPlc UseS7200Smart(string host, int port = 102);
 
     IStateManager State(string key);
 

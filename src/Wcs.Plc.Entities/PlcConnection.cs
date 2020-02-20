@@ -23,7 +23,7 @@ namespace Wcs.Plc.Entities
     public string Host { get; set; }
 
     [Column("port")]
-    public string Port { get; set; }
+    public int Port { get; set; }
 
     [Column("created_at")]
     [Required]

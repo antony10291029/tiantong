@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Wcs.Plc.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Wcs.Plc
 {
@@ -28,11 +26,11 @@ namespace Wcs.Plc
     public Plc()
     {
       DatabaseProvider = ResolveDatabaseProvider();
+      UseS7200Smart("192.168.20.3", 102);
       // StateClientProvider = ResolveDefaultStateClientProvider();
-      UseS7200Smart();
       EventLogger = ResolveEventLogger();
       StateLogger = ResolveStateLogger();
-      StateManager = ResolveStateManager();
+      ResolveStateManager();
 
       DatabaseProvider.Migrate();
     }
@@ -49,9 +47,12 @@ namespace Wcs.Plc
       return new StateTestClientProvider();
     }
 
-    public virtual void UseS7200Smart()
+    public virtual IPlc UseS7200Smart(string host, int port = 102)
     {
       StateClientProvider = new S7ClientProvider();
+      Model("S7200Smart").Host(host).Port(port);
+
+      return this;
     }
 
     public virtual EventPlugin ResolveEventLogger()
@@ -68,9 +69,9 @@ namespace Wcs.Plc
       return new StateLogger(IntervalManager, DatabaseProvider.Resolve(), PlcConnection);
     }
 
-    public virtual StateManager ResolveStateManager()
+    public virtual void ResolveStateManager()
     {
-      return new StateManager(Event, IntervalManager, StateClientProvider, StateLogger);
+      StateManager = new StateManager(Event, IntervalManager, StateClientProvider, StateLogger);
     }
 
     public virtual void HandlePlcConnection()
@@ -133,7 +134,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    public IPlc Port(string port)
+    public IPlc Port(int port)
     {
       PlcConnection.Port = port;
 
