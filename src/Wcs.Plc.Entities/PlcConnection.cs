@@ -9,24 +9,29 @@ namespace Wcs.Plc.Entities
   {
     [Column("id")]
     [Key]
-    public int Id { get; set; }
+    public int Id { get; set; } = 0;
 
     [Column("model")]
     [Required]
-    public string Model { get; set; }
+    public string Model { get; set; } = "test";
 
     [Column("name")]
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = "default";
 
     [Column("host")]
-    public string Host { get; set; }
+    public string Host { get; set; } = "";
 
     [Column("port")]
-    public int Port { get; set; }
+    public int Port { get; set; } = 0;
 
     [Column("created_at")]
     [Required]
     public DateTime CreatedAt { get; set; }
+
+    public PlcConnection()
+    {
+      CreatedAt = DateTime.Now;
+    }
   }
 }

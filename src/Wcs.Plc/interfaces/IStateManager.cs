@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Wcs.Plc
 {
   public interface IStateManager

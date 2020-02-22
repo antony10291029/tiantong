@@ -13,11 +13,11 @@ namespace Wcs.Plc
 
     public StateManager StateManager;
 
-    public Event Event = new Event();
+    public Event Event;
 
-    public PlcConnection PlcConnection = new PlcConnection();
+    public PlcConnection PlcConnection;
 
-    public IntervalManager IntervalManager = new IntervalManager();
+    public IntervalManager IntervalManager;
 
     public DatabaseProvider DatabaseProvider;
 
@@ -25,48 +25,110 @@ namespace Wcs.Plc
 
     public Plc()
     {
-      DatabaseProvider = ResolveDatabaseProvider();
-      UseS7200Smart("192.168.20.3", 102);
-      // StateClientProvider = ResolveDefaultStateClientProvider();
-      EventLogger = ResolveEventLogger();
-      StateLogger = ResolveStateLogger();
-      ResolveStateManager();
-
-      DatabaseProvider.Migrate();
+      PlcConnection = new PlcConnection();
     }
 
     //
 
-    public virtual DatabaseProvider ResolveDatabaseProvider()
+    private IStateClientProvider GetStateClientProvider()
     {
-      return new DatabaseProvider();
+      switch (PlcConnection.Model) {
+        case "S7200Smart": return new S7ClientProvider();
+        case "test" : return new StateTestClientProvider();
+        default: throw new Exception("plc model is not supporting");
+      }
     }
 
-    public virtual IStateClientProvider ResolveDefaultStateClientProvider()
+    //
+
+    public IPlc Id(int id)
     {
-      return new StateTestClientProvider();
+      PlcConnection.Id = id;
+
+      return this;
+    }
+
+    public IPlc Model(string model)
+    {
+      PlcConnection.Model = model;
+
+      return this;
+    }
+
+    public IPlc Name(string name)
+    {
+      PlcConnection.Name = name;
+
+      return this;
+    }
+
+    public IPlc Host(string host)
+    {
+      PlcConnection.Host = host;
+      
+      return this;
+    }
+
+    public IPlc Port(int port)
+    {
+      PlcConnection.Port = port;
+
+      return this;
+    }
+
+    //
+
+    public virtual void ResolveDatabaseProvider()
+    {
+      DatabaseProvider = new DatabaseProvider();
+      DatabaseProvider.Migrate();
+    }
+
+    public virtual void ResolveStateClientProvider()
+    {
+      StateClientProvider = GetStateClientProvider();
+    }
+
+    //
+
+    public IPlc Build()
+    {
+      Event = new Event();
+      IntervalManager = new IntervalManager();
+      ResolveDatabaseProvider();
+      ResolveStateClientProvider();
+      ResolveEventLogger();
+      ResolveStateLogger();
+      ResolveStateManager();
+
+      HandlePlcConnection();
+
+      return this;
+    }
+
+    public virtual IPlc UseTest()
+    {
+      return Build();
     }
 
     public virtual IPlc UseS7200Smart(string host, int port = 102)
     {
       StateClientProvider = new S7ClientProvider();
-      Model("S7200Smart").Host(host).Port(port);
+      Model("S7200Smart").Host(host).Port(port).Build();
 
       return this;
     }
 
-    public virtual EventPlugin ResolveEventLogger()
+    public virtual void ResolveEventLogger()
     {
-      var logger = new EventLogger(IntervalManager, DatabaseProvider.Resolve());
+      EventLogger = new EventLogger(IntervalManager, DatabaseProvider.Resolve());
 
-      Event.Use(logger);
-
-      return logger;
+      Event.Use(EventLogger);
     }
 
-    public virtual IStatePlugin ResolveStateLogger()
+    public virtual void ResolveStateLogger()
     {
-      return new StateLogger(IntervalManager, DatabaseProvider.Resolve(), PlcConnection);
+      StateLogger = new StateLogger(IntervalManager, DatabaseProvider.Resolve(), PlcConnection);
     }
 
     public virtual void ResolveStateManager()
@@ -104,41 +166,6 @@ namespace Wcs.Plc
       } else {
         throw new Exception("Plc Connection Id or Name does not existed");
       }
-    }
-
-    public IPlc Id(int id)
-    {
-      PlcConnection.Id = id;
-
-      return this;
-    }
-
-    public IPlc Model(string model)
-    {
-      PlcConnection.Model = model;
-
-      return this;
-    }
-
-    public IPlc Name(string name)
-    {
-      PlcConnection.Name = name;
-
-      return this;
-    }
-
-    public IPlc Host(string host)
-    {
-      PlcConnection.Host = host;
-      
-      return this;
-    }
-
-    public IPlc Port(int port)
-    {
-      PlcConnection.Port = port;
-
-      return this;
     }
 
     public IStateManager State(string name)

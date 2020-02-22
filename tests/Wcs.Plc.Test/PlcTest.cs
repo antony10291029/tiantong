@@ -12,6 +12,7 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
+      plc.UseTest();
       plc.State("hb").Int("D1").Collect(0);
       plc.Int("hb").Set(1);
 
@@ -26,6 +27,7 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
+      plc.UseTest();
       plc.State("bool data").Bool("D1").Collect(0);
       plc.Bool("bool data").Watch("==", true).Event("event");
       plc.Bool("bool data").Set(true);
@@ -41,11 +43,13 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
+      plc.UseTest();
       plc.State("hb").Int("D1").Heartbeat(0).Collect(0);
       plc.Int("hb").Watch(value => value > 1).Event("stop");
       plc.On<int>("stop", _ => {
         plc.Stop();
       });
+
       plc.Start().TryWait();
     }
 
@@ -65,13 +69,14 @@ namespace Wcs.Plc.Test
     public void TestPlcConnectionId()
     {
       var plc = new Plc();
+      plc.ResolveDatabaseProvider();
       var db = plc.DatabaseProvider.Resolve();
       var connection = new PlcConnection {
         Id = 10,
         Name = "test",
         Model = "melsec",
         Host = "localhost",
-        Port = "1234",
+        Port = 1234,
       };
 
       db.Add(connection);
@@ -84,7 +89,7 @@ namespace Wcs.Plc.Test
       Assert.AreEqual("test", connection.Name);
       Assert.AreEqual("melsec", connection.Model);
       Assert.AreEqual("localhost", connection.Host);
-      Assert.AreEqual("1234", connection.Port);
+      Assert.AreEqual(1234, connection.Port);
     }
 
     [Test]
@@ -92,7 +97,8 @@ namespace Wcs.Plc.Test
     {
       var plc = new Plc();
 
-      plc.Name("test").Model("melsec").Host("localhost").Port("1234");
+      plc.ResolveDatabaseProvider();
+      plc.Name("test").Model("melsec").Host("localhost").Port(1234);
       plc.HandlePlcConnection();
 
       Assert.AreNotEqual(plc.PlcConnection.Id, 0);
@@ -102,18 +108,19 @@ namespace Wcs.Plc.Test
     public void TestPlcConnectionNameExisted()
     {
       var plc = new Plc();
+      plc.ResolveDatabaseProvider();
       var db = plc.DatabaseProvider.Resolve();
       var connection = new PlcConnection {
         Name = "test",
         Model = "melsec",
         Host = "localhost",
-        Port = "1234",
+        Port = 1234,
       };
 
-      plc.Name("test").Model("siemens").Host("localhost").Port("1234");
+      plc.Name("test").Model("siemens").Host("localhost").Port(1234);
       plc.HandlePlcConnection();
 
-      connection = db.PlcConnections.Single(item => item.Name == "test");
+      connection = db.PlcConnections.Where(item => item.Name == "test").First();
 
       Assert.AreEqual("siemens", connection.Model);
     }

@@ -2,21 +2,21 @@ namespace Wcs.Plc.Test
 {
   public class Plc : Wcs.Plc.Plc
   {
-    public override DatabaseProvider ResolveDatabaseProvider()
+    public override void ResolveDatabaseProvider()
     {
-      return new TestDatabaseProvider();
+      DatabaseProvider = new TestDatabaseProvider();
     }
 
     /// EventLogger 将被单独测试
-    public override EventPlugin ResolveEventLogger()
+    public override void ResolveEventLogger()
     {
-      return null;
+
     }
 
     /// StateLogger 将被单独测试
-    public override IStatePlugin ResolveStateLogger()
+    public override void ResolveStateLogger()
     {
-      return null;
+
     }
   }
 }
