@@ -46,7 +46,11 @@ namespace DBCore
 
       var sql = sreader.ReadToEnd();
 
-      Database.ExecuteSqlRaw(sql);
+      try {
+        Database.ExecuteSqlRaw(sql);      
+      } catch {
+        throw new Exception($"sql error: `{sql}`");
+      }
     }
   }
 }
