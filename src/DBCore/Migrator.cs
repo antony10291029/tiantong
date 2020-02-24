@@ -190,7 +190,9 @@ namespace DBCore
         Helper.Message($"{mg.FileName}\n");
       }
 
-      dbcontext.Migrations.Where(mg => mg.BatchId == batchId);
+      var items = dbcontext.Migrations.Where(mg => mg.BatchId == batchId).ToList();
+
+      dbcontext.Migrations.RemoveRange(items);
       dbcontext.SaveChanges();
       dbcontext.Database.CommitTransaction();
     }
