@@ -13,7 +13,7 @@ namespace Tiantong.Wms.DB
       db.Users.Add(new User {
         email = "zhanglan",
         password = "aeoikj",
-        roles = new string[] { "1", "2" },
+        roles = new string[] { "admin", "operator" },
         name = "aeoikj",
       });
 
