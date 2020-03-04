@@ -48,5 +48,10 @@ namespace DBCore
 
       Database.ExecuteSqlRaw(sql);
     }
+
+    public void ExecuteSql(string sql)
+    {
+      Database.ExecuteSqlRaw(sql);
+    }
   }
 }
