@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Renet.Web;
 
 namespace Tiantong.Wms.Api
@@ -10,7 +11,8 @@ namespace Tiantong.Wms.Api
   {
     protected override async Task Handle(Exception ex, HttpContext context)
     {
-      Console.WriteLine($"IsDevelopment: {Env.IsDevelopment()}");
+      var db = context.RequestServices.GetService<DbContext>();
+      HandleDbContext(db);
 
       if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, context);
@@ -19,6 +21,11 @@ namespace Tiantong.Wms.Api
       } else {
         await ShowUnprocessedError(ex, context);
       }
+    }
+
+    private void HandleDbContext(DbContext db)
+    {
+      if (db.HasTransaction()) db.Rollback();
     }
   }
 }
