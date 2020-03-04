@@ -19,6 +19,9 @@ namespace Tiantong.Wms.Api
       Post("/auth/email", "User.AuthByEmail");
       Post("/auth/token/refresh", "User.RefreshToken");
 
+      Post("/warehouses/create", "Warehouse.Create");
+      Post("/warehouses/update", "Warehouse.Update");
+      Post("/warehouses/search", "Warehouse.Search");
     }
   }
 }

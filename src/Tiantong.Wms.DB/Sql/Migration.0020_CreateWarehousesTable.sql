@@ -5,7 +5,7 @@ create table if not exists warehouses (
   name varchar(255) not null,
   address varchar(255) not null,
   comment varchar(255) not null,
-  is_enabled boolean default false,
+  is_enabled boolean not null,
   created_at timestamp(0) not null,
   unique(owner_user_id, number)
 );

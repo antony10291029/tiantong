@@ -7,5 +7,6 @@ namespace Tiantong.Wms.Api
   {
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Warehouse> Warehouses { get; set; }
   }
 }
