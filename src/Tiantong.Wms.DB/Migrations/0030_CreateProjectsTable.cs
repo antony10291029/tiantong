@@ -6,12 +6,12 @@ namespace Tiantong.Wms.DB
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.0003_CreateProjectsTable");
+      db.ExecuteFromSql("Migration.0030_CreateProjectsTable");
     }
 
     public void Down(DbContext db)
     {
-      db.ExecuteFromSql("Migration.0003_DropProjectsTable");
+      db.ExecuteSql("drop table if exists projects");
     }
   }
 }

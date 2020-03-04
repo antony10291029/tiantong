@@ -6,18 +6,8 @@ namespace Tiantong.Wms.DB
     {
       var migrator = new PostgresMigrator();
 
-      migrator.Refresh();
-
-      var db = new PostgresContext();
-
-      db.Users.Add(new User {
-        email = "zhanglan",
-        password = "aeoikj",
-        roles = new string[] { "admin", "operator" },
-        name = "aeoikj",
-      });
-
-      db.SaveChanges();
+      // migrator.Rollback();
+      migrator.Migrate();
     }
   }
 }
