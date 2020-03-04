@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text.Json;
-using Tiantong.Wms.DB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using JWT.Builder;
@@ -11,7 +10,11 @@ namespace Tiantong.Wms.Api
 {
   public class Auth : IAuth
   {
-    private PostgresContext _db;
+    private DbContext _db;
+
+    private IHttpContextAccessor _httpAccessor;
+
+    private User _user;
 
     private int _ttl;
 
@@ -21,22 +24,35 @@ namespace Tiantong.Wms.Api
 
     private string _appName;
 
-    private User _user;
+    private bool _isTokenResolved = false;
+
+    private bool _needToRefresh = false;
+
+    //
 
     public User User
     {
       get {
         if (_user == null) {
-          _user = ResolveUser();
+          _user = ResolveToken();
         }
 
         return _user;
       }
     }
 
-    public IHttpContextAccessor _httpAccessor;
+    public bool NeedToRefresh
+    {
+      get {
+        if (!_isTokenResolved) {
+          ResolveToken();
+        }
 
-    public Auth(PostgresContext db, IHttpContextAccessor httpAccessor, IConfiguration config)
+        return _needToRefresh;
+      }
+    }
+
+    public Auth(DbContext db, IHttpContextAccessor httpAccessor, IConfiguration config)
     {
       _db = db;
       _httpAccessor = httpAccessor;
@@ -48,15 +64,22 @@ namespace Tiantong.Wms.Api
 
     public void Ensure()
     {
-      EnsureRoles();
+      if (User == null) {
+        throw new AuthException("Authorization user is invalid");
+      }
     }
 
-    public void EnsureRoles(params string[] roles)
+    public void EnsureType(string type)
     {
-      _user = ResolveUser();
-      if (roles.Length != 0 && !roles.Any(role => User.roles.Contains(role))) {
-        throw new AuthException("Authorization role is not match");
+      Ensure();
+      if (User.type != type) {
+        throw new AuthException("Authorization user type is not match");
       }
+    }
+
+    public void EnsureOwner()
+    {
+      EnsureType(UserTypes.Owner);
     }
 
     public (string, DateTime, DateTime) Encode(User user)
@@ -76,8 +99,10 @@ namespace Tiantong.Wms.Api
       return (token, exp, rfa);
     }
 
-    public User ResolveUser()
+    private User ResolveToken()
     {
+      _isTokenResolved = true;
+
       var token = _httpAccessor.HttpContext.Request.Headers["Authorization"].ToString();
 
       if (token == "" || token == null) {
@@ -107,6 +132,9 @@ namespace Tiantong.Wms.Api
       var now = DateTime.Now;
       if (exp <= now) {
         throw new AuthException("Authorization token is expired");
+      }
+      if (rfa <= now) {
+        _needToRefresh = true;
       }
 
       var appName = json.RootElement.GetProperty("app_name").GetString();

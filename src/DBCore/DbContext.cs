@@ -3,12 +3,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DBCore
 {
   public class DbContext : Microsoft.EntityFrameworkCore.DbContext
   {
     public DbSet<Migration> Migrations { get; set; }
+
+    private IDbContextTransaction _transaction;
 
     public bool HasTable(string table)
     {
@@ -53,5 +56,40 @@ namespace DBCore
     {
       Database.ExecuteSqlRaw(sql);
     }
+
+    public bool HasTransaction()
+    {
+      return _transaction != null;
+    }
+
+    public void BeginTransaction()
+    {
+      if (_transaction == null) {
+        throw new Exception("transaction was started");
+      }
+
+      _transaction = Database.BeginTransaction();
+    }
+
+    public void Commit()
+    {
+      if (_transaction == null) {
+        throw new Exception("transaction is not started");
+      }
+
+      _transaction.Commit();
+      _transaction = null;
+    }
+
+    public void Rollback()
+    {
+      if (_transaction == null) {
+        throw new Exception("transaction is not started");
+      }
+
+      _transaction.Rollback();
+      _transaction = null;
+    }
+
   }
 }

@@ -7,13 +7,18 @@ namespace Tiantong.Wms.Api
     public override void Define()
     {
       Get("/", "App.Home");
-      Post("/", "App.Post");
-      Get("/users", "App.Users");
-      Get("/error", "App.Error");
-      Get("/error/unexpected", "App.UnexpectedError");
+      Post("/", "App.Home");
 
-      Post("/validate", "App.Validate");
-      Post("/validate/customer", "App.CustomerValidate");
+      Post("/root/initialize", "User.InitializeRootUser");
+      Post("/users/search", "User.Search");
+
+      Post("/users/register", "User.Register");
+      Post("/users/person/update", "User.UpdatePerson");
+      Post("/users/person/profile", "User.GetPersonProfile");
+
+      Post("/auth/email", "User.AuthByEmail");
+      Post("/auth/token/refresh", "User.RefreshToken");
+
     }
   }
 }

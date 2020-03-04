@@ -1,6 +1,4 @@
 using System;
-using Tiantong.Wms.DB;
-using Microsoft.AspNetCore.Http;
 
 namespace Tiantong.Wms.Api
 {
@@ -8,9 +6,13 @@ namespace Tiantong.Wms.Api
   {
     User User { get; }
 
+    bool NeedToRefresh { get; }
+
     void Ensure();
 
-    void EnsureRoles(params string[] roles);
+    void EnsureType(string type);
+
+    void EnsureOwner();
 
     (string, DateTime, DateTime) Encode(User user);
   }

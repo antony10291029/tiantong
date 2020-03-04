@@ -1,73 +1,20 @@
-using System;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
-using Tiantong.Wms.DB;
+using Microsoft.Extensions.Configuration;
 
 namespace Tiantong.Wms.Api
 {
-  public class AppController : _BaseController
+  public class AppController : BaseController
   {
-    private IAuth _auth;
+    private IConfiguration _config;
 
-    public AppController(IAuth auth)
+    public AppController(IConfiguration config)
     {
-      _auth = auth;
+      _config = config;
     }
 
     public object Home()
     {
-      _auth.Ensure();
-
-      return _auth.User;
-    }
-
-    public string Post()
-    {
-      return "post method";
-    }
-
-    public string Users()
-    {
-      return "users";
-    }
-
-    public string Error()
-    {
-      throw new HttpExampleException();
-    }
-
-    public void UnexpectedError()
-    {
-      var a = 0;
-      var b = 0;
-
-      a = a / b;
-    }
-
-    public new class User
-    {
-      [Required]
-      public int? Id { get; set; }
-
-      [Required]
-      public string Name { get; set; }
-    }
-
-    public User Validate([FromBody] User user)
-    {
-
-      return user;
-    }
-
-    public void CustomerValidate()
-    {
-      var ex = new HttpValidationException();
-
-      ex.AddDetails("id", "id field is required", "id must be integer");
-
-      throw ex;
+      return JsonMessage(_config["app_name"]);
     }
   }
 }
