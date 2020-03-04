@@ -5,11 +5,13 @@ namespace Renet.Web
 {
   public class HttpException : Exception, IHttpException
   {
+    private string _error;
+
     public int Status { get; set; }
 
     public string Name
     {
-      get => this.GetType().Name;
+      get => _error == null ? this.GetType().Name : _error;
     }
 
     public string Msg { get; set; }
@@ -22,10 +24,11 @@ namespace Renet.Web
       });
     }
 
-    public HttpException(string message, int status = 400)
+    public HttpException(string message, int status = 400, string error = "HttpException")
     {
       Msg = message;
       Status = status;
+      _error = error;
     }
   }
 }
