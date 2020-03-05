@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Renet.Web;
-using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Wms.Api
 {
@@ -9,12 +8,9 @@ namespace Tiantong.Wms.Api
   {
     private IHash _hash;
 
-    protected DbSet<User> Users { get => DbContext.Users; }
-
     public IQueryable<User> Owners
     {
-      get => DbContext.Users
-        .Where(user => user.type == UserTypes.Owner)
+      get => Table.Where(user => user.type == UserTypes.Owner)
         .OrderBy(user => user.id);
     }
 
@@ -54,7 +50,7 @@ namespace Tiantong.Wms.Api
     public User FindByEmail(string email)
     {
       try {
-        return Users.Where(user => user.email == email).First();
+        return Table.Where(user => user.email == email).First();
       } catch (Exception e) {
         if (e.Message == "Sequence contains no elements") {
           throw new HttpException("Fail to find user by email");
@@ -66,22 +62,22 @@ namespace Tiantong.Wms.Api
 
     public User[] Search()
     {
-      return Users.OrderBy(user => user.id).ToArray();
+      return Table.OrderBy(user => user.id).ToArray();
     }
 
     public bool HasId(int id)
     {
-      return Users.Any(user => user.id == id);
+      return Table.Any(user => user.id == id);
     }
 
     public bool HasEmail(string email)
     {
-      return Users.Any(user => user.email == email);
+      return Table.Any(user => user.email == email);
     }
 
     public bool HasRoot()
     {
-      return Users.Any(user => user.type == "root");
+      return Table.Any(user => user.type == "root");
     }
 
     public bool MatchUserPassword(User user, string password)

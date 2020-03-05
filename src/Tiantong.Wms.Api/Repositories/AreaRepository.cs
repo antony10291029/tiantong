@@ -1,5 +1,4 @@
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Renet.Web;
 
 namespace Tiantong.Wms.Api
@@ -7,8 +6,6 @@ namespace Tiantong.Wms.Api
   public class AreaRepository : Repository<Area, int>
   {
     private WarehouseRepository _warehouses;
-
-    protected DbSet<Area> Areas { get => DbContext.Areas; }
 
     public AreaRepository(DbContext db, WarehouseRepository warehouses) : base(db)
     {
@@ -19,12 +16,12 @@ namespace Tiantong.Wms.Api
 
     public bool HasId(int warehouseId, int id)
     {
-      return Areas.Any(area => area.warehouse_id == warehouseId && area.id == id);
+      return Table.Any(area => area.warehouse_id == warehouseId && area.id == id);
     }
 
     public bool HasNumber(int warehouseId, string number)
     {
-      return Areas.Any(area => area.warehouse_id == warehouseId && area.number == number);
+      return Table.Any(area => area.warehouse_id == warehouseId && area.number == number);
     }
 
     public Area EnsureGet(int id)
@@ -55,7 +52,7 @@ namespace Tiantong.Wms.Api
 
     public Area[] Search(int warehouseId)
     {
-      return Areas.Where(area => area.warehouse_id == warehouseId)
+      return Table.Where(area => area.warehouse_id == warehouseId)
         .OrderBy(area => area.id).ToArray();
     }
   }
