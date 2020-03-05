@@ -43,12 +43,12 @@ namespace Tiantong.Wms.Api
       _areas.EnsureNumberUnique(param.warehouse_id, param.number);
 
       var area = new Area();
-      area.name = param.name;
+      area.warehouse_id = param.warehouse_id;
       area.number = param.number;
+      area.name = param.name;
       area.comment = param.comment;
       area.total_area = param.total_area;
       area.is_enabled = param.is_enabled;
-      area.warehouse_id = param.warehouse_id;
       _areas.Add(area);
       _areas.UnitOfWork.SaveChanges();
 
@@ -80,6 +80,8 @@ namespace Tiantong.Wms.Api
 
       public string comment { get; set; }
 
+      public string total_area { get; set; }
+
       public bool? is_enabled { get; set; }
     }
 
@@ -93,6 +95,7 @@ namespace Tiantong.Wms.Api
       if (param.is_enabled != null) {
         area.is_enabled = (bool) param.is_enabled;
       }
+      if (param.total_area != null) area.total_area = param.total_area;
       if (param.number != null) {
         _areas.EnsureNumberUnique(area.warehouse_id, param.number);
         area.number = param.number;

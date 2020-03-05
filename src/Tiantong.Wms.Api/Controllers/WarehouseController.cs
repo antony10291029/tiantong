@@ -37,11 +37,11 @@ namespace Tiantong.Wms.Api
     {
       _auth.EnsureOwner();
       var warehouse = new Warehouse();
-      warehouse.name = param.name;
+      warehouse.owner_user_id = _auth.User.id;
       warehouse.number = param.number;
+      warehouse.name = param.name;
       warehouse.address = param.address;
       warehouse.comment = param.comment;
-      warehouse.owner_user_id = _auth.User.id;
       warehouse.is_enabled = param.is_enabled;
       _warehouses.Add(warehouse);
       _warehouses.UnitOfWork.SaveChanges();
@@ -87,8 +87,8 @@ namespace Tiantong.Wms.Api
     {
       _auth.EnsureOwner();
       var warehouse = _warehouses.EnsureGetByOwner(param.id, _auth.User.id);
-      if (param.name != null) warehouse.name = param.name;
       if (param.number != null) warehouse.number = param.number;
+      if (param.name != null) warehouse.name = param.name;
       if (param.address != null) warehouse.address = param.address;
       if (param.comment != null) warehouse.comment = param.comment;
       if (param.is_enabled != null) {
