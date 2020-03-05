@@ -64,8 +64,8 @@ namespace DBCore
 
     public void BeginTransaction()
     {
-      if (_transaction == null) {
-        throw new Exception("transaction was started");
+      if (_transaction != null) {
+        throw new Exception("transaction has been started");
       }
 
       _transaction = Database.BeginTransaction();
