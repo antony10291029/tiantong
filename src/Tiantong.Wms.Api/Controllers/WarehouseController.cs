@@ -18,10 +18,8 @@ namespace Tiantong.Wms.Api
 
     public class CreateWarehouseParams
     {
-      [Required]
       [MaxLength(20)]
-      [WarehouseNumberUnique]
-      public string number { get; set; }
+      public string number { get; set; } = "";
 
       [MaxLength(20)]
       public string name { get; set; } = "";
@@ -37,11 +35,11 @@ namespace Tiantong.Wms.Api
     {
       _auth.EnsureOwner();
       var warehouse = new Warehouse();
-      warehouse.owner_user_id = _auth.User.id;
-      warehouse.number = param.number;
       warehouse.name = param.name;
+      warehouse.number = param.number;
       warehouse.address = param.address;
       warehouse.comment = param.comment;
+      warehouse.owner_user_id = _auth.User.id;
       _warehouses.Add(warehouse);
       _warehouses.UnitOfWork.SaveChanges();
 
@@ -50,11 +48,10 @@ namespace Tiantong.Wms.Api
 
     public class UpdateWarehouseParams
     {
-      [WarehouseOwnerCheck]
+      [Required]
       public int id { get; set; }
 
       [MaxLength(20)]
-      [WarehouseNumberUnique]
       public string number { get; set; }
 
       [MaxLength(20)]
@@ -71,7 +68,8 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] UpdateWarehouseParams param)
     {
-      var warehouse = _warehouses.Get(param.id);
+      _auth.EnsureOwner();
+      var warehouse = _warehouses.EnsureGetByOwner(param.id, _auth.User.id);
       if (param.name != null) warehouse.name = param.name;
       if (param.number != null) warehouse.number = param.number;
       if (param.address != null) warehouse.address = param.address;

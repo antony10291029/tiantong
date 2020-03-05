@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
@@ -12,6 +13,14 @@ namespace Tiantong.Wms.Api
 
     }
 
+    public Warehouse[] Search(int userId)
+    {
+      return Warehouses
+        .Where(wh => wh.owner_user_id == userId)
+        .OrderBy(wh => wh.id)
+        .ToArray();
+    }
+
     public bool HasId(int id)
     {
       return Warehouses.Any(wh => wh.id == id);
@@ -22,17 +31,34 @@ namespace Tiantong.Wms.Api
       return Warehouses.Any(wh => wh.id == id && wh.owner_user_id == userId);
     }
 
-    public bool HasNumber(int userId, string number)
+    public Warehouse EnsureGet(int id)
     {
-      return Warehouses.Any(wh => wh.owner_user_id == userId && wh.number == number);
+      var warehouse = Get(id);
+
+      if (warehouse == null) {
+        throw new HttpException("warehouse id does not exist");
+      }
+
+      return warehouse;
     }
 
-    public Warehouse[] Search(int userId)
+    public Warehouse EnsureGetByOwner(int warehouseId, int userId)
     {
-      return Warehouses
-        .Where(wh => wh.owner_user_id == userId)
-        .OrderBy(wh => wh.id)
-        .ToArray();
+      var warehouse = EnsureGet(warehouseId);
+
+      if (warehouse.owner_user_id != userId) {
+        throw new HttpException("warehouse owner is invalid");
+      }
+
+      return warehouse;
     }
+
+    public void EnsureOwner(int warehouseId, int userId)
+    {
+      if (!HasOwner(warehouseId, userId)) {
+        throw new HttpException("Warehouse owner check failed");
+      }
+    }
+
   }
 }
