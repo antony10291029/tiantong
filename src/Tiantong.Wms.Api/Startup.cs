@@ -14,7 +14,9 @@ namespace Tiantong.Wms.Api
       services.AddScoped<IAuth, Auth>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
+      services.AddScoped<AreaRepository>();
       services.AddScoped<UserRepository>();
+      services.AddScoped<KeeperRepository>();
       services.AddScoped<WarehouseRepository>();
     }
 

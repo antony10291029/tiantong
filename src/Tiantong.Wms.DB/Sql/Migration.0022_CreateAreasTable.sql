@@ -5,6 +5,6 @@ create table if not exists areas (
   name varchar(255) not null,
   comment varchar(255) not null,
   total_area varchar(255) not null,
-  is_enabled boolean not null default false,
+  is_enabled boolean not null,
   unique(warehouse_id, number)
 );

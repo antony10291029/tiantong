@@ -26,6 +26,11 @@ namespace Tiantong.Wms.Api
       Post("/warehouses/delete", "Warehouse.Delete");
       Post("/warehouses/update", "Warehouse.Update");
       Post("/warehouses/search", "Warehouse.Search");
+
+      Post("/areas/create", "Area.Create");
+      Post("/areas/delete", "Area.Delete");
+      Post("/areas/update", "Area.Update");
+      Post("/areas/search", "Area.Search");
     }
   }
 }

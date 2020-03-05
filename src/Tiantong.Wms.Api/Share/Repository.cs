@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+
 namespace Tiantong.Wms.Api
 {
   public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
@@ -5,6 +9,8 @@ namespace Tiantong.Wms.Api
     protected virtual DbContext DbContext { get; set; }
 
     public virtual IUnitOfWork UnitOfWork { get => DbContext; }
+
+    public DbSet<TEntity> Table { get => DbContext.Set<TEntity>(); }
 
     public Repository(DbContext db)
     {
@@ -14,6 +20,16 @@ namespace Tiantong.Wms.Api
     public virtual TEntity Add(TEntity entity)
     {
       return DbContext.Add(entity).Entity;
+    }
+
+    public void AddRange(params TEntity[] entities)
+    {
+      DbContext.AddRange(entities);
+    }
+
+    public void AddRange(IEnumerable<TEntity> entities)
+    {
+      DbContext.AddRange(entities);
     }
 
     public virtual TEntity Update(TEntity entity)

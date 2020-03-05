@@ -1,6 +1,6 @@
 using System.Linq;
-using Renet.Web;
 using Microsoft.Extensions.Configuration;
+using Renet.Web;
 using Tiantong.Wms.DB;
 
 namespace Tiantong.Wms.Api
@@ -17,6 +17,8 @@ namespace Tiantong.Wms.Api
 
     private UserRepository _users;
 
+    private AreaRepository _areas;
+
     private WarehouseRepository _warehouses;
 
     public AppController(
@@ -25,11 +27,13 @@ namespace Tiantong.Wms.Api
       IRandom random,
       IConfiguration config,
       UserRepository users,
+      AreaRepository areas,
       WarehouseRepository warehouses
     ) {
       _db = db;
       _auth = auth;
       _users = users;
+      _areas = areas;
       _random = random;
       _config = config;
       _warehouses = warehouses;
@@ -90,6 +94,7 @@ namespace Tiantong.Wms.Api
       InsertRootUser();
       InsertOwnerUsers();
       InsertWarehouses();
+      InsertAreas();
 
       return JsonMessage("Success to insert test data");
     }
@@ -119,7 +124,7 @@ namespace Tiantong.Wms.Api
     private void InsertWarehouses()
     {
       _users.Owners.Take(4).ToList().ForEach(owner => {
-        int L = _random.Range(2, 5);
+        int L = _random.Range(4, 8);
         for (var i = 1; i < L; i++) {
           _warehouses.Add(new Warehouse() {
             owner_user_id = owner.id,
@@ -132,6 +137,24 @@ namespace Tiantong.Wms.Api
       });
 
       _warehouses.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertAreas()
+    {
+      _warehouses.Table.OrderBy(item => item.id).ToList().ForEach(warehouse => {
+        int L = _random.Range(20, 40);
+        for (var i = 0; i < L; i++) {
+          _areas.Add(new Area() {
+            warehouse_id = warehouse.id,
+            number = $"AN{i}",
+            name = $"test area name {i}",
+            comment = $"test area comment {i}",
+            total_area = $"{i}",
+          });
+        }
+      });
+
+      _areas.UnitOfWork.SaveChanges();
     }
   }
 }

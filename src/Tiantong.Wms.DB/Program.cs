@@ -7,7 +7,8 @@ namespace Tiantong.Wms.DB
       var migrator = new PostgresMigrator();
 
       // migrator.Rollback();
-      migrator.Migrate();
+      // migrator.Migrate();
+      migrator.Refresh();
     }
   }
 }
