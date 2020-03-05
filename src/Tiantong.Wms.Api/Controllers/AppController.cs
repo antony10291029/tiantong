@@ -21,6 +21,8 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
+    private LocationRepository _locations;
+
     public AppController(
       IAuth auth,
       DbContext db,
@@ -28,6 +30,7 @@ namespace Tiantong.Wms.Api
       IConfiguration config,
       UserRepository users,
       AreaRepository areas,
+      LocationRepository locations,
       WarehouseRepository warehouses
     ) {
       _db = db;
@@ -36,6 +39,7 @@ namespace Tiantong.Wms.Api
       _areas = areas;
       _random = random;
       _config = config;
+      _locations = locations;
       _warehouses = warehouses;
     }
 
@@ -95,6 +99,7 @@ namespace Tiantong.Wms.Api
       InsertOwnerUsers();
       InsertWarehouses();
       InsertAreas();
+      InsertLocations();
 
       return JsonMessage("Success to insert test data");
     }
@@ -123,8 +128,8 @@ namespace Tiantong.Wms.Api
 
     private void InsertWarehouses()
     {
-      _users.Owners.Take(4).ToList().ForEach(owner => {
-        int L = _random.Range(4, 8);
+      _users.Owners.OrderBy(user => user.id).Take(3).ToList().ForEach(owner => {
+        int L = _random.Range(3, 5);
         for (var i = 1; i < L; i++) {
           _warehouses.Add(new Warehouse() {
             owner_user_id = owner.id,
@@ -142,7 +147,7 @@ namespace Tiantong.Wms.Api
     private void InsertAreas()
     {
       _warehouses.Table.OrderBy(item => item.id).ToList().ForEach(warehouse => {
-        int L = _random.Range(20, 40);
+        int L = _random.Range(5, 10);
         for (var i = 0; i < L; i++) {
           _areas.Add(new Area() {
             warehouse_id = warehouse.id,
@@ -155,6 +160,26 @@ namespace Tiantong.Wms.Api
       });
 
       _areas.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertLocations()
+    {
+      _areas.Table.OrderBy(item => item.id).ToList().ForEach(area => {
+        int L = _random.Range(5, 10);
+        for (var i = 0; i < L; i++) {
+          _locations.Add(new Location() {
+            area_id = area.id,
+            total_area = $"{i}",
+            total_volume = $"{i * i}",
+            warehouse_id = area.warehouse_id,
+            name = $"test location name {i}",
+            number = $"test location number {i}",
+            comment = $"test location comment {i}",
+          });
+        }
+      });
+
+      _locations.UnitOfWork.SaveChanges();
     }
   }
 }

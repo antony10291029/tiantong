@@ -31,6 +31,12 @@ namespace Tiantong.Wms.Api
       Post("/areas/delete", "Area.Delete");
       Post("/areas/update", "Area.Update");
       Post("/areas/search", "Area.Search");
+
+      Post("/locations/create", "Location.Create");
+      Post("/locations/delete", "Location.Delete");
+      Post("/locations/update", "Location.Update");
+      Post("/locations/search", "Location.Search");
+
     }
   }
 }
