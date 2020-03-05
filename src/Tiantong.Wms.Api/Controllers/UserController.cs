@@ -9,36 +9,12 @@ namespace Tiantong.Wms.Api
   {
     private IAuth _auth;
 
-    private IConfiguration _config;
-
     private UserRepository _users;
 
-    public UserController(UserRepository users, IAuth auth, IConfiguration config)
+    public UserController(UserRepository users, IAuth auth)
     {
       _auth = auth;
       _users = users;
-      _config = config;
-    }
-
-    // 初始化一个 root 用户
-    // 用户 email 和 password 由配置文件提供
-    // 若 root 用户已存在，则不再重复创建
-    public object InitializeRootUser()
-    {
-      if (_users.HasRoot()) {
-        return JsonMessage("Root user has been initialized");
-      } else {
-        var user = new User {
-          type = UserTypes.Root,
-          password = _config.GetValue("root_password", "123456"),
-          email = _config.GetValue("root_email", "root@system.com"),
-        };
-
-        _users.Add(user);
-        _users.UnitOfWork.SaveChanges();
-
-        return JsonMessage("Success to initialize root user");
-      }
     }
 
     public User[] Search()

@@ -77,6 +77,11 @@ namespace Tiantong.Wms.Api
       }
     }
 
+    public void EnsureRoot()
+    {
+      EnsureType(UserTypes.Root);
+    }
+
     public void EnsureOwner()
     {
       EnsureType(UserTypes.Owner);

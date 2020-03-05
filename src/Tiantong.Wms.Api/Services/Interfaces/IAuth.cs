@@ -12,6 +12,8 @@ namespace Tiantong.Wms.Api
 
     void EnsureType(string type);
 
+    void EnsureRoot();
+
     void EnsureOwner();
 
     (string, DateTime, DateTime) Encode(User user);

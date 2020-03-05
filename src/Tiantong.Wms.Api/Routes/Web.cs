@@ -9,7 +9,10 @@ namespace Tiantong.Wms.Api
       Get("/", "App.Home");
       Post("/", "App.Home");
 
-      Post("/root/initialize", "User.InitializeRootUser");
+      Post("/dev/initialize", "App.Initialize");
+      Post("/dev/restore", "App.Restore");
+      Post("/dev/seed", "App.InsertTestData");
+
       Post("/users/search", "User.Search");
 
       Post("/users/register", "User.Register");
