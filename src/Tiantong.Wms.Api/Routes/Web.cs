@@ -23,6 +23,7 @@ namespace Tiantong.Wms.Api
       Post("/auth/token/refresh", "User.RefreshToken");
 
       Post("/warehouses/create", "Warehouse.Create");
+      Post("/warehouses/delete", "Warehouse.Delete");
       Post("/warehouses/update", "Warehouse.Update");
       Post("/warehouses/search", "Warehouse.Search");
     }

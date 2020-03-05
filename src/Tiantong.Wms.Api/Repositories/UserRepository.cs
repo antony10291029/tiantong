@@ -11,6 +11,13 @@ namespace Tiantong.Wms.Api
 
     protected DbSet<User> Users { get => DbContext.Users; }
 
+    public IQueryable<User> Owners
+    {
+      get => DbContext.Users
+        .Where(user => user.type == UserTypes.Owner)
+        .OrderBy(user => user.id);
+    }
+
     public UserRepository(DbContext db, IHash hash) : base(db)
     {
       _hash = hash;

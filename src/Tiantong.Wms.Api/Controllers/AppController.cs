@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using Renet.Web;
 using Microsoft.Extensions.Configuration;
 using Tiantong.Wms.DB;
@@ -11,6 +11,8 @@ namespace Tiantong.Wms.Api
 
     private DbContext _db;
 
+    private IRandom _random;
+
     private IConfiguration _config;
 
     private UserRepository _users;
@@ -20,6 +22,7 @@ namespace Tiantong.Wms.Api
     public AppController(
       IAuth auth,
       DbContext db,
+      IRandom random,
       IConfiguration config,
       UserRepository users,
       WarehouseRepository warehouses
@@ -27,6 +30,7 @@ namespace Tiantong.Wms.Api
       _db = db;
       _auth = auth;
       _users = users;
+      _random = random;
       _config = config;
       _warehouses = warehouses;
     }
@@ -85,6 +89,7 @@ namespace Tiantong.Wms.Api
 
       InsertRootUser();
       InsertOwnerUsers();
+      InsertWarehouses();
 
       return JsonMessage("Success to insert test data");
     }
@@ -98,7 +103,7 @@ namespace Tiantong.Wms.Api
 
     private void InsertOwnerUsers()
     {
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i < _random.Range(20, 100); i++) {
         var user = new User {
           type = UserTypes.Owner,
           password = "123456",
@@ -109,6 +114,24 @@ namespace Tiantong.Wms.Api
       }
 
       _users.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertWarehouses()
+    {
+      _users.Owners.Take(4).ToList().ForEach(owner => {
+        int L = _random.Range(2, 5);
+        for (var i = 1; i < L; i++) {
+          _warehouses.Add(new Warehouse() {
+            owner_user_id = owner.id,
+            number = $"WH000{i}",
+            name = $"test warehouse {i}",
+            address = $"test warehouse address {i}",
+            comment = $"test warehouse comment {i}",
+          });
+        }
+      });
+
+      _warehouses.UnitOfWork.SaveChanges();
     }
   }
 }

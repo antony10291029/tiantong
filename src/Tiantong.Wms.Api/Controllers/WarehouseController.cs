@@ -16,7 +16,7 @@ namespace Tiantong.Wms.Api
       _warehouses = warehouses;
     }
 
-    public class CreateWarehouseParams
+    public class WarehouseCreateParams
     {
       [MaxLength(20)]
       public string number { get; set; } = "";
@@ -31,7 +31,7 @@ namespace Tiantong.Wms.Api
       public string comment { get; set; } = "";
     }
 
-    public object Create([FromBody] CreateWarehouseParams param)
+    public object Create([FromBody] WarehouseCreateParams param)
     {
       _auth.EnsureOwner();
       var warehouse = new Warehouse();
@@ -46,9 +46,23 @@ namespace Tiantong.Wms.Api
       return JsonMessage("Success to create warehouse");
     }
 
-    public class UpdateWarehouseParams
+    public class WarehouseDeleteParams
     {
-      [Required]
+      public int id { get; set; }
+    }
+
+    public object Delete([FromBody] WarehouseDeleteParams param)
+    {
+      _auth.EnsureOwner();
+      _warehouses.EnsureOwner(param.id, _auth.User.id);
+      _warehouses.Remove(param.id);
+      _warehouses.UnitOfWork.SaveChanges();
+
+      return JsonMessage("Success to delete warehouse");
+    }
+
+    public class WarehouseUpdateParams
+    {
       public int id { get; set; }
 
       [MaxLength(20)]
@@ -66,7 +80,7 @@ namespace Tiantong.Wms.Api
       public bool? is_enabled { get; set; }
     }
 
-    public object Update([FromBody] UpdateWarehouseParams param)
+    public object Update([FromBody] WarehouseUpdateParams param)
     {
       _auth.EnsureOwner();
       var warehouse = _warehouses.EnsureGetByOwner(param.id, _auth.User.id);
