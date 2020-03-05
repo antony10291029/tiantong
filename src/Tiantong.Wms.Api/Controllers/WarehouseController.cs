@@ -29,6 +29,8 @@ namespace Tiantong.Wms.Api
 
       [MaxLength(255)]
       public string comment { get; set; } = "";
+
+      public bool is_enabled { get; set; } = true;
     }
 
     public object Create([FromBody] WarehouseCreateParams param)
@@ -40,6 +42,7 @@ namespace Tiantong.Wms.Api
       warehouse.address = param.address;
       warehouse.comment = param.comment;
       warehouse.owner_user_id = _auth.User.id;
+      warehouse.is_enabled = param.is_enabled;
       _warehouses.Add(warehouse);
       _warehouses.UnitOfWork.SaveChanges();
 

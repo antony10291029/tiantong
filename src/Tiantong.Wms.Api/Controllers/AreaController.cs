@@ -22,7 +22,6 @@ namespace Tiantong.Wms.Api
 
     public class AreaCreateParams
     {
-      [Required]
       public int warehouse_id { get; set; }
 
       [Required]
@@ -31,6 +30,8 @@ namespace Tiantong.Wms.Api
       public string name { get; set; } = "";
 
       public string comment { get; set; } = "";
+
+      public string total_area { get; set; } = "";
 
       public bool is_enabled { get; set; } = true;
     }
@@ -45,6 +46,7 @@ namespace Tiantong.Wms.Api
       area.name = param.name;
       area.number = param.number;
       area.comment = param.comment;
+      area.total_area = param.total_area;
       area.is_enabled = param.is_enabled;
       area.warehouse_id = param.warehouse_id;
       _areas.Add(area);
@@ -55,7 +57,6 @@ namespace Tiantong.Wms.Api
 
     public class AreaDeleteParams
     {
-      [Required]
       public int id { get; set; }
     }
 
@@ -71,11 +72,7 @@ namespace Tiantong.Wms.Api
 
     public class AreaUpdateParams
     {
-      [Required]
       public int id { get; set; }
-
-      [Required]
-      public int warehouse_id { get; set; }
 
       public string number { get; set; }
 
