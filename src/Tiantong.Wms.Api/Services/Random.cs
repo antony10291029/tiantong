@@ -24,5 +24,10 @@ namespace Tiantong.Wms.Api
 
       return builder.ToString();
     }
+
+    public int Range(int min, int max)
+    {
+      return _random.Next(min, max);
+    }
   }
 }
