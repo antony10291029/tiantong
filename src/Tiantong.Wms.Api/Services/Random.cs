@@ -1,5 +1,5 @@
-using System.Text;
 using System;
+using System.Text;
 
 namespace Tiantong.Wms.Api
 {
@@ -9,7 +9,17 @@ namespace Tiantong.Wms.Api
 
     public Random()
     {
-      _random = new System.Random((int)DateTime.Now.Ticks);
+      _random = new System.Random((int) System.DateTime.Now.Ticks);
+    }
+
+    public bool Bool()
+    {
+      return Int(0, 1) == 0 ? false : true;
+    }
+
+    public int Int(int min, int max)
+    {
+      return _random.Next(min, max + 1);
     }
 
     public string String(int length)
@@ -25,9 +35,11 @@ namespace Tiantong.Wms.Api
       return builder.ToString();
     }
 
-    public int Range(int min, int max)
+    public DateTime DateTime(DateTime min, DateTime max)
     {
-      return _random.Next(min, max);
+      var range = (max - min).Days;
+
+      return min.AddDays(_random.Next(range));
     }
   }
 }
