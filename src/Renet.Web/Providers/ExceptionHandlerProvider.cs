@@ -1,7 +1,6 @@
-using System.Net.Mime;
-using System.Linq;
-using System.Diagnostics;
 using System;
+using System.Linq;
+using System.Dynamic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -57,15 +56,17 @@ namespace Renet.Web
       }));
     }
 
-    protected virtual async Task ShowDevelopmentException(Exception ex, HttpContext context)
+    protected virtual async Task ShowDevelopmentException(Exception ex, HttpContext context, Action<dynamic> expander = null)
     {
+      dynamic data = new ExpandoObject();
       context.Response.StatusCode = 500;
 
-      await context.Response.WriteAsync(JsonSerializer.Serialize(new {
-        error = ex.GetType().Name,
-        message = ex.Message,
-        traces = ex.StackTrace.Split("\n").Select(text => text.Trim()).ToArray(),
-      }));
+      data.error = ex.GetType().Name;
+      data.message = ex.Message;
+      if (expander != null) expander(data);
+      data.traces = ex.StackTrace.Split("\n").Select(text => text.Trim()).ToArray();
+
+      await context.Response.WriteAsync(JsonSerializer.Serialize((object) data));
     }
   }
 }

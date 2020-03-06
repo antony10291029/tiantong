@@ -1,9 +1,11 @@
+using System.Linq;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Renet.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Wms.Api
 {
@@ -17,7 +19,7 @@ namespace Tiantong.Wms.Api
       if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, context);
       } else if (Env.IsDevelopment()) {
-        await ShowDevelopmentException(ex, context);
+        await ShowDevelopmentException(ex, context, ResolveExceptionExpander(ex));
       } else {
         await ShowUnprocessedError(ex, context);
       }
@@ -27,5 +29,13 @@ namespace Tiantong.Wms.Api
     {
       if (db.HasTransaction()) db.Rollback();
     }
+
+    private Action<dynamic> ResolveExceptionExpander(Exception ex) => response =>
+    {
+      if (ex is DbUpdateException) {
+        var error = ex as DbUpdateException;
+        response.details = error.InnerException.ToString().Split('\n').Select(row => row.Trim());
+      }
+    };
   }
 }
