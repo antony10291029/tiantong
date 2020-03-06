@@ -7,6 +7,8 @@ namespace Tiantong.Wms.Api
   {
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Item> Items { get; set; }
+
     public DbSet<Area> Areas { get; set; }
 
     public DbSet<Keeper> Keepers { get; set; }

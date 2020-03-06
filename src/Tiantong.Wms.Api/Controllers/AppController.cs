@@ -20,6 +20,8 @@ namespace Tiantong.Wms.Api
 
     private AreaRepository _areas;
 
+    private ItemRepository _items;
+
     private ProjectRepository _projects;
 
     private LocationRepository _locations;
@@ -37,6 +39,7 @@ namespace Tiantong.Wms.Api
       IConfiguration config,
       UserRepository users,
       AreaRepository areas,
+      ItemRepository items,
       ProjectRepository projects,
       LocationRepository locations,
       WarehouseRepository warehouses,
@@ -47,6 +50,7 @@ namespace Tiantong.Wms.Api
       _auth = auth;
       _users = users;
       _areas = areas;
+      _items = items;
       _random = random;
       _config = config;
       _projects = projects;
@@ -116,6 +120,7 @@ namespace Tiantong.Wms.Api
       InsertProjects();
       InsertItemCategories();
       InsertOrderCategories();
+      InsertItems();
 
       return JsonMessage("Success to insert test data");
     }
@@ -258,6 +263,24 @@ namespace Tiantong.Wms.Api
       }
 
       _orderCategories.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertItems()
+    {
+      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+        for (int i = 0, L = _random.Int(10, 30); i < L; i++) {
+          _items.Add(new Item {
+            warehouse_id = warehouse.id,
+            number = $"item_000{i}",
+            category_ids = new int[] {},
+            name = $"test item {i}",
+            specification = "个",
+            comment = $"test item category comment {i}"
+          });
+        }
+      }
+
+      _items.UnitOfWork.SaveChanges();
     }
   }
 }

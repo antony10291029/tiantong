@@ -21,6 +21,13 @@ namespace Tiantong.Wms.Api
         .ToArray();
     }
 
+    public bool HasIds(int wId, int[] ids)
+    {
+      var count = Table.Where(ct => ct.warehouse_id == wId && ids.Contains(ct.id)).Count();
+
+      return count == ids.Length;
+    }
+
     public bool HasName(int warehouseId, string name)
     {
       return Table.Any(category => category.warehouse_id == warehouseId && category.name == name);
@@ -35,6 +42,13 @@ namespace Tiantong.Wms.Api
       }
 
       return category;
+    }
+
+    public void EnsureIds(int warehouseId, int[] ids)
+    {
+      if (!HasIds(warehouseId, ids)) {
+        throw new HttpException("Item Category id does exist");
+      }
     }
 
     public ItemCategory EnsureGetByOwner(int id, int userId)

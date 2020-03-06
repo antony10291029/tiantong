@@ -31,7 +31,7 @@ namespace Tiantong.Wms.Api
       var project = Get(id);
 
       if (project == null) {
-        throw new HttpException("project id does not exist");
+        throw new HttpException("Project id does not exist");
       }
 
       return project;
