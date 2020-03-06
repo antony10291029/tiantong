@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 
 namespace Tiantong.Wms.Api
@@ -15,6 +16,16 @@ namespace Tiantong.Wms.Api
     public bool Bool()
     {
       return Int(0, 1) == 0 ? false : true;
+    }
+
+    public T Array<T>(T[] array)
+    {
+      return array[Int(0, array.Length - 1)];
+    }
+
+    public T[] Array<T>(T[] array, int count)
+    {
+      return array.OrderBy(item => _random.Next()).Take(count).ToArray();
     }
 
     public int Int(int min, int max)

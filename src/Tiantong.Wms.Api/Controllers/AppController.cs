@@ -22,6 +22,8 @@ namespace Tiantong.Wms.Api
 
     private ItemRepository _items;
 
+    private StockRepository _stocks;
+
     private ProjectRepository _projects;
 
     private LocationRepository _locations;
@@ -40,6 +42,7 @@ namespace Tiantong.Wms.Api
       UserRepository users,
       AreaRepository areas,
       ItemRepository items,
+      StockRepository stocks,
       ProjectRepository projects,
       LocationRepository locations,
       WarehouseRepository warehouses,
@@ -48,10 +51,11 @@ namespace Tiantong.Wms.Api
     ) {
       _db = db;
       _auth = auth;
+      _random = random;
       _users = users;
       _areas = areas;
       _items = items;
-      _random = random;
+      _stocks = stocks;
       _config = config;
       _projects = projects;
       _locations = locations;
@@ -121,6 +125,7 @@ namespace Tiantong.Wms.Api
       InsertItemCategories();
       InsertOrderCategories();
       InsertItems();
+      InsertStocks();
 
       return JsonMessage("Success to insert test data");
     }
@@ -277,6 +282,29 @@ namespace Tiantong.Wms.Api
             specification = "个",
             comment = $"test item category comment {i}"
           });
+        }
+      }
+
+      _items.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertStocks()
+    {
+      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+        var items = _items.Search(warehouse.id);
+        var locations = _locations.Search(warehouse.id);
+        items = _random.Array(items, _random.Int(5, 10));
+
+        foreach (var item in items) {
+          locations = _random.Array(locations, _random.Int(1, 10));
+          foreach (var location in locations) {
+            _stocks.Add(new Stock {
+              warehouse_id = warehouse.id,
+              item_id = item.id,
+              location_id = location.id,
+              quantity = _random.Int(10, 100)
+            });
+          }
         }
       }
 

@@ -11,6 +11,8 @@ namespace Tiantong.Wms.Api
 
     public DbSet<Area> Areas { get; set; }
 
+    public DbSet<Stock> stocks { get; set; }
+
     public DbSet<Keeper> Keepers { get; set; }
 
     public DbSet<Project> Projects { get; set; }

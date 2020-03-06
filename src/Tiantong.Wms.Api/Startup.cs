@@ -17,6 +17,7 @@ namespace Tiantong.Wms.Api
       services.AddScoped<AreaRepository>();
       services.AddScoped<ItemRepository>();
       services.AddScoped<UserRepository>();
+      services.AddScoped<StockRepository>();
       services.AddScoped<KeeperRepository>();
       services.AddScoped<ProjectRepository>();
       services.AddScoped<LocationRepository>();

@@ -57,6 +57,8 @@ namespace Tiantong.Wms.Api
       Post("/items/update", "Item.Update");
       Post("/items/search", "Item.Search");
 
+      Post("/stocks/search", "Stock.Search");
+
     }
   }
 }
