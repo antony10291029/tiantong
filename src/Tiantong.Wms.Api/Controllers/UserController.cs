@@ -43,11 +43,12 @@ namespace Tiantong.Wms.Api
 
     public object Register([FromBody] RegisterUserParams param)
     {
-      var user = new User();
-      user.type = UserTypes.Owner;
-      user.email = param.email;
-      user.password = param.password;
-      user.name = param.name;
+      var user = new User {
+        type = UserTypes.Owner,
+        email = param.email,
+        password = param.password,
+        name = param.name,
+      };
       _users.Add(user);
       _users.UnitOfWork.SaveChanges();
 

@@ -31,7 +31,7 @@ namespace Tiantong.Wms.Api
       var category = Get(id);
 
       if (category == null) {
-        throw new HttpException("category id does not exist");
+        throw new HttpException("Item Category id does not exist");
       }
 
       return category;

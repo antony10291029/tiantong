@@ -44,13 +44,14 @@ namespace Tiantong.Wms.Api
       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
       _areas.EnsureNumberUnique(warehouseId, param.number);
 
-      var area = new Area();
-      area.warehouse_id = warehouseId;
-      area.number = param.number;
-      area.name = param.name;
-      area.comment = param.comment;
-      area.total_area = param.total_area;
-      area.is_enabled = param.is_enabled;
+      var area = new Area {
+        warehouse_id = warehouseId,
+        number = param.number,
+        name = param.name,
+        comment = param.comment,
+        total_area = param.total_area,
+        is_enabled = param.is_enabled,
+      };
       _areas.Add(area);
       _areas.UnitOfWork.SaveChanges();
 

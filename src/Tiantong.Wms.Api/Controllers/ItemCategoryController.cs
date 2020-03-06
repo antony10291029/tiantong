@@ -27,7 +27,8 @@ namespace Tiantong.Wms.Api
       [Required]
       public int? warehouse_id { get; set; }
 
-      public string name { get; set; } = "";
+      [Required]
+      public string name { get; set; }
 
       public string comment { get; set; } = "";
 
@@ -89,7 +90,6 @@ namespace Tiantong.Wms.Api
       _auth.EnsureOwner();
       var category = _itemCategories.EnsureGetByOwner((int) param.id, _auth.User.id);
 
-      if (param.name != null) category.name = param.name;
       if (param.comment != null) category.comment = param.comment;
       if (param.is_enabled != null) {
         category.is_enabled = (bool) param.is_enabled;

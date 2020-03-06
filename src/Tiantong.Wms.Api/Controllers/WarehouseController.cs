@@ -32,13 +32,14 @@ namespace Tiantong.Wms.Api
     public object Create([FromBody] WarehouseCreateParams param)
     {
       _auth.EnsureOwner();
-      var warehouse = new Warehouse();
-      warehouse.owner_user_id = _auth.User.id;
-      warehouse.number = param.number;
-      warehouse.name = param.name;
-      warehouse.address = param.address;
-      warehouse.comment = param.comment;
-      warehouse.is_enabled = param.is_enabled;
+      var warehouse = new Warehouse {
+        owner_user_id = _auth.User.id,
+        number = param.number,
+        name = param.name,
+        address = param.address,
+        comment = param.comment,
+        is_enabled = param.is_enabled,
+      };
       _warehouses.Add(warehouse);
       _warehouses.UnitOfWork.SaveChanges();
 
