@@ -21,6 +21,7 @@ namespace Tiantong.Wms.Api
       services.AddScoped<LocationRepository>();
       services.AddScoped<WarehouseRepository>();
       services.AddScoped<ItemCategoryRepository>();
+      services.AddScoped<OrderCategoryRepository>();
     }
 
     public void Configure(IApplicationBuilder app)

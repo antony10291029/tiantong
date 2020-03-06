@@ -28,6 +28,8 @@ namespace Tiantong.Wms.Api
 
     private ItemCategoryRepository _itemCategories;
 
+    private OrderCategoryRepository _orderCategories;
+
     public AppController(
       IAuth auth,
       DbContext db,
@@ -38,7 +40,8 @@ namespace Tiantong.Wms.Api
       ProjectRepository projects,
       LocationRepository locations,
       WarehouseRepository warehouses,
-      ItemCategoryRepository itemCategories
+      ItemCategoryRepository itemCategories,
+      OrderCategoryRepository orderCategories
     ) {
       _db = db;
       _auth = auth;
@@ -50,6 +53,7 @@ namespace Tiantong.Wms.Api
       _locations = locations;
       _warehouses = warehouses;
       _itemCategories = itemCategories;
+      _orderCategories = orderCategories;
     }
 
     public object Home()
@@ -111,6 +115,7 @@ namespace Tiantong.Wms.Api
       InsertLocations();
       InsertProjects();
       InsertItemCategories();
+      InsertOrderCategories();
 
       return JsonMessage("Success to insert test data");
     }
@@ -201,7 +206,7 @@ namespace Tiantong.Wms.Api
           var deadline = _random.DateTime(startAt.AddDays(30), startAt.AddDays(180));
           var finishedAt = _random.Bool() ? _random.DateTime(deadline.AddDays(-60), deadline.AddDays(60)) : DateTime.MinValue;
 
-          _projects.Add(new Project() {
+          _projects.Add(new Project {
             warehouse_id = warehouse.id,
             number = $"PJ{i}",
             name = $"test project {i}",
@@ -229,6 +234,30 @@ namespace Tiantong.Wms.Api
       }
 
       _itemCategories.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertOrderCategories()
+    {
+      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+        for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
+          _orderCategories.Add(new OrderCategory {
+            warehouse_id = warehouse.id,
+            type = $"order.in",
+            name = $"test item category {i}",
+            comment = $"test item category comment {i}",
+          });
+        }
+        for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
+          _orderCategories.Add(new OrderCategory {
+            warehouse_id = warehouse.id,
+            type = $"order.out",
+            name = $"test item category {i}",
+            comment = $"test item category comment {i}",
+          });
+        }
+      }
+
+      _orderCategories.UnitOfWork.SaveChanges();
     }
   }
 }

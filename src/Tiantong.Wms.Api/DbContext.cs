@@ -19,6 +19,8 @@ namespace Tiantong.Wms.Api
 
     public DbSet<ItemCategory> ItemCategories { get; set; }
 
+    public DbSet<OrderCategory> OrderCategories { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Keeper>()
