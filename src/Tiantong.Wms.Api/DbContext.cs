@@ -21,6 +21,8 @@ namespace Tiantong.Wms.Api
 
     public DbSet<Warehouse> Warehouses { get; set; }
 
+    public DbSet<StockRecord> StockRecords { get; set; }
+
     public DbSet<ItemCategory> ItemCategories { get; set; }
 
     public DbSet<OrderCategory> OrderCategories { get; set; }

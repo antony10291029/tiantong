@@ -5,38 +5,38 @@ using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
-  public class StockController : BaseController
+  public class StockRecordController : BaseController
   {
     private IAuth _auth;
 
     private WarehouseRepository _warehouses;
 
-    private StockRepository _stocks;
+    private StockRecordRepository _stockRecords;
 
-    public StockController(
+    public StockRecordController(
       IAuth auth,
-      StockRepository stocks,
-      WarehouseRepository warehouses
+      WarehouseRepository warehouses,
+      StockRecordRepository stockRecords
     ) {
       _auth = auth;
-      _stocks = stocks;
       _warehouses = warehouses;
+      _stockRecords = stockRecords;
     }
 
-    public class OrderCategorySearchParams
+    public class StockRecordSearchParams
     {
       [Required]
       public int? warehouse_id { get; set; }
     }
 
-    public Stock[] Search([FromBody] OrderCategorySearchParams param)
+    public StockRecord[] Search([FromBody] StockRecordSearchParams param)
     {
       _auth.EnsureOwner();
       var warehouseId = (int) param.warehouse_id;
       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
 
-      return _stocks.Table
-        .Where(stock => stock.warehouse_id == warehouseId)
+      return _stockRecords.Table
+        .Where(record => record.warehouse_id == warehouseId)
         .ToArray();
     }
   }

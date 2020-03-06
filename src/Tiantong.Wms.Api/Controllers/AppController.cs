@@ -30,6 +30,8 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
+    private StockRecordRepository _stockRecords;
+
     private ItemCategoryRepository _itemCategories;
 
     private OrderCategoryRepository _orderCategories;
@@ -46,6 +48,7 @@ namespace Tiantong.Wms.Api
       ProjectRepository projects,
       LocationRepository locations,
       WarehouseRepository warehouses,
+      StockRecordRepository stockRecords,
       ItemCategoryRepository itemCategories,
       OrderCategoryRepository orderCategories
     ) {
@@ -60,6 +63,7 @@ namespace Tiantong.Wms.Api
       _projects = projects;
       _locations = locations;
       _warehouses = warehouses;
+      _stockRecords = stockRecords;
       _itemCategories = itemCategories;
       _orderCategories = orderCategories;
     }
@@ -126,6 +130,7 @@ namespace Tiantong.Wms.Api
       InsertOrderCategories();
       InsertItems();
       InsertStocks();
+      InsertStockRecords();
 
       return JsonMessage("Success to insert test data");
     }
@@ -309,6 +314,11 @@ namespace Tiantong.Wms.Api
       }
 
       _items.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertStockRecords()
+    {
+      // wait for orders insert
     }
   }
 }
