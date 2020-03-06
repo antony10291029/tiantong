@@ -20,6 +20,7 @@ namespace Tiantong.Wms.Api
       services.AddScoped<ProjectRepository>();
       services.AddScoped<LocationRepository>();
       services.AddScoped<WarehouseRepository>();
+      services.AddScoped<ItemCategoryRepository>();
     }
 
     public void Configure(IApplicationBuilder app)

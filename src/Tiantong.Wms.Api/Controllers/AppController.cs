@@ -26,6 +26,8 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
+    private ItemCategoryRepository _itemCategories;
+
     public AppController(
       IAuth auth,
       DbContext db,
@@ -35,7 +37,8 @@ namespace Tiantong.Wms.Api
       AreaRepository areas,
       ProjectRepository projects,
       LocationRepository locations,
-      WarehouseRepository warehouses
+      WarehouseRepository warehouses,
+      ItemCategoryRepository itemCategories
     ) {
       _db = db;
       _auth = auth;
@@ -46,6 +49,7 @@ namespace Tiantong.Wms.Api
       _projects = projects;
       _locations = locations;
       _warehouses = warehouses;
+      _itemCategories = itemCategories;
     }
 
     public object Home()
@@ -106,6 +110,7 @@ namespace Tiantong.Wms.Api
       InsertAreas();
       InsertLocations();
       InsertProjects();
+      InsertItemCategories();
 
       return JsonMessage("Success to insert test data");
     }
@@ -210,6 +215,21 @@ namespace Tiantong.Wms.Api
       }
 
       _projects.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertItemCategories()
+    {
+      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+        for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
+          _itemCategories.Add(new ItemCategory {
+            warehouse_id = warehouse.id,
+            name = $"test item category {i}",
+            comment = $"test item category comment {i}",
+          });
+        }
+      }
+
+      _itemCategories.UnitOfWork.SaveChanges();
     }
   }
 }
