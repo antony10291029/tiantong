@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
 
@@ -27,7 +28,8 @@ namespace Tiantong.Wms.Api
 
     public class LocationCreateParams
     {
-      public int area_id { get; set; }
+      [Required]
+      public int? area_id { get; set; }
 
       public string number { get; set; }
 
@@ -45,9 +47,9 @@ namespace Tiantong.Wms.Api
     public object Create([FromBody] LocationCreateParams param)
     {
       _auth.EnsureOwner();
-      _locations.EnsureNumberUnique(param.area_id, param.number);
-      var area = _areas.EnsureGetByOwner(param.area_id, _auth.User.id);
-      _locations.Add(new Location() {
+      var area = _areas.EnsureGetByOwner((int) param.area_id, _auth.User.id);
+      _locations.EnsureNumberUnique(area.warehouse_id, param.number);
+      var location = new Location {
         warehouse_id = area.warehouse_id,
         area_id = area.id,
         number = param.number,
@@ -56,22 +58,27 @@ namespace Tiantong.Wms.Api
         total_area = param.total_area,
         total_volume = param.total_volume,
         is_enabled = param.is_enabled,
-      });
+      };
+      _locations.Add(location);
       _locations.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to create location");
+      return new {
+        message = "Success to create location",
+        id = location.id
+      };
     }
 
     public class LocationDeleteParams
     {
-      public int id { get; set; }
+      [Required]
+      public int? id { get; set; }
     }
 
     public object Delete([FromBody] LocationDeleteParams param)
     {
       _auth.EnsureOwner();
-      _locations.EnsureGetByOwner(param.id, _auth.User.id);
-      _locations.Remove(param.id);
+      var location = _locations.EnsureGetByOwner((int) param.id, _auth.User.id);
+      _locations.Remove(location.id);
       _locations.UnitOfWork.SaveChanges();
 
       return JsonMessage("Success to delete location");
@@ -79,7 +86,8 @@ namespace Tiantong.Wms.Api
 
     public class LocationUpdateParams
     {
-      public int id { get; set; }
+      [Required]
+      public int? id { get; set; }
 
       public string number { get; set; }
 
@@ -97,7 +105,7 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] LocationUpdateParams param)
     {
       _auth.EnsureOwner();
-      var location = _locations.EnsureGetByOwner(param.id, _auth.User.id);
+      var location = _locations.EnsureGetByOwner((int) param.id, _auth.User.id);
 
       if (param.name != null) location.name = param.name;
       if (param.comment != null) location.comment = param.comment;
@@ -117,15 +125,17 @@ namespace Tiantong.Wms.Api
 
     public class LocationSearchParams
     {
-      public int warehouse_id { get; set; }
+      [Required]
+      public int? warehouse_id { get; set; }
     }
 
     public Location[] Search([FromBody] LocationSearchParams param)
     {
       _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      var id = (int) param.warehouse_id;
+      _warehouses.EnsureOwner(id, _auth.User.id);
 
-      return _locations.Search(param.warehouse_id);
+      return _locations.Search(id);
     }
   }
 }

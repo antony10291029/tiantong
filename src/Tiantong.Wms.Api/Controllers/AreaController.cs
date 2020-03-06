@@ -22,7 +22,8 @@ namespace Tiantong.Wms.Api
 
     public class AreaCreateParams
     {
-      public int warehouse_id { get; set; }
+      [Required]
+      public int? warehouse_id { get; set; }
 
       [Required]
       public string number { get; set; }
@@ -39,11 +40,12 @@ namespace Tiantong.Wms.Api
     public object Create([FromBody] AreaCreateParams param)
     {
       _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
-      _areas.EnsureNumberUnique(param.warehouse_id, param.number);
+      var warehouseId = (int) param.warehouse_id;
+      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _areas.EnsureNumberUnique(warehouseId, param.number);
 
       var area = new Area();
-      area.warehouse_id = param.warehouse_id;
+      area.warehouse_id = warehouseId;
       area.number = param.number;
       area.name = param.name;
       area.comment = param.comment;
@@ -52,19 +54,23 @@ namespace Tiantong.Wms.Api
       _areas.Add(area);
       _areas.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to create aera");
+      return new {
+        message = "Success to create aera",
+        id = area.id
+      };
     }
 
     public class AreaDeleteParams
     {
-      public int id { get; set; }
+      [Required]
+      public int? id { get; set; }
     }
 
     public object Delete([FromBody] AreaDeleteParams param)
     {
       _auth.EnsureOwner();
-      _areas.EnsureGetByOwner(param.id, _auth.User.id);
-      _areas.Remove(param.id);
+      var area = _areas.EnsureGetByOwner((int) param.id, _auth.User.id);
+      _areas.Remove(area.id);
       _areas.UnitOfWork.SaveChanges();
 
       return JsonMessage("Success to delete area");
@@ -72,7 +78,8 @@ namespace Tiantong.Wms.Api
 
     public class AreaUpdateParams
     {
-      public int id { get; set; }
+      [Required]
+      public int? id { get; set; }
 
       public string number { get; set; }
 
@@ -88,7 +95,7 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] AreaUpdateParams param)
     {
       _auth.EnsureOwner();
-      var area = _areas.EnsureGetByOwner(param.id, _auth.User.id);
+      var area = _areas.EnsureGetByOwner((int) param.id, _auth.User.id);
 
       if (param.name != null) area.name = param.name;
       if (param.comment != null) area.comment = param.comment;
@@ -108,15 +115,17 @@ namespace Tiantong.Wms.Api
 
     public class AreaSearchParams
     {
-      public int warehouse_id { get; set; }
+      [Required]
+      public int? warehouse_id { get; set; }
     }
 
     public Area[] Search([FromBody] AreaSearchParams param)
     {
       _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      var warehouseId = (int) param.warehouse_id;
+      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
 
-      return _areas.Search(param.warehouse_id);
+      return _areas.Search(warehouseId);
     }
   }
 }

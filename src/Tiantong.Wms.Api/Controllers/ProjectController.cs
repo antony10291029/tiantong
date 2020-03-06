@@ -26,7 +26,7 @@ namespace Tiantong.Wms.Api
     public class ProjectCreateParams
     {
       [Required]
-      public int warehouse_id { get; set; }
+      public int? warehouse_id { get; set; }
 
       [Required]
       public string number { get; set; }
@@ -47,33 +47,39 @@ namespace Tiantong.Wms.Api
     public object Create([FromBody] ProjectCreateParams param)
     {
       _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
-      _projects.EnsureNumberUnique(param.warehouse_id, param.number);
+      var warehouseId = (int) param.warehouse_id;
+      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _projects.EnsureNumberUnique(warehouseId, param.number);
 
-      _projects.Add(new Project() {
-        warehouse_id = param.warehouse_id,
+      var project = new Project {
+        warehouse_id = warehouseId,
         number = param.number,
         name = param.name,
         comment = param.comment,
         is_enabled = param.is_enabled,
         started_at = param.started_at,
         finished_at = param.finished_at
-      });
+      };
+      _projects.Add(project);
       _projects.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to create project");
+      return new {
+        message = "Success to create project",
+        id = project.id
+      };
     }
 
     public class ProjectDeleteParams
     {
-      public int id { get; set; }
+      [Required]
+      public int? id { get; set; }
     }
 
     public object Delete([FromBody] ProjectDeleteParams param)
     {
       _auth.EnsureOwner();
-      var project =  _projects.EnsureGetByOwner(param.id, _auth.User.id);
-      _projects.Remove(param.id);
+      var project = _projects.EnsureGetByOwner((int) param.id, _auth.User.id);
+      _projects.Remove(project.id);
       _projects.UnitOfWork.SaveChanges();
 
       return JsonMessage("Success to delete project");
@@ -84,7 +90,6 @@ namespace Tiantong.Wms.Api
       [Required]
       public int? id { get; set; }
 
-      [Required]
       public string number { get; set; }
 
       public string name { get; set; }
@@ -130,15 +135,17 @@ namespace Tiantong.Wms.Api
 
     public class ProjectSearchParams
     {
-      public int warehouse_id { get; set; }
+      [Required]
+      public int? warehouse_id { get; set; }
     }
 
     public Project[] Search([FromBody] ProjectSearchParams param)
     {
       _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      var warehouseId = (int) param.warehouse_id;
+      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
 
-      return _projects.Search(param.warehouse_id);
+      return _projects.Search(warehouseId);
     }
   }
 }

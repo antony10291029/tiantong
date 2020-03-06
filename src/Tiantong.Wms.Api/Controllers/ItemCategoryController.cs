@@ -8,8 +8,6 @@ namespace Tiantong.Wms.Api
   {
     private IAuth _auth;
 
-    private ProjectRepository _projects;
-
     private WarehouseRepository _warehouses;
 
     private ItemCategoryRepository _itemCategories;
@@ -43,15 +41,19 @@ namespace Tiantong.Wms.Api
       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
       _itemCategories.EnsureNameUnique(warehouseId, param.name);
 
-      _itemCategories.Add(new ItemCategory {
+      var category = new ItemCategory {
         warehouse_id = warehouseId,
         name = param.name,
         comment = param.comment,
         is_enabled = param.is_enabled,
-      });
+      };
+      _itemCategories.Add(category);
       _itemCategories.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to create item category");
+      return new {
+        message = "Success to create item category",
+        id = category.id
+      };
     }
 
     public class ItemCategoryDeleteParams

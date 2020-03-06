@@ -176,15 +176,14 @@ namespace Tiantong.Wms.Api
     private void InsertLocations()
     {
       _areas.Table.OrderBy(item => item.id).ToList().ForEach(area => {
-        int L = _random.Int(5, 10);
-        for (var i = 0; i < L; i++) {
+        for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           _locations.Add(new Location() {
             area_id = area.id,
             total_area = $"{i}",
             total_volume = $"{i * i}",
             warehouse_id = area.warehouse_id,
             name = $"test location name {i}",
-            number = $"test location number {i}",
+            number = $"LN{area.id}.{i}",
             comment = $"test location comment {i}",
           });
         }

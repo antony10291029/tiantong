@@ -39,9 +39,9 @@ namespace Tiantong.Wms.Api
       return location;
     }
 
-    public void EnsureNumberUnique(int areaId, string number)
+    public void EnsureNumberUnique(int warehouseId, string number)
     {
-      if (Table.Any(item => item.area_id == areaId && item.number == number)) {
+      if (Table.Any(item => item.warehouse_id == warehouseId && item.number == number)) {
         throw new HttpException("Location number already exists in this warehouse");
       }
     }
