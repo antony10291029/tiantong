@@ -18,23 +18,25 @@ namespace Tiantong.Wms.Api
 
     private UserRepository _users;
 
+    private WarehouseRepository _warehouses;
+
     private AreaRepository _areas;
+
+    private LocationRepository _locations;
+
+    private ProjectRepository _projects;
+
+    private SupplierRepository _suppliers;
+
+    private ItemCategoryRepository _itemCategories;
+
+    private OrderCategoryRepository _orderCategories;
 
     private ItemRepository _items;
 
     private StockRepository _stocks;
 
-    private ProjectRepository _projects;
-
-    private LocationRepository _locations;
-
-    private WarehouseRepository _warehouses;
-
     private StockRecordRepository _stockRecords;
-
-    private ItemCategoryRepository _itemCategories;
-
-    private OrderCategoryRepository _orderCategories;
 
     public AppController(
       IAuth auth,
@@ -42,30 +44,32 @@ namespace Tiantong.Wms.Api
       IRandom random,
       IConfiguration config,
       UserRepository users,
+      WarehouseRepository warehouses,
       AreaRepository areas,
+      LocationRepository locations,
+      ProjectRepository projects,
+      SupplierRepository suppliers,
+      ItemCategoryRepository itemCategories,
+      OrderCategoryRepository orderCategories,
       ItemRepository items,
       StockRepository stocks,
-      ProjectRepository projects,
-      LocationRepository locations,
-      WarehouseRepository warehouses,
-      StockRecordRepository stockRecords,
-      ItemCategoryRepository itemCategories,
-      OrderCategoryRepository orderCategories
+      StockRecordRepository stockRecords
     ) {
       _db = db;
       _auth = auth;
+      _config = config;
       _random = random;
       _users = users;
-      _areas = areas;
-      _items = items;
-      _stocks = stocks;
-      _config = config;
-      _projects = projects;
-      _locations = locations;
       _warehouses = warehouses;
-      _stockRecords = stockRecords;
+      _locations = locations;
+      _projects = projects;
+      _suppliers = suppliers;
+      _areas = areas;
       _itemCategories = itemCategories;
       _orderCategories = orderCategories;
+      _items = items;
+      _stocks = stocks;
+      _stockRecords = stockRecords;
     }
 
     public object Home()
@@ -126,6 +130,7 @@ namespace Tiantong.Wms.Api
       InsertAreas();
       InsertLocations();
       InsertProjects();
+      InsertSuppliers();
       InsertItemCategories();
       InsertOrderCategories();
       InsertItems();
@@ -214,7 +219,7 @@ namespace Tiantong.Wms.Api
 
     private void InsertProjects()
     {
-      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+      foreach (var warehouse in _warehouses.All()) {
         for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           var now = DateTime.Now;
           var startAt = _random.DateTime(now.AddDays(-30), now.AddDays(30));
@@ -238,7 +243,7 @@ namespace Tiantong.Wms.Api
 
     private void InsertItemCategories()
     {
-      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+      foreach (var warehouse in _warehouses.All()) {
         for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           _itemCategories.Add(new ItemCategory {
             warehouse_id = warehouse.id,
@@ -253,7 +258,7 @@ namespace Tiantong.Wms.Api
 
     private void InsertOrderCategories()
     {
-      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+      foreach (var warehouse in _warehouses.All()) {
         for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           _orderCategories.Add(new OrderCategory {
             warehouse_id = warehouse.id,
@@ -277,7 +282,7 @@ namespace Tiantong.Wms.Api
 
     private void InsertItems()
     {
-      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+      foreach (var warehouse in _warehouses.All()) {
         for (int i = 0, L = _random.Int(10, 30); i < L; i++) {
           _items.Add(new Item {
             warehouse_id = warehouse.id,
@@ -295,7 +300,7 @@ namespace Tiantong.Wms.Api
 
     private void InsertStocks()
     {
-      foreach (var warehouse in _warehouses.Table.OrderBy(item => item.id).ToArray()) {
+      foreach (var warehouse in _warehouses.All()) {
         var items = _items.Search(warehouse.id);
         var locations = _locations.Search(warehouse.id);
         items = _random.Array(items, _random.Int(5, 10));
@@ -314,6 +319,21 @@ namespace Tiantong.Wms.Api
       }
 
       _items.UnitOfWork.SaveChanges();
+    }
+
+    private void InsertSuppliers()
+    {
+      foreach (var warehouse in _warehouses.All()) {
+        for (int i = 0, L = _random.Int(10, 20); i < L; i++) {
+          _suppliers.Add(new Supplier {
+            warehouse_id = warehouse.id,
+            name = $"test supplier {i}",
+            comment = $"test supplier comment {i}",
+          });
+        }
+      }
+
+      _suppliers.UnitOfWork.SaveChanges();
     }
 
     private void InsertStockRecords()

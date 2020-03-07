@@ -10,6 +10,11 @@ namespace Tiantong.Wms.Api
 
     }
 
+    public Warehouse[] All()
+    {
+      return Table.OrderBy(wh => wh.id).ToArray();
+    }
+
     public Warehouse[] Search(int userId)
     {
       return Table
