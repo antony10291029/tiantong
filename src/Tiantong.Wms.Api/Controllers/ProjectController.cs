@@ -37,7 +37,7 @@ namespace Tiantong.Wms.Api
 
       public bool is_enabled { get; set; } = true;
 
-      public DateTime deadline { get; set; } = DateTime.Now;
+      public DateTime due_time { get; set; } = DateTime.Now;
 
       public DateTime started_at { get; set; } = DateTime.Now;
 
@@ -98,7 +98,7 @@ namespace Tiantong.Wms.Api
 
       public bool? is_enabled { get; set; }
 
-      public DateTime? deadline { get; set; }
+      public DateTime? due_time { get; set; }
 
       public DateTime? started_at { get; set; }
 
@@ -115,8 +115,8 @@ namespace Tiantong.Wms.Api
       if (param.is_enabled != null) {
         project.is_enabled = (bool) param.is_enabled;
       }
-      if (param.deadline != null) {
-        project.deadline = (DateTime) param.deadline;
+      if (param.due_time != null) {
+        project.due_time = (DateTime) param.due_time;
       }
       if (param.started_at != null) {
         project.started_at = (DateTime) param.started_at;

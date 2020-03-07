@@ -4,15 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Wms.Api
 {
-  [Table("projects")]
-  public class Project : Entity
+  [Table("suppliers")]
+  public class Supplier : Entity
   {
     [Key]
     public int id { get; set; }
 
     public int warehouse_id { get; set; }
-
-    public string number { get; set; }
 
     public string name { get; set; } = "";
 
@@ -20,10 +18,6 @@ namespace Tiantong.Wms.Api
 
     public bool is_enabled { get; set; } = true;
 
-    public DateTime due_time { get; set; } = DateTime.Now;
-
-    public DateTime started_at { get; set; } = DateTime.Now;
-
-    public DateTime finished_at { get; set; } = DateTime.MinValue;
+    public DateTime created_at { get; set; } = DateTime.Now;
   }
 }

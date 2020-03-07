@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Wms.Api
 {
-  [Table("projects")]
-  public class Project : Entity
+  [Table("orders")]
+  public class Order : Entity
   {
     [Key]
     public int id { get; set; }
@@ -14,15 +14,17 @@ namespace Tiantong.Wms.Api
 
     public string number { get; set; }
 
-    public string name { get; set; } = "";
+    public string type { get; set; }
 
-    public string comment { get; set; } = "";
+    public int categroy_id { get; set; }
 
-    public bool is_enabled { get; set; } = true;
+    public int operator_id { get; set; }
+
+    public string comment { get; set; }
 
     public DateTime due_time { get; set; } = DateTime.Now;
 
-    public DateTime started_at { get; set; } = DateTime.Now;
+    public DateTime created_at { get; set; } = DateTime.Now;
 
     public DateTime finished_at { get; set; } = DateTime.MinValue;
   }

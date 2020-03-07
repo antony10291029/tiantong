@@ -218,15 +218,15 @@ namespace Tiantong.Wms.Api
         for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           var now = DateTime.Now;
           var startAt = _random.DateTime(now.AddDays(-30), now.AddDays(30));
-          var deadline = _random.DateTime(startAt.AddDays(30), startAt.AddDays(180));
-          var finishedAt = _random.Bool() ? _random.DateTime(deadline.AddDays(-60), deadline.AddDays(60)) : DateTime.MinValue;
+          var dueTime = _random.DateTime(startAt.AddDays(30), startAt.AddDays(180));
+          var finishedAt = _random.Bool() ? _random.DateTime(dueTime.AddDays(-60), dueTime.AddDays(60)) : DateTime.MinValue;
 
           _projects.Add(new Project {
             warehouse_id = warehouse.id,
             number = $"PJ{i}",
             name = $"test project {i}",
             comment = $"test project comment {i}",
-            deadline = deadline,
+            due_time = dueTime,
             started_at = startAt,
             finished_at = finishedAt,
           });

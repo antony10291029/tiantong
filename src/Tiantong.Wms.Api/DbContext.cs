@@ -7,25 +7,35 @@ namespace Tiantong.Wms.Api
   {
     public DbSet<User> Users { get; set; }
 
-    public DbSet<Item> Items { get; set; }
-
-    public DbSet<Area> Areas { get; set; }
-
-    public DbSet<Stock> stocks { get; set; }
+    public DbSet<Warehouse> Warehouses { get; set; }
 
     public DbSet<Keeper> Keepers { get; set; }
 
-    public DbSet<Project> Projects { get; set; }
+    public DbSet<Area> Areas { get; set; }
 
     public DbSet<Location> Locations { get; set; }
 
-    public DbSet<Warehouse> Warehouses { get; set; }
+    public DbSet<Project> Projects { get; set; }
 
-    public DbSet<StockRecord> StockRecords { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; }
 
     public DbSet<ItemCategory> ItemCategories { get; set; }
 
     public DbSet<OrderCategory> OrderCategories { get; set; }
+
+    public DbSet<Item> Items { get; set; }
+
+    public DbSet<Stock> Stocks { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<OrderItem> OrderItems { get; set; }
+
+    public DbSet<StockRecord> StockRecords { get; set; }
+
+    public DbSet<OrderProject> OrderProjects { get; set; }
+
+    public DbSet<OrderSupplier> OrderSuppliers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,6 +44,20 @@ namespace Tiantong.Wms.Api
           keeper.role,
           keeper.user_id,
           keeper.warehouse_id
+        });
+
+      modelBuilder.Entity<OrderProject>()
+        .HasKey(item => new {
+          item.key,
+          item.order_id,
+          item.project_id
+        });
+
+      modelBuilder.Entity<OrderSupplier>()
+        .HasKey(item => new {
+          item.key,
+          item.order_id,
+          item.supplier_id,
         });
     }
   }
