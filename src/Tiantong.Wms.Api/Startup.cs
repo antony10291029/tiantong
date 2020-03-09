@@ -37,6 +37,7 @@ namespace Tiantong.Wms.Api
       app.UseProvider<ExceptionHandler>();
       app.UseMiddleware<JsonBody>();
       app.UseRouting();
+      app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
       app.UseProvider<WebRoutes>();
     }
   }
