@@ -1,3 +1,5 @@
+import clickoutside from './clickoutside'
+
 function active (el: any, binding: any) {
   binding.value
     ? el.classList.add('is-active')
@@ -32,5 +34,6 @@ export default {
     Vue.directive('style', style)
     Vue.directive('active', active)
     Vue.directive('loading', loading)
+    Vue.directive('clickoutside', clickoutside)
   }
 }

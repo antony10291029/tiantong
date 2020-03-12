@@ -88,7 +88,7 @@ export default {
     async handleSubmit () {
       try {
         await handleLogin(this.params)
-        notify.success('登陆成功')
+        notify.info('登陆成功')
       } catch (error) {
         notify.danger('登录失败，请重试')
         throw error
