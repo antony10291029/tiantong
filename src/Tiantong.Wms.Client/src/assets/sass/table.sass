@@ -1,0 +1,21 @@
+@import '~bulma/sass/elements/table'
+
+.table:not(:last-child)
+  margin-bottom: 0
+
+.table
+  &.is-centered
+    th, td
+      text-align: center
+  &.is-nowrap
+    th,td
+      white-space: nowrap
+  &.is-vcentered
+    th, td
+      vertical-align: middle
+  th, td
+    .is-checkbox
+      width: 1px
+      cursor: center
+    &.is-vcentered
+      vertical-align: middle
