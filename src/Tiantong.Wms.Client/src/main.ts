@@ -1,3 +1,4 @@
+import 'vue-class-component/hooks'
 import Vue from 'vue'
 import App from './views/App.vue'
 import store from './store'

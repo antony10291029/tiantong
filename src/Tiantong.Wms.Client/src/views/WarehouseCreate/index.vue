@@ -10,16 +10,16 @@
         <div class="field">
           <p class="control">
             <!-- <span class="title is-4">创建仓库</span> -->
-<nav class="breadcrumb is-medium has-arrow-separator" aria-label="breadcrumbs">
-  <ul>
-    <li>
-      <router-link to="/warehouses" href="#">全部仓库</router-link>
-    </li>
-    <li class="is-active">
-      <a href="#" aria-current="page">添加仓库</a>
-    </li>
-  </ul>
-</nav>
+          <nav class="breadcrumb is-medium has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+              <li>
+                <router-link to="/warehouses" href="#">全部仓库</router-link>
+              </li>
+              <li class="is-active">
+                <a href="#" aria-current="page">添加仓库</a>
+              </li>
+            </ul>
+          </nav>
           </p>
         </div>
       </div>
@@ -29,7 +29,7 @@
 
     <div class="field is-horizontal">
       <div class="field-label is-normal">
-        <label class="label">仓库编号</label>
+        <label class="label">编号</label>
       </div>
       <div class="field-body">
         <div class="field">
@@ -45,7 +45,7 @@
 
     <div class="field is-horizontal">
       <div class="field-label is-normal">
-        <label class="label">仓库名称</label>
+        <label class="label">名称</label>
       </div>
       <div class="field-body">
         <div class="field">

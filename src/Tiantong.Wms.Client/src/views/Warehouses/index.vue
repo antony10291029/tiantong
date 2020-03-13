@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="container" style="min-width: 400px; max-width: 560px">
+    <div
+      class="container"
+      style="min-width: 400px; max-width: 560px"
+    >
       <div style="height: 0.75rem"></div>
       <WarehouseItem
         v-for="id in warehouses.result" :key="id"
@@ -30,33 +33,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator'
 import axios from '@/providers/axios'
-import WarehouseItem from './WarehouseItem'
+import WarehouseItem from './WarehouseItem.vue'
+import { Warehouse } from '@/Entities'
+import DataSet from '@/providers/data-set'
 
-export default {
+@Component({
   name: 'Warehouses',
   components: {
     WarehouseItem
   },
-  data: () => ({
-    warehouses: {
-      result: [],
-      entities: {},
-    }
-  }),
-  methods: {
-    async getWarehouses () {
-      const response = await axios.post('/warehouses/search')
-      const result = [], entities = {}
-      response.data.forEach(entity => {
-        result.push(entity.id)
-        entities[entity.id] = entity
-      })
+})
+export default class extends Vue {
+  warehouses: DataSet<Warehouse> = new DataSet<Warehouse>()
 
-      this.warehouses = { result, entities }
-    }
-  },
+  async getWarehouses () {
+    const response = await axios.post('/warehouses/search')
+    const result = [] as number[], entities = {}
+    this.warehouses.clear()
+    response.data.forEach((entity: Warehouse) => this.warehouses.add(entity.id, entity))
+  }
+
   created () {
     this.getWarehouses()
   }
