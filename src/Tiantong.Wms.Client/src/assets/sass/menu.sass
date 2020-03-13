@@ -1,5 +1,9 @@
 @import '~bulma/sass/components/menu'
 
+.menu-container
+  height: 100%
+  border-right: 1px solid $border 
+
 .menu-list li ul
   margin-top: 0.5rem
   margin-bottom: 0.5rem
@@ -7,5 +11,6 @@
 
 .menu-list
   a.is-active
+    border-right: 2px solid $info
     background-color: #ccefff
     color: $text

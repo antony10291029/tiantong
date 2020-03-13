@@ -9,7 +9,17 @@
       <div class="field-body">
         <div class="field">
           <p class="control">
-            <span class="title is-4">创建仓库</span>
+            <!-- <span class="title is-4">创建仓库</span> -->
+<nav class="breadcrumb is-medium has-arrow-separator" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <router-link to="/warehouses" href="#">全部仓库</router-link>
+    </li>
+    <li class="is-active">
+      <a href="#" aria-current="page">添加仓库</a>
+    </li>
+  </ul>
+</nav>
           </p>
         </div>
       </div>

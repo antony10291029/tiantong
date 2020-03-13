@@ -69,7 +69,6 @@
               </span>
             </a>
           </div>
-          <div style="width: 0.5rem"></div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="app">
     <Navbar></Navbar>
-    <router-view></router-view>
+    <router-view class="app-body"></router-view>
   </div>
 </template>
 
@@ -15,3 +15,16 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.app
+  width: 100vw
+  height: 100vh
+  display: flex
+  flex-flow: column
+
+.app-body
+  flex: 2
+  width: 100vw
+  overflow: auto
+</style>

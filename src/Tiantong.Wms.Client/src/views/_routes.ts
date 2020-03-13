@@ -29,9 +29,9 @@ const routes = [
     component: () => import('./Home/index.vue'),
     children: [
       {
-        path: '/setting',
+        path: '/settings',
         name: 'Setting',
-        component: () => import('./Setting/index.vue')
+        component: () => import('./WarehouseSettings/index.vue')
       },
       {
         path: 'warehouses',
@@ -44,9 +44,72 @@ const routes = [
         component: () => import('./WarehouseCreate/index.vue')
       },
       {
-        path: '/warehouses/:id',
+        path: '/warehouses/:warehouseId',
         name: 'Warehouse',
-        component: () => import('./Warehouse/index.vue')
+        props: (route: any) => ({ warehouseId: +route.params.warehouseId }),
+        component: () => import('./Warehouse/index.vue'),
+        children: [
+          {
+            path: 'suppliers',
+            name: 'Suppliers',
+            component: () => import('./Suppliers/index.vue')
+          },
+          {
+            path: 'projects',
+            name: 'Projects',
+            component: () => import('./Projects/index.vue')
+          },
+          {
+            path: 'settings',
+            name: 'WarehouseSettings',
+            component: () => import('./WarehouseSettings/index.vue')
+          },
+          {
+            path: 'areas',
+            name: 'Areas',
+            component: () => import('./Areas/index.vue')
+          },
+          {
+            path: 'stocks',
+            name: 'Stocks',
+            component: () => import('./Stocks/index.vue')
+          },
+          {
+            path: 'pickings',
+            name: 'Pickings',
+            component: () => import('./Pickings/index.vue')
+          },
+          {
+            path: 'inbounds',
+            name: 'Inbounds',
+            component: () => import('./Inbounds/index.vue')
+          },
+          {
+            path: 'returns',
+            name: 'Returns',
+            component: () => import('./Returns/index.vue')
+          },
+          {
+            path: 'locations',
+            name: 'Locations',
+            component: () => import('./Locations/index.vue')
+          },
+          {
+            path: 'inbounds',
+            name: 'Inbounds',
+            component: () => import('./Inbounds/index.vue')
+          },
+          {
+            path: 'inventory',
+            name: 'Inventory',
+            component: () => import('./Inventory/index.vue')
+          },
+          {
+            path: 'item-categories',
+            name: 'ItemCategories',
+            component: () => import('./ItemCategories/index.vue')
+          },
+        ]
       }
     ]
   },

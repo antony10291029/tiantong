@@ -19,6 +19,7 @@ namespace Tiantong.Wms.Api
     {
       return Table
         .Where(wh => wh.owner_user_id == userId)
+        .OrderBy(wh => wh.number)
         .OrderBy(wh => wh.id)
         .ToArray();
     }
