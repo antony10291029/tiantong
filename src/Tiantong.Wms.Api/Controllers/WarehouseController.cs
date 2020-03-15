@@ -105,5 +105,18 @@ namespace Tiantong.Wms.Api
 
       return _warehouses.Search(_auth.User.id);
     }
+
+    public class FindParams
+    {
+      [Nonzero]
+      public int warehouse_id {get; set; }
+    }
+
+    public Warehouse Find([FromBody] FindParams param)
+    {
+      _auth.EnsureOwner();
+
+      return _warehouses.Find(param.warehouse_id, _auth.User.id);
+    }
   }
 }

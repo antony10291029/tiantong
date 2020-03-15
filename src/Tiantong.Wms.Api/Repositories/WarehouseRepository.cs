@@ -24,6 +24,15 @@ namespace Tiantong.Wms.Api
         .ToArray();
     }
 
+    public Warehouse Find(int id, int userId)
+    {
+      try {
+        return Table.Where(wh => wh.id == id && wh.owner_user_id == userId).First();
+      } catch {
+        throw new HttpException("Warehouse could not be found", 404);
+      }
+    }
+
     public bool HasId(int id)
     {
       return Table.Any(wh => wh.id == id);
