@@ -1,4 +1,4 @@
-export function isStrictEqual (a, b) {
+export function isStrictEqual (a: any, b: any) {
   if (typeof a === typeof b && typeof a === 'object') {
     // 处理 null 为 object 的问题
     if (a === null && b === null) {

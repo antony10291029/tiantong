@@ -1,10 +1,6 @@
 <template>
-  <div class="is-flex-auto" style="max-width: 800px; padding: 1rem">
+  <AsyncLoader :handler="getData" class="is-flex-auto" style="max-width: 800px; padding: 1rem">
     <h1 class="title is-size-4">仓库设置</h1>
-
-    {{params}}
-
-    {{warehouse}}
 
     <div class="field">
       <label class="label">名称</label>
@@ -23,14 +19,14 @@
     <div class="field">
       <label class="label">地址</label>
       <div class="control">
-        <textarea v-model="params.address" class="textarea"></textarea>
+        <Textarea v-model="params.address"></Textarea>
       </div>
     </div>
 
     <div class="field">
       <label class="label">备注</label>
       <div class="control">
-        <textarea v-model="params.comment" class="textarea"></textarea>
+        <Textarea v-model="params.comment"></Textarea>
       </div>
     </div>
 
@@ -45,7 +41,7 @@
         </AsyncButton>
       </div>
     </div>
-  </div>
+  </asyncLoader>
 </template>
 
 <script lang="ts">
@@ -54,12 +50,16 @@ import cloneDeep from 'lodash/cloneDeep'
 import axios from '@/providers/axios'
 import { Warehouse, getDiffs, isModified } from '@/Entities'
 import AsyncButton from '@/components/AsyncButton.vue'
+import AsyncLoader from '@/components/AsyncLoader.vue'
 import DataModifier from '@/mixins/data-modifier'
+import Textarea from '@/components/Textarea.vue'
 
 @Component({
   name: 'WarehouseSettings',
   components: {
-    AsyncButton
+    AsyncButton,
+    AsyncLoader,
+    Textarea
   },
   mixins: [
     DataModifier({

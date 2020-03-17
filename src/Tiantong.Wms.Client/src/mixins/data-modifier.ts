@@ -1,6 +1,20 @@
 import axios from '@/providers/axios'
 import { isStrictEqual } from '@/utils/common'
 
+interface Options {
+  dataApi: string
+  updateApi: string
+  updateParams: (vm: any) => object
+  data: string
+  params: string
+  dataId: string
+  paramsId: string
+  confirmTitle: string
+  confirmContent: string
+  successText: string
+  failureText: string
+}
+
 export default function ({
   dataApi,
   updateApi,
@@ -13,9 +27,33 @@ export default function ({
   confirmContent = '信息尚未保存，是否确认离开',
   successText = '数据已更新',
   failureText = '数据更新失败',
+}: {
+  dataApi: string
+  updateApi: string
+  updateParams: any
+  data?: string
+  params?: string
+  dataId?: string
+  paramsId?: string
+  confirmTitle?: string
+  confirmContent?: string
+  successText?: string
+  failureText?: string
 }) {
   const mixin = {}
-  const config = { dataApi, updateApi, updateParams, data, params, dataId, paramsId, confirmTitle, confirmContent, successText, failureText }
+  const config: Options = {
+    dataApi,
+    updateApi,
+    updateParams,
+    data,
+    params,
+    dataId,
+    paramsId,
+    confirmTitle,
+    confirmContent,
+    successText,
+    failureText
+  }
 
   bindData(mixin, config)
   bindHooks(mixin, config)
@@ -25,9 +63,9 @@ export default function ({
   return mixin
 }
 
-function bindData (mixin, { data, params }) {
+function bindData (mixin: any, { data, params }: Options) {
   mixin.data = function () {
-    const res = {}
+    const res = {} as any
 
     res[data] = {}
     res[params] = {}
@@ -36,10 +74,10 @@ function bindData (mixin, { data, params }) {
   }
 }
 
-function bindComputed (mixin, { data, params }) {
+function bindComputed (mixin: any, { data, params }: Options) {
   mixin.computed = {
     changedParams () {
-      const result = {}
+      const result = {} as any
       Object.keys(this[params])
         .forEach(key => {
           if (!isStrictEqual(this[params][key], this[data][key])) {
@@ -59,8 +97,16 @@ function bindComputed (mixin, { data, params }) {
   }
 }
 
-function bindMethods (mixin, { updateApi, data, params, dataId, paramsId, successText, failureText }) {
+function bindMethods (mixin: any, { dataApi, updateParams, updateApi, data, params, dataId, paramsId, successText, failureText }: Options) {
   mixin.methods = {
+    async getData () {
+      var response = await axios.post(dataApi, updateParams(this))
+      this[data] = response.data
+      Object.keys(this[params]).forEach(key => {
+        this[params][key] = this[data][key]
+      })
+    },
+
     async handleSave () {
       if (!this.isChanged) return
 
@@ -90,22 +136,15 @@ function bindMethods (mixin, { updateApi, data, params, dataId, paramsId, succes
   }
 }
 
-function bindHooks (mixin, { data, params, dataApi, updateParams }) {
-  mixin.beforeRouteLeave = mixin.beforeRouteUpdate = function (to, from, next) {
+function bindHooks (mixin: any, { confirmTitle, confirmContent }: Options) {
+  mixin.beforeRouteLeave = mixin.beforeRouteUpdate = function (to: any, from: any, next: any) {
     if (!this.isChanged) {
       return next()
     }
     this.$confirm({
-      title: '提示',
-      content: '信息尚未保存，是否离开页面',
+      title: confirmTitle,
+      content: confirmContent,
       handler: () => next()
-    })
-  }
-  mixin.created = async function () {
-    var response = await axios.post(dataApi, updateParams(this))
-    this[data] = response.data
-    Object.keys(this[params]).forEach(key => {
-      this[params][key] = this[data][key]
     })
   }
 }
