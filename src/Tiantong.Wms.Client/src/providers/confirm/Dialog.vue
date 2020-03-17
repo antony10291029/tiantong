@@ -1,5 +1,5 @@
 <template>
-  <div v-active="isShow" class="modal">
+  <div v-active="isShow" class="modal confirm">
     <div class="modal-background" @click="handleClose"/>
     <div
       class="modal-card"
@@ -86,3 +86,8 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.confirm
+  z-index: 99999
+</style>

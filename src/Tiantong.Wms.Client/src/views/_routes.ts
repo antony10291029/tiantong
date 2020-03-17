@@ -29,11 +29,6 @@ const routes = [
     component: () => import('./Home/index.vue'),
     children: [
       {
-        path: '/settings',
-        name: 'Setting',
-        component: () => import('./WarehouseSettings/index.vue')
-      },
-      {
         path: 'warehouses',
         name: 'Warehouses',
         component: () => import('./Warehouses/index.vue')
@@ -52,7 +47,20 @@ const routes = [
           {
             path: 'suppliers',
             name: 'Suppliers',
-            component: () => import('./Suppliers/index.vue')
+            component: () => import('./Suppliers/index.vue'),
+            children: [
+              {
+                path: 'create',
+                name: 'SupplierCreate',
+                component: () => import('./Suppliers/SupplierCreate.vue')
+              },
+              {
+                path: ':supplierId/update',
+                name: 'SupplierUpdate',
+                props: (route: any) => ({ supplierId: +route.params.supplierId }),
+                component: () => import('./Suppliers/SupplierUpdate.vue')
+              },
+            ]
           },
           {
             path: 'projects',
@@ -62,7 +70,7 @@ const routes = [
           {
             path: 'settings',
             name: 'WarehouseSettings',
-            component: () => import('./WarehouseSettings/index.vue')
+            component: () => import('./Warehouse/WarehouseSettings.vue')
           },
           {
             path: 'areas',

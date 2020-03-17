@@ -26,5 +26,4 @@ export default {
 .app-body
   flex: 2
   width: 100vw
-  overflow: auto
 </style>

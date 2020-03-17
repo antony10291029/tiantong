@@ -6,12 +6,14 @@ import notify from './providers/notify'
 import router from './providers/router'
 import confirm from './providers/confirm'
 import directives from './providers/directives'
+import components from './components'
 
 Vue.config.productionTip = process.env.VUE_APP_API_URL_BASE
 
 Vue.use(directives)
 Vue.use(notify)
 Vue.use(confirm)
+Vue.use(components)
 
 new Vue({
   router,

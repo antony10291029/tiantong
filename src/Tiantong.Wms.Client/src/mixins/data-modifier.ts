@@ -3,8 +3,8 @@ import { isStrictEqual } from '@/utils/common'
 
 interface Options {
   dataApi: string
+  dataParams: (vm: any) => object
   updateApi: string
-  updateParams: (vm: any) => object
   data: string
   params: string
   dataId: string
@@ -17,8 +17,8 @@ interface Options {
 
 export default function ({
   dataApi,
+  dataParams,
   updateApi,
-  updateParams,
   data = 'data',
   params = 'params',
   dataId = 'id',
@@ -30,7 +30,7 @@ export default function ({
 }: {
   dataApi: string
   updateApi: string
-  updateParams: any
+  dataParams: any
   data?: string
   params?: string
   dataId?: string
@@ -44,7 +44,7 @@ export default function ({
   const config: Options = {
     dataApi,
     updateApi,
-    updateParams,
+    dataParams,
     data,
     params,
     dataId,
@@ -97,10 +97,10 @@ function bindComputed (mixin: any, { data, params }: Options) {
   }
 }
 
-function bindMethods (mixin: any, { dataApi, updateParams, updateApi, data, params, dataId, paramsId, successText, failureText }: Options) {
+function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params, dataId, paramsId, successText, failureText }: Options) {
   mixin.methods = {
     async getData () {
-      var response = await axios.post(dataApi, updateParams(this))
+      var response = await axios.post(dataApi, dataParams(this))
       this[data] = response.data
       Object.keys(this[params]).forEach(key => {
         this[params][key] = this[data][key]

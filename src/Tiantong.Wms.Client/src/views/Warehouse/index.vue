@@ -3,26 +3,27 @@
     class="is-flex"
     :handler="getWarehouse"
     v-slot="{ isLoading }"
+    style="height: 100%"
   >
-      <aside
-        class="menu has-border-right is-unselectable"
-        style="min-width: 220px; max-width: 220px; height: 100%"
-      >
-        <ul class="menu-list">
-          <menu-item
-            v-for="(menu, key) in menus" :key="key"
-            :text="menu.text"
-            :icon="menu.icon"
-            :route="menu.route"
-            :warehouseId="warehouseId"
-          />
-        </ul>
-      </aside>
-      <router-view
-        v-if="!isLoading"
-        :warehouseId="warehouseId"
-        :warehouse="warehouse"
-      ></router-view>
+    <aside
+      class="menu has-border-right is-unselectable"
+      style="min-width: 220px; max-width: 220px; height: 100%"
+    >
+      <ul class="menu-list">
+        <menu-item
+          v-for="(menu, key) in menus" :key="key"
+          :text="menu.text"
+          :icon="menu.icon"
+          :route="menu.route"
+          :warehouseId="warehouseId"
+        />
+      </ul>
+    </aside>
+    <router-view
+      v-if="!isLoading"
+      :warehouseId="warehouseId"
+      :warehouse="warehouse"
+    ></router-view>
   </AsyncLoader>
 </template>
 

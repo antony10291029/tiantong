@@ -64,8 +64,8 @@ import Textarea from '@/components/Textarea.vue'
   mixins: [
     DataModifier({
       dataApi: 'warehouses/find',
+      dataParams: (vm: any) => ({ warehouse_id: vm.warehouseId }),
       updateApi: 'warehouses/update',
-      updateParams: (vm: any) => ({ warehouse_id: vm.warehouseId }),
       data: 'warehouse'
     })
   ]
