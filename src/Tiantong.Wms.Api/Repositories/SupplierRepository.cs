@@ -14,13 +14,6 @@ namespace Tiantong.Wms.Api
 
     //
 
-    public Supplier[] Search(int warehouseId)
-    {
-      return Table.Where(supplier => supplier.warehouse_id == warehouseId)
-        .OrderBy(supplier => supplier.created_at)
-        .ToArray();
-    }
-
     public bool HasId(int warehouseId, int id)
     {
       return Table.Any(supplier => supplier.warehouse_id == warehouseId && supplier.id == id);

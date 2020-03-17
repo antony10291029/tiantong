@@ -8,7 +8,7 @@ namespace Renet.Web
     {
       return new Pagination<T> {
         Total = query.Count(),
-        Data = query.Take(pageSize).Skip((page - 1) * pageSize).ToArray()
+        Data = query.Skip((page - 1) * pageSize).Take(pageSize).ToArray()
       };
     }
   }

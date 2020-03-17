@@ -1,4 +1,5 @@
-using System;
+using System.Reflection.Metadata.Ecma335;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -106,17 +107,46 @@ namespace Tiantong.Wms.Api
 
     public class SupplierSearchParams
     {
-      [Required]
-      public int? warehouse_id { get; set; }
+      [Nonzero]
+      public int warehouse_id { get; set; }
+
+      public int page { get; set; } = 1;
+
+      public int page_size { get; set; } = 10;
+
+      public string search { get; set; }
     }
 
-    public Supplier[] Search([FromBody] SupplierSearchParams param)
+    public IPagination<Supplier> Search([FromBody] SupplierSearchParams param)
     {
       _auth.EnsureOwner();
-      var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
 
-      return _suppliers.Search(warehouseId);
+      var query = _suppliers.Table.Where(supplier =>
+        supplier.warehouse_id == param.warehouse_id &&
+        (param.search == null ? true : supplier.name.Contains(param.search))
+      );
+
+      return query.OrderBy(supplier => supplier.created_at)
+        .Paginate(param.page, param.page_size);;
+    }
+
+    public class FindParams
+    {
+      [Nonzero]
+      public int warehouse_id { get; set; }
+
+      [Nonzero]
+      public int supplier_id { get; set; }
+    }
+
+    public Supplier Find([FromBody] FindParams param)
+    {
+      _auth.EnsureOwner();
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _suppliers.EnsureId(param.warehouse_id, param.supplier_id);
+
+      return _suppliers.EnsureGet(param.supplier_id);
     }
   }
 }
