@@ -17,11 +17,18 @@ namespace Tiantong.Wms.Api
       _users = users;
     }
 
-    public User[] Search()
+    public class SearchParams
+    {
+      public int page { get; set; }
+
+      public int page_size { get; set; }
+    }
+
+    public IPagination<User> Search([FromBody] SearchParams param)
     {
       _auth.EnsureType(UserTypes.Root);
 
-      return _users.Search();
+      return _users.Table.Paginate(param.page, param.page_size);
     }
 
     //
