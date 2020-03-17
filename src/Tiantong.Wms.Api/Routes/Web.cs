@@ -62,6 +62,30 @@ namespace Tiantong.Wms.Api
       Post("/suppliers/update", "Supplier.Update");
       Post("/suppliers/search", "Supplier.Search");
 
+      Post("/suppliers/create", "Supplier.Create");
+      Post("/suppliers/delete", "Supplier.Delete");
+      Post("/suppliers/update", "Supplier.Update");
+      Post("/suppliers/search", "Supplier.Search");
+
+      Post("/orders/search", "OrderInboundComplete.Search");
+      Post("/orders/complete", "OrderInboundComplete.Handle");
+
+      // Post("/orders/inbounds/create", "OrderInbound.Create");
+      // Post("/orders/inbounds/search", "OrderInbound.Search");
+      // Post("/orders/inbounds/submit", "OrderInbound.Submit");
+
+      // Post("/orders/outbounds/create", "Order.OutboundCreate");
+      // Post("/orders/outbounds/search", "Order.OutboundSearch");
+      // Post("/orders/outbounds/submit", "Order.OutboundSubmit");
+
+      // Post("/orders/inventories/create", "Order.InventoryCreate");
+      // Post("/orders/inventories/search", "Order.InventorySearch");
+      // Post("/orders/inventories/submit", "Order.InventorySubmit");
+
+      // Post("/orders/returns/create", "Order.ReturnCreate");
+      // Post("/orders/returns/search", "Order.ReturnSearch");
+      // Post("/orders/returns/submit", "Order.ReturnSubmit");
+
       Post("/stocks/search", "Stock.Search");
       Post("/stocks/records/search", "StockRecord.Search");
 

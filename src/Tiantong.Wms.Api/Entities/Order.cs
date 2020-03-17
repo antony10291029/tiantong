@@ -16,11 +16,13 @@ namespace Tiantong.Wms.Api
 
     public string type { get; set; }
 
-    public int categroy_id { get; set; }
+    public int category_id { get; set; }
 
     public int operator_id { get; set; }
 
-    public string comment { get; set; }
+    public string status { get; set; } = "";
+
+    public string comment { get; set; } = "";
 
     public DateTime due_time { get; set; } = DateTime.Now;
 

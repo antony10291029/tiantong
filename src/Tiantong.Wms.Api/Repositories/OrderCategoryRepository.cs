@@ -21,9 +21,26 @@ namespace Tiantong.Wms.Api
         .ToArray();
     }
 
+    public bool HasId(int warehouseId, int id)
+    {
+      return Table.Any(ct => ct.warehouse_id == warehouseId && ct.id == id);
+    }
+
     public bool HasName(int warehouseId, string type, string name)
     {
       return Table.Any(ct => ct.warehouse_id == warehouseId && ct.type == type && ct.name == name);
+    }
+
+    public bool HasOwner(int warehouseId, int id)
+    {
+      return Table.Any(ct =>  ct.id == id);
+    }
+
+    public void EnsureId(int warehouseId, int id)
+    {
+      if (!HasId(warehouseId, id)) {
+        throw new HttpException("Category id does not exist in the warehouse");
+      }
     }
 
     public OrderCategory EnsureGet(int id)

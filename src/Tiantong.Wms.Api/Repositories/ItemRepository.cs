@@ -45,6 +45,13 @@ namespace Tiantong.Wms.Api
       return item;
     }
 
+    public void EnsureIds(int warehouseId, int[] ids)
+    {
+      if (Table.Where(item => ids.Contains(item.id)).Count() != ids.Length) {
+        throw new HttpException("Item ids do not exist in this warehouse");
+      }
+    }
+
     public void EnsureNumberUnique(int warehouseId, string number)
     {
       if (HasNumber(warehouseId, number)) {

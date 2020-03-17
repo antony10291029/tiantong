@@ -262,7 +262,7 @@ namespace Tiantong.Wms.Api
         for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           _orderCategories.Add(new OrderCategory {
             warehouse_id = warehouse.id,
-            type = $"order.in",
+            type = $"order.inbound",
             name = $"test item category {i}",
             comment = $"test item category comment {i}",
           });
@@ -270,7 +270,7 @@ namespace Tiantong.Wms.Api
         for (int i = 0, L = _random.Int(5, 10); i < L; i++) {
           _orderCategories.Add(new OrderCategory {
             warehouse_id = warehouse.id,
-            type = $"order.out",
+            type = $"order.outbound",
             name = $"test item category {i}",
             comment = $"test item category comment {i}",
           });

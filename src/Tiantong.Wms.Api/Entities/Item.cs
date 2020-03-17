@@ -20,6 +20,8 @@ namespace Tiantong.Wms.Api
 
     public string specification { get; set; }
 
+    public double reference_purchase_price { get; set; } = 0;
+
     public string comment { get; set; } = "";
 
     public bool is_enabled { get; set; } = true;

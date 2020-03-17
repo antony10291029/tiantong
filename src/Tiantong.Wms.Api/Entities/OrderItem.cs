@@ -12,9 +12,11 @@ namespace Tiantong.Wms.Api
 
     public int order_id { get; set; }
 
+    public int key { get; set; }
+
     public int item_id { get; set; }
 
-    public float price { get; set; } = 0;
+    public double price { get; set; } = 0;
 
     public int expected_quantity { get; set; } = 0;
 

@@ -21,6 +21,11 @@ namespace Tiantong.Wms.Api
         .ToArray();
     }
 
+    public bool HasId(int warehouseId, int id)
+    {
+      return Table.Any(supplier => supplier.warehouse_id == warehouseId && supplier.id == id);
+    }
+
     public bool HasName(int warehouseId, string name)
     {
       return Table.Any(Supplier =>
@@ -38,6 +43,13 @@ namespace Tiantong.Wms.Api
       }
 
       return supplier;
+    }
+
+    public void EnsureId(int warehouseId, int id)
+    {
+      if (!HasId(warehouseId, id)) {
+        throw new HttpException("Supplier id does not exist in the warehouse");
+      }
     }
 
     public Supplier EnsureGetByOwner(int id, int userId)

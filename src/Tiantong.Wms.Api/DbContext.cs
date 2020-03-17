@@ -39,26 +39,7 @@ namespace Tiantong.Wms.Api
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<Keeper>()
-        .HasKey(keeper => new {
-          keeper.role,
-          keeper.user_id,
-          keeper.warehouse_id
-        });
 
-      modelBuilder.Entity<OrderProject>()
-        .HasKey(item => new {
-          item.key,
-          item.order_id,
-          item.project_id
-        });
-
-      modelBuilder.Entity<OrderSupplier>()
-        .HasKey(item => new {
-          item.key,
-          item.order_id,
-          item.supplier_id,
-        });
     }
   }
 }
