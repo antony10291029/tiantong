@@ -4,7 +4,6 @@
     <div
       class="modal-card"
       v-style:width="width"
-      style="min-width: 320px"
     >
       <header class="modal-card-head">
         <p class="modal-card-title">
@@ -59,12 +58,9 @@ export default {
     async handleConfirm () {
       if (this.handler) {
         try {
-          this.isLoading = true
-          const result = await this.handler()
-          if (result !== false) {
-            this.isShow = false
-          }
+          await this.handler()
         } finally {
+          this.isShow = false
           this.isLoading = false
         }
       } else {
@@ -79,6 +75,10 @@ export default {
       this.handler = handler
       this.beforeClose = beforeClose
       this.isShow = true
+
+      if (typeof this.width === 'number') {
+        this.width = this.width + 'px'
+      }
     },
     close () {
       this.handleClose()

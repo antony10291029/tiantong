@@ -14,20 +14,24 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
+    private OrderSupplierRepository _orderSuppliers;
+
     public SupplierController(
       IAuth auth,
       SupplierRepository suppliers,
-      WarehouseRepository warehouses
+      WarehouseRepository warehouses,
+      OrderSupplierRepository orderSuppliers
     ) {
       _auth = auth;
       _suppliers = suppliers;
       _warehouses = warehouses;
+      _orderSuppliers = orderSuppliers;
     }
 
     public class SupplierCreateParams
     {
-      [Required]
-      public int? warehouse_id { get; set; }
+      [Nonzero]
+      public int warehouse_id { get; set; }
 
       [Required]
       public string name { get; set; }
@@ -40,12 +44,11 @@ namespace Tiantong.Wms.Api
     public object Create([FromBody] SupplierCreateParams param)
     {
       _auth.EnsureOwner();
-      var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
-      _suppliers.EnsureNameUnique(warehouseId, param.name);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _suppliers.EnsureNameUnique(param.warehouse_id, param.name);
 
       var supplier = new Supplier {
-        warehouse_id = warehouseId,
+        warehouse_id = param.warehouse_id,
         name = param.name,
         comment = param.comment,
         is_enabled = param.is_enabled,
@@ -53,32 +56,33 @@ namespace Tiantong.Wms.Api
       _suppliers.Add(supplier);
       _suppliers.UnitOfWork.SaveChanges();
 
-      return new {
-        message = "Success to create Supplier",
-        id = supplier.id
-      };
+      return SuccessOperation("供应商已添加", supplier.id);
     }
 
     public class SupplierDeleteParams
     {
-      [Required]
-      public int? id { get; set; }
+      [Nonzero]
+      public int supplier_id { get; set; }
     }
 
     public object Delete([FromBody] SupplierDeleteParams param)
     {
       _auth.EnsureOwner();
-      var supplier = _suppliers.EnsureGetByOwner((int) param.id, _auth.User.id);
-      _suppliers.Remove(supplier.id);
-      _suppliers.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to delete supplier");
+      if (_orderSuppliers.HasSupplier(param.supplier_id)) {
+        return FailureOperation("该供应商已被订单所关联，无法删除");
+      } else {
+        _suppliers.Remove(param.supplier_id);
+        _suppliers.UnitOfWork.SaveChanges();
+
+        return SuccessOperation("供应商已删除");
+      }
     }
 
     public class SupplierUpdateParams
     {
-      [Required]
-      public int? id { get; set; }
+      [Nonzero]
+      public int id { get; set; }
 
       public string name { get; set; }
 
@@ -90,7 +94,7 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] SupplierUpdateParams param)
     {
       _auth.EnsureOwner();
-      var supplier = _suppliers.EnsureGetByOwner((int) param.id, _auth.User.id);
+      var supplier = _suppliers.EnsureGetByOwner(param.id, _auth.User.id);
 
       if (param.name != null) {
         _suppliers.EnsureNameUnique(supplier.warehouse_id, param.name);
@@ -102,7 +106,7 @@ namespace Tiantong.Wms.Api
       }
       _suppliers.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to update supplier");
+      return SuccessOperation("供应商信息已保存");
     }
 
     public class SupplierSearchParams
@@ -110,9 +114,9 @@ namespace Tiantong.Wms.Api
       [Nonzero]
       public int warehouse_id { get; set; }
 
-      public int page { get; set; } = 1;
+      public int page { get; set; }
 
-      public int page_size { get; set; } = 10;
+      public int page_size { get; set; }
 
       public string search { get; set; }
     }
@@ -122,13 +126,13 @@ namespace Tiantong.Wms.Api
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
 
-      var query = _suppliers.Table.Where(supplier =>
-        supplier.warehouse_id == param.warehouse_id &&
-        (param.search == null ? true : supplier.name.Contains(param.search))
-      );
-
-      return query.OrderBy(supplier => supplier.created_at)
-        .Paginate(param.page, param.page_size);;
+      return _suppliers.Table
+        .Where(supplier =>
+          supplier.warehouse_id == param.warehouse_id &&
+          (param.search == null ? true : supplier.name.Contains(param.search))
+        )
+        .OrderBy(supplier => supplier.created_at)
+        .Paginate(param.page, param.page_size);
     }
 
     public class FindParams

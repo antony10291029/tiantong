@@ -7,7 +7,6 @@
       </header>
 
       <section class="modal-card-body">
-        {{params}}
         <div class="field">
           <div class="label">
             <label>供应商名称</label>
@@ -18,7 +17,7 @@
         </div>
         <div class="field">
           <div class="label">
-            <label>供应商名称</label>
+            <label>备注</label>
           </div>
           <div class="control">
             <Textarea v-model="params.comment" />
@@ -41,8 +40,17 @@
         </AsyncButton>
         <button
           class="button"
-          @click="$router.go(-1)"
-        >取消</button>
+          @click="handleClose"
+        >
+          取消
+        </button>
+        <div class="is-flex-auto"></div>
+        <button
+          @click="handleRemove"
+          class="button is-danger is-float-right"
+        >
+          删除供应商
+        </button>
       </footer>
     </div>
   </AsyncLoader>
@@ -50,6 +58,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import axios from '@/providers/axios'
 import DataModifier from '@/mixins/data-modifier'
 import Textarea from '@/components/Textarea.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
@@ -86,10 +95,31 @@ export default class extends Vue {
     is_enabled: false
   }
 
+  handleClose () {
+    this.$router.go(-1)
+  }
+
   async handleSubmit () {
     await (this as any).handleSave()
-    this.$router.go(-1)
+    this.handleClose()
     this.$emit('refresh')
+  }
+
+  async handleRemove () {
+    this.$confirm({
+      width: 400,
+      title: '确认删除',
+      content: '供应商删除后将无法恢复，如果供应商已被订单使用，则无法删除。',
+      handler: async () => {
+        try {
+          await axios.post('/suppliers/delete', { supplier_id: this.supplierId })
+          this.handleClose()
+          this.$emit('refresh')
+        } catch (error) {
+          throw error
+        }
+      }
+    })
   }
 }
 </script>

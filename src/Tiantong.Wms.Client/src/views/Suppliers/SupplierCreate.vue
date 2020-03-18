@@ -8,7 +8,7 @@
       <section class="modal-card-body">
         <div class="field">
           <div class="label">
-            <label>供应商名</label>
+            <label>供应商名称</label>
           </div>
           <div class="control">
             <input v-model.lazy="params.name" type="text" class="input">
@@ -26,6 +26,7 @@
       </section>
       <footer class="modal-card-foot">
         <AsyncButton
+          :disabled="!isChanged"
           :handler="handleSubmit"
           class="button is-info"
         >
@@ -67,18 +68,22 @@ export default class extends Vue {
 
   isPending: boolean = false
 
+  get isChanged () {
+    return this.params.name !== '' || this.params.comment !== ''
+  }
+
   handleCancel () {
     this.$router.go(-1)
   }
 
   async handleSubmit () {
+    if (!this.isChanged) return
+
     try {
       await axios.post('/suppliers/create', this.params)
       this.handleCancel()
       this.$emit('refresh')
-      this.$notify.success('供应商已添加')
     } catch (Error) {
-      this.$notify.danger('供应商添加失败')
       throw Error
     }
   }

@@ -1,15 +1,17 @@
 import Vue from 'vue'
 
 interface ConfirmOptions {
-  title: string,
-  content: string,
-  handler: string,
-  beforeClose: Function,
-  width: string
+
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $confirm (options: ConfirmOptions) : void
+    $confirm (params: {
+      title?: string,
+      content?: string,
+      handler?: Function,
+      beforeClose?: Function,
+      width?: string | number
+    }) : void
   }
 }

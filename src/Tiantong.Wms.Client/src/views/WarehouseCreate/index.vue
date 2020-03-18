@@ -129,11 +129,7 @@ export default {
       try {
         this.isPending = true
         var response = await axios.post('/warehouses/create', this.params)
-        this.$notify.success('仓库已创建')
         this.$router.push('/warehouses')
-      } catch (error) {
-        this.$notify.danger('仓库创建失败，请重试')
-        throw error
       } finally {
         this.isPending = false
       }

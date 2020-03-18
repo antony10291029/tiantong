@@ -11,8 +11,6 @@ interface Options {
   paramsId: string
   confirmTitle: string
   confirmContent: string
-  successText: string
-  failureText: string
 }
 
 export default function ({
@@ -25,8 +23,6 @@ export default function ({
   paramsId = 'id',
   confirmTitle = '提示',
   confirmContent = '信息尚未保存，是否确认离开',
-  successText = '数据已更新',
-  failureText = '数据更新失败',
 }: {
   dataApi: string
   updateApi: string
@@ -51,8 +47,6 @@ export default function ({
     paramsId,
     confirmTitle,
     confirmContent,
-    successText,
-    failureText
   }
 
   bindData(mixin, config)
@@ -97,7 +91,7 @@ function bindComputed (mixin: any, { data, params }: Options) {
   }
 }
 
-function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params, dataId, paramsId, successText, failureText }: Options) {
+function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params, dataId, paramsId }: Options) {
   mixin.methods = {
     async getData () {
       var response = await axios.post(dataApi, dataParams(this))
@@ -117,7 +111,6 @@ function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params
       try {
         await axios.post(updateApi, this.changedParams)
       } catch (error) {
-        this.$notify.danger(failureText)
 
         throw error
       }
@@ -130,7 +123,6 @@ function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params
       this[data] = {}
       this[data] = temp
 
-      this.$notify.success(successText)
       this.updated && this.updated()
     }
   }

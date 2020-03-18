@@ -110,6 +110,8 @@ const resolveMethods = (options: Options): any => ({
   search (value: string) {
     if (value !== '') {
       this.params.search = value
+    } else {
+      this.params.search = undefined
     }
 
     this.getDataSet()

@@ -8,17 +8,31 @@ namespace Tiantong.Wms.Api
   {
     private IAuth _auth;
 
+    private AreaRepository _areas;
+
+    private LocationRepository _locations;
+
+    private SupplierRepository _suppliers;
+
     private WarehouseRepository _warehouses;
 
-    public WarehouseController(IAuth auth, WarehouseRepository warehouses)
-    {
+    public WarehouseController(
+      IAuth auth,
+      AreaRepository areas,
+      LocationRepository locations,
+      SupplierRepository suppliers,
+      WarehouseRepository warehouses
+    ) {
       _auth = auth;
+      _areas = areas;
+      _locations = locations;
+      _suppliers = suppliers;
       _warehouses = warehouses;
     }
 
     public class WarehouseCreateParams
     {
-      public string number { get; set; } = "";
+      public string number { get; set; } = null;
 
       public string name { get; set; } = "";
 
@@ -32,6 +46,8 @@ namespace Tiantong.Wms.Api
     public object Create([FromBody] WarehouseCreateParams param)
     {
       _auth.EnsureOwner();
+      _warehouses.UnitOfWork.BeginTransaction();
+
       var warehouse = new Warehouse {
         owner_user_id = _auth.User.id,
         number = param.number,
@@ -43,24 +59,38 @@ namespace Tiantong.Wms.Api
       _warehouses.Add(warehouse);
       _warehouses.UnitOfWork.SaveChanges();
 
-      return new {
-        message = "Success to create warehouse",
-        id = warehouse.id
-      };
+      var area = _areas.Add(new Area {
+        warehouse_id = warehouse.id,
+        name = "默认区域",
+      });
+      _warehouses.UnitOfWork.SaveChanges();
+
+      _locations.Add(new Location {
+        warehouse_id = warehouse.id,
+        area_id = area.id, 
+        name = "默认位置"
+      });
+      _suppliers.Add(new Supplier {
+        warehouse_id = warehouse.id,
+        name = "默认供应商",
+      });
+      _warehouses.UnitOfWork.SaveChanges();
+      _warehouses.UnitOfWork.Commit();
+
+      return SuccessOperation("仓库已创建", warehouse.id);
     }
 
     public class WarehouseDeleteParams
     {
-      [Required]
-      public int? id { get; set; }
+      [Nonzero]
+      public int warehouse_id { get; set; }
     }
 
     public object Delete([FromBody] WarehouseDeleteParams param)
     {
       _auth.EnsureOwner();
-      var warehouseId = (int) param.id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
-      _warehouses.Remove(warehouseId);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _warehouses.Remove(param.warehouse_id);
       _warehouses.UnitOfWork.SaveChanges();
 
       return JsonMessage("Success to delete warehouse");
@@ -68,8 +98,8 @@ namespace Tiantong.Wms.Api
 
     public class WarehouseUpdateParams
     {
-      [Required]
-      public int? id { get; set; }
+      [Nonzero]
+      public int id { get; set; }
 
       public string number { get; set; }
 
@@ -85,7 +115,7 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] WarehouseUpdateParams param)
     {
       _auth.EnsureOwner();
-      var warehouse = _warehouses.EnsureGetByOwner((int) param.id, _auth.User.id);
+      var warehouse = _warehouses.EnsureGetByOwner(param.id, _auth.User.id);
 
       if (param.number != null) warehouse.number = param.number;
       if (param.name != null) warehouse.name = param.name;
@@ -96,7 +126,7 @@ namespace Tiantong.Wms.Api
       }
       _warehouses.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to update warehouse");
+      return SuccessOperation("仓库设置已保存");
     }
 
     public Warehouse[] Search()

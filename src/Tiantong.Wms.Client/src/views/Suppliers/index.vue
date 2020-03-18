@@ -18,7 +18,10 @@
       </a>
     </div>
 
-    <table v-show="!isPending" class="table is-fullwidth is-vcentered is-centered is-nowrap">
+    <table
+      v-show="!isPending"
+      class="table is-fullwidth is-vcentered is-centered is-nowrap is-hoverable"
+    >
       <thead>
         <th>供应商名</th>
         <th>备注</th>
@@ -71,10 +74,10 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
     })
   ],
   components: {
+    Pagination,
     SearchField,
     YesOrNoCell,
     AsyncLoader,
-    Pagination,
   }
 })
 export default class extends Vue {

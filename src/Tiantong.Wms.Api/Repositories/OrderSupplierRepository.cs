@@ -9,5 +9,10 @@ namespace Tiantong.Wms.Api
     {
 
     }
+
+    public bool HasSupplier(int supplierId)
+    {
+      return Table.Any(order => order.supplier_id == supplierId);
+    }
   }
 }

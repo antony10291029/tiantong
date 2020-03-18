@@ -32,7 +32,7 @@ namespace Tiantong.Wms.Api
       var supplier = Get(id);
 
       if (supplier == null) {
-        throw new HttpException("Supplier id does not exist");
+        throw new FailureOperation("供应商不存在");
       }
 
       return supplier;
@@ -41,7 +41,7 @@ namespace Tiantong.Wms.Api
     public void EnsureId(int warehouseId, int id)
     {
       if (!HasId(warehouseId, id)) {
-        throw new HttpException("Supplier id does not exist in the warehouse");
+        throw new FailureOperation("无法在仓库中找到该供应商");
       }
     }
 
@@ -56,7 +56,7 @@ namespace Tiantong.Wms.Api
     public void EnsureNameUnique(int warehouseId, string name)
     {
       if (HasName(warehouseId, name)) {
-        throw new HttpException("Supplier name already exists in this warehouse");
+        throw new FailureOperation("供应商名称不可重复");
       }
     }
   }
