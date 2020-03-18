@@ -93,7 +93,6 @@ namespace Tiantong.Wms.Api
 
     public object Restore()
     {
-      _auth.EnsureRoot();
       var migrator = new PostgresMigrator();
       migrator.UseDbContext(_db);
       migrator.Refresh();

@@ -11,7 +11,7 @@ namespace Tiantong.Wms.Api
 
     public int warehouse_id { get; set; }
 
-    public string number { get; set; }
+    public string number { get; set; } = null;
 
     public string name { get; set; } = "";
 

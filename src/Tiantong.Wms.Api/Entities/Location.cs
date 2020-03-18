@@ -24,5 +24,6 @@ namespace Tiantong.Wms.Api
     public string total_volume { get; set; } = "";
 
     public bool is_enabled { get; set; } = true;
+
   }
 }

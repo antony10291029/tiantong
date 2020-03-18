@@ -12,9 +12,13 @@ namespace Tiantong.Wms.Api
 
     public int warehouse_id { get; set; }
 
+    public string number { get; set; }
+
     public string name { get; set; } = "";
 
     public string comment { get; set; } = "";
+
+    public string address { get; set; } = "";
 
     public bool is_enabled { get; set; } = true;
 

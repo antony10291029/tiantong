@@ -15,7 +15,5 @@ namespace Tiantong.Wms.Api
 
     public string role { get; set; } = KeeperRoles.Admin;
 
-    public bool is_enabled { get; set; } = true;
-
   }
 }

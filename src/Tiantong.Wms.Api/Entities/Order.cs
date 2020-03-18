@@ -24,6 +24,8 @@ namespace Tiantong.Wms.Api
 
     public string comment { get; set; } = "";
 
+    public bool is_enabled { get; set; } = true;
+
     public DateTime due_time { get; set; } = DateTime.Now;
 
     public DateTime created_at { get; set; } = DateTime.Now;

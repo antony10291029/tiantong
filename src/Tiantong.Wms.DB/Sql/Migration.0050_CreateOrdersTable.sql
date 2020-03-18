@@ -7,6 +7,7 @@ create table if not exists orders (
   operator_id int not null,
   status varchar(255) not null,
   comment varchar(255) not null,
+  is_enabled boolean not null,
   due_time timestamp(0) not null,
   created_at timestamp(0) not null,
   finished_at timestamp(0) not null,
