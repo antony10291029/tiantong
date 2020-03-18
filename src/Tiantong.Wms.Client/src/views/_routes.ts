@@ -115,7 +115,20 @@ const routes = [
           {
             path: 'item-categories',
             name: 'ItemCategories',
-            component: () => import('./ItemCategories/index.vue')
+            component: () => import('./ItemCategories/index.vue'),
+            children: [
+              {
+                path: 'create',
+                name: 'CreateItemCategory',
+                component: () => import('./ItemCategories/ItemCategoryCreate.vue')
+              },
+              {
+                path: ':categoryId/update',
+                name: 'UpdateItemCategory',
+                props: (route: any) => ({ categoryId: +route.params.categoryId }),
+                component: () => import('./ItemCategories/ItemCategoryUpdate.vue')
+              }
+            ]
           },
         ]
       }

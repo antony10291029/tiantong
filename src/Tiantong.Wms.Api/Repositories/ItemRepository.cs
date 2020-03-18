@@ -26,6 +26,11 @@ namespace Tiantong.Wms.Api
       return Table.Any(item => item.warehouse_id == warehouseId && item.number == number);
     }
 
+    public bool HasCategory(int warehouseId, int categoryId)
+    {
+      return Table.Any(item => item.warehouse_id == warehouseId && item.category_ids.Contains(categoryId));
+    }
+
     public Item EnsureGet(int id)
     {
       var item = Get(id);

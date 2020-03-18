@@ -58,7 +58,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import axios from '@/providers/axios'
 import DataSet from '@/mixins/data-set'
 import SearchField from '@/components/SearchField.vue'
 import YesOrNoCell from '@/components/YesOrNoCell.vue'
@@ -83,7 +82,5 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
 export default class extends Vue {
   @Prop({ required: true })
   warehouseId!: number
-
-  value: string = 'false'
 }
 </script>

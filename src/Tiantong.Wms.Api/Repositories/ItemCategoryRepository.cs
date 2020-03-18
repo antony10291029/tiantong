@@ -33,12 +33,28 @@ namespace Tiantong.Wms.Api
       return Table.Any(category => category.warehouse_id == warehouseId && category.name == name);
     }
 
+    public bool HasNumber(int warehouseId, string number)
+    {
+      return Table.Any(category => category.warehouse_id == warehouseId && category.number == number);
+    }
+
     public ItemCategory EnsureGet(int id)
     {
       var category = Get(id);
 
       if (category == null) {
-        throw new HttpException("Item Category id does not exist");
+        throw new FailureOperation("货类不存在");
+      }
+
+      return category;
+    }
+
+    public ItemCategory EnsureGet(int id, int warehouseId)
+    {
+      var category = Get(id);
+
+      if (category == null || category.warehouse_id != warehouseId) {
+        throw new FailureOperation("货类不存在");
       }
 
       return category;
@@ -47,7 +63,7 @@ namespace Tiantong.Wms.Api
     public void EnsureIds(int warehouseId, int[] ids)
     {
       if (!HasIds(warehouseId, ids)) {
-        throw new HttpException("Item Category id does exist");
+        throw new FailureOperation("货类不存在");
       }
     }
 
@@ -62,7 +78,14 @@ namespace Tiantong.Wms.Api
     public void EnsureNameUnique(int warehouseId, string name)
     {
       if (HasName(warehouseId, name)) {
-        throw new HttpException("Item category name already exists in this warehouse");
+        throw new FailureOperation("货类名称已经存在");
+      }
+    }
+
+    public void EnsureNumberUnique(int warehouseId, string number)
+    {
+      if (HasNumber(warehouseId, number)) {
+        throw new FailureOperation("货类编码已经存在");
       }
     }
   }

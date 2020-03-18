@@ -5,7 +5,7 @@
         v-model.lazy="value"
         type="text" class="input"
         :placeholder="placeholder"
-        @keypress.enter="handleSearch"
+        @keypress.enter="handleEnter"
       >
     </div>
     <div class="control">
@@ -41,7 +41,12 @@ export default class extends Vue {
 
   value: string = ''
 
-  handleSearch (event: any) {
+  handleEnter (event: any) {
+    this.value = event.target.value
+    this.handleSearch()
+  }
+
+  handleSearch () {
     this.$emit('search', this.value)
   }
 }

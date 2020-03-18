@@ -70,7 +70,7 @@ namespace Tiantong.Wms.Api
       _auth.EnsureOwner();
 
       if (_orderSuppliers.HasSupplier(param.supplier_id)) {
-        return FailureOperation("该供应商已被订单所关联，无法删除");
+        return FailureOperation("供应商已使用，无法被删除");
       } else {
         _suppliers.Remove(param.supplier_id);
         _suppliers.UnitOfWork.SaveChanges();

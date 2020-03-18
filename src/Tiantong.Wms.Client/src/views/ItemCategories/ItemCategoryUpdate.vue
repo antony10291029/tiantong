@@ -9,10 +9,18 @@
       <section class="modal-card-body">
         <div class="field">
           <div class="label">
-            <label>供应商名称</label>
+            <label>货类名称</label>
           </div>
           <div class="control">
             <input v-model="params.name" type="text" class="input">
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">
+            <label>货类编码</label>
+          </div>
+          <div class="control">
+            <input v-model="params.number" type="text" class="input">
           </div>
         </div>
         <div class="field">
@@ -65,14 +73,14 @@ import AsyncButton from '@/components/AsyncButton.vue'
 import AsyncLoader from '@/components/AsyncLoader.vue'
 
 @Component({
-  name: 'SupplierUpdate',
+  name: 'ItemCategoryUpdate',
   mixins: [
     DataModifier({
-      dataApi: '/suppliers/find',
-      updateApi: '/suppliers/update',
+      dataApi: '/item-categories/find',
+      updateApi: '/item-categories/update',
       dataParams: (vm: any) => ({
         warehouse_id: vm.warehouseId,
-        supplier_id: vm.supplierId,
+        category_id: vm.categoryId,
       })
     })
   ],
@@ -84,13 +92,14 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
 })
 export default class extends Vue {
   @Prop({ required: true })
-  supplierId!: number
+  categoryId!: number
 
   @Prop({ required: true })
   warehouseId!: number
 
   params = {
     name: '',
+    number: '',
     comment: '',
     is_enabled: false
   }
@@ -109,10 +118,10 @@ export default class extends Vue {
     this.$confirm({
       width: 400,
       title: '确认删除',
-      content: '供应商删除后将无法恢复，如果供应商已被订单使用，则无法删除。',
+      content: '货类删除后将无法恢复，若货类已经被使用则无法删除',
       handler: async () => {
         try {
-          await axios.post('/suppliers/delete', { supplier_id: this.supplierId })
+          await axios.post('/item-categories/delete', { category_id: this.categoryId })
           this.handleClose()
           this.$emit('refresh')
         } catch (error) {
