@@ -72,8 +72,8 @@ const menus: Menu[] = [
   { icon: 'item', text: '库存', route: 'stocks' },
   { icon: 'project', text: '工程', route: 'projects' },
   { icon: 'category', text: '货类', route: 'item-categories' },
-  { icon: 'area', text: '区域', route: 'areas' },
-  { icon: 'location', text: '位置', route: 'locations' },
+  // { icon: 'area', text: '区域', route: 'areas' },
+  // { icon: 'location', text: '位置', route: 'locations' },
   { icon: 'supplier', text: '供应商', route: 'suppliers' },
   { icon: 'settings', text: '设置', route: 'settings' },
 ]
