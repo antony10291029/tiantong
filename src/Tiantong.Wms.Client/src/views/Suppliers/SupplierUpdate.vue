@@ -34,9 +34,9 @@
         <AsyncButton
           :disabled="!isChanged"
           :handler="handleSubmit"
-          class="button is-info"
+          class="button is-success"
         >
-          确认
+          提交
         </AsyncButton>
         <button
           class="button"
