@@ -1,5 +1,10 @@
 <template>
-  <component @click="handleClick" v-loading="" :is="tag">
+  <component
+    @click="handleClick"
+    v-loading=""
+    :is="tag"
+    :disabled="disabled"
+  >
     <slot></slot>
   </component>
 </template>
@@ -17,9 +22,14 @@ export default class extends Vue {
   @Prop({ required: true })
   handler!: () => Promise<void>
 
+  @Prop({ default: false })
+  disabled!: boolean
+
   isPending: boolean = false
 
   async handleClick () {
+    if (this.disabled) return
+
     try {
       this.isPending = true
       await this.handler()

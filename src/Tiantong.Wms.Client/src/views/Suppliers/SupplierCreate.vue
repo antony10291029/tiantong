@@ -77,8 +77,6 @@ export default class extends Vue {
   }
 
   async handleSubmit () {
-    if (!this.isChanged) return
-
     try {
       await axios.post('/suppliers/create', this.params)
       this.handleCancel()

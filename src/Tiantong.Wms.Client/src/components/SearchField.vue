@@ -1,6 +1,6 @@
 <template>
-  <div class="field has-addons" style="width: 200px">
-    <div class="control">
+  <div class="field has-addons">
+    <div class="control" :style="{ width }">
       <input
         v-model.lazy="value"
         type="text" class="input"
@@ -38,6 +38,9 @@ export default class extends Vue {
 
   @Prop({ default: '' })
   placeholder!: string
+
+  @Prop({ default: '160px' })
+  width!: string
 
   value: string = ''
 

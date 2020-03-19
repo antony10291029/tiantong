@@ -71,7 +71,7 @@ export default class extends Vue {
 
   params = {
     name: '',
-    number: '',
+    number: null,
     comment: '',
     warehouse_id: this.warehouseId
   }
@@ -87,8 +87,6 @@ export default class extends Vue {
   }
 
   async handleSubmit () {
-    if (!this.isChanged) return
-
     try {
       await axios.post('/item-categories/create', this.params)
       this.handleClose()
