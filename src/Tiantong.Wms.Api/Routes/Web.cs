@@ -42,6 +42,7 @@ namespace Tiantong.Wms.Api
       Post("/projects/delete", "Project.Delete");
       Post("/projects/update", "Project.Update");
       Post("/projects/search", "Project.Search");
+      Post("/projects/find", "Project.Find");
 
       Post("/item-categories/create", "ItemCategory.Create");
       Post("/item-categories/delete", "ItemCategory.Delete");

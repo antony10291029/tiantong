@@ -11,7 +11,7 @@ namespace Tiantong.Wms.DB
 
     public void Down(DbContext db)
     {
-      db.ExecuteSql("drop table if exists order_project_items");
+      db.ExecuteSql("drop table if exists order_projects");
     }
   }
 }

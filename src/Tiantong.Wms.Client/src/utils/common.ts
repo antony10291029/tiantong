@@ -21,14 +21,15 @@ export function isStrictEqual (a: any, b: any) {
   }
 }
 
-export function getFormatDate () {
-  let date = new Date()
-  let month = '' + (date.getMonth() + 1)
-  let day = '' + date.getDate()
-  let year = date.getFullYear()
+export const DateTime = {
+  minValue: '0001-01-01T00:00:00',
 
-  if (month.length < 2) month = '0' + month
-  if (day.length < 2) day = '0' + day
+  get now () {
+    return new Date()
+  },
 
-  return [year, month, day].join('-')
+  getDate (dateTime: string) {
+    return dateTime.substring(0, 10)
+  },
+
 }

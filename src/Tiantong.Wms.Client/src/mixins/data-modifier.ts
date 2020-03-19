@@ -5,10 +5,7 @@ interface Options {
   dataApi: string
   dataParams: (vm: any) => object
   updateApi: string
-  data: string
-  params: string
-  dataId: string
-  paramsId: string
+  updateParams: (vm: any) => object
   confirmTitle: string
   confirmContent: string
 }
@@ -17,20 +14,16 @@ export default function ({
   dataApi,
   dataParams,
   updateApi,
-  data = 'data',
-  params = 'params',
-  dataId = 'id',
-  paramsId = 'id',
+  updateParams = (vm: any) =>  ({ id: vm.data.id }),
   confirmTitle = '提示',
   confirmContent = '信息尚未保存，是否确认离开',
 }: {
   dataApi: string
   updateApi: string
-  dataParams: any
+  dataParams: (vm: any) => object
+  updateParams?: (vm: any) => object
   data?: string
   params?: string
-  dataId?: string
-  paramsId?: string
   confirmTitle?: string
   confirmContent?: string
   successText?: string
@@ -41,10 +34,7 @@ export default function ({
     dataApi,
     updateApi,
     dataParams,
-    data,
-    params,
-    dataId,
-    paramsId,
+    updateParams,
     confirmTitle,
     confirmContent,
   }
@@ -57,25 +47,23 @@ export default function ({
   return mixin
 }
 
-function bindData (mixin: any, { data, params }: Options) {
+function bindData (mixin: any, {  }: Options) {
   mixin.data = function () {
-    const res = {} as any
-
-    res[data] = {}
-    res[params] = {}
-
-    return res
+    return {
+      data: {},
+      params: {},
+    }
   }
 }
 
-function bindComputed (mixin: any, { data, params }: Options) {
+function bindComputed (mixin: any, { }: Options) {
   mixin.computed = {
     changedParams () {
       const result = {} as any
-      Object.keys(this[params])
+      Object.keys(this.params)
         .forEach(key => {
-          if (!isStrictEqual(this[params][key], this[data][key])) {
-            result[key] = this[params][key]
+          if (!isStrictEqual(this.params[key], this.data[key])) {
+            result[key] = this.params[key]
           }
         })
 
@@ -91,13 +79,13 @@ function bindComputed (mixin: any, { data, params }: Options) {
   }
 }
 
-function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params, dataId, paramsId }: Options) {
+function bindMethods (mixin: any, { dataApi, dataParams, updateApi, updateParams }: Options) {
   mixin.methods = {
     async getData () {
       var response = await axios.post(dataApi, dataParams(this))
-      this[data] = response.data
-      Object.keys(this[params]).forEach(key => {
-        this[params][key] = this[data][key]
+      this.data = response.data
+      Object.keys(this.params).forEach(key => {
+        this.params[key] = this.data[key]
       })
     },
 
@@ -105,23 +93,20 @@ function bindMethods (mixin: any, { dataApi, dataParams, updateApi, data, params
       if (!this.isChanged) return
 
       const keys = Object.keys(this.changedParams)
-      this.changedParams[paramsId] = this[data][dataId]
+      Object.assign(this.changedParams, updateParams(this))
 
       this.beforeUpdate && this.beforeUpdate()
       try {
         await axios.post(updateApi, this.changedParams)
-      } catch (error) {
-
-        throw error
-      }
+      } finally {}
 
       keys.forEach(key => {
-        this.$set(this[data], key, this[params][key])
+        this.$set(this.data, key, this.params[key])
       })
 
-      var temp = this[data]
-      this[data] = {}
-      this[data] = temp
+      var temp = this.data
+      this.data = {}
+      this.data = temp
 
       this.updated && this.updated()
     }

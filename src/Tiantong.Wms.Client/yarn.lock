@@ -843,6 +843,13 @@
   resolved "https://registry.npm.taobao.org/@types/events/download/@types/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha1-KGLz9Yqaf3w+eNefEw3U1xwlwqc=
 
+"@types/flatpickr@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.npm.taobao.org/@types/flatpickr/download/@types/flatpickr-3.1.2.tgz#767e04fea776ddb399007028bed1a885e26d6d52"
+  integrity sha1-dn4E/qd23bOZAHAovtGoheJtbVI=
+  dependencies:
+    flatpickr "*"
+
 "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.npm.taobao.org/@types/glob/download/@types/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
@@ -3503,6 +3510,11 @@ find-up@^4.0.0, find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
+
+flatpickr@*, flatpickr@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.npm.taobao.org/flatpickr/download/flatpickr-4.6.3.tgz#15a8b76b6e34e3a072861250503a5995b9d3bc60"
+  integrity sha1-Fai3a24046ByhhJQUDpZlbnTvGA=
 
 flush-write-stream@^1.0.0:
   version "1.1.1"

@@ -65,7 +65,20 @@ const routes = [
           {
             path: 'projects',
             name: 'Projects',
-            component: () => import('./Projects/index.vue')
+            component: () => import('./Projects/index.vue'),
+            children: [
+              {
+                path: 'create',
+                name: 'ProjectCreate',
+                component: () => import('./Projects/ProjectCreate.vue')
+              },
+              {
+                path: ':projectId/update',
+                name: 'ProjectUpdate',
+                props: (route: any) => ({ projectId: +route.params.projectId }),
+                component: () => import('./Projects/ProjectUpdate.vue')
+              }
+            ]
           },
           {
             path: 'settings',

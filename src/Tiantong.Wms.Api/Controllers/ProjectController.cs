@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -13,20 +14,24 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
+    private OrderProjectRepository _orderProjects;
+
     public ProjectController(
       IAuth auth,
       ProjectRepository projects,
-      WarehouseRepository warehouses
+      WarehouseRepository warehouses,
+      OrderProjectRepository orderProjects
     ) {
       _auth = auth;
       _projects = projects;
       _warehouses = warehouses;
+      _orderProjects = orderProjects;
     }
 
-    public class ProjectCreateParams
+    public class CreateParams
     {
-      [Required]
-      public int? warehouse_id { get; set; }
+      [Nonzero]
+      public int warehouse_id { get; set; }
 
       [Required]
       public string number { get; set; }
@@ -44,51 +49,52 @@ namespace Tiantong.Wms.Api
       public DateTime finished_at { get; set; } = DateTime.MinValue;
     }
 
-    public object Create([FromBody] ProjectCreateParams param)
+    public object Create([FromBody] CreateParams param)
     {
       _auth.EnsureOwner();
-      var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
-      _projects.EnsureNumberUnique(warehouseId, param.number);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _projects.EnsureNumberUnique(param.warehouse_id, param.number);
 
       var project = new Project {
-        warehouse_id = warehouseId,
+        warehouse_id = param.warehouse_id,
         number = param.number,
         name = param.name,
         comment = param.comment,
         is_enabled = param.is_enabled,
+        due_time = param.due_time,
         started_at = param.started_at,
         finished_at = param.finished_at
       };
       _projects.Add(project);
       _projects.UnitOfWork.SaveChanges();
 
-      return new {
-        message = "Success to create project",
-        id = project.id
-      };
+      return SuccessOperation("工程已创建", project.id);
     }
 
-    public class ProjectDeleteParams
+    public class DeleteParams
     {
-      [Required]
-      public int? id { get; set; }
+      [Nonzero]
+      public int id { get; set; }
     }
 
-    public object Delete([FromBody] ProjectDeleteParams param)
+    public object Delete([FromBody] DeleteParams param)
     {
       _auth.EnsureOwner();
-      var project = _projects.EnsureGetByOwner((int) param.id, _auth.User.id);
+
+      var project = _projects.EnsureGetByOwner(param.id, _auth.User.id);
+      if (_orderProjects.HasProject(project.warehouse_id, project.id)) {
+        return FailureOperation("工程已使用，无法删除");
+      }
       _projects.Remove(project.id);
       _projects.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to delete project");
+      return SuccessOperation("工程已删除");
     }
 
     public class ProjectUpdateParams
     {
-      [Required]
-      public int? id { get; set; }
+      [Nonzero]
+      public int id { get; set; }
 
       public string number { get; set; }
 
@@ -108,7 +114,7 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] ProjectUpdateParams param)
     {
       _auth.EnsureOwner();
-      var project = _projects.EnsureGetByOwner((int) param.id, _auth.User.id);
+      var project = _projects.EnsureGetByOwner(param.id, _auth.User.id);
 
       if (param.name != null) project.name = param.name;
       if (param.comment != null) project.comment = param.comment;
@@ -130,22 +136,56 @@ namespace Tiantong.Wms.Api
       }
       _projects.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to update project");
+      return SuccessOperation("工程信息已保存");
     }
 
-    public class ProjectSearchParams
+    public class SearchParams
     {
-      [Required]
-      public int? warehouse_id { get; set; }
+      [Nonzero]
+      public int warehouse_id { get; set; }
+
+      [Range(1, int.MaxValue)]
+      public int page { get; set; }
+
+      [Range(1, int.MaxValue)]
+      public int page_size { get; set; }
+
+      public string search { get; set; }
     }
 
-    public Project[] Search([FromBody] ProjectSearchParams param)
+    public IPagination<Project> Search([FromBody] SearchParams param)
     {
       _auth.EnsureOwner();
-      var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
 
-      return _projects.Search(warehouseId);
+      return _projects.Table
+        .Where(project =>
+          project.warehouse_id == param.warehouse_id &&
+          (
+            param.search == null ? true :
+            project.name.Contains(param.search) ||
+            project.number.Contains(param.search)
+          )
+        )
+        .OrderBy(project => project.number)
+        .ThenBy(project => project.id)
+        .Paginate(param.page, param.page_size);
+    }
+
+    public class FindParams
+    {
+      [Nonzero]
+      public int warehouse_id { get; set; }
+
+      [Nonzero]
+      public int project_id { get; set; }
+    }
+
+    public Project Find([FromBody] FindParams param)
+    {
+      _auth.EnsureOwner();
+
+      return _projects.EnsureGet(param.project_id, param.warehouse_id, _auth.User.id);
     }
   }
 }

@@ -7,9 +7,15 @@ namespace Tiantong.Wms.Api
   {
     private WarehouseRepository _warehouses;
 
-    public ProjectRepository(DbContext db, WarehouseRepository warehouses) : base(db)
-    {
+    private OrderProjectRepository _orderProjects;
+
+    public ProjectRepository(
+      DbContext db,
+      WarehouseRepository warehouses,
+      OrderProjectRepository orderProjects
+    ) : base(db) {
       _warehouses = warehouses;
+      _orderProjects = orderProjects;
     }
 
     //
@@ -26,12 +32,39 @@ namespace Tiantong.Wms.Api
       return Table.Any(project => project.warehouse_id == warehouseId && project.number == number);
     }
 
+    public bool HasId(int warehouseId, int id)
+    {
+      return Table.Any(project => project.warehouse_id == warehouseId && project.id == id);
+    }
+
     public Project EnsureGet(int id)
     {
       var project = Get(id);
 
       if (project == null) {
-        throw new HttpException("Project id does not exist");
+        throw new FailureOperation("工程不存在");
+      }
+
+      return project;
+    }
+
+    public void EnsureId(int warehouseId, int id)
+    {
+      if (!HasId(warehouseId, id)) {
+        throw new FailureOperation("工程不存在");
+      }
+    }
+
+    public Project EnsureGet(int id, int warehouseId, int userId)
+    {
+      var project = Get(id);
+
+      if (
+        project == null ||
+        project.warehouse_id != warehouseId ||
+        !_warehouses.HasOwner(warehouseId, userId)
+      ) {
+        throw new FailureOperation("工程不存在");
       }
 
       return project;
@@ -48,7 +81,7 @@ namespace Tiantong.Wms.Api
     public void EnsureNumberUnique(int warehouseId, string number)
     {
       if (HasNumber(warehouseId, number)) {
-        throw new HttpException("Project number already exists in this warehouse");
+        throw new HttpException("工程代码已存在");
       }
     }
   }
