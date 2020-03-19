@@ -2,7 +2,7 @@
   <li>
     <router-link
       :to="routePath"
-      exact-active-class="is-active"
+      active-class="is-active"
     >
       <span class="icon" style="margin-right: 0.25rem">
         <i :class="`iconfont icon-${icon}`"></i>
