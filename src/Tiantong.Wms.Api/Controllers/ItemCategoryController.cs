@@ -122,19 +122,13 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("货类信息已保存");
     }
 
-    public class ItemCategorySearchParams
+    public class SearchParams: BaseSearchParams
     {
       [Nonzero]
       public int warehouse_id { get; set; }
-
-      public int page { get; set; }
-
-      public int page_size { get; set; }
-
-      public string search { get; set; }
     }
 
-    public IPagination<ItemCategory> Search([FromBody] ItemCategorySearchParams param)
+    public IPagination<ItemCategory> Search([FromBody] SearchParams param)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);

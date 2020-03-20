@@ -59,6 +59,7 @@ namespace Tiantong.Wms.Api
       Post("/items/delete", "Item.Delete");
       Post("/items/update", "Item.Update");
       Post("/items/search", "Item.Search");
+      Post("/items/find", "Item.Find");
 
       Post("/suppliers/create", "Supplier.Create");
       Post("/suppliers/delete", "Supplier.Delete");

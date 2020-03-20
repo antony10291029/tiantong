@@ -7,7 +7,7 @@ interface Options {
 }
 
 export default function ({
-  pageSize = 30,
+  pageSize = 15,
   searchApi,
   searchParams = () => {},
 }: {

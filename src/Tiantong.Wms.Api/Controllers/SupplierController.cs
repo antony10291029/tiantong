@@ -1,4 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
@@ -109,19 +108,13 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("供应商信息已保存");
     }
 
-    public class SupplierSearchParams
+    public class SearchParams : BaseSearchParams
     {
       [Nonzero]
       public int warehouse_id { get; set; }
-
-      public int page { get; set; }
-
-      public int page_size { get; set; }
-
-      public string search { get; set; }
     }
 
-    public IPagination<Supplier> Search([FromBody] SupplierSearchParams param)
+    public IPagination<Supplier> Search([FromBody] SearchParams param)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);

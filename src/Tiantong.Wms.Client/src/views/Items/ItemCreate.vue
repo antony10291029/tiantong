@@ -3,12 +3,12 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">添加工程</p>
+        <p class="modal-card-title">货品添加</p>
       </header>
       <section class="modal-card-body">
         <div class="field">
           <div class="label">
-            <label>工程代码</label>
+            <label>货码</label>
           </div>
           <div class="control">
             <input v-model.lazy="params.number" type="text" class="input">
@@ -17,7 +17,7 @@
 
         <div class="field">
           <div class="label">
-            <label>工程名称</label>
+            <label>货名</label>
           </div>
           <div class="control">
             <input v-model.lazy="params.name" type="text" class="input">
@@ -26,28 +26,10 @@
 
         <div class="field">
           <div class="label">
-            <label>截止日期</label>
+            <label>规格</label>
           </div>
           <div class="control">
-            <DatePicker v-model="params.due_time"></DatePicker>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="label">
-            <label>开始日期</label>
-          </div>
-          <div class="control">
-            <DatePicker v-model="params.started_at"></DatePicker>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="label">
-            <label>完工日期</label>
-          </div>
-          <div class="control">
-            <DatePicker v-model="params.finished_at" :default="false"></DatePicker>
+            <input v-model.lazy="params.specification" type="text" class="input">
           </div>
         </div>
 
@@ -100,18 +82,16 @@ export default class extends Vue {
 
   params = {
     name: '',
-    number: '',
+    number: null,
     comment: '',
-    due_time: '',
-    started_at: '',
-    finished_at: '',
+    specification: '个',
     warehouse_id: this.warehouseId
   }
 
   isPending: boolean = false
 
   get isChanged () {
-    return this.params.number !== ''
+    return this.params.name !== ''
   }
 
   handleCancel () {
@@ -120,7 +100,7 @@ export default class extends Vue {
 
   async handleSubmit () {
     try {
-      await axios.post('/projects/create', this.params)
+      await axios.post('/items/create', this.params)
       this.handleCancel()
       this.$emit('refresh')
     } finally {}

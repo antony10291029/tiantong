@@ -91,9 +91,22 @@ const routes = [
             component: () => import('./Areas/index.vue')
           },
           {
-            path: 'stocks',
-            name: 'Stocks',
-            component: () => import('./Stocks/index.vue')
+            path: 'items',
+            name: 'Items',
+            component: () => import('./Items/index.vue'),
+            children: [
+              {
+                path: 'create',
+                name: 'ItemCreate',
+                component: () => import('./Items/ItemCreate.vue')
+              },
+              {
+                path: ':itemId/update',
+                name: 'ItemUpdate',
+                props: (route: any) => ({ itemId: +route.params.itemId }),
+                component: () => import('./Items/ItemUpdate.vue')
+              }
+            ]
           },
           {
             path: 'pickings',

@@ -29,7 +29,7 @@ namespace Tiantong.Wms.Api
       try {
         return Table.Where(wh => wh.id == id && wh.owner_user_id == userId).First();
       } catch {
-        throw new HttpException("Warehouse could not be found", 404);
+        throw new FailureOperation("仓库不存在");
       }
     }
 
@@ -48,7 +48,7 @@ namespace Tiantong.Wms.Api
       var warehouse = Get(id);
 
       if (warehouse == null) {
-        throw new HttpException("warehouse id does not exist");
+        throw new FailureOperation("仓库不存在");
       }
 
       return warehouse;
@@ -59,7 +59,7 @@ namespace Tiantong.Wms.Api
       var warehouse = EnsureGet(warehouseId);
 
       if (warehouse.owner_user_id != userId) {
-        throw new HttpException("warehouse owner is invalid");
+        throw new FailureOperation("仓库认证失败");
       }
 
       return warehouse;
@@ -68,7 +68,7 @@ namespace Tiantong.Wms.Api
     public void EnsureOwner(int warehouseId, int userId)
     {
       if (!HasOwner(warehouseId, userId)) {
-        throw new HttpException("Warehouse owner check failed");
+        throw new FailureOperation("仓库认证失败");
       }
     }
 

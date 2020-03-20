@@ -16,5 +16,10 @@ namespace Tiantong.Wms.Api
         throw new HttpException("Order item keys repeat");
       }
     }
+
+    public bool HasItem(int itemId)
+    {
+      return Table.Any(item => item.item_id == itemId);
+    }
   }
 }

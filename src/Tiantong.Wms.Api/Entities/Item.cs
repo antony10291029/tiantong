@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,6 +28,9 @@ namespace Tiantong.Wms.Api
     public bool is_enabled { get; set; } = true;
 
     public DateTime created_at { get; set; } = DateTime.Now;
+
+    [ForeignKey("item_id")]
+    public List<Stock> stocks { get; set; }
 
   }
 }

@@ -66,12 +66,12 @@ interface Menu {
 
 const menus: Menu[] = [
   { icon: 'inbound', text: '入库单', route: 'inbounds' },
-  { icon: 'picking', text: '领料单', route: 'pickings' },
-  { icon: 'return', text: '返料单', route: 'returns' },
+  // { icon: 'picking', text: '领料单', route: 'pickings' },
+  // { icon: 'return', text: '返料单', route: 'returns' },
   { icon: 'inventory', text: '盘点', route: 'inventory' },
-  { icon: 'item', text: '库存', route: 'stocks' },
+  { icon: 'item', text: '库存', route: 'items' },
   { icon: 'project', text: '工程', route: 'projects' },
-  { icon: 'category', text: '货类', route: 'item-categories' },
+  // { icon: 'category', text: '货类', route: 'item-categories' },
   // { icon: 'area', text: '区域', route: 'areas' },
   // { icon: 'location', text: '位置', route: 'locations' },
   { icon: 'supplier', text: '供应商', route: 'suppliers' },

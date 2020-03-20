@@ -9,35 +9,47 @@ namespace Tiantong.Wms.Api
   {
     private IAuth _auth;
 
-    private WarehouseRepository _warehouses;
+    private ItemRepository _items;
 
     private StockRepository _stocks;
 
+    private WarehouseRepository _warehouses;
+
     public StockController(
       IAuth auth,
+      ItemRepository items,
       StockRepository stocks,
       WarehouseRepository warehouses
     ) {
       _auth = auth;
+      _items = items;
       _stocks = stocks;
       _warehouses = warehouses;
     }
 
-    public class OrderCategorySearchParams
+    public class SearchParams
     {
-      [Required]
-      public int? warehouse_id { get; set; }
+      [Nonzero]
+      public int warehouse_id { get; set; }
+
+      [Nonzero]
+      public int page { get; set; }
+
+      [Nonzero]
+      public int page_size { get; set; }
+
+      public string search { get; set; }
     }
 
-    public Stock[] Search([FromBody] OrderCategorySearchParams param)
+    public IPagination<Stock> Search([FromBody] SearchParams param)
     {
       _auth.EnsureOwner();
-      var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
 
       return _stocks.Table
-        .Where(stock => stock.warehouse_id == warehouseId)
-        .ToArray();
+        .Where(stock => stock.warehouse_id == param.warehouse_id)
+        .Paginate(param.page, param.page_size);
     }
+
   }
 }

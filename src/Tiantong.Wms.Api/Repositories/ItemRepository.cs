@@ -36,7 +36,7 @@ namespace Tiantong.Wms.Api
       var item = Get(id);
 
       if (item == null) {
-        throw new HttpException("User id does not exist");
+        throw new FailureOperation("货品不存在");
       }
 
       return item;
@@ -53,14 +53,14 @@ namespace Tiantong.Wms.Api
     public void EnsureIds(int warehouseId, int[] ids)
     {
       if (Table.Where(item => ids.Contains(item.id)).Count() != ids.Length) {
-        throw new HttpException("Item ids do not exist in this warehouse");
+        throw new FailureOperation("货品不存在");
       }
     }
 
     public void EnsureNumberUnique(int warehouseId, string number)
     {
       if (HasNumber(warehouseId, number)) {
-        throw new HttpException("Item number already exists in this warehouse");
+        throw new FailureOperation("货品编码重复");
       }
     }
   }

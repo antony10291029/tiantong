@@ -139,18 +139,10 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("工程信息已保存");
     }
 
-    public class SearchParams
+    public class SearchParams: BaseSearchParams
     {
       [Nonzero]
       public int warehouse_id { get; set; }
-
-      [Range(1, int.MaxValue)]
-      public int page { get; set; }
-
-      [Range(1, int.MaxValue)]
-      public int page_size { get; set; }
-
-      public string search { get; set; }
     }
 
     public IPagination<Project> Search([FromBody] SearchParams param)

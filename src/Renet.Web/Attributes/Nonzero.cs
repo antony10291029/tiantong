@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Tiantong.Wms.Api
+namespace Renet.Web
 {
   public class NonzeroAttribute : ValidationAttribute
   {
