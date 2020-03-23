@@ -13,7 +13,7 @@ namespace Tiantong.Wms.Api
 
     private DbContext _db;
 
-    private IMigrator _migrator;
+    private MigratorProvider _migratorProvider;
 
     private IRandom _random;
 
@@ -44,7 +44,7 @@ namespace Tiantong.Wms.Api
     public AppController(
       IAuth auth,
       DbContext db,
-      IMigrator migrator,
+      MigratorProvider migratorProvider,
       IRandom random,
       IConfiguration config,
       UserRepository users,
@@ -60,7 +60,7 @@ namespace Tiantong.Wms.Api
       StockRecordRepository stockRecords
     ) {
       _db = db;
-      _migrator = migrator;
+      _migratorProvider = migratorProvider;
       _auth = auth;
       _config = config;
       _random = random;
@@ -98,21 +98,21 @@ namespace Tiantong.Wms.Api
 
     public object Migrate()
     {
-      _migrator.Migrate();
+      _migratorProvider.Migrator.Migrate();
 
       return SuccessOperation("数据库已同步");
     }
 
     public object Rollback()
     {
-      _migrator.Rollback();
+      _migratorProvider.Migrator.Rollback();
 
       return SuccessOperation("数据库已回档");
     }
 
     public object refresh()
     {
-      _migrator.Refresh();
+      _migratorProvider.Migrator.Refresh();
 
       return SuccessOperation("数据库已刷新");
     }
@@ -136,7 +136,7 @@ namespace Tiantong.Wms.Api
 
     public object Reseed()
     {
-      _migrator.Refresh();
+      _migratorProvider.Migrator.Refresh();
 
       return InsertTestData();
     }

@@ -1,5 +1,6 @@
-using Tiantong.Wms.DB;
 using Microsoft.EntityFrameworkCore;
+using DBCore.Postgres;
+using Tiantong.Wms.DB;
 
 namespace Tiantong.Wms.Api
 {
@@ -34,6 +35,11 @@ namespace Tiantong.Wms.Api
     public DbSet<StockRecord> StockRecords { get; set; }
 
     public DbSet<ProjectItem> ProjectItems { get; set; }
+
+    public DbContext(PostgresBuilder builder): base(builder)
+    {
+
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

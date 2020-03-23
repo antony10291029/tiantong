@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Renet.Web;
 using DBCore;
+using DBCore.Postgres;
 using Tiantong.Wms.DB;
 
 namespace Tiantong.Wms.Api
@@ -12,8 +13,9 @@ namespace Tiantong.Wms.Api
     {
       services.AddControllers();
       services.AddHttpContextAccessor();
+      services.AddSingleton<PostgresBuilder, DbBuilder>();
       services.AddDbContext<DbContext>();
-      services.AddScoped<IMigrator, PostgresMigrator>();
+      services.AddScoped<MigratorProvider>();
       services.AddScoped<IAuth, Auth>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();

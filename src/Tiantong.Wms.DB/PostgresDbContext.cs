@@ -5,12 +5,16 @@ namespace Tiantong.Wms.DB
 {
   public class PostgresContext : DBCore.DbContext
   {
+    private PostgresBuilder _builder;
+
+    public PostgresContext(PostgresBuilder builder)
+    {
+      _builder = builder;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-      var builder = new PostgresBuilder();
-
-      builder.Host("localhost").Port(5432).Database("wms").Password("123456");
-      builder.OnConfiguring(options);
+      _builder.OnConfiguring(options);
     }
   }
 }

@@ -4,9 +4,7 @@ namespace Tiantong.Wms.DB
   {
     public static void Main(string[] argv)
     {
-      var migrator = new PostgresMigrator();
 
-      migrator.Migrate();
     }
   }
 }
