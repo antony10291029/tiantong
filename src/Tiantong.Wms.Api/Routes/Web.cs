@@ -12,6 +12,10 @@ namespace Tiantong.Wms.Api
       Post("/dev/initialize", "App.Initialize");
       Post("/dev/restore", "App.Restore");
       Post("/dev/seed", "App.InsertTestData");
+      Post("/dev/migrate", "App.Migrate");
+      Post("/dev/rollback", "App.Rollback");
+      Post("/dev/refresh", "App.Refresh");
+      Post("/dev/reseed", "App.Reseed");
 
       Post("/users/search", "User.Search");
 

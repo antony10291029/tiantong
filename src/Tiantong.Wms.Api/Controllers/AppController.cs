@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Renet.Web;
 using Tiantong.Wms.DB;
+using DBCore;
 
 namespace Tiantong.Wms.Api
 {
@@ -11,6 +12,8 @@ namespace Tiantong.Wms.Api
     private IAuth _auth;
 
     private DbContext _db;
+
+    private IMigrator _migrator;
 
     private IRandom _random;
 
@@ -41,6 +44,7 @@ namespace Tiantong.Wms.Api
     public AppController(
       IAuth auth,
       DbContext db,
+      IMigrator migrator,
       IRandom random,
       IConfiguration config,
       UserRepository users,
@@ -56,6 +60,7 @@ namespace Tiantong.Wms.Api
       StockRecordRepository stockRecords
     ) {
       _db = db;
+      _migrator = migrator;
       _auth = auth;
       _config = config;
       _random = random;
@@ -83,21 +88,33 @@ namespace Tiantong.Wms.Api
     public object Initialize()
     {
       if (IsInitialized()) {
-        return JsonMessage("system has been initialized");
+        return JsonMessage("系统初始化失败，不可重复初始化系统");
       }
 
       InitializeRootUser();
 
-      return JsonMessage("Success to initialize root user");
+      return JsonMessage("系统初始化成功");
     }
 
-    public object Restore()
+    public object Migrate()
     {
-      var migrator = new PostgresMigrator();
-      migrator.UseDbContext(_db);
-      migrator.Refresh();
+      _migrator.Migrate();
 
-      return JsonMessage("Success to restore application");
+      return SuccessOperation("数据库已同步");
+    }
+
+    public object Rollback()
+    {
+      _migrator.Rollback();
+
+      return SuccessOperation("数据库已回档");
+    }
+
+    public object refresh()
+    {
+      _migrator.Refresh();
+
+      return SuccessOperation("数据库已刷新");
     }
 
     private bool IsInitialized()
@@ -117,10 +134,17 @@ namespace Tiantong.Wms.Api
       _users.UnitOfWork.SaveChanges();
     }
 
+    public object Reseed()
+    {
+      _migrator.Refresh();
+
+      return InsertTestData();
+    }
+
     public object InsertTestData()
     {
       if (IsInitialized()) {
-        return JsonMessage("System has been initialized");
+        return FailureOperation("系统已完成初始化");
       }
 
       InsertRootUser();
@@ -136,7 +160,7 @@ namespace Tiantong.Wms.Api
       InsertStocks();
       InsertStockRecords();
 
-      return JsonMessage("Success to insert test data");
+      return SuccessOperation("测试数据建立完毕");
     }
 
     private void InsertRootUser()
