@@ -1,9 +1,5 @@
 <template>
-  <AsyncLoader
-    class="is-flex-auto"
-    style="height: 100%; overflow: auto; padding: 0.75rem"
-    :handler="getDataSet"
-  >
+  <AsyncLoader :handler="getDataSet">
     <div class="is-flex">
       <SearchField
         :isPending="isPending"
@@ -18,10 +14,7 @@
       </a>
     </div>
 
-    <table
-      v-show="!isPending"
-      class="table is-fullwidth is-vcentered is-centered is-nowrap is-hoverable"
-    >
+    <Table v-show="!isPending">
       <thead>
         <th>供应商名</th>
         <th>备注</th>
@@ -45,7 +38,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </Table>
     <div style="height: 1rem"></div>
     <Pagination v-show="!isPending" v-bind="meta" @change="changePage"></Pagination>
 
@@ -59,6 +52,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import DataSet from '@/mixins/data-set'
+import Table from '@/components/Table.vue'
 import SearchField from '@/components/SearchField.vue'
 import YesOrNoCell from '@/components/YesOrNoCell.vue'
 import Pagination from '@/components/Pagination.vue'
@@ -73,6 +67,7 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
     })
   ],
   components: {
+    Table,
     Pagination,
     SearchField,
     YesOrNoCell,

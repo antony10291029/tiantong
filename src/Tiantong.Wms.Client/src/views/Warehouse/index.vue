@@ -3,7 +3,6 @@
     class="is-flex"
     :handler="getWarehouse"
     v-slot="{ isLoading }"
-    style="height: 100%"
   >
     <aside
       class="menu has-border-right is-unselectable"
@@ -20,6 +19,8 @@
       </ul>
     </aside>
     <router-view
+      class="is-flex-auto"
+      style="overflow: auto; padding: 0.75rem;"
       v-if="!isLoading"
       :warehouseId="warehouseId"
       :warehouse="warehouse"

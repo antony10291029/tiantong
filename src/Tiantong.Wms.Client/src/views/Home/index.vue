@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Navbar></Navbar>
+    <Navbar class="app-nav"></Navbar>
     <router-view class="app-body"></router-view>
   </div>
 </template>
@@ -23,7 +23,12 @@ export default {
   display: flex
   flex-flow: column
 
+.app-nav
+  min-height: 52px
+  max-height: 52px
+
 .app-body
   flex: 2
   width: 100vw
+  height: calc(100vh - 52px)
 </style>
