@@ -66,7 +66,7 @@ interface Menu {
 }
 
 const menus: Menu[] = [
-  { icon: 'inbound', text: '入库单', route: 'inbounds' },
+  { icon: 'inbound', text: '录料单', route: 'inbounds' },
   // { icon: 'picking', text: '领料单', route: 'pickings' },
   // { icon: 'return', text: '返料单', route: 'returns' },
   { icon: 'inventory', text: '盘点', route: 'inventory' },
