@@ -14,18 +14,18 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
-    private OrderProjectRepository _orderProjects;
+    private ProjectItemRepository _projectItems;
 
     public ProjectController(
       IAuth auth,
       ProjectRepository projects,
       WarehouseRepository warehouses,
-      OrderProjectRepository orderProjects
+      ProjectItemRepository projectItems
     ) {
       _auth = auth;
       _projects = projects;
       _warehouses = warehouses;
-      _orderProjects = orderProjects;
+      _projectItems = projectItems;
     }
 
     public class CreateParams
@@ -82,7 +82,7 @@ namespace Tiantong.Wms.Api
       _auth.EnsureOwner();
 
       var project = _projects.EnsureGetByOwner(param.id, _auth.User.id);
-      if (_orderProjects.HasProject(project.warehouse_id, project.id)) {
+      if (_projectItems.HasProject(project.warehouse_id, project.id)) {
         return FailureOperation("工程已使用，无法删除");
       }
       _projects.Remove(project.id);

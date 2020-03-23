@@ -13,18 +13,18 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
-    private OrderSupplierRepository _orderSuppliers;
+    private OrderItemRepository _orderItems;
 
     public SupplierController(
       IAuth auth,
       SupplierRepository suppliers,
       WarehouseRepository warehouses,
-      OrderSupplierRepository orderSuppliers
+      OrderItemRepository orderItems
     ) {
       _auth = auth;
       _suppliers = suppliers;
       _warehouses = warehouses;
-      _orderSuppliers = orderSuppliers;
+      _orderItems = orderItems;
     }
 
     public class SupplierCreateParams
@@ -68,7 +68,7 @@ namespace Tiantong.Wms.Api
     {
       _auth.EnsureOwner();
 
-      if (_orderSuppliers.HasSupplier(param.supplier_id)) {
+      if (_orderItems.HasSupplier(param.supplier_id)) {
         return FailureOperation("供应商已使用，无法被删除");
       } else {
         _suppliers.Remove(param.supplier_id);

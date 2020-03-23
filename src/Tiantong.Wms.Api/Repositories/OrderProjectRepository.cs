@@ -1,11 +1,10 @@
 using System.Linq;
-using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
-  public class OrderProjectRepository : Repository<OrderProject>
+  public class ProjectItemRepository : Repository<ProjectItem, int>
   {
-    public OrderProjectRepository(DbContext db) : base(db)
+    public ProjectItemRepository(DbContext db) : base(db)
     {
 
     }

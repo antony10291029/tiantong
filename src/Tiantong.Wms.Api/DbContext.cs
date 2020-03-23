@@ -33,9 +33,7 @@ namespace Tiantong.Wms.Api
 
     public DbSet<StockRecord> StockRecords { get; set; }
 
-    public DbSet<OrderProject> OrderProjects { get; set; }
-
-    public DbSet<OrderSupplier> OrderSuppliers { get; set; }
+    public DbSet<ProjectItem> ProjectItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

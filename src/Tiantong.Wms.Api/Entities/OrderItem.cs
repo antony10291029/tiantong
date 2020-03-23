@@ -12,14 +12,14 @@ namespace Tiantong.Wms.Api
 
     public int order_id { get; set; }
 
-    public int key { get; set; }
-
     public int item_id { get; set; }
+
+    public int supplier_id { get; set; }
 
     public double price { get; set; } = 0;
 
-    public int expected_quantity { get; set; } = 0;
+    public int quantity { get; set; }
 
-    public int actual_quantity { get; set; } = 0;
+    public int arrived_quantity { get; set; } = 0;
   }
 }

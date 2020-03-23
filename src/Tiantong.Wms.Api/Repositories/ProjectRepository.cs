@@ -7,15 +7,15 @@ namespace Tiantong.Wms.Api
   {
     private WarehouseRepository _warehouses;
 
-    private OrderProjectRepository _orderProjects;
+    private ProjectItemRepository _projectItems;
 
     public ProjectRepository(
       DbContext db,
       WarehouseRepository warehouses,
-      OrderProjectRepository orderProjects
+      ProjectItemRepository projectItems
     ) : base(db) {
       _warehouses = warehouses;
-      _orderProjects = orderProjects;
+      _projectItems = projectItems;
     }
 
     //

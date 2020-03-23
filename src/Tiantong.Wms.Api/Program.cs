@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Tiantong.Wms.DB;
 
 namespace Tiantong.Wms.Api
 {
@@ -9,8 +8,6 @@ namespace Tiantong.Wms.Api
   {
     public static void Main(string[] args)
     {
-      var migrator = new PostgresMigrator();
-      migrator.Migrate();
       CreateHostBuilder(args).Build().Run();
     }
 

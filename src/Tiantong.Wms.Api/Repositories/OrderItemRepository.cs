@@ -21,5 +21,10 @@ namespace Tiantong.Wms.Api
     {
       return Table.Any(item => item.item_id == itemId);
     }
+
+    public bool HasSupplier(int supplierId)
+    {
+      return Table.Any(item => item.supplier_id == supplierId);
+    }
   }
 }
