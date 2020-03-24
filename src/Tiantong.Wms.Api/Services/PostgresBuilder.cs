@@ -9,8 +9,9 @@ namespace Tiantong.Wms.Api
     {
       Host(conf.GetValue("pg:host", "localhost"));
       Port(conf.GetValue("pg:port", 5432));
-      Database(conf.GetValue("pg:database", "postgres"));
+      Username(conf.GetValue("pg:username", "postgres"));
       Password(conf.GetValue("pg:password", "password"));
+      Database(conf.GetValue("pg:database", "postgres"));
     }
   }  
 }
