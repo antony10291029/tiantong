@@ -13,11 +13,9 @@ namespace Tiantong.Wms.Api
 
     public int project_id { get; set; }
 
-    public int item_id { get; set; }
-
     public int order_id { get; set; }
 
-    public int supplier_id { get; set; }
+    public int item_id { get; set; }
 
     public int quantity { get; set; }
 

@@ -4,7 +4,6 @@ create table if not exists project_items (
   project_id int not null,
   order_id int not null,
   item_id int not null,
-  supplier_id int not null,
   quantity int not null,
   unique(project_id, item_id, supplier_id, order_id)
 );
