@@ -161,6 +161,11 @@ const routes = [
     ]
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: () => import('./Public/Test.vue')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: () => import('./Public/NotFound.vue')
