@@ -100,7 +100,7 @@ namespace Tiantong.Wms.Api
     {
       _migratorProvider.Migrator.Migrate();
 
-      return SuccessOperation("数据库已同步");
+      return SuccessOperation("数据库已建立");
     }
 
     public object Rollback()
@@ -114,7 +114,7 @@ namespace Tiantong.Wms.Api
     {
       _migratorProvider.Migrator.Refresh();
 
-      return SuccessOperation("数据库已刷新");
+      return SuccessOperation("数据库已重建");
     }
 
     private bool IsInitialized()

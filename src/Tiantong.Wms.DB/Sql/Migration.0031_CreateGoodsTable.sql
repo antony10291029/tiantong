@@ -1,9 +1,11 @@
-create table if not exists order_categories (
+create table if not exists goods (
   id serial not null primary key,
   warehouse_id int not null,
-  type varchar(255) not null,
+  category_ids int[] not null,
+  number varchar(255),
   name varchar(255) not null,
   comment varchar(255) not null,
   is_enabled boolean not null,
-  unique(warehouse_id, type, name)
+  created_at timestamp(0) not null,
+  unique(warehouse_id, number)
 );
