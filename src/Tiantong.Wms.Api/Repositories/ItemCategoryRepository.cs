@@ -3,18 +3,18 @@ using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
-  public class ItemCategoryRepository : Repository<ItemCategory, int>
+  public class GoodCategoryRepository : Repository<GoodCategory, int>
   {
     private WarehouseRepository _warehouses;
 
-    public ItemCategoryRepository(DbContext db, WarehouseRepository warehouses) : base(db)
+    public GoodCategoryRepository(DbContext db, WarehouseRepository warehouses) : base(db)
     {
       _warehouses = warehouses;
     }
 
     //
 
-    public ItemCategory[] Search(int warehouseId)
+    public GoodCategory[] Search(int warehouseId)
     {
       return Table.Where(category => category.warehouse_id == warehouseId)
         .OrderBy(category => category.id)
@@ -38,7 +38,7 @@ namespace Tiantong.Wms.Api
       return Table.Any(category => category.warehouse_id == warehouseId && category.number == number);
     }
 
-    public ItemCategory EnsureGet(int id)
+    public GoodCategory EnsureGet(int id)
     {
       var category = Get(id);
 
@@ -49,7 +49,7 @@ namespace Tiantong.Wms.Api
       return category;
     }
 
-    public ItemCategory EnsureGet(int id, int warehouseId)
+    public GoodCategory EnsureGet(int id, int warehouseId)
     {
       var category = Get(id);
 
@@ -67,7 +67,7 @@ namespace Tiantong.Wms.Api
       }
     }
 
-    public ItemCategory EnsureGetByOwner(int id, int userId)
+    public GoodCategory EnsureGetByOwner(int id, int userId)
     {
       var category = EnsureGet(id);
       _warehouses.EnsureOwner(category.warehouse_id, userId);

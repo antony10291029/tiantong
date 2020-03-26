@@ -10,15 +10,11 @@ namespace Tiantong.Wms.Api
     [Key]
     public int id { get; set; }
 
-    public int warehouse_id { get; set; }
+    public int stock_id { get; set; }
 
-    public int item_id { get; set; }
+    public string order_type { get; set; }
 
-    public int location_id { get; set; }
-
-    public int order_id { get; set; }
-
-    public int item_key { get; set; }
+    public string order_number { get; set; }
 
     public int quantity { get; set; }
 

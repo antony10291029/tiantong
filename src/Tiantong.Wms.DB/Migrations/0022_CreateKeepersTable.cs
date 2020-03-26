@@ -6,7 +6,7 @@ namespace Tiantong.Wms.DB
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.0021_CreateKeepersTable");
+      db.ExecuteFromSql("Migration.0022_CreateKeepersTable");
     }
 
     public void Down(DbContext db)

@@ -3,7 +3,7 @@ using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
-  public class OrderRepository : Repository<Order, int>
+  public class OrderRepository : Repository<PurchaseOrder, int>
   {
     public OrderRepository(DbContext db) : base(db)
     {

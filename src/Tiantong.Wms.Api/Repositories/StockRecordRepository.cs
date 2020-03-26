@@ -1,8 +1,8 @@
 namespace Tiantong.Wms.Api
 {
-  public class StockRecordRepository : Repository<StockRecord>
+  public class PurchaseItemProjectRepository : Repository<PurchaseItemProject>
   {
-    public StockRecordRepository(DbContext db) : base(db)
+    public PurchaseItemProjectRepository(DbContext db) : base(db)
     {
 
     }

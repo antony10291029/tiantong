@@ -5,29 +5,29 @@ using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
-  public class ItemCategoryController : BaseController
+  public class GoodCategoryController : BaseController
   {
     private IAuth _auth;
 
     private WarehouseRepository _warehouses;
 
-    private ItemRepository _items;
+    private GoodRepository _goods;
 
-    private ItemCategoryRepository _itemCategories;
+    private GoodCategoryRepository _itemCategories;
 
-    public ItemCategoryController(
+    public GoodCategoryController(
       IAuth auth,
-      ItemRepository items,
+      GoodRepository goods,
       WarehouseRepository warehouses,
-      ItemCategoryRepository itemCategories
+      GoodCategoryRepository itemCategories
     ) {
       _auth = auth;
-      _items = items;
+      _goods = goods;
       _warehouses = warehouses;
       _itemCategories = itemCategories;
     }
 
-    public class ItemCategoryCreateParams
+    public class GoodCategoryCreateParams
     {
       [Nonzero]
       public int warehouse_id { get; set; }
@@ -42,7 +42,7 @@ namespace Tiantong.Wms.Api
       public bool is_enabled { get; set; } = true;
     }
 
-    public object Create([FromBody] ItemCategoryCreateParams param)
+    public object Create([FromBody] GoodCategoryCreateParams param)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
@@ -52,7 +52,7 @@ namespace Tiantong.Wms.Api
         _itemCategories.EnsureNumberUnique(param.warehouse_id, param.number);
       }
 
-      var category = new ItemCategory {
+      var category = new GoodCategory {
         warehouse_id = param.warehouse_id,
         name = param.name,
         number = param.number, 
@@ -65,18 +65,18 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("货类已创建", category.id);
     }
 
-    public class ItemCategoryDeleteParams
+    public class GoodCategoryDeleteParams
     {
       [Nonzero]
       public int category_id { get; set; }
     }
 
-    public object Delete([FromBody] ItemCategoryDeleteParams param)
+    public object Delete([FromBody] GoodCategoryDeleteParams param)
     {
       _auth.EnsureOwner();
       var category =  _itemCategories.EnsureGetByOwner(param.category_id, _auth.User.id);
 
-      if (_items.HasCategory(category.warehouse_id, category.id)) {
+      if (_goods.HasCategory(category.warehouse_id, category.id)) {
         return FailureOperation("货类已使用，无法被删除");
       }
 
@@ -128,7 +128,7 @@ namespace Tiantong.Wms.Api
       public int warehouse_id { get; set; }
     }
 
-    public IPagination<ItemCategory> Search([FromBody] SearchParams param)
+    public IPagination<GoodCategory> Search([FromBody] SearchParams param)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
@@ -151,7 +151,7 @@ namespace Tiantong.Wms.Api
       public int category_id { get; set; }
     }
 
-    public ItemCategory Find([FromBody] FindParams param)
+    public GoodCategory Find([FromBody] FindParams param)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);

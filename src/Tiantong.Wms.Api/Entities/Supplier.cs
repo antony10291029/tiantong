@@ -18,8 +18,6 @@ namespace Tiantong.Wms.Api
 
     public string comment { get; set; } = "";
 
-    public string address { get; set; } = "";
-
     public bool is_enabled { get; set; } = true;
 
     public DateTime created_at { get; set; } = DateTime.Now;

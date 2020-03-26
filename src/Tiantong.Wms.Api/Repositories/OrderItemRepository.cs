@@ -3,7 +3,7 @@ using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
-  public class OrderItemRepository : Repository<OrderItem>
+  public class OrderItemRepository : Repository<PurchaseOrderItem>
   {
     public OrderItemRepository(DbContext db) : base(db)
     {
@@ -24,7 +24,8 @@ namespace Tiantong.Wms.Api
 
     public bool HasSupplier(int supplierId)
     {
-      return Table.Any(item => item.supplier_id == supplierId);
+      return false;
+      // return Table.Any(item => item.supplier_id == supplierId);
     }
   }
 }

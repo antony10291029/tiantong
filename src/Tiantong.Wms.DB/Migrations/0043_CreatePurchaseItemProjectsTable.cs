@@ -2,11 +2,11 @@ using DBCore;
 
 namespace Tiantong.Wms.DB
 {
-  public class CreatePurchaseItemProjects : IMigration
+  public class CreatePurchaseItemProjectsTable : IMigration
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.0043_CreatePurchaseItemProjects");
+      db.ExecuteFromSql("Migration.0043_CreatePurchaseItemProjectsTable");
     }
 
     public void Down(DbContext db)

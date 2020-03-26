@@ -11,7 +11,11 @@ namespace Tiantong.Wms.Api
 
     public int warehouse_id { get; set; }
 
+    public int good_id { get; set; }
+
     public int item_id { get; set; }
+
+    public int area_id { get; set; }
 
     public int location_id { get; set; }
 

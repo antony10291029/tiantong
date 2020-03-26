@@ -16,7 +16,7 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
-    private ItemCategoryRepository _itemCategories;
+    private GoodCategoryRepository _goodCategories;
 
     public WarehouseController(
       IAuth auth,
@@ -24,14 +24,14 @@ namespace Tiantong.Wms.Api
       LocationRepository locations,
       SupplierRepository suppliers,
       WarehouseRepository warehouses,
-      ItemCategoryRepository itemCategories
+      GoodCategoryRepository goodCategories
     ) {
       _auth = auth;
       _areas = areas;
       _locations = locations;
       _suppliers = suppliers;
       _warehouses = warehouses;
-      _itemCategories = itemCategories;
+      _goodCategories = goodCategories;
     }
 
     public class WarehouseCreateParams
@@ -78,7 +78,7 @@ namespace Tiantong.Wms.Api
         warehouse_id = warehouse.id,
         name = "默认供应商",
       });
-      _itemCategories.Add(new ItemCategory {
+      _goodCategories.Add(new GoodCategory {
         warehouse_id = warehouse.id,
         name = "默认货类"
       });

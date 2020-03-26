@@ -7,15 +7,11 @@ namespace Tiantong.Wms.Api
   {
     private OrderItemRepository _orderItems;
 
-    private StockRecordRepository _stockRecords;
-
     public StockRepository(
       DbContext db,
-      OrderItemRepository orderItems,
-      StockRecordRepository stockRecords
+      OrderItemRepository orderItems
     ) : base(db) {
       _orderItems = orderItems;
-      _stockRecords = stockRecords;
     }
 
     public Stock GetOrAdd(int warehouseId, int itemId, int locationId)

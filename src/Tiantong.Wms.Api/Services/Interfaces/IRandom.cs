@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System;
+
 
 namespace Tiantong.Wms.Api
 {
@@ -10,9 +12,17 @@ namespace Tiantong.Wms.Api
 
     T[] Array<T>(T[] arr, int count);
 
+    T[] Array<T>(T[] array, int min, int max);
+
     int Int(int min, int max);
 
     string String(int length);
+
+    Action<Action<int>> For(int min, int max);
+
+    void For(int min, int max, Action<int> callback);
+
+    IEnumerable<int> Enumerate(int min, int max);
 
     DateTime DateTime(DateTime min, DateTime max);
 

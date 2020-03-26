@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,11 @@ namespace Tiantong.Wms.Api
       return array.OrderBy(item => _random.Next()).Take(count).ToArray();
     }
 
+    public T[] Array<T>(T[] array, int min, int max)
+    {
+      return Array(array, Int(min, max));
+    }
+
     public int Int(int min, int max)
     {
       return _random.Next(min, max + 1);
@@ -44,6 +50,31 @@ namespace Tiantong.Wms.Api
       }
 
       return builder.ToString();
+    }
+
+    public Action<Action<int>> For(int min, int max)
+    {
+      var n = Int(min, max);
+
+      return callback => {
+        for (var i = 1; i <= n; i++) {
+          callback(i);
+        }
+      };
+    }
+
+    public void For(int min, int max, Action<int> callback)
+    {
+      var n = Int(min, max);
+
+      for (var i = 1; i <= n; i++) {
+        callback(i);
+      }
+    }
+
+    public IEnumerable<int> Enumerate(int min, int max)
+    {
+      return Enumerable.Range(min, max);
     }
 
     public DateTime DateTime(DateTime min, DateTime max)

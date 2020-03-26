@@ -48,11 +48,11 @@ namespace Tiantong.Wms.Api
       Post("/projects/search", "Project.Search");
       Post("/projects/find", "Project.Find");
 
-      Post("/item-categories/create", "ItemCategory.Create");
-      Post("/item-categories/delete", "ItemCategory.Delete");
-      Post("/item-categories/update", "ItemCategory.Update");
-      Post("/item-categories/search", "ItemCategory.Search");
-      Post("/item-categories/find", "ItemCategory.Find");
+      Post("/good-categories/create", "GoodCategory.Create");
+      Post("/good-categories/delete", "GoodCategory.Delete");
+      Post("/good-categories/update", "GoodCategory.Update");
+      Post("/good-categories/search", "GoodCategory.Search");
+      Post("/good-categories/find", "GoodCategory.Find");
 
       Post("/orders/categories/create", "OrderCategory.Create");
       Post("/orders/categories/delete", "OrderCategory.Delete");
