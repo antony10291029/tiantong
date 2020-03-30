@@ -86,7 +86,7 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
 import DatePicker from '@/components/DatePicker/index.vue'
 
 @Component({
-  name: 'ProjectUpdate',
+  name: 'GoodUpdate',
   mixins: [
     DataModifier({
       dataApi: '/items/find',

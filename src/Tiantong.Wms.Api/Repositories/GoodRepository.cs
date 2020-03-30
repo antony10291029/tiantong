@@ -60,7 +60,7 @@ namespace Tiantong.Wms.Api
     public void EnsureNumberUnique(int warehouseId, string number)
     {
       if (HasNumber(warehouseId, number)) {
-        throw new FailureOperation("货品编码重复");
+        throw new FailureOperation("货码重复");
       }
     }
   }

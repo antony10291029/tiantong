@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Renet.Web;
 
@@ -12,6 +13,18 @@ namespace Tiantong.Wms.Api
       OrderItemRepository orderItems
     ) : base(db) {
       _orderItems = orderItems;
+    }
+
+    public bool HasGood(int goodId)
+    {
+      return Table.Any(stock => stock.good_id == goodId);
+    }
+
+    public Dictionary<string, Stock> GetByGoods(Good[] goods)
+    {
+      var ids = goods.SelectMany(good => good.stock_ids);
+
+      return Table.Where(stock => ids.Contains(stock.id)).ToRelationship();
     }
 
     public Stock GetOrAdd(int warehouseId, int itemId, int locationId)

@@ -91,20 +91,24 @@ const routes = [
             component: () => import('./Areas/index.vue')
           },
           {
-            path: 'items',
-            name: 'Items',
-            component: () => import('./Items/index.vue'),
+            path: 'goods',
+            component: () => import('./Goods/index.vue'),
             children: [
               {
-                path: 'create',
-                name: 'ItemCreate',
-                component: () => import('./Items/ItemCreate.vue')
+                path: '',
+                name: 'GoodList',
+                component: () => import('./Goods/GoodList.vue')
               },
               {
-                path: ':itemId/update',
-                name: 'ItemUpdate',
-                props: (route: any) => ({ itemId: +route.params.itemId }),
-                component: () => import('./Items/ItemUpdate.vue')
+                path: 'create',
+                name: 'GoodCreate',
+                component: () => import('./Goods/GoodCreate.vue')
+              },
+              {
+                path: ':goodId/update',
+                name: 'GoodManage',
+                props: (route: any) => ({ goodId: +route.params.goodId }),
+                component: () => import('./Goods/GoodManage.vue')
               }
             ]
           },
@@ -127,11 +131,6 @@ const routes = [
             path: 'locations',
             name: 'Locations',
             component: () => import('./Locations/index.vue')
-          },
-          {
-            path: 'inbounds',
-            name: 'Inbounds',
-            component: () => import('./Inbounds/index.vue')
           },
           {
             path: 'inventory',

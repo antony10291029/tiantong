@@ -8,9 +8,6 @@ namespace Tiantong.Wms.Api
   [Table("items")]
   public class Item : Entity
   {
-    [Key]
-    public int id { get; set; }
-
     public int warehouse_id { get; set; }
 
     public int good_id { get; set; }
@@ -22,6 +19,8 @@ namespace Tiantong.Wms.Api
     public string unit { get; set; }
 
     public bool is_enabled { get; set; } = true;
+
+    public List<int> stock_ids { get; set; } = new List<int>();
 
   }
 }

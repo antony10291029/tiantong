@@ -133,11 +133,11 @@ namespace Tiantong.Wms.Api
 
     private void InsertOwnerUsers()
     {
-      _random.For(2, 3)(i => {
+      _random.For(2, 2)(i => {
         _users.Add(new User {
           type = UserTypes.Owner,
           password = "123456",
-          email = "owner" + (i == 0 ? "" : i.ToString()) + "@wms.com"
+          email = "owner" + (i == 1 ? "" : i.ToString()) + "@wms.com"
         });
       });
 
@@ -147,7 +147,7 @@ namespace Tiantong.Wms.Api
     private void InsertWarehouses()
     {
       _users.Owners.OrderBy(user => user.id).Take(3).ToList().ForEach(owner => {
-        _random.For(2, 3)(i => {
+        _random.For(2, 2)(i => {
           _db.Warehouses.Add(new Warehouse() {
             owner_user_id = owner.id,
             number = $"WH000{i}",
@@ -164,7 +164,7 @@ namespace Tiantong.Wms.Api
     private void InsertDepartments()
     {
       _db.Warehouses.ToList().ForEach(warehouse => {
-        _random.For(5, 10)(i => {
+        _random.For(2, 5)(i => {
           _db.Departments.Add(new Department {
             warehouse_id = warehouse.id,
             name = $"测试部门{i}"
@@ -178,7 +178,7 @@ namespace Tiantong.Wms.Api
     private void InsertAreas()
     {
       _db.Warehouses.OrderBy(warehouse => warehouse.id).ToList().ForEach(warehouse => {
-        _random.For(1, 10)(i => {
+        _random.For(2, 5)(i => {
           _db.Areas.Add(new Area() {
             warehouse_id = warehouse.id,
             number = $"AR{i}",
@@ -195,7 +195,7 @@ namespace Tiantong.Wms.Api
     private void InsertLocations()
     {
       _db.Areas.OrderBy(item => item.id).ToList().ForEach(area => {
-        _random.For(1, 10)(i => {
+        _random.For(2, 5)(i => {
           _db.Locations.Add(new Location() {
             area_id = area.id,
             total_area = $"{i}",
@@ -214,7 +214,7 @@ namespace Tiantong.Wms.Api
     private void InsertProjects()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _random.For(5, 10)(i => {
+        _random.For(20, 50)(i => {
           var now = DateTime.Now;
           var startAt = _random.DateTime(now.AddDays(-30), now.AddDays(30));
           var dueTime = _random.DateTime(startAt.AddDays(30), startAt.AddDays(180));
@@ -238,7 +238,7 @@ namespace Tiantong.Wms.Api
     private void InsertSuppliers()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        for (int i = 0, L = _random.Int(10, 20); i < L; i++) {
+        for (int i = 0, L = _random.Int(20, 50); i < L; i++) {
           _db.Suppliers.Add(new Supplier {
             warehouse_id = warehouse.id,
             name = $"测试供应商 {i}",
@@ -253,7 +253,7 @@ namespace Tiantong.Wms.Api
     private void InsertGoodCategories()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _random.For(5, 10)(i => {
+        _random.For(2, 5)(i => {
           _db.GoodCategories.Add(new GoodCategory {
             warehouse_id = warehouse.id,
             name = $"测试分类 {i}",
@@ -268,11 +268,11 @@ namespace Tiantong.Wms.Api
     private void InsertGoods()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _random.For(5, 10)(i => {
+        _random.For(30, 50)(i => {
           _db.Goods.Add(new Good {
             warehouse_id = warehouse.id,
             number = $"item_000{i}",
-            category_ids = new int[] {},
+            category_ids = new List<int>(),
             name = $"测试物品 {i}",
             comment = $"测试物品备注 {i}"
           });
@@ -284,25 +284,35 @@ namespace Tiantong.Wms.Api
 
     private void InsertItems()
     {
-      _db.Goods.ToList().ForEach(good => {
+      var goods = _db.Goods.ToDictionary<Good, int>();
+
+      foreach (var good in goods.Values) {
         _db.Items.Add(new Item {
           warehouse_id = good.warehouse_id,
           good_id = good.id,
+          number = $"item_{good.id}",
           unit = "个",
           name = $"规格1",
         });
 
         if (_random.Int(1, 10) >= 8) {
-          _random.For(1, 5)(i => {
+          _random.For(1, 4)(i => {
             _db.Items.Add(new Item {
               warehouse_id = good.warehouse_id,
               good_id = good.id,
+              number = $"item_{good.id}_{i}",
               unit = "个",
-              name = $"规格{i + 1}",
+              name = $"规格{i}",
             });
           });
         }
-      });
+      }
+
+      _db.SaveChanges();
+
+      foreach (var group in _db.Items.ToArray().GroupBy(item => item.good_id)) {
+        goods[group.Key].item_ids = group.Select(item => item.id).ToList();
+      }
 
       _db.SaveChanges();
     }
@@ -313,8 +323,8 @@ namespace Tiantong.Wms.Api
         var items = _db.Items.Where(item => item.warehouse_id == warehouse.id).ToArray();
         var locations = _db.Locations.Where(location => location.warehouse_id == warehouse.id).ToArray();
 
-        foreach (var item in _random.Array(items, 1, 5)) {
-          foreach (var location in _random.Array(locations, 1, 5)) {
+        foreach (var item in items) {
+          foreach (var location in _random.Array(locations, 2, 5)) {
             _db.Stocks.Add(new Stock {
               warehouse_id = item.warehouse_id,
               good_id = item.good_id,
@@ -328,6 +338,23 @@ namespace Tiantong.Wms.Api
       }
 
       _db.SaveChanges();
+
+      var stocks = _db.Stocks.ToArray();
+      var goodStocks = stocks.GroupBy(stock => stock.good_id).ToArray();
+      var itemStocks = stocks.GroupBy(stock => stock.item_id).ToArray();
+      var itemIds = itemStocks.Select(stock => stock.Key).ToArray();
+      var goodIds = goodStocks.Select(stock => stock.Key).ToArray();
+      var goods = _db.Goods.Where(good => goodIds.Contains(good.id)).ToDictionary<Good, int>();
+      var items_ = _db.Items.Where(item => itemIds.Contains(item.id)).ToDictionary<Item, int>();
+
+      foreach (var group in goodStocks) {
+        goods[group.Key].stock_ids = group.Select(stock => stock.id).ToList();
+      }
+      foreach (var group in itemStocks) {
+        items_[group.Key].stock_ids = group.Select(stock => stock.id).ToList();
+      }
+
+      _db.SaveChanges();
     }
 
     private void InsertStockRecords()
@@ -336,7 +363,7 @@ namespace Tiantong.Wms.Api
         var stocks = _db.Stocks.Where(stock => stock.warehouse_id == warehouse.id).ToArray();
 
         foreach (var stock in stocks) {
-          foreach (var i in _random.Enumerate(1, 5)) {
+          foreach (var i in _random.Enumerate(2, 5)) {
             _db.StockRecords.Add(new StockRecord {
               stock_id = stock.id,
               order_type = "test",
@@ -358,12 +385,12 @@ namespace Tiantong.Wms.Api
         var suppliers = _db.Suppliers.Where(sp => sp.warehouse_id == warehouse.id).ToArray();
         var departments = _db.Departments.Where(dp => dp.warehouse_id == warehouse.id).ToArray();
 
-        foreach (var i in _random.Enumerate(1, 5)) {
+        foreach (var i in _random.Enumerate(2, 5)) {
           var payments = new List<Payment>();
           var orderItems = new List<PurchaseOrderItem>();
           var orderNumber = $"{_random.Int(1000000, 1900000)}";
 
-          for (int j = 0, L = _random.Int(2, 4), M = _random.Int(0, L); j < L; j++) {
+          for (int j = 0, L = _random.Int(2, 5), M = _random.Int(0, L); j < L; j++) {
             payments.Add(new Payment {
               amount = _random.Int(100, 100000),
               comment = $"付款{j}",

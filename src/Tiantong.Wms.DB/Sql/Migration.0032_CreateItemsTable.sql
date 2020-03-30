@@ -6,5 +6,6 @@ create table if not exists items (
   name varchar(255) not null,
   unit varchar(255) not null,
   is_enabled boolean not null,
+  stock_ids int[] not null,
   unique(warehouse_id, number)
 );
