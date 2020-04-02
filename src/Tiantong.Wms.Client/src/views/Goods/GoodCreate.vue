@@ -13,6 +13,8 @@
       </ul>
     </nav>
 
+    <hr>
+
     <div
       class="field"
       style="width: 320px"
@@ -41,11 +43,21 @@
       class="field"
       style="width: 520px"
     >
-      <div class="label">
-        <label>备注</label>
-      </div>
+      <label class="label">规格</label>
       <div class="control">
-        <Textarea v-model="params.comment"></Textarea>
+        <GoodItems @add="handleItemsAdd">
+          <GoodItemsRow
+            v-for="(item, index) in params.items" :key="item.$key"
+            :item="item"
+            :index="index"
+            :count="params.items.length"
+            @delete="params.items.splice($event, 1)"
+          >
+            <EditableCell v-model="item.number"></EditableCell>
+            <EditableCell v-model="item.name"></EditableCell>
+            <EditableCell v-model="item.unit"></EditableCell>
+          </GoodItemsRow>
+        </GoodItems>
       </div>
     </div>
 
@@ -53,22 +65,11 @@
       class="field"
       style="width: 520px"
     >
+      <div class="label">
+        <label>备注</label>
+      </div>
       <div class="control">
-        <GoodCreateItems
-          @add="handleItemsAdd"
-        >
-          <GoodCreateItemsRow
-            v-for="(item, key) in params.items" :key="item.$key"
-            :item="item"
-            :index="key"
-            @remove="params.items.splice($event, 1)"
-          >
-            <td>{{key + 1}}</td>
-            <EditableCell v-model="item.number"></EditableCell>
-            <EditableCell v-model="item.name"></EditableCell>
-            <EditableCell v-model="item.unit"></EditableCell>
-          </GoodCreateItemsRow>
-        </GoodCreateItems>
+        <Textarea v-model="params.comment"></Textarea>
       </div>
     </div>
 
@@ -89,8 +90,8 @@ import Textarea from '@/components/Textarea.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
 import axios from '@/providers/axios'
 import DatePicker from '@/components/DatePicker/index.vue'
-import GoodCreateItems from './GoodCreateItems.vue'
-import GoodCreateItemsRow from './GoodCreateItemsRow.vue'
+import GoodItems from './GoodItems.vue'
+import GoodItemsRow from './GoodItemsRow.vue'
 
 @Component({
   name: 'GoodCreate',
@@ -98,8 +99,8 @@ import GoodCreateItemsRow from './GoodCreateItemsRow.vue'
     Textarea,
     AsyncButton,
     DatePicker,
-    GoodCreateItems,
-    GoodCreateItemsRow
+    GoodItems,
+    GoodItemsRow
   }
 })
 export default class extends Vue {

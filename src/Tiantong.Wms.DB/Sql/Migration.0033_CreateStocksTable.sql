@@ -6,5 +6,5 @@ create table if not exists stocks (
   area_id int not null,
   location_id int not null,
   quantity int not null,
-  unique(warehouse_id, good_id, item_id, area_id, location_id)
+  unique(warehouse_id, item_id, location_id)
 );

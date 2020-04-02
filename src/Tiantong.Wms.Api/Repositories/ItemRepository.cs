@@ -15,6 +15,17 @@ namespace Tiantong.Wms.Api
 
     //
 
+    public Item EnsureGet(int id)
+    {
+      var item = Get(id);
+
+      if (item == null) {
+        throw new FailureOperation("规格未找到");
+      }
+
+      return item;
+    }
+
     public void EnsureNumberUnique(int warehouseId, string[] numbers)
     {
       if (numbers.Length > 0 && Table.Any(item => numbers.Contains(item.number))) {
@@ -22,11 +33,5 @@ namespace Tiantong.Wms.Api
       }
     }
 
-    public Dictionary<string, Item> GetByGoods(Good[] goods)
-    {
-      var ids = goods.SelectMany(good => good.item_ids).Distinct();
-
-      return Table.Where(item => ids.Contains(item.id)).ToRelationship();
-    }
   }
 }

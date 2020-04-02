@@ -2,14 +2,6 @@
   <table class="table is-bordered is-fullwidth">
     <thead>
       <tr class="has-background">
-        <th colspan="5">
-          <div class="is-flex">
-            <span>规格</span>
-            <span class="is-flex-auto"></span>
-          </div>
-        </th>
-      </tr>
-      <tr class="has-background">
         <th style="width: 1px">#</th>
         <th>规格码</th>
         <th>规格名</th>
@@ -34,7 +26,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({
-  name: 'GoodCreateItems'
+  name: 'GoodItems'
 })
 export default class extends Vue {
   id: number = 0

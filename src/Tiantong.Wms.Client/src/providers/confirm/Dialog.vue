@@ -33,10 +33,9 @@ export default {
   name: 'Confirmer',
   data () {
     return {
-      width: '',
+      width: '400',
       isShow: false,
       isLoading: false,
-
       title: '',
       content: '',
       handler: false,
@@ -68,7 +67,7 @@ export default {
         this.$emit('confirm')
       }
     },
-    open ({ title, content, handler, beforeClose, width = 'auto' }) {
+    open ({ title, content, handler, beforeClose, width = '320px' }) {
       this.title = title
       this.width = width
       this.content = content

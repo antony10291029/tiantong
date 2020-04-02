@@ -116,10 +116,9 @@ namespace Tiantong.Wms.Api
       InsertSuppliers();
       InsertGoodCategories();
       InsertGoods();
-      InsertItems();
       InsertStocks();
-      InsertStockRecords();
-      InsertPurchaseOrders();
+      // InsertStockRecords();
+      // InsertPurchaseOrders();
 
       return SuccessOperation("测试数据建立完毕");
     }
@@ -268,50 +267,21 @@ namespace Tiantong.Wms.Api
     private void InsertGoods()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _random.For(30, 50)(i => {
+        _random.For(20, 50)(i => {
           _db.Goods.Add(new Good {
             warehouse_id = warehouse.id,
             number = $"item_000{i}",
-            category_ids = new List<int>(),
             name = $"测试物品 {i}",
-            comment = $"测试物品备注 {i}"
-          });
-        });
-      }
-
-      _db.SaveChanges();
-    }
-
-    private void InsertItems()
-    {
-      var goods = _db.Goods.ToDictionary<Good, int>();
-
-      foreach (var good in goods.Values) {
-        _db.Items.Add(new Item {
-          warehouse_id = good.warehouse_id,
-          good_id = good.id,
-          number = $"item_{good.id}",
-          unit = "个",
-          name = $"规格1",
-        });
-
-        if (_random.Int(1, 10) >= 8) {
-          _random.For(1, 4)(i => {
-            _db.Items.Add(new Item {
-              warehouse_id = good.warehouse_id,
-              good_id = good.id,
-              number = $"item_{good.id}_{i}",
+            comment = $"测试物品备注 {i}",
+            items = _random.Enumerate(1, 5).Select(j => new Item {
+              warehouse_id = warehouse.id,
+              index = j,
+              name = $"测试规格 {j}",
+              number = $"item_{i}_{j}",
               unit = "个",
-              name = $"规格{i}",
-            });
+            }).ToList()
           });
-        }
-      }
-
-      _db.SaveChanges();
-
-      foreach (var group in _db.Items.ToArray().GroupBy(item => item.good_id)) {
-        goods[group.Key].item_ids = group.Select(item => item.id).ToList();
+        });
       }
 
       _db.SaveChanges();
@@ -338,23 +308,6 @@ namespace Tiantong.Wms.Api
       }
 
       _db.SaveChanges();
-
-      var stocks = _db.Stocks.ToArray();
-      var goodStocks = stocks.GroupBy(stock => stock.good_id).ToArray();
-      var itemStocks = stocks.GroupBy(stock => stock.item_id).ToArray();
-      var itemIds = itemStocks.Select(stock => stock.Key).ToArray();
-      var goodIds = goodStocks.Select(stock => stock.Key).ToArray();
-      var goods = _db.Goods.Where(good => goodIds.Contains(good.id)).ToDictionary<Good, int>();
-      var items_ = _db.Items.Where(item => itemIds.Contains(item.id)).ToDictionary<Item, int>();
-
-      foreach (var group in goodStocks) {
-        goods[group.Key].stock_ids = group.Select(stock => stock.id).ToList();
-      }
-      foreach (var group in itemStocks) {
-        items_[group.Key].stock_ids = group.Select(stock => stock.id).ToList();
-      }
-
-      _db.SaveChanges();
     }
 
     private void InsertStockRecords()
@@ -363,7 +316,7 @@ namespace Tiantong.Wms.Api
         var stocks = _db.Stocks.Where(stock => stock.warehouse_id == warehouse.id).ToArray();
 
         foreach (var stock in stocks) {
-          foreach (var i in _random.Enumerate(2, 5)) {
+          foreach (var i in _random.Enumerate(10, 20)) {
             _db.StockRecords.Add(new StockRecord {
               stock_id = stock.id,
               order_type = "test",
@@ -377,89 +330,89 @@ namespace Tiantong.Wms.Api
       _db.SaveChanges();
     }
 
-    public void InsertPurchaseOrders()
-    {
-      foreach (var warehouse in _db.Warehouses.ToArray()) {
-        var items = _db.Items.Where(item => item.warehouse_id == warehouse.id).ToArray();
-        var projects = _db.Projects.Where(pj => pj.warehouse_id == warehouse.id).ToArray();
-        var suppliers = _db.Suppliers.Where(sp => sp.warehouse_id == warehouse.id).ToArray();
-        var departments = _db.Departments.Where(dp => dp.warehouse_id == warehouse.id).ToArray();
+    // public void InsertPurchaseOrders()
+    // {
+    //   foreach (var warehouse in _db.Warehouses.ToArray()) {
+    //     var items = _db.Items.Where(item => item.warehouse_id == warehouse.id).ToArray();
+    //     var projects = _db.Projects.Where(pj => pj.warehouse_id == warehouse.id).ToArray();
+    //     var suppliers = _db.Suppliers.Where(sp => sp.warehouse_id == warehouse.id).ToArray();
+    //     var departments = _db.Departments.Where(dp => dp.warehouse_id == warehouse.id).ToArray();
 
-        foreach (var i in _random.Enumerate(2, 5)) {
-          var payments = new List<Payment>();
-          var orderItems = new List<PurchaseOrderItem>();
-          var orderNumber = $"{_random.Int(1000000, 1900000)}";
+    //     foreach (var i in _random.Enumerate(2, 5)) {
+    //       var payments = new List<Payment>();
+    //       var orderItems = new List<PurchaseOrderItem>();
+    //       var orderNumber = $"{_random.Int(1000000, 1900000)}";
 
-          for (int j = 0, L = _random.Int(2, 5), M = _random.Int(0, L); j < L; j++) {
-            payments.Add(new Payment {
-              amount = _random.Int(100, 100000),
-              comment = $"付款{j}",
-              is_paid = j >= M,
-              order_type = "purchase",
-              order_number = orderNumber,
-              due_time = DateTime.Now.AddDays(_random.Int(10, 90)),
-              paid_at = DateTime.Now.AddDays(_random.Int(10, 90))
-            });
-          }
+    //       for (int j = 0, L = _random.Int(2, 5), M = _random.Int(0, L); j < L; j++) {
+    //         payments.Add(new Payment {
+    //           amount = _random.Int(100, 100000),
+    //           comment = $"付款{j}",
+    //           is_paid = j >= M,
+    //           order_type = "purchase",
+    //           order_number = orderNumber,
+    //           due_time = DateTime.Now.AddDays(_random.Int(10, 90)),
+    //           paid_at = DateTime.Now.AddDays(_random.Int(10, 90))
+    //         });
+    //       }
 
-          _db.Payments.AddRange(payments);
-          _db.SaveChanges();
+    //       _db.Payments.AddRange(payments);
+    //       _db.SaveChanges();
 
-          foreach (var item in _random.Array(items, 0, 5)) {
-            var itemProjects = new List<PurchaseItemProject>();
+    //       foreach (var item in _random.Array(items, 0, 5)) {
+    //         var itemProjects = new List<PurchaseItemProject>();
 
-            itemProjects.Add(new PurchaseItemProject {
-              project_id = _random.Array(projects).id,
-              quantity = _random.Int(1, 100),
-            });
+    //         itemProjects.Add(new PurchaseItemProject {
+    //           project_id = _random.Array(projects).id,
+    //           quantity = _random.Int(1, 100),
+    //         });
 
-            if (_random.Int(1, 10) > 9) {
-              foreach (var k in _random.Enumerate(1, 3)) {
-                itemProjects.Add(new PurchaseItemProject {
-                  project_id = _random.Array(projects).id,
-                  quantity = _random.Int(1, 100),
-                });
-              }
-            }
+    //         if (_random.Int(1, 10) > 9) {
+    //           foreach (var k in _random.Enumerate(1, 3)) {
+    //             itemProjects.Add(new PurchaseItemProject {
+    //               project_id = _random.Array(projects).id,
+    //               quantity = _random.Int(1, 100),
+    //             });
+    //           }
+    //         }
 
-            _db.PurchaseItemProjects.AddRange(itemProjects);
-            _db.SaveChanges();
+    //         _db.PurchaseItemProjects.AddRange(itemProjects);
+    //         _db.SaveChanges();
 
-            orderItems.Add(new PurchaseOrderItem {
-              item_id = item.id,
-              good_id = item.good_id,
-              price = _random.Int(1000, 10000),
-              quantity = _random.Int(1, 100),
-              delivery_cycle = $"{10}",
-              tax_number = $"{_random.Int(1000000, 1900000)}",
-              tax_name = $"name{item.id}",
-              tax_specification = $"name{item.name}",
-              tax_type = "primary",
-              tax_rate = 13,
-              item_project_ids = itemProjects.Select(pj => pj.id).ToArray()
-            });
-          }
+    //         orderItems.Add(new PurchaseOrderItem {
+    //           item_id = item.id,
+    //           good_id = item.good_id,
+    //           price = _random.Int(1000, 10000),
+    //           quantity = _random.Int(1, 100),
+    //           delivery_cycle = $"{10}",
+    //           tax_number = $"{_random.Int(1000000, 1900000)}",
+    //           tax_name = $"name{item.id}",
+    //           tax_specification = $"name{item.name}",
+    //           tax_type = "primary",
+    //           tax_rate = 13,
+    //           item_project_ids = itemProjects.Select(pj => pj.id).ToArray()
+    //         });
+    //       }
 
-          _db.PurchaseOrderItems.AddRange(orderItems);
-          _db.SaveChanges();
+    //       _db.PurchaseOrderItems.AddRange(orderItems);
+    //       _db.SaveChanges();
 
-          _db.PurchaseOrders.Add(new PurchaseOrder {
-            warehouse_id = warehouse.id,
-            number = $"PO{i}",
-            status = "test",
-            operator_id = warehouse.owner_user_id,
-            applicant_id = warehouse.owner_user_id,
-            department_id = _random.Array(departments).id,
-            supplier_id = _random.Array(suppliers).id,
-            payment_ids = payments.Select(payment => payment.id).ToArray(),
-            purchase_item_ids = orderItems.Select(item => item.id).ToArray()
-          });
+    //       _db.PurchaseOrders.Add(new PurchaseOrder {
+    //         warehouse_id = warehouse.id,
+    //         number = $"PO{i}",
+    //         status = "test",
+    //         operator_id = warehouse.owner_user_id,
+    //         applicant_id = warehouse.owner_user_id,
+    //         department_id = _random.Array(departments).id,
+    //         supplier_id = _random.Array(suppliers).id,
+    //         payment_ids = payments.Select(payment => payment.id).ToArray(),
+    //         purchase_item_ids = orderItems.Select(item => item.id).ToArray()
+    //       });
 
-          _db.SaveChanges();
-        }
-      }
+    //       _db.SaveChanges();
+    //     }
+    //   }
 
-    }
+    // }
 
   }
 }

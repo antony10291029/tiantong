@@ -105,11 +105,18 @@ const routes = [
                 component: () => import('./Goods/GoodCreate.vue')
               },
               {
-                path: ':goodId/update',
+                path: ':goodId/manage',
                 name: 'GoodManage',
                 props: (route: any) => ({ goodId: +route.params.goodId }),
-                component: () => import('./Goods/GoodManage.vue')
-              }
+                component: () => import('./Goods/GoodManage.vue'),
+                children: [
+                  {
+                    path: 'items/add',
+                    name: 'GoodItemsAdd',
+                    component: () => import('./Goods/GoodItemsAdd.vue')
+                  }
+                ]
+              },
             ]
           },
           {

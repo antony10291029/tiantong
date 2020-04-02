@@ -34,6 +34,7 @@ namespace Tiantong.Wms.Api
 
     public virtual TEntity Update(TEntity entity)
     {
+
       return DbContext.Update(entity).Entity;
     }
 

@@ -20,7 +20,7 @@
     </aside>
     <router-view
       class="is-flex-auto"
-      style="overflow: auto; padding: 0.75rem;"
+      style="overflow: auto; padding: 1rem;"
       v-if="!isLoading"
       :warehouseId="warehouseId"
       :warehouse="warehouse"

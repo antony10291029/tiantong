@@ -8,19 +8,24 @@ namespace Tiantong.Wms.Api
   [Table("items")]
   public class Item : Entity
   {
-    public int warehouse_id { get; set; }
+    public virtual int warehouse_id { get; set; }
 
-    public int good_id { get; set; }
+    public virtual int good_id { get; set; }
 
-    public string number { get; set; }
+    public virtual int index { get; set; }
 
-    public string name { get; set; }
+    public virtual string number { get; set; }
 
-    public string unit { get; set; }
+    public virtual string name { get; set; }
 
-    public bool is_enabled { get; set; } = true;
+    public virtual string unit { get; set; }
 
-    public List<int> stock_ids { get; set; } = new List<int>();
+    public virtual bool is_enabled { get; set; } = true;
+
+    public virtual bool is_deleted { get; set; } = false;
+
+    [ForeignKey("item_id")]
+    public virtual List<Stock> stocks { get; set; }
 
   }
 }

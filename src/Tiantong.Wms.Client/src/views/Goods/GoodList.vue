@@ -6,12 +6,12 @@
         @search="handleSearch"
       />
       <div class="is-flex-auto"></div>
-      <a
+      <router-link
         class="button is-info"
-        @click="$router.push(`/warehouses/${warehouseId}/goods/create`)"
+        :to="baseURL + 'create'"
       >
         添加
-      </a>
+      </router-link>
     </div>
 
     <Table v-show="!isPending">
@@ -29,62 +29,62 @@
       </thead>
       <tbody>
         <template v-for="(good, goodKey) in entityList">
-          <template v-for="(itemId, itemKey) in good.item_ids">
-            <tr :key="good.id + '' + itemId">
+          <template v-for="(item, itemKey) in good.items">
+            <tr :key="good.id + '' + item.id">
               <td
                 v-if="itemKey === 0"
-                :rowspan="good.item_ids.length"
+                :rowspan="good.items.length"
               >
                 {{goodKey + 1}}
               </td>
               <td
                 v-if="itemKey === 0"
-                :rowspan="good.item_ids.length"
+                :rowspan="good.items.length"
               >
                 {{good.number}}
               </td>
               <td
                 v-if="itemKey === 0"
-                :rowspan="good.item_ids.length"
+                :rowspan="good.items.length"
               >
                 {{good.name}}
               </td>
               <td
                 v-if="itemKey === 0"
-                :rowspan="good.item_ids.length"
+                :rowspan="good.items.length"
               >
                 {{good.comment}}
               </td>
               <td>
-                {{items[itemId].number}}
+                {{item.number}}
               </td>
 
               <td>
-                {{items[itemId].name}}
+                {{item.name}}
               </td>
               <td>
-                {{items[itemId].unit}}
+                {{item.unit}}
               </td>
               <td>
-                {{getStockQuantity(items[itemId].stock_ids)}}
+                {{item.stocks.reduce((sum, stock) => sum + stock.quantity, 0)}}
               </td>
               <td
                 v-if="itemKey === 0"
-                :rowspan="good.item_ids.length"
+                :rowspan="good.items.length"
               >
                 <YesOrNoCell :value="good.is_enabled"></YesOrNoCell>
               </td>
 
               <td
                 v-if="itemKey === 0"
-                :rowspan="good.item_ids.length"
+                :rowspan="good.items.length"
               >
-                <a>
+                <router-link :to="baseURL + `${good.id}/manage`">
                   <span class="icon">
                     <i class="iconfont icon-edit"></i>
                   </span>
                   <span>管理</span>
-                </a>
+                </router-link>
               </td>
             </tr>
           </template>
@@ -95,6 +95,7 @@
     <Pagination v-show="!isPending" v-bind="entities.meta" @change="handlePageChange"></Pagination>
 
     <router-view
+      :baseURL="baseURL"
       :warehouseId="warehouseId"
       @refresh="handleRefresh"
     ></router-view>
@@ -129,22 +130,15 @@ export default class extends DataSet {
   @Prop({ required: true })
   warehouseId!: number
 
+  get baseURL () {
+    return `/warehouses/${this.warehouseId}/goods/`
+  }
+
   get params () {
     return {
       warehouse_id: this.warehouseId
     }
   }
 
-  get items () {
-    return this.entities.relationships.items
-  }
-
-  get stocks () {
-    return this.entities.relationships.stocks
-  }
-
-  getStockQuantity (stockIds: number[]) {
-    return stockIds.reduce((sum, id) => sum + this.stocks[id].quantity, 0)
-  }
 }
 </script>

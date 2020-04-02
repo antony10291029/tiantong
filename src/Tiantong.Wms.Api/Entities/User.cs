@@ -8,18 +8,19 @@ namespace Tiantong.Wms.Api
   [Table("users")]
   public class User : Entity
   {
-    public string email { get; set; }
+    [Required]
+    public virtual string email { get; set; }
 
     [JsonIgnore]
-    public string password { get; set; }
+    public virtual string password { get; set; }
 
-    public string name { get; set; } = "";
+    public virtual string name { get; set; } = "";
 
-    public string type { get; set; }
+    public virtual string type { get; set; }
 
-    public bool is_enabled { get; set; } = true;
+    public virtual bool is_enabled { get; set; } = true;
 
-    public DateTime created_at { get; set; } = DateTime.Now;
+    public virtual DateTime created_at { get; set; } = DateTime.Now;
 
   }
 }

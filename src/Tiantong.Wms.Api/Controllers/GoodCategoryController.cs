@@ -76,9 +76,9 @@ namespace Tiantong.Wms.Api
       _auth.EnsureOwner();
       var category =  _itemCategories.EnsureGetByOwner(param.category_id, _auth.User.id);
 
-      if (_goods.HasCategory(category.warehouse_id, category.id)) {
-        return FailureOperation("货类已使用，无法被删除");
-      }
+      // if (_goods.HasCategory(category.warehouse_id, category.id)) {
+      //   return FailureOperation("货类已使用，无法被删除");
+      // }
 
       _itemCategories.Remove(category.id);
       _itemCategories.UnitOfWork.SaveChanges();

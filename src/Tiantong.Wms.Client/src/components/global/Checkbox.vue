@@ -2,19 +2,24 @@
   <label
     :class="labelClass"
     :style="labelStyle"
-    @click="handleClick"
   >
     <span
-      :class="spanClass"
-      :style="spanStyle"
+      class="is-unselectable"
+      style="cursor: pointer"
+      @click="handleClick"
     >
-      <i
-        :class="'iconfont icon-checkbox-' + iconName"
-        :style="iconStyle"
-      />
-    </span>
-    <span class="is-unselectable" style="cursor: pointer">
-      <slot></slot>
+      <span
+        :class="spanClass"
+        :style="spanStyle"
+      >
+        <i
+          :class="'iconfont icon-checkbox-' + iconName"
+          :style="iconStyle"
+        />
+      </span>
+      <span class="is-unselectable" style="cursor: pointer">
+        <slot></slot>
+      </span>
     </span>
   </label>
 </template>
@@ -43,7 +48,6 @@ export default {
     },
     labelClass () {
       return [
-        'checkbox',
         this.disabled && 'has-text-grey-light'
       ]
     },

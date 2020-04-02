@@ -1,5 +1,6 @@
 using System.Linq;
 using Renet.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Wms.Api
 {
@@ -26,25 +27,23 @@ namespace Tiantong.Wms.Api
       return Table.Any(good => good.warehouse_id == warehouseId && good.number == number);
     }
 
-    public bool HasCategory(int warehouseId, int categoryId)
-    {
-      return Table.Any(good => good.warehouse_id == warehouseId && good.category_ids.Contains(categoryId));
-    }
-
     public Good EnsureGet(int id)
     {
-      var good = Get(id);
+      var result = Table
+        .Include(good => good.items)
+        .Where(good => good.id == id)
+        .SingleOrDefault();
 
-      if (good == null) {
+      if (result == null) {
         throw new FailureOperation("货品不存在");
       }
 
-      return good;
+      return result;
     }
 
-    public Good EnsureGetByOwner(int id, int userId)
+    public Good EnsureGetByOwner(int goodId, int userId)
     {
-      var good = EnsureGet(id);
+      var good = EnsureGet(goodId);
       _warehouses.EnsureOwner(good.warehouse_id, userId);
 
       return good;
@@ -63,5 +62,6 @@ namespace Tiantong.Wms.Api
         throw new FailureOperation("货码重复");
       }
     }
+
   }
 }

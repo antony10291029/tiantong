@@ -47,7 +47,8 @@ namespace Tiantong.Wms.Api
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-
+      builder.Entity<Good>().HasQueryFilter(good => !good.is_deleted);
+      builder.Entity<Item>().HasQueryFilter(item => !item.is_deleted);
     }
   }
 }
