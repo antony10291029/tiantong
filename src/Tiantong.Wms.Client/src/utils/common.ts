@@ -25,7 +25,7 @@ export const DateTime = {
   minValue: '0001-01-01T00:00:00',
 
   get now () {
-    return new Date()
+    return new Date().toISOString()
   },
 
   getDate (dateTime: string) {

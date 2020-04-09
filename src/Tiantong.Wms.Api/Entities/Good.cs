@@ -14,7 +14,7 @@ namespace Tiantong.Wms.Api
 
     public virtual string name { get; set; }
 
-    public virtual string comment { get; set; }
+    public virtual string comment { get; set; } = "";
 
     public virtual bool is_enabled { get; set; } = true;
 

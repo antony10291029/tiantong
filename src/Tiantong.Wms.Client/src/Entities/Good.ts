@@ -1,6 +1,8 @@
 import Item from './Item'
 
 export default class Good {
+  id: number = 0
+
   warehouse_id: number = 0
 
   number: string | null = null

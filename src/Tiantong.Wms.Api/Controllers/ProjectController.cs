@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -162,6 +163,20 @@ namespace Tiantong.Wms.Api
         .OrderBy(project => project.number)
         .ThenBy(project => project.id)
         .Paginate(param.page, param.page_size);
+    }
+
+    public class SearchAllParams
+    {
+      public int warehouse_id { get; set; }
+    }
+
+    public IEntities<Project, int> All([FromBody] SearchAllParams param)
+    {
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+
+      return _projects.Table.Where(
+        project => project.warehouse_id == param.warehouse_id
+      ).ToEntities();
     }
 
     public class FindParams

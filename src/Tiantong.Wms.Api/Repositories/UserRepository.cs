@@ -36,13 +36,25 @@ namespace Tiantong.Wms.Api
 
     public override User Update(User user)
     {
-
       return base.Update(user);
     }
 
     public void EncodePassword(User user)
     {
       user.password = _hash.Make(user.password);
+    }
+
+    // ensure
+
+    public void EnsureUnique(User user)
+    {
+      if (
+        Table.Any(item => 
+          item.id != user.id && item.email == user.email
+        )
+      ) {
+        throw new FailureOperation("用户邮箱重复");
+      }
     }
 
     // select

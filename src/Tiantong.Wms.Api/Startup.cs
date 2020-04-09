@@ -21,7 +21,8 @@ namespace Tiantong.Wms.Api
       services.AddSingleton<IRandom, Random>();
       services.AddScoped<UserRepository>();
       services.AddScoped<WarehouseRepository>();
-      services.AddScoped<KeeperRepository>();
+      services.AddScoped<WarehouseUserRepository>();
+      services.AddScoped<DepartmentRepository>();
       services.AddScoped<AreaRepository>();
       services.AddScoped<LocationRepository>();
       services.AddScoped<ProjectRepository>();
@@ -30,7 +31,7 @@ namespace Tiantong.Wms.Api
       services.AddScoped<GoodRepository>();
       services.AddScoped<ItemRepository>();
       services.AddScoped<StockRepository>();
-      services.AddScoped<OrderRepository>();
+      services.AddScoped<PurchaseOrderRepository>();
       services.AddScoped<OrderItemRepository>();
       services.AddScoped<ProjectItemRepository>();
     }

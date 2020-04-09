@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using DBCore.Postgres;
 using Tiantong.Wms.DB;
@@ -8,11 +9,13 @@ namespace Tiantong.Wms.Api
   {
     public DbSet<User> Users { get; set; }
 
-    public DbSet<Department> Departments { get; set; }
-
     public DbSet<Warehouse> Warehouses { get; set; }
 
-    public DbSet<Keeper> Keepers { get; set; }
+    public DbSet<WarehouseUser> WarehouseUsers { get; set; }
+
+    public DbSet<Department> Departments { get; set; }
+
+    public DbSet<DepartmentUser> DepartmentUsers { get; set; }
 
     public DbSet<Area> Areas { get; set; }
 
@@ -34,11 +37,13 @@ namespace Tiantong.Wms.Api
 
     public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
-    public DbSet<Payment> Payments { get; set; }
+    public DbSet<PurchasePayment> PurchasePayments { get; set; }
 
     public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
 
-    public DbSet<PurchaseItemProject> PurchaseItemProjects { get; set; }
+    public DbSet<PurchaseOrderItemFinance> PurchaseOrderItemFinances { get; set; }
+
+    public DbSet<PurchaseOrderItemProject> PurchaseItemProjects { get; set; }
 
     public DbContext(PostgresBuilder builder): base(builder)
     {
@@ -49,6 +54,10 @@ namespace Tiantong.Wms.Api
     {
       builder.Entity<Good>().HasQueryFilter(good => !good.is_deleted);
       builder.Entity<Item>().HasQueryFilter(item => !item.is_deleted);
+      builder.Entity<PurchaseOrderItem>(item => {
+        item.HasOne(o => o.finance).WithOne()
+          .HasForeignKey<PurchaseOrderItemFinance>(o => o.id);
+      });
     }
   }
 }

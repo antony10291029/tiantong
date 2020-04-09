@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -64,6 +65,43 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("货品已创建", param.id);
     }
 
+    public class AddGoodItemParams
+    {
+      public int warehouse_id { get; set; }
+
+      public string good_name { get; set; }
+
+      public string item_name { get; set; }
+
+      public string item_unit { get; set; }
+    }
+
+    public object AddGoodItem([FromBody] AddGoodItemParams param)
+    {
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+
+      var good = _goods.Table
+        .Where(entity => entity.name == param.good_name)
+        .FirstOrDefault();
+      var item = new Item();
+      item.name = param.item_name;
+      item.unit = param.item_unit;
+
+      if (good == null) {
+        good = new Good();
+        good.warehouse_id = param.warehouse_id;
+        good.name =  param.good_name;
+        good.items = new List<Item> { item };
+      } else {
+        _items.EnsureUnique(item);
+        good.items = new List<Item> { item };
+      }
+      _goods.Update(good);
+      _goods.UnitOfWork.SaveChanges();
+
+      return SuccessOperation("货品规格已添加");
+    }
+
     public class DeleteParams
     {
       [Nonzero]
@@ -111,14 +149,15 @@ namespace Tiantong.Wms.Api
       var goods = _goods.Table
         .Include(good => good.items)
           .ThenInclude(item => item.stocks)
-        .Where(good => good.warehouse_id == param.warehouse_id && (
-          param.search == null ? true :
-          good.name.Contains(param.search) ||
-          good.number.Contains(param.search)
-        ))
-        .OrderByDescending(good => good.is_enabled)
-        .ThenBy(good => good.number)
-        .ThenBy(good => good.id)
+        .Where(good =>
+          good.warehouse_id == param.warehouse_id && 
+          good.is_deleted == false && (
+            param.search == null ? true :
+            good.name.Contains(param.search) ||
+            good.number.Contains(param.search)
+          )
+        )
+        .OrderBy(good => good.name)
         .Paginate<Good>(param.page, param.page_size);
 
       return goods;

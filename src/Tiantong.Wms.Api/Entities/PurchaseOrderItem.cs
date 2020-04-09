@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,26 +8,27 @@ namespace Tiantong.Wms.Api
   [Table("purchase_order_items")]
   public class PurchaseOrderItem : Entity
   {
-    public int good_id { get; set; }
+    public virtual int order_id { get; set; }
 
-    public int item_id { get; set; }
+    public virtual int good_id { get; set; }
 
-    public double price { get; set; }
+    public virtual int item_id { get; set; }
 
-    public int quantity { get; set; }
+    public virtual int index { get; set; }
 
-    public string delivery_cycle { get; set; }
+    public virtual double price { get; set; }
 
-    public string tax_number { get; set; }
+    public virtual int quantity { get; set; }
 
-    public string tax_name { get; set; }
+    public virtual string comment { get; set; }
 
-    public string tax_specification { get; set; }
+    public virtual string delivery_cycle { get; set; }
 
-    public string tax_type { get; set; }
+    public virtual DateTime arrived_at { get; set; } = DateTime.Now;
 
-    public double tax_rate { get; set; }
+    public virtual PurchaseOrderItemFinance finance { get; set; }
 
-    public int[] item_project_ids { get; set; }
+    [ForeignKey("order_item_id")]
+    public virtual List<PurchaseOrderItemProject> projects { get; set; }
   }
 }

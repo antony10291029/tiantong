@@ -28,6 +28,10 @@ export default class DataSet<TKey extends IString = number> extends Vue {
 
   // computed
 
+  get relationships () {
+    return this.entities.relationships
+  }
+
   get entityList () {
     const { keys, data } = this.entities
 
@@ -36,7 +40,7 @@ export default class DataSet<TKey extends IString = number> extends Vue {
 
   // methods
 
-  getEntity (key: never)  {
+  getEntity (key: string | number)  {
     return this.entities.data[key]
   }
 
@@ -91,5 +95,5 @@ class Entities<TKey extends IString> {
 
   data: { [key: string]: object } = {}
 
-  relationships?: any = {}
+  relationships: any = {}
 }

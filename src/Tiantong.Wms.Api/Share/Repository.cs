@@ -7,6 +7,7 @@ namespace Tiantong.Wms.Api
   public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
   {
     public virtual DbContext DbContext { get; set; }
+  
 
     public virtual IUnitOfWork UnitOfWork { get => DbContext; }
 

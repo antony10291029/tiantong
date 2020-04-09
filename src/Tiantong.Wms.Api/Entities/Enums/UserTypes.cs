@@ -5,5 +5,7 @@ namespace Tiantong.Wms.Api
     public const string Root = "root";
 
     public const string Owner = "owner";
+
+    public const string Keeper = "keeper";
   }
 }

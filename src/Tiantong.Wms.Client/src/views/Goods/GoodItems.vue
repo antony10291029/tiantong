@@ -1,7 +1,7 @@
 <template>
   <table class="table is-bordered is-fullwidth">
     <thead>
-      <tr class="has-background">
+      <tr>
         <th style="width: 1px">#</th>
         <th>规格码</th>
         <th>规格名</th>

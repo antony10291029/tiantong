@@ -15,19 +15,28 @@
           <div class="field">
             <label class="label">规格码</label>
             <div class="control">
-              <input type="text" class="input" v-model="params.number">
+              <input
+                type="text" class="input"
+                v-model="params.number"
+              >
             </div>
           </div>
           <div class="field">
             <label class="label">规格名</label>
             <div class="control">
-              <input type="text" class="input" v-model="params.name">
+              <input
+                type="text" class="input"
+                v-model="params.name"
+              >
             </div>
           </div>
           <div class="field">
             <label class="label">单位</label>
             <div class="control">
-              <input type="text" class="input" v-model="params.unit">
+              <input
+                type="text" class="input"
+                v-model="params.unit"
+              >
             </div>
           </div>
         </section>

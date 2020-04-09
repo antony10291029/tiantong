@@ -9,6 +9,7 @@ namespace Tiantong.Wms.Api
   public class User : Entity
   {
     [Required]
+    [EmailAddress]
     public virtual string email { get; set; }
 
     [JsonIgnore]
@@ -19,6 +20,8 @@ namespace Tiantong.Wms.Api
     public virtual string type { get; set; }
 
     public virtual bool is_enabled { get; set; } = true;
+
+    public virtual bool is_deleted { get; set; } = false;
 
     public virtual DateTime created_at { get; set; } = DateTime.Now;
 

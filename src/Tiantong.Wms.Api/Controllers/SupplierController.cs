@@ -145,5 +145,20 @@ namespace Tiantong.Wms.Api
 
       return _suppliers.EnsureGet(param.supplier_id);
     }
+
+    public class AllParams
+    {
+      public int warehouse_id { get; set; }
+    }
+
+    public IEntities<Supplier, int> All([FromBody] AllParams param)
+    {
+      _auth.EnsureOwner();
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+
+      return _suppliers.Table
+        .Where(supplier => supplier.warehouse_id == param.warehouse_id)
+        .ToEntities();
+    }
   }
 }

@@ -27,6 +27,13 @@ namespace Tiantong.Wms.Api
       );
     }
 
+    public void Ensure(int warehouseId, int id)
+    {
+      if (!Table.Any(supplier => supplier.warehouse_id == warehouseId && supplier.id == id)) {
+        throw new FailureOperation("供应商不存在");
+      }
+    }
+
     public Supplier EnsureGet(int id)
     {
       var supplier = Get(id);

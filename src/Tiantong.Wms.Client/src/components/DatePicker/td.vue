@@ -1,18 +1,14 @@
 <template>
   <td
-    style="min-width: 120px"
     v-text="value"
-    :class="{
-      'is-selectable': true,
-      'is-changed': isActive
-    }"
-  />
+    class="is-clickable"
+  ></td>
 </template>
 
 <script>
 import mixin from './mixin'
 
 export default {
-  mixins: [mixin]
+  mixins: [mixin],
 }
 </script>

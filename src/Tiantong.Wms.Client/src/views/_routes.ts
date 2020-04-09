@@ -45,6 +45,42 @@ const routes = [
         component: () => import('./Warehouse/index.vue'),
         children: [
           {
+            path: 'departments',
+            name: 'Departments',
+            component: () => import('./Departments/DepartmentList.vue'),
+            children: [
+              {
+                path: 'create',
+                name: 'DepartmentCreate',
+                component: () => import('./Departments/DepartmentCreate.vue')
+              },
+              {
+                path: ':departmentId/update',
+                name: 'DepartmentUpdate',
+                props: (route: any) =>  ({ departmentId: +route.params.departmentId }),
+                component: () => import('./Departments/DepartmentUpdate.vue')
+              }
+            ]
+          },
+          {
+            path: 'users',
+            name: 'WarehouseUserList',
+            component: () => import('./WarehouseUsers/WarehouseUserList.vue'),
+            children: [
+              {
+                path: 'create',
+                name: 'WarehouseUserCreate',
+                component: () => import('./WarehouseUsers/WarehouseUserCreate.vue')
+              },
+              {
+                path: ':warehouseUserId/update',
+                name: 'WarehouseUserUpdate',
+                props: (route: any) => ({ warehouseUserId: +route.params.warehouseUserId }),
+                component: () => import('./WarehouseUsers/WarehouseUserUpdate.vue')
+              }
+            ]
+          },
+          {
             path: 'suppliers',
             name: 'Suppliers',
             component: () => import('./Suppliers/index.vue'),
@@ -120,19 +156,31 @@ const routes = [
             ]
           },
           {
+            path: 'purchase-orders',
+            component: () => import('./PurchaseOrders/index.vue'),
+            children: [
+              {
+                path: '',
+                name: 'PurchaseOrderList',
+                component: () => import('./PurchaseOrders/PurchaseOrderList.vue')
+              },
+              {
+                path: 'create',
+                name: 'PurchaseOrderCreate',
+                component: () => import('./PurchaseOrders/PurchaseOrderCreate.vue')
+              },
+              {
+                path: ':orderId/update',
+                name: 'PurchaseOrderCreate',
+                props: (route: any) => ({ orderId: + route.params.orderId }),
+                component: () => import('./PurchaseOrders/PurchaseOrderUpdate.vue')
+              }
+            ]
+          },
+          {
             path: 'pickings',
             name: 'Pickings',
             component: () => import('./Pickings/index.vue')
-          },
-          {
-            path: 'inbounds',
-            name: 'Inbounds',
-            component: () => import('./Inbounds/index.vue')
-          },
-          {
-            path: 'returns',
-            name: 'Returns',
-            component: () => import('./Returns/index.vue')
           },
           {
             path: 'locations',

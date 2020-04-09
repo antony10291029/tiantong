@@ -7,7 +7,7 @@
           class="pagination-link"
           :disabled="page === 1"
         >
-          上一页
+          &lt;
         </a>
       </li>
       <li v-for="(i, index) in pages" :key="index">
@@ -28,7 +28,7 @@
           class="pagination-link"
           :disabled="page === lastPage"
         >
-          下一页
+          &gt;
         </a>
       </li>
     </ul>
@@ -52,7 +52,7 @@ export default class extends Vue {
   total!: number
 
   get lastPage () {
-    return Math.ceil(this.total / this.pageSize)
+    return Math.max(Math.ceil(this.total / this.pageSize), 1)
   }
 
   get pages () {

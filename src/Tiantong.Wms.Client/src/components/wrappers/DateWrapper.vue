@@ -1,9 +1,9 @@
 <template>
-  <component v-if="!isMinValue" :is="tag">
-    {{value && !isMinValue ? value.substr(0, 10) : $props.default}}
-  </component>
-  <component class="is-italic" v-else :is="tag">
-    无
+  <component
+    :is="tag"
+    :class="text === '无' && 'is-italic has-text-grey-light'"
+  >
+    {{text}}
   </component>
 </template>
 
@@ -26,6 +26,14 @@ export default class extends Vue {
 
   get isMinValue () {
     return this.value === DateTime.minValue
+  }
+
+  get text () {
+    if (this.isMinValue) {
+      return this.default
+    } else {
+      return this.value.substr(0, 10)
+    }
   }
 }
 </script>

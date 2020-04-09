@@ -1,5 +1,8 @@
 <template>
-  <component :is="wrapperComponent" />
+  <component
+    :is="wrapperComponent"
+    :value="valueDate"
+  />
 </template>
 
 <script lang="ts">
@@ -11,10 +14,14 @@ import zh from 'flatpickr/dist/l10n/zh.js'
 import { DateTime } from '@/utils/common'
 
 @Component({
-  name: 'DatePicker'
+  name: 'DatePicker',
+  model: {
+    prop: 'value',
+    event: 'input'
+  }
 })
 export default class extends Vue {
-  @Prop({ required: true })
+  @Prop({ default: '' })
   value!: string
 
   // 默认值为 DateTime.minValue
@@ -34,6 +41,9 @@ export default class extends Vue {
   @Prop({ default: 'zh' })
   locale!: string
 
+  @Prop({ default: 'min' })
+  initial!: string
+
   config: any = {}
 
   datepicker: any
@@ -48,7 +58,13 @@ export default class extends Vue {
   }
 
   get valueDate () {
-    return DateTime.getDate(this.value)
+    let val = this.value.split('T')[0]
+
+    if (val === '0001-01-01') {
+      return ''
+    } else {
+      return val
+    }
   }
 
   redraw (newConfig: any) {
@@ -88,7 +104,11 @@ export default class extends Vue {
       this.datepicker = Flatpickr(this.$el, this.config)
 
       if (this.value === '') {
-        this.handleInput(DateTime.minValue)
+        if (this.initial === 'min') {
+          this.handleInput(DateTime.minValue)
+        } else {
+          this.handleInput(DateTime.now)
+        }
       } else {
         this.handleValueChange(this.value)
       }

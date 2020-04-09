@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,5 +18,8 @@ namespace Tiantong.Wms.Api
     public int location_id { get; set; }
 
     public int quantity { get; set; }
+
+    [ForeignKey("stock_id")]
+    public List<StockRecord> records { get; set; }
   }
 }

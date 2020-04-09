@@ -7,5 +7,6 @@ create table if not exists goods (
   is_deleted boolean not null,
   is_enabled boolean not null,
   created_at timestamp(0) not null,
-  unique(warehouse_id, number)
+  unique(warehouse_id, number),
+  unique(warehouse_id, name)
 );

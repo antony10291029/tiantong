@@ -13,11 +13,7 @@ export default {
       console.log(response.data.message)
     })
 
-    try {
-      token.initialize()
-    } catch (err) {
-      console.log(1000)
-    }
+    token.initialize()
   }
 }
 </script>

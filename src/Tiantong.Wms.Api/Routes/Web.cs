@@ -32,6 +32,12 @@ namespace Tiantong.Wms.Api
       Post("/warehouses/search", "Warehouse.Search");
       Post("/warehouses/find", "Warehouse.Find");
 
+      Post("/warehouses/users/create", "WarehouseUser.Create");
+      Post("/warehouses/users/delete", "WarehouseUser.Delete");
+      Post("/warehouses/users/update", "WarehouseUser.Update");
+      Post("/warehouses/users/find", "WarehouseUser.Find");
+      Post("/warehouses/users/all", "WarehouseUser.All");
+
       Post("/areas/create", "Area.Create");
       Post("/areas/delete", "Area.Delete");
       Post("/areas/update", "Area.Update");
@@ -47,6 +53,13 @@ namespace Tiantong.Wms.Api
       Post("/projects/update", "Project.Update");
       Post("/projects/search", "Project.Search");
       Post("/projects/find", "Project.Find");
+      Post("/projects/all", "Project.All");
+
+      Post("/departments/create", "Department.Create");
+      Post("/departments/delete", "Department.Delete");
+      Post("/departments/update", "Department.Update");
+      Post("/departments/find", "Department.Find");
+      Post("/departments/all", "Department.All");
 
       Post("/good-categories/create", "GoodCategory.Create");
       Post("/good-categories/delete", "GoodCategory.Delete");
@@ -65,6 +78,8 @@ namespace Tiantong.Wms.Api
       Post("/goods/search", "Good.Search");
       Post("/goods/find", "Good.Find");
 
+      Post("/goods/items/create", "Good.AddGoodItem");
+
       Post("/items/create", "Item.Create");
       Post("/items/delete", "Item.Delete");
 
@@ -73,33 +88,12 @@ namespace Tiantong.Wms.Api
       Post("/suppliers/update", "Supplier.Update");
       Post("/suppliers/search", "Supplier.Search");
       Post("/suppliers/find", "Supplier.Find");
+      Post("/suppliers/all", "Supplier.All");
 
-      Post("/suppliers/create", "Supplier.Create");
-      Post("/suppliers/delete", "Supplier.Delete");
-      Post("/suppliers/update", "Supplier.Update");
-      Post("/suppliers/search", "Supplier.Search");
-
-      Post("/orders/search", "OrderInboundComplete.Search");
-      Post("/orders/complete", "OrderInboundComplete.Handle");
-
-      // Post("/orders/inbounds/create", "OrderInbound.Create");
-      // Post("/orders/inbounds/search", "OrderInbound.Search");
-      // Post("/orders/inbounds/submit", "OrderInbound.Submit");
-
-      // Post("/orders/outbounds/create", "Order.OutboundCreate");
-      // Post("/orders/outbounds/search", "Order.OutboundSearch");
-      // Post("/orders/outbounds/submit", "Order.OutboundSubmit");
-
-      // Post("/orders/inventories/create", "Order.InventoryCreate");
-      // Post("/orders/inventories/search", "Order.InventorySearch");
-      // Post("/orders/inventories/submit", "Order.InventorySubmit");
-
-      // Post("/orders/returns/create", "Order.ReturnCreate");
-      // Post("/orders/returns/search", "Order.ReturnSearch");
-      // Post("/orders/returns/submit", "Order.ReturnSubmit");
-
-      // Post("/stocks/search", "Stock.Search");
-      // Post("/stocks/records/search", "StockRecord.Search");
+      Post("/purchase-orders/create", "PurchaseOrder.Create");
+      Post("/purchase-orders/update", "PurchaseOrder.Update");
+      Post("/purchase-orders/search", "PurchaseOrder.Search");
+      Post("/purchase-orders/find", "PurchaseOrder.Find");
 
     }
   }

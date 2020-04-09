@@ -8,5 +8,6 @@ create table if not exists items (
   unit varchar(255) not null,
   is_deleted boolean not null,
   is_enabled boolean not null,
-  unique(warehouse_id, number)
+  unique(warehouse_id, number),
+  unique(good_id, name, unit)
 );
