@@ -52,8 +52,6 @@ namespace Renet.Web.Example
     {
       var ex = new HttpValidationException();
 
-      ex.AddDetails("id", "id field is required", "id must be integer");
-
       throw ex;
     }
   }

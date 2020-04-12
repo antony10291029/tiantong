@@ -312,13 +312,13 @@ namespace Tiantong.Wms.Api
     private void InsertStocks()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        var items = _db.Items.Where(item => item.warehouse_id == warehouse.id).ToArray();
         var locations = _db.Locations.Where(location => location.warehouse_id == warehouse.id).ToArray();
+        var goods = _db.Goods.Include(good => good.items).Where(good => good.warehouse_id == warehouse.id).ToList();
 
-        foreach (var item in items) {
+        goods.ForEach(good => good.items.ForEach(item => {
           foreach (var location in _random.Array(locations, 2, 5)) {
             _db.Stocks.Add(new Stock {
-              warehouse_id = item.warehouse_id,
+              warehouse_id = good.warehouse_id,
               good_id = item.good_id,
               item_id = item.id,
               area_id = location.area_id,
@@ -331,7 +331,7 @@ namespace Tiantong.Wms.Api
               }).ToList()
             });
           }
-        }
+        }));
       }
 
       _db.SaveChanges();
@@ -340,11 +340,11 @@ namespace Tiantong.Wms.Api
     public void InsertPurchaseOrders()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        var items = _db.Items.Where(item => item.warehouse_id == warehouse.id).ToArray();
         var projects = _db.Projects.Where(pj => pj.warehouse_id == warehouse.id).ToArray();
         var suppliers = _db.Suppliers.Where(sp => sp.warehouse_id == warehouse.id).ToArray();
         var departments = _db.Departments.Where(dp => dp.warehouse_id == warehouse.id).ToArray();
         var users = _db.WarehouseUsers.Include(wu => wu.user).Where(wu => wu.warehouse_id == warehouse.id).ToArray();
+        var goods = _db.Goods.Include(good => good.items).Where(good => good.warehouse_id == warehouse.id).ToArray();
 
         foreach (var i in _random.Enumerate(20, 30)) {
           _db.PurchaseOrders.Add(new PurchaseOrder {
@@ -357,9 +357,10 @@ namespace Tiantong.Wms.Api
             department_id = _random.Array(departments).id,
             supplier_id = _random.Array(suppliers).id,
             items = _random.Enumerate(1, 10).Select(j => {
-              var item = _random.Array(items);
+              var item = _random.Array(_random.Array(goods).items.ToArray());
 
               return new PurchaseOrderItem {
+                index = j,
                 item_id = item.id,
                 good_id = item.good_id,
                 price = _random.Int(1000, 100000),
@@ -380,7 +381,8 @@ namespace Tiantong.Wms.Api
                   invoice_number = _random.Int(100000009, 999999999).ToString(),
                 },
                 projects = _random.Array(projects, _random.Int(0, 3)).Select(
-                  project => new PurchaseOrderItemProject {
+                  (project, index) => new PurchaseOrderItemProject {
+                    index = index,
                     project_id = project.id,
                     quantity = _random.Int(1, 10),
                   }
@@ -388,6 +390,7 @@ namespace Tiantong.Wms.Api
               };
             }).ToList(),
             payments = _random.Enumerate(1, 3).Select(j => new PurchasePayment {
+              index = j,
               is_paid = _random.Bool(),
               amount = _random.Int(10000, 100000),
               comment = $"付款_{j}",

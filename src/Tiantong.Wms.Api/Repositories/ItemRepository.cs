@@ -14,47 +14,67 @@ namespace Tiantong.Wms.Api
       _warehouses = warehouses;
     }
 
-    //
+    // Delete
 
-    public void Ensure(int warehouseId, int goodId, int itemId)
+    public void Remove(IEnumerable<Item> items)
     {
-      if (!Table.Any(item => item.good_id == goodId && item.id == itemId)) {
+      if (!IsDeletable(items)) {
+        throw new FailureOperation("规格已被使用，无法删除");
+      } else {
+        DbContext.RemoveRange(items);
+      }
+    }
+
+    // Select
+
+    public void EnsureExists(int warehouseId, int goodId, int itemId)
+    {
+      if (
+        !Table.Any(item =>
+          item.id == itemId &&
+          item.good_id == goodId &&
+          item.warehouse_id == warehouseId
+        )
+      ) {
         throw new FailureOperation("物品规格不存在");
       }
     }
 
     public Item EnsureGet(int id)
     {
-      var item = Get(id);
+      var result = Table
+        .Where(item => item.id == id)
+        .SingleOrDefault();
 
-      if (item == null) {
-        throw new FailureOperation("规格未找到");
+      if (result == null) {
+        throw new FailureOperation("规格不存在");
       }
 
-      return item;
+      return result;
     }
 
     public void EnsureUnique(Item item)
     {
       if (
-        item.id == 0 ? Table.Any(i =>
+        item.number != null && (item.id == 0 ? DbContext.Items.Any(i =>
           i.number == item.number &&
           i.warehouse_id == item.warehouse_id
-        ) : Table.Any(i =>
+        ) : DbContext.Items.Any(i =>
           i.id != item.id &&
           i.number == item.number &&
           i.warehouse_id == item.warehouse_id
-        )
+        ))
       ) {
         throw new FailureOperation("该规格编码已存在");
       }
+
       if (
-        item.id == 0 ? Table.Any(i =>
+        item.id == 0 ? DbContext.Items.Any(i =>
           i.name == item.name &&
           i.unit == item.unit &&
           i.good_id == item.good_id &&
           i.warehouse_id == item.warehouse_id
-        ) : Table.Any(i =>
+        ) : DbContext.Items.Any(i =>
           i.id != item.id &&
           i.unit == item.unit &&
           i.name == item.name &&
@@ -66,17 +86,48 @@ namespace Tiantong.Wms.Api
       }
     }
 
-    public void EnsureNumberUnique(int warehouseId, string[] numbers)
+    public void EnsureUnique(IEnumerable<Item> items)
     {
-      if (numbers.Length > 0 && Table.Any(item => numbers.Contains(item.number))) {
-        throw new FailureOperation("规格码重复");
+      if (items.GroupBy(item => item.number).Any(item => item.Key != null && item.Count() > 1)) {
+        throw new FailureOperation("规格编码不可重复");
+      }
+
+      if (items.GroupBy(item => item.good_id + item.name + item.unit).Any(item => item.Count() > 1)) {
+        throw new FailureOperation("规格名称和单位不可重复");
+      }
+
+      foreach (var item in items) {
+        EnsureUnique(item);
       }
     }
 
-    public void EnsureNameUnique(int goodId, string name)
+    public bool IsDeletable(Item item)
     {
-      if (Table.Any(item => item.good_id == goodId && item.name == name)) {
-        throw new FailureOperation("规格名已存在");
+      if (item.id == 0) {
+        return true;
+      } else {
+        return !DbContext.PurchaseOrderItems.Any(oi => oi.item_id == item.id) ||
+          !DbContext.Stocks.Any(stock => stock.item_id == item.id);
+      }
+    }
+
+    public bool IsDeletable(IEnumerable<Item> items)
+    {
+      var ids = items
+        .Where(item => item.id != 0)
+        .Select(item => item.id);
+
+      if (ids.Count() == 0) {
+        return true;
+      }
+
+      if (
+        DbContext.PurchaseOrderItems.Any(oi => ids.Contains(oi.item_id)) ||
+        DbContext.Stocks.Any(stock => ids.Contains(stock.item_id))
+      ) {
+        return false;
+      } else {
+        return true;
       }
     }
 

@@ -13,8 +13,6 @@ namespace Tiantong.Wms.Api
 
     private GoodRepository _goods;
 
-    private ItemRepository _items;
-
     private ProjectRepository _projects;
 
     private SupplierRepository _suppliers;
@@ -42,7 +40,6 @@ namespace Tiantong.Wms.Api
       _auth = auth;
       _users = users;
       _goods = goods;
-      _items = items;
       _orders = orders;
       _projects = projects;
       _suppliers = suppliers;
@@ -62,7 +59,7 @@ namespace Tiantong.Wms.Api
       }
       _suppliers.Ensure(param.warehouse_id, param.supplier_id);
       foreach (var item in param.items) {
-        _items.Ensure(param.warehouse_id, item.good_id, item.item_id);
+        _goods.Items.EnsureExists(param.warehouse_id, item.good_id, item.item_id);
       }
 
       _orders.Add(param);
@@ -82,7 +79,7 @@ namespace Tiantong.Wms.Api
       }
       _suppliers.Ensure(order.warehouse_id, order.supplier_id);
       foreach (var item in order.items) {
-        _items.Ensure(order.warehouse_id, item.good_id, item.item_id);
+        _goods.Items.EnsureExists(order.warehouse_id, item.good_id, item.item_id);
       }
 
       _orders.Update(order);
@@ -112,7 +109,7 @@ namespace Tiantong.Wms.Api
         supplier = _suppliers.Get(order.supplier_id),
         department = _departments.Get(order.department_id),
         goods = _goods.Table.Where(good => goodIds.Contains(good.id)).ToRelationship(),
-        items = _items.Table.Where(item => itemIds.Contains(item.id)).ToRelationship(),
+        items = _goods.Items.Table.Where(item => itemIds.Contains(item.id)).ToRelationship(),
         projects = _projects.Table.Where(project => projectIds.Contains(project.id)).ToRelationship(),
       };
     }
@@ -158,7 +155,7 @@ namespace Tiantong.Wms.Api
         users = _users.Table.Where(user => userIds.Contains(user.id)).ToRelationship(),
         goods = _goods.Table.IgnoreQueryFilters()
           .Where(good => goodIds.Contains(good.id)).ToRelationship(),
-        items = _items.Table.IgnoreQueryFilters()
+        items = _goods.Items.Table.IgnoreQueryFilters()
           .Where(item => itemIds.Contains(item.id)).ToRelationship(),
         projects = _projects.Table.Where(project => projectIds.Contains(project.id)).ToRelationship(),
         suppliers = _suppliers.Table.Where(supplier => supplierIds.Contains(supplier.id)).ToRelationship(),

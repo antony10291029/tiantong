@@ -17,12 +17,12 @@
     <Table v-show="!isPending">
       <thead>
         <th style="width: 1px">#</th>
-        <th>货码</th>
         <th>货名</th>
+        <!-- <th>货码</th> -->
         <th>备注</th>
-        <th style="width: 1px">规格码</th>
         <th style="width: 1px">规格</th>
         <th style="width: 1px">单位</th>
+        <!-- <th style="width: 1px">规格码</th> -->
         <th style="width: 1px">库存</th>
         <th style="width: 1px">启用中</th>
         <th style="width: 100px">操作</th>
@@ -41,30 +41,26 @@
                 v-if="itemKey === 0"
                 :rowspan="good.items.length"
               >
-                {{good.number}}
+                {{good.name}}
               </td>
-              <td
+              <!-- <td
                 v-if="itemKey === 0"
                 :rowspan="good.items.length"
               >
-                {{good.name}}
-              </td>
+                {{good.number}}
+              </td> -->
               <td
                 v-if="itemKey === 0"
                 :rowspan="good.items.length"
+                style="white-space: normal"
               >
                 {{good.comment}}
               </td>
-              <td>
-                {{item.number}}
-              </td>
 
-              <td>
-                {{item.name}}
-              </td>
-              <td>
-                {{item.unit}}
-              </td>
+              <td>{{item.name}}</td>
+              <td>{{item.unit}}</td>
+              <!-- <td>{{item.number}}</td> -->
+
               <td>
                 {{item.stocks.reduce((sum, stock) => sum + stock.quantity, 0)}}
               </td>

@@ -10,20 +10,16 @@ namespace Renet.Web
 
     public int Status { get; set; } = 422;
 
+    protected string _message { get; set; }
+
     public Dictionary<string, string[]> Details { get; } = new Dictionary<string, string[]>();
 
     public string Body
     {
       get => JsonSerializer.Serialize(new {
         error = Error,
-        message = "fail to verify request data",
-        details = Details,
+        message = _message,
       });
-    }
-
-    public void AddDetails(string key, params string[] messages)
-    {
-      Details.Add(key, messages);
     }
   }
 }

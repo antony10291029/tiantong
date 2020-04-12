@@ -32,8 +32,23 @@ export default class extends Vue {
 
   isFocused: boolean = false
 
+  getDefaultValue () {
+    if (this.default !== '') {
+      return this.default
+    } else {
+      switch (this.type) {
+        case 'number': return 0
+        default: return ''
+      }
+    }
+  }
+
   getValue (event: any) {
     let value = event.target.innerText.trim()
+
+    if (value === '') {
+      value = this.getDefaultValue()
+    }
 
     if (this.type === 'number') {
       value = parseFloat(value)

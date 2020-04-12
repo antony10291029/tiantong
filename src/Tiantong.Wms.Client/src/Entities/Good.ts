@@ -1,4 +1,5 @@
 import Item from './Item'
+import { DateTime } from '@/utils/common'
 
 export default class Good {
   id: number = 0
@@ -13,6 +14,12 @@ export default class Good {
 
   is_enabled: boolean = true
 
-  items: Array<Item> = []
+  created_at: string = DateTime.now
+
+  items: Array<Item>
+
+  constructor(items: Item[] = []) {
+    this.items = items
+  }
 
 }

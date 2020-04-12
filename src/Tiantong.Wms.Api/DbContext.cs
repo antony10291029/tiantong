@@ -52,8 +52,6 @@ namespace Tiantong.Wms.Api
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-      builder.Entity<Good>().HasQueryFilter(good => !good.is_deleted);
-      builder.Entity<Item>().HasQueryFilter(item => !item.is_deleted);
       builder.Entity<PurchaseOrderItem>(item => {
         item.HasOne(o => o.finance).WithOne()
           .HasForeignKey<PurchaseOrderItemFinance>(o => o.id);

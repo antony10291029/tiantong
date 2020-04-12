@@ -13,7 +13,7 @@ namespace Tiantong.Wms.Api
 
     TEntity Update(TEntity entity);
 
-    bool Remove(Entity entity);
+    bool Remove(TEntity entity);
   }
 
   public interface IRepository<TEntity, TKey> : IRepository<TEntity> where TEntity : Entity

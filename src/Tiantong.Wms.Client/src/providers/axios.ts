@@ -24,10 +24,12 @@ function beforeResponse (response : AxiosResponse) : AxiosResponse {
 }
 
 function beforeError (error : AxiosError) : void {
-  if (error.response?.status == 401) {
+  let status = error.response?.status
+  
+  if (status === 401) {
     // Token.clear()
     Router.push('/unauthorization')
-  } else if (error.response?.status === 400) {
+  } else if (status === 400 || status === 422) {
     notify.danger(error.response?.data.message)
   } else if (error.response?.status === 500) {
     notify.danger('非常抱歉，出现未知错误')

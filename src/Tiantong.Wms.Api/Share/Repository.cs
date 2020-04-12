@@ -39,7 +39,7 @@ namespace Tiantong.Wms.Api
       return DbContext.Update(entity).Entity;
     }
 
-    public virtual bool Remove(Entity entity)
+    public virtual bool Remove(TEntity entity)
     {
       DbContext.Remove(entity);
 

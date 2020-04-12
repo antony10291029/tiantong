@@ -7,13 +7,15 @@ namespace Renet.Web
   {
     public HttpModelValidationException(ModelStateDictionary state)
     {
-      foreach (var field in state) {
-        var messages = field.Value.Errors
-          .Select(error => error.ErrorMessage)
-          .ToArray();
+      // foreach (var field in state) {
+      //   var messages = field.Value.Errors
+      //     .Select(error => error.ErrorMessage)
+      //     .ToArray();
 
-        Details.Add(field.Key, messages);
-      }
+      //   Details.Add(field.Key, messages);
+      // }
+
+      this._message = state.First().Value.Errors.First().ErrorMessage;
     }
   }
 }

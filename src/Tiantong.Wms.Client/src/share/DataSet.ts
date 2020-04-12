@@ -65,10 +65,10 @@ export default class DataSet<TKey extends IString = number> extends Vue {
 
   async handleSearch (value: string) {
     this.search = value !== '' ? value : null
-    await this.getEntities()
+    await this.handlePageChange()
   }
 
-  async handlePageChange (page: number) {
+  async handlePageChange (page: number = 1) {
     this.page = page
     await this.getEntities()
   }

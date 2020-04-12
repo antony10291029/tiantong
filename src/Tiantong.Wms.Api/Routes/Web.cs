@@ -79,6 +79,7 @@ namespace Tiantong.Wms.Api
       Post("/goods/find", "Good.Find");
 
       Post("/goods/items/create", "Good.AddGoodItem");
+      Post("/goods/items/deletable", "Good.IsItemDeletable");
 
       Post("/items/create", "Item.Create");
       Post("/items/delete", "Item.Delete");
