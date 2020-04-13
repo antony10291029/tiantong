@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Renet.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Wms.Api
 {
@@ -36,7 +37,17 @@ namespace Tiantong.Wms.Api
 
     public override User Update(User user)
     {
-      return base.Update(user);
+      base.Update(user);
+      DbContext.Entry(user).Property(u => u.password).IsModified = false;
+
+      return user;
+    }
+
+    public void Update(User oldUser, User user)
+    {
+      DbContext.Entry(oldUser).CurrentValues.SetValues(user);
+      DbContext.Entry(oldUser).Property(u => u.id).IsModified = false;
+      DbContext.Entry(oldUser).Property(u => u.password).IsModified = false;
     }
 
     public void EncodePassword(User user)
@@ -49,11 +60,14 @@ namespace Tiantong.Wms.Api
     public void EnsureUnique(User user)
     {
       if (
-        Table.Any(item => 
-          item.id != user.id && item.email == user.email
+        user.id == 0 ? Table.Any(
+          u => u.email == user.email
+        ) : Table.Any(u =>
+          u.id != user.id &&
+          u.email == user.email
         )
       ) {
-        throw new FailureOperation("用户邮箱重复");
+        throw new FailureOperation("用户邮箱已存在");
       }
     }
 

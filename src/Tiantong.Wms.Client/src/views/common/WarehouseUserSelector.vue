@@ -41,7 +41,8 @@
             </thead>
             <tbody>
               <tr
-                v-for="(user, index) in users" :key="user.id"
+                v-for="({ user }, index) in warehouseUsers"
+                :key="user.id"
                 @click="currentUser = user"
               >
                 <td>{{index + 1}}</td>
@@ -105,10 +106,10 @@ export default class extends Vue {
 
   entities: {
     keys: number[]
-    data: { [ key: string ]: User }
+    data: { [ key: string ]: WarehouseUser }
   } = { keys: [], data: {} }
 
-  get users () {
+  get warehouseUsers () {
     return this.entities.keys.map(key => this.entities.data[key])
   }
 

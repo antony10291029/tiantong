@@ -2,13 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tiantong.Wms.Api
 {
-  public class StringRange : ValidationAttribute
+  public class StringRangeAttribute : ValidationAttribute
   {
     private int _minimum;
 
     private int _maximum;
 
-    public StringRange(int minimum, int maximum)
+    public StringRangeAttribute(int minimum, int maximum)
     {
       _minimum = minimum;
       _maximum = maximum;

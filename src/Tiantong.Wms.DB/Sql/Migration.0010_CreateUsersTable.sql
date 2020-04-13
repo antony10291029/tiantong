@@ -6,7 +6,6 @@ create table if not exists users (
   number varchar(255),
   name varchar(255) not null,
   is_enabled boolean not null,
-  is_deleted boolean not null,
   created_at timestamp(0) not null,
   unique(email)
 );

@@ -29,36 +29,10 @@ namespace Tiantong.Wms.Api
       _warehouseUsers = warehouseUsers;
     }
 
-    public class CreateParams: WarehouseUser
-    {
-      [Required]
-      public override User user { get; set; }
-    }
-
     public object Create([FromBody] WarehouseUser wu)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(wu.warehouse_id, _auth.User.id);
-
-      var user = _users.Table
-        .Where(item => item.email == wu.user.email)
-        .FirstOrDefault();
-
-      if (user != null) {
-        if (
-          _warehouseUsers.Table.Any(item =>
-            item.warehouse_id == wu.warehouse_id &&
-            item.user_id == user.id
-          )
-        ) {
-          return FailureOperation("用户邮箱已存在");
-        }
-        wu.user = null;
-        wu.user_id = user.id;
-      } else {
-        wu.user.type = "keeper";
-        wu.user.password = "123456";
-      }
 
       _warehouseUsers.Add(wu);
       _warehouseUsers.UnitOfWork.SaveChanges();
@@ -115,7 +89,7 @@ namespace Tiantong.Wms.Api
       public string search { get; set; } = "";
     }
 
-    public IEntities<User, int> All([FromBody] AllParams param)
+    public IEntities<WarehouseUser, int> All([FromBody] AllParams param)
     {
       return _warehouseUsers.Table
         .Include(wu => wu.user)
@@ -128,8 +102,7 @@ namespace Tiantong.Wms.Api
             wu.user.email.Contains(param.search)
           )
         )
-        .Select(wu => wu.user)
-        .OrderBy(user => user.name)
+        .OrderBy(wu => wu.user.name)
         .ToEntities();
     }
   }
