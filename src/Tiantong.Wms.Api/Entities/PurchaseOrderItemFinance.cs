@@ -6,11 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Tiantong.Wms.Api
 {
   [Table("purchase_order_item_finances")]
-  public class PurchaseOrderItemFinance
+  public class PurchaseOrderItemFinance : Entity
   {
-    [Key]
-    public virtual int id { get; set; }
-
     public virtual string name { get; set; }
 
     public virtual string specification { get; set; }

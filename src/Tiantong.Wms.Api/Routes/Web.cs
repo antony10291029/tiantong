@@ -47,6 +47,7 @@ namespace Tiantong.Wms.Api
       Post("/locations/delete", "Location.Delete");
       Post("/locations/update", "Location.Update");
       Post("/locations/search", "Location.Search");
+      Post("/locations/all", "Location.All");
 
       Post("/projects/create", "Project.Create");
       Post("/projects/delete", "Project.Delete");
@@ -79,7 +80,7 @@ namespace Tiantong.Wms.Api
       Post("/goods/find", "Good.Find");
 
       Post("/goods/items/create", "Good.AddGoodItem");
-      Post("/goods/items/deletable", "Good.IsItemDeletable");
+      Post("/goods/items/removable", "Good.IsItemRemovable");
 
       Post("/items/create", "Item.Create");
       Post("/items/delete", "Item.Delete");
@@ -92,7 +93,11 @@ namespace Tiantong.Wms.Api
       Post("/suppliers/all", "Supplier.All");
 
       Post("/purchase-orders/create", "PurchaseOrder.Create");
+      Post("/purchase-orders/delete", "PurchaseOrder.Delete");
       Post("/purchase-orders/update", "PurchaseOrder.Update");
+      Post("/purchase-orders/finish", "PurchaseOrder.Finish");
+      Post("/purchase-orders/restore", "PurchaseOrder.Restore");
+      Post("/purchase-orders/file", "PurchaseOrder.File");
       Post("/purchase-orders/search", "PurchaseOrder.Search");
       Post("/purchase-orders/find", "PurchaseOrder.Find");
 

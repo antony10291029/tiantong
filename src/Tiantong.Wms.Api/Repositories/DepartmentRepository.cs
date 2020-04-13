@@ -10,12 +10,8 @@ namespace Tiantong.Wms.Api
 
     }
 
-    public void Ensure(int warehouseId, int id)
-    {
-      if (!Table.Any(item => item.warehouse_id == warehouseId && item.id == id)) {
-        throw new FailureOperation("部门不存在");
-      }
-    }
+
+    // Ensure
 
     public Department EnsureGet(int id)
     {
@@ -26,6 +22,13 @@ namespace Tiantong.Wms.Api
       }
 
       return department;
+    }
+
+    public void EnsureExists(int warehouseId, int id)
+    {
+      if (!Table.Any(item => item.warehouse_id == warehouseId && item.id == id)) {
+        throw new FailureOperation("部门不存在");
+      }
     }
 
     public void EnsureUnique(Department department)

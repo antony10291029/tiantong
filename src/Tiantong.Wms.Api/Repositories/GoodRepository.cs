@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
-using Renet.Web;
 using Microsoft.EntityFrameworkCore;
+using Renet.Web;
 
 namespace Tiantong.Wms.Api
 {
@@ -9,21 +8,26 @@ namespace Tiantong.Wms.Api
   {
     public ItemRepository Items { get; }
 
-    private WarehouseRepository _warehouses;
+    public StockRepository _stocks { get; }
+
+    private PurchaseOrderRepository _purchaseOrders { get; }
 
     public GoodRepository(
       DbContext db,
       ItemRepository items,
-      WarehouseRepository warehouses
+      StockRepository stocks,
+      PurchaseOrderRepository purchaseOrders
     ) : base(db) {
-      _warehouses = warehouses;
       Items = items;
+      _stocks = stocks;
+      _purchaseOrders = purchaseOrders;
     }
 
     // Create
 
     public override Good Add(Good good)
     {
+      good.items.ForEach(item => item.warehouse_id = good.warehouse_id);
       EnsureUnique(good);
       Items.EnsureUnique(good.items);
       DbContext.Add(good);
@@ -33,13 +37,19 @@ namespace Tiantong.Wms.Api
 
     // Delete
 
+    public bool IsRemovable(Good good)
+    {
+      if (good.id == 0) return true;
+
+      return !_purchaseOrders.HasGood(good.id) &&
+        !_stocks.HasGood(good.id);
+    }
+
     public override bool Remove(Good good)
     {
       var itemIds = good.items.Select(item => item.id).ToArray();
 
-      if (
-        DbContext.PurchaseOrderItems.Any(oi => oi.good_id == good.id)
-      ) {
+      if (IsRemovable(good)) {
         throw new FailureOperation("该货品已被使用，无法删除");
       }
 
@@ -57,19 +67,19 @@ namespace Tiantong.Wms.Api
 
       var oldGood = Table
         .Include(g => g.items)
-        .Where(g => g.id == good.id)
-        .FirstOrDefault();
+        .FirstOrDefault(g => g.id == good.id);
 
       Items.Remove(
         oldGood.items.Where(item =>
           !good.items.Any(i => i.id == item.id)
-        )
+        ).ToArray()
       );
 
       foreach (var item in good.items) {
         var oldItem = oldGood.items.Where(i => i.id == item.id).FirstOrDefault();
 
         if (oldItem == null || item.id == 0) {
+          item.warehouse_id = good.warehouse_id;
           oldGood.items.Add(item);
         } else {
           Items.EnsureUnique(item);
@@ -96,6 +106,19 @@ namespace Tiantong.Wms.Api
       }
 
       return result;
+    }
+
+    public Good EnsureGet(int whId, int goodId)
+    {
+      var good = Table
+        .Include(g => g.items)
+        .SingleOrDefault(g => g.id == goodId && g.warehouse_id == whId);
+
+      if (good == null) {
+        throw new FailureOperation("货品不存在");
+      }
+
+      return good;
     }
 
     public void EnsureUnique(Good good)

@@ -2,6 +2,7 @@ import User from './User'
 import Good from './Good'
 import Item from './Item'
 import Project from './Project'
+import Location from './Location'
 import Supplier from './Supplier'
 import Warehouse from './Warehouse'
 import WarehouseUser from './WarehouseUser'
@@ -16,10 +17,11 @@ export {
   Good,
   Item,
   Project,
+  Location,
   Supplier,
   Warehouse,
-  WarehouseUser,
   Department,
+  WarehouseUser,
   PurchaseOrder,
   PurchaseOrderPayment,
   PurchaseOrderItem,

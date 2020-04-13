@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -123,19 +125,27 @@ namespace Tiantong.Wms.Api
       return JsonMessage("Success to update location");
     }
 
-    public class LocationSearchParams
+    public class SearchParams
     {
-      [Required]
-      public int? warehouse_id { get; set; }
+      public int warehouse_id { get; set; }
     }
 
-    public Location[] Search([FromBody] LocationSearchParams param)
+    public Location[] Search([FromBody] SearchParams param)
     {
       _auth.EnsureOwner();
-      var id = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(id, _auth.User.id);
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
 
-      return _locations.Search(id);
+      return _locations.Search(param.warehouse_id);
     }
+
+    public IEntities<Location, int> All([FromBody] SearchParams param)
+    {
+      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+
+      return _locations.Table
+        .Where(l => l.warehouse_id == param.warehouse_id)
+        .ToEntities();
+    }
+
   }
 }

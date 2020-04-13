@@ -1,6 +1,6 @@
 <template>
-  <PurchaseOrderTemplate
-    :entity="orderEntity"
+  <OrderItem
+    :entity="entity"
     :warehouseId="warehouseId"
   >
     <template #header>
@@ -30,13 +30,13 @@
         </div>
       </div>
     </template>
-  </PurchaseOrderTemplate>
+  </OrderItem>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { IPurchaseOrderEntity } from './PurchaseOrderTemplate/IPurchaseOrderEntity'
-import PurchaseOrderTemplate from './PurchaseOrderTemplate/index.vue'
+import { OrderEntity } from './OrderItem/OrderEntity'
+import OrderItem from './OrderItem/index.vue'
 import { dragscroll } from 'vue-dragscroll'
 import axios from '@/providers/axios'
 import AsyncButton from '@/components/AsyncButton.vue'
@@ -60,7 +60,7 @@ import {
   },
   components: {
     AsyncButton,
-    PurchaseOrderTemplate
+    OrderItem
   }
 })
 export default class extends Vue {
@@ -70,25 +70,20 @@ export default class extends Vue {
   @Prop({ required: true })
   warehouseId!: number
 
-  orderEntity: IPurchaseOrderEntity = {
-    order: new PurchaseOrder(
-      [ new PurchaseOrderPayment ],
-      [ new PurchaseOrderItem ],
-    ),
-    items: { 0: new Item },
-    goods: { 0: new Good },
-    projects: { 0: new Project },
-    supplier: new Supplier,
-    department: new Department,
-    applicant: new User,
+  entity: OrderEntity = new OrderEntity()
+
+  handleClose () {
+    this.$router.push(this.baseURL)
   }
 
   async handleSubmit () {
-    await axios.post('/purchase-orders/create', this.orderEntity.order)
+    let { data: { id } } = await this.entity.create()
+
+    this.$router.push(this.baseURL + `/${id}/detail`)
   }
 
   created () {
-    this.orderEntity.order.warehouse_id = this.warehouseId
+    this.entity.order.warehouse_id = this.warehouseId
   }
 }
 </script>

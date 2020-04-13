@@ -4,6 +4,7 @@
     v-bind="$attrs"
     class="textarea"
     v-on="listeners"
+    v-text="value"
   ></textarea>
 </template>
 

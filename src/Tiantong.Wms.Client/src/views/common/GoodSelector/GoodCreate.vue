@@ -4,7 +4,7 @@
       class="button is-info"
       @click.prevent="handleOpen"
     >
-      添加
+      添加规格
     </a>
     <div
       v-show="isShow"
@@ -102,7 +102,7 @@ export default class extends Vue {
       item_unit: this.item_unit
     })
     this.handleClose()
-    this.$emit('updated')
+    this.$emit('refresh')
   }
 
   handleOpen () {

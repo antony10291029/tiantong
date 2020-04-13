@@ -1,16 +1,19 @@
 <template>
   <td
     :class="isShow || 'is-clickable'"
-    @click="isShow = true"
+    @click="!readonly && (isShow = true)"
   >
     <slot></slot>
-    <template v-if="isShow">
+    <template v-if="isShow && !readonly">
       <AsyncLoader
         :handler="getProjects"
         class="modal is-active"
         style="position: fixed"
       >
-        <div class="modal-background"></div>
+        <div
+          @click.stop="handleClose"
+          class="modal-background"
+        ></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">
@@ -52,15 +55,7 @@
             <a
               class="button is-success"
               @click.stop="handleSubmit"
-            >
-              选择
-            </a>
-            <a
-              class="button"
-              @click.stop="handleClose"
-            >
-              取消
-            </a>
+            >选择</a>
           </footer>
         </div>
       </AsyncLoader>
@@ -99,6 +94,9 @@ export default class extends Vue {
 
   @Prop({ required: true })
   itemProjects!: Array<PurchaseOrderItemProject>
+
+  @Prop({ default: false })
+  readonly!: boolean
 
   isShow: boolean = false
 
@@ -143,12 +141,13 @@ export default class extends Vue {
   handleSubmit () {
     let itemProjects = this.projects
       .filter(project => project.$isSelected)
-      .map(project => {
+      .map((project, index) => {
         let itemProject = new PurchaseOrderItemProject()
 
+        itemProject.index = index
+        itemProject.project_id = project.id
         itemProject.quantity = project.$quantity
         itemProject.order_item_id = this.orderItem.id
-        itemProject.project_id = project.id
 
         return itemProject
       })

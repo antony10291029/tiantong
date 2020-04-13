@@ -162,7 +162,7 @@ const routes = [
               {
                 path: '',
                 name: 'PurchaseOrderList',
-                component: () => import('./PurchaseOrders/PurchaseOrderList.vue')
+                component: () => import('./PurchaseOrders/OrderList/index.vue')
               },
               {
                 path: 'create',
@@ -170,10 +170,10 @@ const routes = [
                 component: () => import('./PurchaseOrders/PurchaseOrderCreate.vue')
               },
               {
-                path: ':orderId/update',
-                name: 'PurchaseOrderCreate',
+                path: ':orderId/detail',
+                name: 'PurchaseOrderDetail',
                 props: (route: any) => ({ orderId: + route.params.orderId }),
-                component: () => import('./PurchaseOrders/PurchaseOrderUpdate.vue')
+                component: () => import('./PurchaseOrders/PurchaseOrderDetail.vue')
               }
             ]
           },

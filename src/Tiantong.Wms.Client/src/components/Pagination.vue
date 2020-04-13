@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination is-centered">
+  <nav class="pagination is-centered is-rounded">
     <ul class="pagination-list">
       <li>
         <a
@@ -7,7 +7,9 @@
           class="pagination-link"
           :disabled="page === 1"
         >
-          &lt;
+          <span class="icon">
+            <i class="iconfont icon-arrow-left"></i>
+          </span>
         </a>
       </li>
       <li v-for="(i, index) in pages" :key="index">
@@ -28,7 +30,9 @@
           class="pagination-link"
           :disabled="page === lastPage"
         >
-          &gt;
+          <span class="icon">
+            <i class="iconfont icon-arrow-right"></i>
+          </span>
         </a>
       </li>
     </ul>

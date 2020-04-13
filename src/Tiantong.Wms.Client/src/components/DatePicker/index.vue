@@ -1,14 +1,22 @@
 <template>
-  <component
-    :is="wrapperComponent"
+  <input
+    v-if="tag === 'input'"
+    readonly
+    class="input"
     :value="valueDate"
+    @click="handleClick"
+    style="cursor: pointer"
+  >
+  <td
+    v-else
+    v-text="valueDate"
+    class="is-clickable"
+    @click="handleClick"
   />
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import Td from './td.vue'
-import Input from './input.vue'
 import Flatpickr from 'flatpickr'
 import zh from 'flatpickr/dist/l10n/zh.js'
 import { DateTime } from '@/utils/common'
@@ -36,7 +44,7 @@ export default class extends Vue {
   nullable!: Boolean
 
   @Prop({ default: 'input' })
-  wrapper!: String
+  tag!: String
 
   @Prop({ default: 'zh' })
   locale!: string
@@ -44,18 +52,9 @@ export default class extends Vue {
   @Prop({ default: 'min' })
   initial!: string
 
-  config: any = {}
-
   datepicker: any
 
   selectedDates: any
-
-  get wrapperComponent () {
-    switch (this.wrapper) {
-      case 'input': return Input
-      case 'td': return Td
-    }
-  }
 
   get valueDate () {
     let val = this.value.split('T')[0]
@@ -81,47 +80,51 @@ export default class extends Vue {
     }
   }
 
+  handleClick () {
+    if (!this.datepicker) {
+      let config = {} as any
+      config.onValueUpdate = this.dateUpdated
+      config.clickOpens = !this.readonly
+      if (this.locale === 'zh') {
+        config.locale = zh.zh
+      }
+      this.datepicker = Flatpickr(this.$el, config)
+      this.handleValueChange(this.value)
+      !this.readonly && this.datepicker.open()
+    }
+  }
+
+  handleDestroy () {
+    if (this.datepicker) {
+      this.datepicker.destroy()
+      this.datepicker = null
+    }
+  }
+
   @Watch('value')
   private handleValueChange (value: string) {
-    if (this.clearable && this.value === DateTime.minValue) {
-      this.datepicker.setDate('')
-    } else {
-      this.datepicker.setDate(value)
+    if (this.datepicker) {
+      this.datepicker.setDate(this.value === DateTime.minValue ? '' : value)
     }
   }
 
   private handleInput (value: string) {
     this.$emit('input', value)
+    this.handleDestroy()
   }
 
   mounted () {
-    if (!this.datepicker) {
-      this.config.onValueUpdate = this.dateUpdated
-      if (this.locale === 'zh') {
-        this.config.locale = zh.zh
-      }
-      this.config.clickOpens = !this.readonly
-      this.datepicker = Flatpickr(this.$el, this.config)
-
-      if (this.value === '') {
-        if (this.initial === 'min') {
-          this.handleInput(DateTime.minValue)
-        } else {
-          this.handleInput(DateTime.now)
-        }
+    if (this.value === '') {
+      if (this.initial === 'min') {
+        this.handleInput(DateTime.minValue)
       } else {
-        this.handleValueChange(this.value)
+        this.handleInput(DateTime.now)
       }
     }
-
-    this.$watch('config', this.redraw)
   }
 
   beforeDestroy () {
-    if (this.datepicker) {
-      this.datepicker.destroy()
-      this.datepicker = null
-    }
+    this.handleDestroy()
   }
 }
 </script>

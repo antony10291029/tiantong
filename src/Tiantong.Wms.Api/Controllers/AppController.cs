@@ -350,7 +350,7 @@ namespace Tiantong.Wms.Api
           _db.PurchaseOrders.Add(new PurchaseOrder {
             warehouse_id = warehouse.id,
             number = $"PO{i}",
-            status = _random.Bool() ? "未完成" : "已完成",
+            status = _random.Bool() ? PurchaseOrderStatuses.Created : PurchaseOrderStatuses.Finished,
             comment = "测试录料单",
             operator_id = warehouse.owner_user_id,
             applicant_id = _random.Array(users).user_id,
@@ -377,7 +377,7 @@ namespace Tiantong.Wms.Api
                   amount = _random.Int(10000, 100000),
                   tax_rate = _random.Int(1, 20),
                   tax_amount = _random.Int(1000, 10000),
-                  invoice_type = "专票",
+                  invoice_type = "增值税专用发票",
                   invoice_number = _random.Int(100000009, 999999999).ToString(),
                 },
                 projects = _random.Array(projects, _random.Int(0, 3)).Select(

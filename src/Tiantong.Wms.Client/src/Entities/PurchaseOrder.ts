@@ -17,7 +17,7 @@ export default class PurchaseOrder {
 
   supplier_id: number = 0
 
-  status: string = ''
+  status: string = 'created'
 
   comment: string = ''
 

@@ -1,7 +1,8 @@
 <template>
-  <td
-    :class="isShow || 'is-clickable'"
-    @click.self="isShow = true"
+  <component
+    :class="isShow || readonly || 'is-clickable'"
+    @click.self="!readonly && (isShow = true)"
+    :is="tag"
   >
     <slot></slot>
     <AsyncLoader
@@ -10,7 +11,10 @@
       class="modal is-active"
       style="text-align: left"
     >
-      <div class="modal-background"></div>
+      <div
+        class="modal-background"
+        @click="handleClose"
+      ></div>
       <div class="modal-card" style="height: 100%">
         <header class="modal-card-head is-flex is-vcentered">
           <p class="modal-card-title">选择物品</p>
@@ -22,11 +26,12 @@
               @search="handleSearch"
             ></SearchField>
             <div class="is-flex-auto"></div>
-            <GoodCreate
-              :warehouseId="warehouseId"
-              @updated="getEntities"
-            ></GoodCreate>
+            <Pagination
+              v-bind="entities.meta"
+              @change="handlePageChange"
+            ></Pagination>
           </div>
+          <div style="height: 0.75rem"></div>
           <Table
             v-if="!isPending"
             class="is-hoverable"
@@ -80,25 +85,21 @@
               </template>
             </tbody>
           </Table>
-          <div style="height: 1rem"></div>
-          <Pagination
-            v-bind="entities.meta"
-            @change="handlePageChange"
-          ></Pagination>
         </section>
         <footer class="modal-card-foot">
           <a
             @click.stop="handleSelect"
             class="button is-success"
           >选择</a>
-          <a
-            class="button"
-            @click.stop="handleClose"
-          >取消</a>
+          <div class="is-flex-auto"></div>
+          <GoodCreate
+            :warehouseId="warehouseId"
+            @refresh="getEntities"
+          ></GoodCreate>
         </footer>
       </div>
     </AsyncLoader>
-  </td>
+  </component>
 </template>
 
 <script lang="ts">
@@ -130,6 +131,12 @@ export default class extends DataSet {
 
   @Prop({ required: true })
   item!: Item | null
+
+  @Prop({ required: false })
+  readonly!: boolean
+
+  @Prop({ default: 'td' })
+  tag!: string
 
   api = '/goods/search'
 

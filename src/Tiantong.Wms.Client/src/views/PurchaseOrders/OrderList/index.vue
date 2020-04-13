@@ -4,8 +4,18 @@
       <SearchField
         :isPending="isPending"
         @search="handleSearch"
-      />
-
+      >
+        <p class="control">
+          <span class="select">
+            <select v-model="status">
+              <option :value="null">默认</option>
+              <option value="created">未完成</option>
+              <option value="finished">已入库</option>
+              <option value="filed">已归档</option>
+            </select>
+          </span>
+        </p>
+      </SearchField>
       <div style="width: 0.5rem"></div>
 
       <router-link
@@ -55,12 +65,7 @@
             {{orderIndex + 1}}
           </td>
           <td :rowspan="orderRowspan">
-            <span
-              class="tag"
-              :class="order.status === '已完成' ? 'is-success' : 'is-warning'"
-            >
-              {{order.status}}
-            </span>
+            <OrderStatusTag :value="order.status" />
             <div style="height: 0.5rem"></div>
             <DateWrapper :value="order.created_at"/>
           </td>
@@ -106,7 +111,7 @@
 
         <template v-if="isOrderShow">
           <td :rowspan="orderRowspan">
-            <router-link :to="`${baseURL}/${order.id}/update`">
+            <router-link :to="`${baseURL}/${order.id}/detail`">
               <span class="icon">
                 <i class="iconfont icon-edit"></i>
               </span>
@@ -136,6 +141,7 @@ import Pagination from '@/components/Pagination.vue'
 import SearchField from '@/components/SearchField.vue'
 import DateWrapper from '@/components/wrappers/DateWrapper.vue'
 import PurchaseOrderRow from './PurchaseOrderRow.vue'
+import OrderStatusTag from './OrderStatusTag.vue'
 
 @Component({
   name: 'PurchaseOrderList',
@@ -145,6 +151,7 @@ import PurchaseOrderRow from './PurchaseOrderRow.vue'
     AsyncLoader,
     SearchField,
     DateWrapper,
+    OrderStatusTag,
     PurchaseOrderRow
   }
 })
@@ -159,9 +166,12 @@ export default class extends DataSet {
 
   api = '/purchase-orders/search'
 
+  status: string | null = null
+
   get params () {
     return {
-      warehouse_id: this.warehouseId
+      warehouse_id: this.warehouseId,
+      status: this.status
     }
   }
 

@@ -5,5 +5,7 @@ namespace Tiantong.Wms.Api
     public const string Inbound = "inbound";
 
     public const string Outbound = "outbound";
+
+    public const string Purchase = "purchase";
   }
 }

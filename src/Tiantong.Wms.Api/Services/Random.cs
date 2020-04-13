@@ -74,7 +74,7 @@ namespace Tiantong.Wms.Api
 
     public IEnumerable<int> Enumerate(int min, int max)
     {
-      return Enumerable.Range(min, Int(min, max));
+      return Enumerable.Range(0, Int(min, max));
     }
 
     public DateTime DateTime(DateTime min, DateTime max)

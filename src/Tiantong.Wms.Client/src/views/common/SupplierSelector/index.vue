@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align: left">
     <input
       readonly
       type="text" class="input"
@@ -7,22 +7,22 @@
       @click="isShow = !isShow"
       :value="supplier === null ? '' :  supplier.name"
     >
-    <div
-      class="modal"
+    <AsyncLoader
+      v-if="isShow && !readonly"
+      class="modal is-active"
       :handler="getSuppliers"
-      v-class:is-active="isShow"
     >
-      <div class="modal-background"></div>
+      <div
+        @click="handleClose"
+        class="modal-background"
+      ></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title has-text-centered">
+          <p class="modal-card-title">
             选择供应商
           </p>
         </header>
-        <AsyncLoader
-          :handler="getSuppliers"
-          class="modal-card-body"
-        >
+        <div class="modal-card-body">
           <Table class="is-hoverable">
             <thead>
               <tr>
@@ -58,23 +58,20 @@
               </tr>
             </tbody>
           </Table>
-        </AsyncLoader>
+        </div>
         <footer class="modal-card-foot">
           <a
             class="button is-success"
             @click.stop="handleSelect"
-          >
-            选择
-          </a>
-          <a
-            class="button"
-            @click.stop="handleClose"
-          >
-            取消
-          </a>
+          >选择</a>
+          <div class="is-flex-auto"></div>
+          <SupplierCreate
+            :warehouseId="warehouseId"
+            @refresh="getSuppliers"
+          />
         </footer>
       </div>
-    </div>
+    </AsyncLoader>
   </div>
 </template>
 
@@ -84,12 +81,14 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
 import { Supplier } from '@/Entities'
 import axios from '@/providers/axios'
 import Table from '@/components/Table.vue'
+import SupplierCreate from './SupplierCreate.vue'
 
 @Component({
   name: 'PurchaseOrderSupplierSelector',
   components: {
     Table,
-    AsyncLoader
+    AsyncLoader,
+    SupplierCreate
   }
 })
 export default class extends Vue {
@@ -98,6 +97,9 @@ export default class extends Vue {
 
   @Prop({ required: true })
   supplier!: Supplier | null
+
+  @Prop({ default: false })
+  readonly!: boolean
 
   currentSupplier: Supplier | null = null
 

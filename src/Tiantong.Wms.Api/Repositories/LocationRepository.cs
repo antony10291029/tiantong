@@ -31,6 +31,19 @@ namespace Tiantong.Wms.Api
       return location;
     }
 
+    public Location EnsureGet(int warehouseId, int locationId)
+    {
+      var location = Table.FirstOrDefault(l =>
+        l.warehouse_id == warehouseId && l.id == locationId
+      );
+
+      if (location == null) {
+        throw new HttpException("仓库位置不存在");
+      }
+
+      return location;
+    }
+
     public Location EnsureGetByOwner(int id, int userId)
     {
       var location = EnsureGet(id);

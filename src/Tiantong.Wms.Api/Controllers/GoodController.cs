@@ -27,7 +27,8 @@ namespace Tiantong.Wms.Api
       StockRepository stocks,
       LocationRepository locations,
       WarehouseRepository warehouses,
-      GoodCategoryRepository itemCategories
+      GoodCategoryRepository itemCategories,
+      PurchaseOrderRepository purchaseOrders
     ) {
       _auth = auth;
       _goods = goods;
@@ -63,23 +64,30 @@ namespace Tiantong.Wms.Api
     {
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
 
-      var good = _goods.Table
-        .Where(entity => entity.name == param.good_name)
-        .FirstOrDefault();
+      var good = _goods.Table.Include(g => g.items)
+        .FirstOrDefault(g =>
+          g.name == param.good_name &&
+          g.warehouse_id == param.warehouse_id
+        );
+
       var item = new Item();
       item.name = param.item_name;
       item.unit = param.item_unit;
+      item.warehouse_id = param.warehouse_id;
 
       if (good == null) {
         good = new Good();
         good.warehouse_id = param.warehouse_id;
-        good.name =  param.good_name;
+        good.name = param.good_name;
         good.items = new List<Item> { item };
+        _goods.EnsureUnique(good);
+        _goods.DbContext.Add(good);
       } else {
+        item.good_id = good.id;
         _goods.Items.EnsureUnique(item);
-        good.items = new List<Item> { item };
+        _goods.DbContext.Add(item);
       }
-      _goods.Update(good);
+
       _goods.UnitOfWork.SaveChanges();
 
       return SuccessOperation("货品规格已添加");
@@ -129,11 +137,12 @@ namespace Tiantong.Wms.Api
           .ThenInclude(item => item.stocks)
         .Where(good =>
           good.warehouse_id == param.warehouse_id && 
-          param.search == null ? true :
-          good.name.Contains(param.search) ||
-          good.number.Contains(param.search) ||
-          good.items.Any(item => item.name.Contains(param.search)) ||
-          good.items.Any(item => item.number.Contains(param.search))
+          (param.search == null ? true : (
+            good.name.Contains(param.search) ||
+            good.number.Contains(param.search) ||
+            good.items.Any(item => item.name.Contains(param.search)) ||
+            good.items.Any(item => item.number.Contains(param.search))
+          ))
         )
         .Paginate<Good>(param.page, param.page_size);
 
@@ -165,12 +174,12 @@ namespace Tiantong.Wms.Api
       public int id { get; set; }
     }
 
-    public object IsItemDeletable([FromBody] ItemDeletableParams param)
+    public object IsItemRemovable([FromBody] ItemDeletableParams param)
     {
       var item = _goods.Items.EnsureGet(param.id);
       var good = _goods.EnsureGet(item.good_id);
       _warehouses.EnsureOwner(good.warehouse_id, _auth.User.id);
-      if (_goods.Items.IsDeletable(item)) {
+      if (_goods.Items.isRemovable(item)) {
         return new { deletable = true };
       } else {
         return FailureOperation("该规格已被使用，不可删除");

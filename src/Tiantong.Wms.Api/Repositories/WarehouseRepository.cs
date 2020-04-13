@@ -54,6 +54,17 @@ namespace Tiantong.Wms.Api
       return warehouse;
     }
 
+    public Warehouse EnsureGet(int whid, int userId)
+    {
+      var warehouse = Table.SingleOrDefault(w => w.id == whid && w.owner_user_id == userId);
+
+      if (warehouse == null) {
+        throw new FailureOperation("仓库不存在");
+      }
+
+      return warehouse;
+    }
+
     public Warehouse EnsureGetByOwner(int warehouseId, int userId)
     {
       var warehouse = EnsureGet(warehouseId);

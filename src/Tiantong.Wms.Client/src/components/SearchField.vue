@@ -1,5 +1,6 @@
 <template>
   <div class="field has-addons">
+    <slot></slot>
     <div class="control" :style="{ width }">
       <input
         v-model.lazy="value"

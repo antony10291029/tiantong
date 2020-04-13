@@ -16,13 +16,15 @@
 
     <Table v-show="!isPending">
       <thead>
+        <th style="width: 1px">#</th>
         <th>供应商名</th>
         <th>备注</th>
         <th>启用中</th>
         <th style="width: 100px">操作</th>
       </thead>
       <tbody>
-        <tr v-for="supplier in entityList" :key="supplier.id">
+        <tr v-for="(supplier, index) in entityList" :key="supplier.id">
+          <td>{{index + 1}}</td>
           <td>{{supplier.name}}</td>
           <td>{{supplier.comment}}</td>
           <td>

@@ -6,13 +6,37 @@ namespace Tiantong.Wms.Api
 {
   public class StockRepository : Repository<Stock>
   {
-    private OrderItemRepository _orderItems;
+    public StockRepository(DbContext db): base(db)
+    {
 
-    public StockRepository(
-      DbContext db,
-      OrderItemRepository orderItems
-    ) : base(db) {
-      _orderItems = orderItems;
+    }
+
+    public Stock GetOrNew(int warehouseId, int goodId, int itemId, int areaId, int locationId)
+    {
+      var stock = Get(warehouseId, goodId, itemId, areaId, locationId);
+
+      if (stock == null) {
+        stock = new Stock {
+          good_id = goodId,
+          item_id = itemId,
+          area_id = areaId,
+          location_id = locationId,
+          warehouse_id = warehouseId
+        };
+      }
+
+      return stock;
+    }
+
+    // search
+
+    public Stock Get(int warehouseId, int goodId, int itemId, int areaId, int locationId)
+    {
+      return Table.SingleOrDefault(s =>
+        s.item_id == itemId &&
+        s.location_id == locationId &&
+        s.warehouse_id == warehouseId
+      );
     }
 
     public bool HasGood(int goodId)
@@ -20,24 +44,15 @@ namespace Tiantong.Wms.Api
       return Table.Any(stock => stock.good_id == goodId);
     }
 
-    public Stock GetOrAdd(int warehouseId, int itemId, int locationId)
+    public bool HasItem(int itemId)
     {
-      var stock = Table.Where(sk =>
-        sk.item_id == itemId &&
-        sk.location_id == locationId &&
-        sk.warehouse_id == warehouseId
-      ).FirstOrDefault();
-
-      if (stock == null) {
-        stock = new Stock {
-          item_id = itemId,
-          location_id = locationId,
-          warehouse_id = warehouseId
-        };
-        Add(stock);
-      }
-
-      return stock;
+      return Table.Any(stock => stock.item_id == itemId);
     }
+
+    public bool HasItem(int[] itemIds)
+    {
+      return Table.Any(stock => itemIds.Contains(stock.item_id));
+    }
+
   }
 }

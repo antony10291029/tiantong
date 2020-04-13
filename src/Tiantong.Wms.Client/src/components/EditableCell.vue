@@ -1,13 +1,19 @@
 <template>
   <td
     ref="td"
+    v-if="!readonly"
+    v-class:is-hoverable="hoverable"
     contenteditable
     v-bind="$attrs"
     v-text="value"
     @focus="handleFocus"
     @blur="handleChange"
     @keypress.enter="handleChange"
-  ></td>
+  />
+  <td
+    v-else
+    v-text="value"
+  />
 </template>
 
 <script lang="ts">
@@ -29,6 +35,12 @@ export default class extends Vue {
 
   @Prop({ default: '' })
   default!: any
+
+  @Prop({ default: false })
+  readonly!: boolean
+
+  @Prop({ default: true })
+  hoverable!: boolean
 
   isFocused: boolean = false
 

@@ -8,7 +8,7 @@
       :value="user === null ? '' :  user.name"
     >
     <AsyncLoader
-      v-if="isShow"
+      v-if="isShow && !readonly"
       class="modal is-active"
       :handler="getWarehouseUsers"
     >
@@ -18,7 +18,7 @@
       ></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title has-text-centered">
+          <p class="modal-card-title">
             选择申请人
           </p>
         </header>
@@ -64,15 +64,7 @@
           <a
             class="button is-success"
             @click.stop="handleSelect"
-          >
-            选择
-          </a>
-          <a
-            class="button"
-            @click.stop="handleClose"
-          >
-            取消
-          </a>
+          >选择</a>
         </footer>
       </div>
     </AsyncLoader>
@@ -99,6 +91,9 @@ export default class extends Vue {
 
   @Prop({ required: true })
   user!: User
+
+  @Prop({ default: false })
+  readonly!: boolean
 
   currentUser: User = this.user
 

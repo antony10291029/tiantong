@@ -23,6 +23,9 @@ namespace Tiantong.Wms.Api
     [StringRange(1, 10, ErrorMessage = "规格单位长度必须在1～10之间")]
     public virtual string unit { get; set; }
 
+    [MaxLength(255, ErrorMessage = "规格备注长度最大为255")]
+    public virtual string comment { get; set; } = "";
+
     public virtual bool is_enabled { get; set; } = true;
 
     [ForeignKey("item_id")]

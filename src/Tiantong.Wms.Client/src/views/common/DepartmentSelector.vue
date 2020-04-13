@@ -8,7 +8,7 @@
       :value="department === null ? '' :  department.name"
     >
     <AsyncLoader
-      v-if="isShow"
+      v-if="isShow && !readonly"
       class="modal is-active"
       :handler="getDepartments"
     >
@@ -18,8 +18,8 @@
       ></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title has-text-centered">
-            选择供应商
+          <p class="modal-card-title">
+            选择部门
           </p>
         </header>
         <div class="modal-card-body">
@@ -63,15 +63,7 @@
           <a
             class="button is-success"
             @click.stop="handleSelect"
-          >
-            选择
-          </a>
-          <a
-            class="button"
-            @click.stop="handleClose"
-          >
-            取消
-          </a>
+          >选择</a>
         </footer>
       </div>
     </AsyncLoader>
@@ -98,6 +90,9 @@ export default class extends Vue {
 
   @Prop({ required: true })
   department!: Department | null
+
+  @Prop({ default: false })
+  readonly!: boolean
 
   currentDepartment: Department | null = null
 

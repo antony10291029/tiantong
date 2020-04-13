@@ -80,7 +80,7 @@ export default class DataSet<TKey extends IString = number> extends Vue {
   }
 
   async handleRefresh () {
-    await this.handlePageChange(1)
+    await this.getEntities()
   }
 }
 

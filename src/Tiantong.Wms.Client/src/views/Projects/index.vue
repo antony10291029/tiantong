@@ -16,6 +16,7 @@
 
     <Table v-show="!isPending">
       <thead>
+        <th style="width: 1px">#</th>
         <th>工程代码</th>
         <th>工程名称</th>
         <th>工程备注</th>
@@ -27,7 +28,8 @@
       </thead>
 
       <tbody>
-        <tr v-for="project in entityList" :key="project.id">
+        <tr v-for="(project, index) in entityList" :key="project.id">
+          <td>{{index + 1}}</td>
           <td>{{project.number}}</td>
           <td>{{project.name}}</td>
           <td>{{project.comment}}</td>

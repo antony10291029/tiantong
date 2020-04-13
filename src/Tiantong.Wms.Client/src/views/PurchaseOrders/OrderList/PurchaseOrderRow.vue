@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { PurchaseOrder, PurchaseOrderItem, PurchaseOrderItemProject } from '../../Entities'
+import { PurchaseOrder, PurchaseOrderItem, PurchaseOrderItemProject } from '@/Entities'
 
 @Component({
   name: 'PurchaseOrderRow'

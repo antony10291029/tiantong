@@ -7,18 +7,49 @@ namespace Tiantong.Wms.Api
 {
   public class ItemRepository : Repository<Item, int>
   {
-    private WarehouseRepository _warehouses;
+    private StockRepository _stocks;
 
-    public ItemRepository(DbContext db, WarehouseRepository warehouses) : base(db)
-    {
-      _warehouses = warehouses;
+    private PurchaseOrderRepository _purchaseOrders;
+
+    public ItemRepository(
+      DbContext db,
+      StockRepository stocks,
+      PurchaseOrderRepository purchaseOrders
+    ) : base(db) {
+      _stocks = stocks;
+      _purchaseOrders = purchaseOrders;
     }
 
     // Delete
 
-    public void Remove(IEnumerable<Item> items)
+    public bool isRemovable(Item item)
     {
-      if (!IsDeletable(items)) {
+      if (item.id == 0) {
+        return true;
+      } else {
+        return !_purchaseOrders.HasItem(item.id) &&
+          !_stocks.HasItem(item.id);
+      }
+    }
+
+    public bool isRemovable(Item[] items)
+    {
+      var ids = items
+        .Where(item => item.id != 0)
+        .Select(item => item.id)
+        .ToArray();
+
+      if (ids.Count() == 0) {
+        return true;
+      }
+
+      return !_purchaseOrders.HasItem(ids) &&
+        !_purchaseOrders.HasItem(ids);
+    }
+
+    public void Remove(Item[] items)
+    {
+      if (!isRemovable(items)) {
         throw new FailureOperation("规格已被使用，无法删除");
       } else {
         DbContext.RemoveRange(items);
@@ -98,36 +129,6 @@ namespace Tiantong.Wms.Api
 
       foreach (var item in items) {
         EnsureUnique(item);
-      }
-    }
-
-    public bool IsDeletable(Item item)
-    {
-      if (item.id == 0) {
-        return true;
-      } else {
-        return !DbContext.PurchaseOrderItems.Any(oi => oi.item_id == item.id) ||
-          !DbContext.Stocks.Any(stock => stock.item_id == item.id);
-      }
-    }
-
-    public bool IsDeletable(IEnumerable<Item> items)
-    {
-      var ids = items
-        .Where(item => item.id != 0)
-        .Select(item => item.id);
-
-      if (ids.Count() == 0) {
-        return true;
-      }
-
-      if (
-        DbContext.PurchaseOrderItems.Any(oi => ids.Contains(oi.item_id)) ||
-        DbContext.Stocks.Any(stock => ids.Contains(stock.item_id))
-      ) {
-        return false;
-      } else {
-        return true;
       }
     }
 
