@@ -8,10 +8,10 @@ import Supplier from './Supplier'
 import Warehouse from './Warehouse'
 import WarehouseUser from './WarehouseUser'
 import Department from './Department'
-import PurchaseOrder from './PurchaseOrder'
-import PurchaseOrderPayment from './PurchaseOrderPayment'
-import PurchaseOrderItem from './PurchaseOrderItem'
-import PurchaseOrderItemProject from './PurchaseOrderItemProject'
+import Order from './Order'
+import OrderPayment from './OrderPayment'
+import OrderItem from './OrderItem'
+import OrderItemProject from './OrderItemProject'
 
 export {
   User,
@@ -24,10 +24,10 @@ export {
   Warehouse,
   Department,
   WarehouseUser,
-  PurchaseOrder,
-  PurchaseOrderPayment,
-  PurchaseOrderItem,
-  PurchaseOrderItemProject
+  Order,
+  OrderPayment,
+  OrderItem,
+  OrderItemProject
 }
 
 export function getDiffs(origin: any, target: any, keys: string[], id: string = 'id') {

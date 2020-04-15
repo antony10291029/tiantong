@@ -12,18 +12,18 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Good, Item, Project, PurchaseOrderItem, PurchaseOrderItemProject } from '@/Entities'
+import { Good, Item, Project, OrderItem, OrderItemProject } from '@/Entities'
 import cloneDeep from 'lodash/cloneDeep'
 
 @Component({
-  name: 'PurchaseOrderItemRows',
+  name: 'OrderItemRows',
   components: {
 
   }
 })
 export default class extends Vue {
   @Prop({ required: true })
-  orderItems!: PurchaseOrderItem[]
+  orderItems!: OrderItem[]
 
   @Prop({ required: true })
   projects!: { [key: string]: Project }
@@ -38,13 +38,13 @@ export default class extends Vue {
 
   project: boolean = false
 
-  getItemProjects (projects: PurchaseOrderItemProject[]) {
+  getItemProjects (projects: OrderItemProject[]) {
     return projects.length === 0 ? [ null ] : projects
   }
 
   getSlotProps (
-    orderItem: PurchaseOrderItem,
-    itemProject: PurchaseOrderItemProject,
+    orderItem: OrderItem,
+    itemProject: OrderItemProject,
     orderItemIndex: number,
     itemProjectIndex: number
   ) {
@@ -53,7 +53,7 @@ export default class extends Vue {
       orderItemIndex: orderItemIndex,
       invoice: orderItem.invoice,
       itemProjectIndex: itemProjectIndex,
-      itemProject: itemProject || new PurchaseOrderItemProject,
+      itemProject: itemProject || new OrderItemProject,
       good: this.goods[orderItem.good_id],
       item: this.items[orderItem.item_id],
       project: itemProject && this.projects[itemProject.project_id],

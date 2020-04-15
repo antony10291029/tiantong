@@ -331,17 +331,17 @@
                 @change="handleTaxRateChange(orderItem, $event)"
               />
               <InvoiceTypeSelector
-                :value="invoice.invoice_type"
+                :value="invoice.type"
                 :rowspan="orderItemRowspan"
                 @change="handleInvoiceTypeChange(orderItem, $event)"
               />
               <EditableCell
                 :readonly="readonly"
-                v-model="invoice.invoice_number"
+                v-model="invoice.number"
                 :rowspan="orderItemRowspan"
                 style="width: 1px"
               />
-              <EditableCell
+              <EditableCells
                 :readonly="readonly"
                 :rowspan="orderItemRowspan"
                 v-model="orderItem.comment"
@@ -411,10 +411,10 @@ import {
   Project,
   Supplier,
   Department,
-  PurchaseOrder,
-  PurchaseOrderItem,
-  PurchaseOrderPayment,
-  PurchaseOrderItemProject,
+  Order,
+  OrderItem,
+  OrderPayment,
+  OrderItemProject,
   WarehouseUser,
 } from '@/Entities'
 
@@ -513,8 +513,8 @@ export default class extends Vue {
   }
 
   handleProjectChange (
-    item: PurchaseOrderItem,
-    itemProjects: PurchaseOrderItemProject[],
+    item: OrderItem,
+    itemProjects: OrderItemProject[],
     projects: Project[],
   ) {
     item.projects = itemProjects;
@@ -525,36 +525,36 @@ export default class extends Vue {
   }
 
   handlePaymentsAdd () {
-    this.entity.order.payments.push(new PurchaseOrderPayment())
+    this.entity.order.payments.push(new OrderPayment())
   }
 
-  handlePaymentsRemove (index: number, payment: PurchaseOrderPayment) {
+  handlePaymentsRemove (index: number, payment: OrderPayment) {
     if (this.entity.order.payments.length > 1) {
       this.entity.order.payments.splice(index, 1)
     }
   }
 
   handleOrderItemAdd () {
-    this.entity.order.items.push(new PurchaseOrderItem())
+    this.entity.order.items.push(new OrderItem())
   }
 
-  handleOrderItemRemove (index: number, item: PurchaseOrderItem) {
+  handleOrderItemRemove (index: number, item: OrderItem) {
     if (this.entity.order.items.length > 1) {
       this.entity.order.items.splice(index, 1)
     }
   }
 
-  handleItemPriceChange (item: PurchaseOrderItem, price: number) {
+  handleItemPriceChange (item: OrderItem, price: number) {
     item.price = item.invoice.price = price
     this.calculateInvoice(item)
   }
 
-  handleItemQuantityChange (item: PurchaseOrderItem, quantity: number) {
+  handleItemQuantityChange (item: OrderItem, quantity: number) {
     item.quantity = item.invoice.quantity = quantity
     this.calculateInvoice(item)
   }
 
-  handleInvoiceTypeChange (item: PurchaseOrderItem, type: string) {
+  handleInvoiceTypeChange (item: OrderItem, type: string) {
     let { invoice } = item
 
     if (type === '增值税专用发票') {
@@ -565,25 +565,25 @@ export default class extends Vue {
       invoice.tax_rate = 0
     }
 
-    invoice.invoice_type = type
+    invoice.type = type
     this.calculateInvoice(item)
   }
 
-  handleTaxRateChange (item: PurchaseOrderItem, rate: number) {
+  handleTaxRateChange (item: OrderItem, rate: number) {
     item.invoice.tax_rate = rate
     this.calculateInvoice(item)
   }
 
-  handleInvoiceQuantityChange (item: PurchaseOrderItem, quantity: number) {
+  handleInvoiceQuantityChange (item: OrderItem, quantity: number) {
     item.invoice.quantity = quantity
     this.calculateInvoice(item)
   }
 
-  calculateInvoice (item: PurchaseOrderItem) {
+  calculateInvoice (item: OrderItem) {
     let { invoice } = item
     let total = item.quantity * item.price
 
-    if (invoice.invoice_type === '增值税专用发票') {
+    if (invoice.type === '增值税专用发票') {
       invoice.amount = total / (1 + 0.01 * invoice.tax_rate)
       invoice.tax_amount = total - invoice.amount
     } else {

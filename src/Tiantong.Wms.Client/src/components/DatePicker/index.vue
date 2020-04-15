@@ -1,12 +1,11 @@
 <template>
-  <input
+  <td
     v-if="tag === 'input'"
-    readonly
     class="input"
-    :value="valueDate"
+    v-text="valueDate"
     @click="handleClick"
     style="cursor: pointer"
-  >
+  />
   <td
     v-else
     v-text="valueDate"
@@ -52,9 +51,7 @@ export default class extends Vue {
   @Prop({ default: 'min' })
   initial!: string
 
-  datepicker: any
-
-  selectedDates: any
+  datepicker: any = null
 
   get valueDate () {
     let val = this.value.split('T')[0]
@@ -64,12 +61,6 @@ export default class extends Vue {
     } else {
       return val
     }
-  }
-
-  redraw (newConfig: any) {
-    this.datepicker.config = Object.assign(this.datepicker.config, newConfig)
-    this.datepicker.redraw()
-    this.datepicker.jumpToDate()
   }
 
   dateUpdated (selectedDates: any, value: any) {
@@ -101,8 +92,7 @@ export default class extends Vue {
     }
   }
 
-  @Watch('value')
-  private handleValueChange (value: string) {
+  handleValueChange (value: string) {
     if (this.datepicker) {
       this.datepicker.setDate(this.value === DateTime.minValue ? '' : value)
     }
@@ -110,7 +100,6 @@ export default class extends Vue {
 
   private handleInput (value: string) {
     this.$emit('input', value)
-    this.handleDestroy()
   }
 
   mounted () {

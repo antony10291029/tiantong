@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { PurchaseOrder, PurchaseOrderItem, PurchaseOrderItemProject } from '@/Entities'
+import { Order, OrderItem, OrderItemProject } from '@/Entities'
 
 @Component({
   name: 'PurchaseOrderRow'
@@ -28,9 +28,9 @@ export default class extends Vue {
   relationships: any
 
   getProps (
-    order: PurchaseOrder,
-    item: PurchaseOrderItem,
-    project: PurchaseOrderItemProject,
+    order: Order,
+    item: OrderItem,
+    project: OrderItemProject,
     orderIndex: number,
     itemIndex: number,
     projectIndex: number

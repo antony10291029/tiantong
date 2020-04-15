@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Tiantong.Wms.Api
 {
-  public static class PurchaseOrderStatuses
+  public static class OrderStatus
   {
     public const string Created = "created";
 

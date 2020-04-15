@@ -1,5 +1,5 @@
 <template>
-  <OrderItem
+  <OrderDetail
     :entity="entity"
     :warehouseId="warehouseId"
   >
@@ -30,13 +30,13 @@
         </div>
       </div>
     </template>
-  </OrderItem>
+  </OrderDetail>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { OrderEntity } from './OrderItem/OrderEntity'
-import OrderItem from './OrderItem/index.vue'
+import { OrderEntity } from './PurchaseOrder/OrderEntity'
+import OrderDetail from './PurchaseOrder/index.vue'
 import { dragscroll } from 'vue-dragscroll'
 import axios from '@/providers/axios'
 import AsyncButton from '@/components/AsyncButton.vue'
@@ -47,10 +47,10 @@ import {
   Project,
   Supplier,
   Department,
-  PurchaseOrder,
-  PurchaseOrderPayment,
-  PurchaseOrderItem,
-  PurchaseOrderItemProject,
+  Order,
+  OrderPayment,
+  OrderItem,
+  OrderItemProject,
 } from '@/Entities'
 
 @Component({
@@ -60,7 +60,7 @@ import {
   },
   components: {
     AsyncButton,
-    OrderItem
+    OrderDetail
   }
 })
 export default class extends Vue {

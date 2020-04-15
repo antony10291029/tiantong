@@ -347,10 +347,10 @@ namespace Tiantong.Wms.Api
         var goods = _db.Goods.Include(good => good.items).Where(good => good.warehouse_id == warehouse.id).ToArray();
 
         foreach (var i in _random.Enumerate(20, 30)) {
-          _db.PurchaseOrders.Add(new PurchaseOrder {
+          _db.Orders.Add(new Order {
             warehouse_id = warehouse.id,
             number = $"PO{i}",
-            status = _random.Bool() ? PurchaseOrderStatuses.Created : PurchaseOrderStatuses.Finished,
+            status = _random.Bool() ? OrderStatus.Created : OrderStatus.Finished,
             comment = "测试录料单",
             operator_id = warehouse.owner_user_id,
             applicant_id = _random.Array(users).user_id,
@@ -359,7 +359,7 @@ namespace Tiantong.Wms.Api
             items = _random.Enumerate(1, 10).Select(j => {
               var item = _random.Array(_random.Array(goods).items.ToArray());
 
-              return new PurchaseOrderItem {
+              return new OrderItem {
                 index = j,
                 item_id = item.id,
                 good_id = item.good_id,
@@ -381,7 +381,7 @@ namespace Tiantong.Wms.Api
                   number = _random.Int(100000009, 999999999).ToString(),
                 },
                 projects = _random.Array(projects, _random.Int(0, 3)).Select(
-                  (project, index) => new PurchaseOrderItemProject {
+                  (project, index) => new OrderItemProject {
                     index = index,
                     project_id = project.id,
                     quantity = _random.Int(1, 10),
@@ -389,7 +389,7 @@ namespace Tiantong.Wms.Api
                 ).ToList(),
               };
             }).ToList(),
-            payments = _random.Enumerate(1, 3).Select(j => new PurchasePayment {
+            payments = _random.Enumerate(1, 3).Select(j => new OrderPayment {
               index = j,
               is_paid = _random.Bool(),
               amount = _random.Int(10000, 100000),

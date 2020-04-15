@@ -1,4 +1,4 @@
-import PurchaseOrderItemProject from './PurchaseOrderItemProject'
+import OrderItemProject from './OrderItemProject'
 import Invoice from './Invoice'
 
 export default class PurchaseOrderItem {
@@ -24,9 +24,9 @@ export default class PurchaseOrderItem {
 
   invoice: Invoice
 
-  projects: Array<PurchaseOrderItemProject>
+  projects: Array<OrderItemProject>
 
-  constructor (projects: Array<PurchaseOrderItemProject> = []) {
+  constructor (projects: Array<OrderItemProject> = []) {
     this.projects = projects
     this.invoice = new Invoice
   }

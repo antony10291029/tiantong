@@ -70,7 +70,7 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
 import EditableCell from '@/components/EditableCell.vue'
 import cloneDeep from 'lodash/cloneDeep'
 import axios from '@/providers/axios'
-import { Project as BaseProject, PurchaseOrderItemProject, PurchaseOrderItem } from '@/Entities'
+import { Project as BaseProject, OrderItem, OrderItemProject } from '@/Entities'
 
 class Project extends BaseProject {
   $isSelected = false
@@ -78,7 +78,7 @@ class Project extends BaseProject {
 }
 
 @Component({
-  name: 'PurchaseOrderItemProjectsSelector',
+  name: 'OrderItemProjectsSelector',
   components: {
     AsyncLoader,
     YesOrNoCell,
@@ -87,13 +87,13 @@ class Project extends BaseProject {
 })
 export default class extends Vue {
   @Prop({ required: true })
-  orderItem!: PurchaseOrderItem
+  orderItem!: OrderItem
 
   @Prop({ required: true })
   warehouseId!: number
 
   @Prop({ required: true })
-  itemProjects!: Array<PurchaseOrderItemProject>
+  itemProjects!: Array<OrderItemProject>
 
   @Prop({ default: false })
   readonly!: boolean
@@ -142,7 +142,7 @@ export default class extends Vue {
     let itemProjects = this.projects
       .filter(project => project.$isSelected)
       .map((project, index) => {
-        let itemProject = new PurchaseOrderItemProject()
+        let itemProject = new OrderItemProject()
 
         itemProject.index = index
         itemProject.project_id = project.id

@@ -19,6 +19,7 @@ namespace Tiantong.Wms.Api
       services.AddScoped<IAuth, Auth>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
+
       services.AddScoped<UserRepository>();
       services.AddScoped<WarehouseRepository>();
       services.AddScoped<WarehouseUserRepository>();
@@ -31,6 +32,7 @@ namespace Tiantong.Wms.Api
       services.AddScoped<GoodRepository>();
       services.AddScoped<ItemRepository>();
       services.AddScoped<StockRepository>();
+      services.AddScoped<OrderRepository>();
       services.AddScoped<PurchaseOrderRepository>();
     }
 

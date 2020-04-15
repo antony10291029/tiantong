@@ -1,4 +1,4 @@
-create table if not exists purchase_order_items (
+create table if not exists order_items (
   id serial not null primary key,
   order_id int not null,
   good_id int not null,

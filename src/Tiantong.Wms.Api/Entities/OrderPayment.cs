@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Wms.Api
 {
-  [Table("purchase_payments")]
-  public class PurchasePayment : Entity
+  [Table("order_payments")]
+  public class OrderPayment : Entity
   {
     public virtual double amount { get; set; }
 

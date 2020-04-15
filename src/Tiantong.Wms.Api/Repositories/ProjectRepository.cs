@@ -5,13 +5,13 @@ namespace Tiantong.Wms.Api
 {
   public class ProjectRepository : Repository<Project, int>
   {
-    private PurchaseOrderRepository _purchaseOrders;
+    private OrderRepository _orders;
 
     public ProjectRepository(
       DbContext db,
-      PurchaseOrderRepository purchaseOrders
+      OrderRepository orders
     ) : base(db) {
-      _purchaseOrders = purchaseOrders;
+      _orders = orders;
     }
 
     //
@@ -27,7 +27,7 @@ namespace Tiantong.Wms.Api
 
     public bool IsRemovable(Project project)
     {
-      return !_purchaseOrders.HasProject(project.id);
+      return !_orders.HasProject(project.id);
     }
 
     public override bool Remove(Project project)

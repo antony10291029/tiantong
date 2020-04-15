@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Wms.Api
 {
-  [Table("purchase_orders")]
-  public class PurchaseOrder : Entity
+  [Table("orders")]
+  public class Order : Entity
   {
     public virtual int warehouse_id { get; set; }
 
@@ -30,9 +30,9 @@ namespace Tiantong.Wms.Api
     public virtual DateTime finished_at { get; set; } = DateTime.MinValue;
 
     [ForeignKey("order_id")]
-    public virtual List<PurchasePayment> payments { get; set; }
+    public virtual List<OrderPayment> payments { get; set; }
 
     [ForeignKey("order_id")]
-    public virtual List<PurchaseOrderItem> items { get; set; }
+    public virtual List<OrderItem> items { get; set; }
   }
 }

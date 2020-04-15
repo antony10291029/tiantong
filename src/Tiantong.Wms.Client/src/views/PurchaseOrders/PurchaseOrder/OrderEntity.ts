@@ -7,9 +7,9 @@ import {
   Project,
   Supplier,
   Department,
-  PurchaseOrder,
-  PurchaseOrderItem,
-  PurchaseOrderPayment,
+  Order,
+  OrderItem,
+  OrderPayment,
 } from '@/Entities'
 
 export class OrderEntity {
@@ -17,7 +17,7 @@ export class OrderEntity {
 
   supplier: Supplier
 
-  order: PurchaseOrder
+  order: Order
 
   department: Department
 
@@ -34,9 +34,9 @@ export class OrderEntity {
     this.goods = { 0: new Good }
     this.items = { 0: new Item }
     this.projects = { 0: new Project }
-    this.order = new PurchaseOrder(
-      [ new PurchaseOrderPayment ],
-      [ new PurchaseOrderItem ]
+    this.order = new Order(
+      [ new OrderPayment ],
+      [ new OrderItem ]
     )
   }
 

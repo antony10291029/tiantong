@@ -74,7 +74,7 @@ import axios from '@/providers/axios'
 import { Location } from '@/Entities'
 import AsyncLoader from '@/components/AsyncLoader.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
-import { OrderEntity } from './OrderItem/OrderEntity'
+import { OrderEntity } from './PurchaseOrder/OrderEntity'
 
 export default Vue.extend({
   components: {

@@ -17,8 +17,8 @@ export default class Invoice {
 
   tax_amount: number = 0
 
-  invoice_number: string = ''
+  number: string = ''
 
-  invoice_type: string = '增值税专用发票'
+  type: string = '增值税专用发票'
 
 }

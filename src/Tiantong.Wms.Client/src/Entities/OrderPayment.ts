@@ -1,4 +1,4 @@
-export default class PurchaseOrderPayment {
+export default class OrderPayment {
   id: number = 0
 
   amount: number = 0

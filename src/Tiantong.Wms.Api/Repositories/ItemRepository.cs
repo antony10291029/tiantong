@@ -9,15 +9,15 @@ namespace Tiantong.Wms.Api
   {
     private StockRepository _stocks;
 
-    private PurchaseOrderRepository _purchaseOrders;
+    private OrderRepository _orders;
 
     public ItemRepository(
       DbContext db,
       StockRepository stocks,
-      PurchaseOrderRepository purchaseOrders
+      OrderRepository orders
     ) : base(db) {
       _stocks = stocks;
-      _purchaseOrders = purchaseOrders;
+      _orders = orders;
     }
 
     // Delete
@@ -27,7 +27,7 @@ namespace Tiantong.Wms.Api
       if (item.id == 0) {
         return true;
       } else {
-        return !_purchaseOrders.HasItem(item.id) &&
+        return !_orders.HasItem(item.id) &&
           !_stocks.HasItem(item.id);
       }
     }
@@ -43,8 +43,8 @@ namespace Tiantong.Wms.Api
         return true;
       }
 
-      return !_purchaseOrders.HasItem(ids) &&
-        !_purchaseOrders.HasItem(ids);
+      return !_orders.HasItem(ids) &&
+        !_orders.HasItem(ids);
     }
 
     public void Remove(Item[] items)

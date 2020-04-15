@@ -5,26 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Wms.Api
 {
-  public class PurchaseOrderRepository : Repository<PurchaseOrder, int>
+  public class PurchaseOrderRepository : OrderRepository
   {
     public PurchaseOrderRepository(DbContext db) : base(db)
     {
 
     }
 
-    public override PurchaseOrder Add(PurchaseOrder order)
+    public override Order Add(Order order)
     {
-      order.status = PurchaseOrderStatuses.Created;
+      order.status = OrderStatus.Created;
       DbContext.Add(order);
 
       return order;
     }
 
-    public override PurchaseOrder Update(PurchaseOrder order)
+    public override Order Update(Order order)
     {
       var oldOrder = EnsureGet(order.warehouse_id, order.id);
 
-      if (oldOrder.status != PurchaseOrderStatuses.Created) {
+      if (oldOrder.status != OrderStatus.Created) {
         throw new FailureOperation("订单已入库，无法再次修改");
       }
 
@@ -90,7 +90,7 @@ namespace Tiantong.Wms.Api
       return order;
     }
 
-    public PurchaseOrder EnsureGet(int warehouseId, int id)
+    public Order EnsureGet(int warehouseId, int id)
     {
       var order = Table
         .Include(o => o.items)
@@ -106,51 +106,6 @@ namespace Tiantong.Wms.Api
       }
 
       return order;
-    }
-
-    public bool HasProject(int projectId)
-    {
-      return DbContext.PurchaseItemProjects.Any(p => p.project_id == projectId);
-    }
-
-    public bool HasItem(int itemId)
-    {
-      return DbContext.PurchaseOrderItems.Any(p => p.item_id == itemId);
-    }
-
-    public bool HasItem(int[] ids)
-    {
-      return DbContext.PurchaseOrderItems.Any(p => ids.Contains(p.item_id));
-    }
-
-    public bool HasGood(int goodId)
-    {
-      return DbContext.PurchaseOrderItems.Any(p => p.good_id == goodId);
-    }
-
-    public bool HasWarehouse(int warehouseId)
-    {
-      return Table.Any(o => o.warehouse_id == warehouseId);
-    }
-
-    public bool HasDepartment(int departmentId)
-    {
-      return Table.Any(o => o.department_id == departmentId);
-    }
-
-    public bool HasSupplier(int supplierId)
-    {
-      return Table.Any(o => o.supplier_id == supplierId);
-    }
-
-    public bool HasUser(int userId)
-    {
-      return Table.Any(o => o.applicant_id == userId || o.operator_id == userId);
-    }
-
-    public bool HasNumber(int warehouseId, string number)
-    {
-      return Table.Any(order => order.warehouse_id == warehouseId && order.number == number);
     }
 
   }

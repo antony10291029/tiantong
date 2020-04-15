@@ -37,13 +37,13 @@ namespace Tiantong.Wms.Api
 
     public DbSet<StockRecord> StockRecords { get; set; }
 
-    public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
-    public DbSet<PurchasePayment> PurchasePayments { get; set; }
+    public DbSet<OrderPayment> OrderPayments { get; set; }
 
-    public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
-    public DbSet<PurchaseOrderItemProject> PurchaseItemProjects { get; set; }
+    public DbSet<OrderItemProject> OrderItemProjects { get; set; }
 
     public DbContext(PostgresBuilder builder): base(builder)
     {

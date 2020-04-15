@@ -1,5 +1,5 @@
-import PurchaseOrderItem from './PurchaseOrderItem'
-import PurchaseOrderPayment from './PurchaseOrderPayment'
+import OrderItem from './OrderItem'
+import OrderPayment from './OrderPayment'
 import { DateTime } from '@/utils/common'
 
 export default class PurchaseOrder {
@@ -27,13 +27,13 @@ export default class PurchaseOrder {
 
   finished_at: string = DateTime.now
 
-  items: Array<PurchaseOrderItem>
+  items: Array<OrderItem>
 
-  payments: Array<PurchaseOrderPayment>
+  payments: Array<OrderPayment>
 
   constructor (
-    payments: Array<PurchaseOrderPayment> = [],
-    items: Array<PurchaseOrderItem> = [],
+    payments: Array<OrderPayment> = [],
+    items: Array<OrderItem> = [],
   ) {
     this.items = items
     this.payments = payments

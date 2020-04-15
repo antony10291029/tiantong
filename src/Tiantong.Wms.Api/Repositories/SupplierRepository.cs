@@ -5,20 +5,20 @@ namespace Tiantong.Wms.Api
 {
   public class SupplierRepository : Repository<Supplier, int>
   {
-    private PurchaseOrderRepository _purchaseOrders;
+    private OrderRepository _orders;
 
     public SupplierRepository(
       DbContext db,
-      PurchaseOrderRepository purchaseOrders
+      OrderRepository orders
     ) : base(db) {
-      _purchaseOrders = purchaseOrders;
+      _orders = orders;
     }
 
     //
 
     public bool IsRemovable(Supplier supplier)
     {
-      return !_purchaseOrders.HasSupplier(supplier.id);
+      return !_orders.HasSupplier(supplier.id);
     }
 
     public override bool Remove(Supplier supplier)

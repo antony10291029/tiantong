@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Wms.Api
 {
-  [Table("purchase_order_items")]
-  public class PurchaseOrderItem : Entity
+  [Table("order_items")]
+  public class OrderItem : Entity
   {
     public virtual int order_id { get; set; }
 
@@ -32,6 +32,6 @@ namespace Tiantong.Wms.Api
     public virtual Invoice invoice { get; set; }
 
     [ForeignKey("order_item_id")]
-    public virtual List<PurchaseOrderItemProject> projects { get; set; }
+    public virtual List<OrderItemProject> projects { get; set; }
   }
 }

@@ -10,17 +10,17 @@ namespace Tiantong.Wms.Api
 
     public StockRepository _stocks { get; }
 
-    private PurchaseOrderRepository _purchaseOrders { get; }
+    private OrderRepository _orders { get; }
 
     public GoodRepository(
       DbContext db,
       ItemRepository items,
       StockRepository stocks,
-      PurchaseOrderRepository purchaseOrders
+      OrderRepository orders
     ) : base(db) {
       Items = items;
       _stocks = stocks;
-      _purchaseOrders = purchaseOrders;
+      _orders = orders;
     }
 
     // Create
@@ -41,7 +41,7 @@ namespace Tiantong.Wms.Api
     {
       if (good.id == 0) return true;
 
-      return !_purchaseOrders.HasGood(good.id) &&
+      return !_orders.HasGood(good.id) &&
         !_stocks.HasGood(good.id);
     }
 

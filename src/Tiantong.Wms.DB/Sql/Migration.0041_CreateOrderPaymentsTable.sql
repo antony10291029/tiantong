@@ -1,4 +1,4 @@
-create table if not exists purchase_payments (
+create table if not exists order_payments (
   id serial not null primary key,
   order_id int not null,
   "index" int not null,

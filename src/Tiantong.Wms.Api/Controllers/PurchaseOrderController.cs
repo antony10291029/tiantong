@@ -58,7 +58,7 @@ namespace Tiantong.Wms.Api
       _warehouseUsers = warehouseUsers;
     }
 
-    private void EnsureOrder(PurchaseOrder order)
+    private void EnsureOrder(Order order)
     {
       _departments.EnsureExists(order.warehouse_id, order.department_id);
       if (_warehouseUsers.Get(order.warehouse_id, order.applicant_id) == null) {
@@ -70,7 +70,7 @@ namespace Tiantong.Wms.Api
       }
     }
 
-    public object Create([FromBody] PurchaseOrder order)
+    public object Create([FromBody] Order order)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(order.warehouse_id, _auth.User.id);
@@ -94,7 +94,7 @@ namespace Tiantong.Wms.Api
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
       var order = _orders.EnsureGet(param.warehouse_id, param.order_id);
 
-      if (order.status != PurchaseOrderStatuses.Created) {
+      if (order.status != OrderStatus.Created) {
         return FailureOperation("无法删除已完成的订单");
       }
       _orders.Remove(order);
@@ -103,7 +103,7 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("录料单已删除");
     }
 
-    public object Update([FromBody] PurchaseOrder order)
+    public object Update([FromBody] Order order)
     {
       _auth.EnsureOwner();
       _warehouses.EnsureOwner(order.warehouse_id, _auth.User.id);
@@ -120,7 +120,7 @@ namespace Tiantong.Wms.Api
       var warehouseId = param.warehouse_id;
       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
       var order = _orders.EnsureGet(warehouseId, param.order_id);
-      if (order.status == PurchaseOrderStatuses.Finished) {
+      if (order.status == OrderStatus.Finished) {
         return FailureOperation("录料单无法重复入库");
       }
       var location = _locations.EnsureGet(warehouseId, param.location_id);
@@ -154,7 +154,7 @@ namespace Tiantong.Wms.Api
         _stocks.Update(stock);
       }
 
-      order.status = PurchaseOrderStatuses.Finished;
+      order.status = OrderStatus.Finished;
       _orders.UnitOfWork.SaveChanges();
 
       return SuccessOperation("录料单已确认入库");
@@ -165,10 +165,10 @@ namespace Tiantong.Wms.Api
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
       var order = _orders.EnsureGet(param.warehouse_id,  param.order_id);
 
-      if (order.status != PurchaseOrderStatuses.Finished) {
+      if (order.status != OrderStatus.Finished) {
         return FailureOperation("未入库的录料单无法被归档");
       }
-      order.status = PurchaseOrderStatuses.Filed;
+      order.status = OrderStatus.Filed;
       _orders.UnitOfWork.SaveChanges();
 
       return SuccessOperation("录料单已归档");
@@ -179,10 +179,10 @@ namespace Tiantong.Wms.Api
       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
       var order = _orders.EnsureGet(param.warehouse_id,  param.order_id);
 
-      if (order.status != PurchaseOrderStatuses.Filed) {
+      if (order.status != OrderStatus.Filed) {
         return FailureOperation("未归档的录料单无法恢复");
       }
-      order.status = PurchaseOrderStatuses.Finished;
+      order.status = OrderStatus.Finished;
       _orders.UnitOfWork.SaveChanges();
 
       return SuccessOperation("录料单已恢复");
@@ -223,7 +223,7 @@ namespace Tiantong.Wms.Api
       public string status { get; set; }
     }
 
-    public IPagination<PurchaseOrder> Search([FromBody] SearchParams param)
+    public IPagination<Order> Search([FromBody] SearchParams param)
     {
       var itemIds = Enumerable.Empty<int>();
       var goodIds = Enumerable.Empty<int>();
@@ -253,7 +253,7 @@ namespace Tiantong.Wms.Api
         .Where(order =>
           order.warehouse_id == param.warehouse_id &&
           (param.status == null ?
-            order.status != PurchaseOrderStatuses.Filed:
+            order.status != OrderStatus.Filed:
             order.status == param.status) &&
           (param.search == null ? true : (
             supplierIds.Contains(order.supplier_id) ||

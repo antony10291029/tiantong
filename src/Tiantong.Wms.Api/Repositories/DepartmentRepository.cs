@@ -5,20 +5,20 @@ namespace Tiantong.Wms.Api
 {
   public class DepartmentRepository : Repository<Department, int>
   {
-    private PurchaseOrderRepository _purchaseOrders;
+    private OrderRepository _orders;
 
     public DepartmentRepository(
       DbContext db,
-      PurchaseOrderRepository purchaseOrders
+      OrderRepository orders
     ) : base(db) {
-      _purchaseOrders = purchaseOrders;
+      _orders = orders;
     }
 
     // Remove
 
     public bool IsRemovable(Department department)
     {
-      return !_purchaseOrders.HasDepartment(department.id);
+      return !_orders.HasDepartment(department.id);
     }
 
     public override bool Remove(Department department)
