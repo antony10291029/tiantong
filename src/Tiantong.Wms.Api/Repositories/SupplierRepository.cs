@@ -5,14 +5,32 @@ namespace Tiantong.Wms.Api
 {
   public class SupplierRepository : Repository<Supplier, int>
   {
-    private WarehouseRepository _warehouses;
+    private PurchaseOrderRepository _purchaseOrders;
 
-    public SupplierRepository(DbContext db, WarehouseRepository warehouses) : base(db)
-    {
-      _warehouses = warehouses;
+    public SupplierRepository(
+      DbContext db,
+      PurchaseOrderRepository purchaseOrders
+    ) : base(db) {
+      _purchaseOrders = purchaseOrders;
     }
 
     //
+
+    public bool IsRemovable(Supplier supplier)
+    {
+      return !_purchaseOrders.HasSupplier(supplier.id);
+    }
+
+    public override bool Remove(Supplier supplier)
+    {
+      if (!IsRemovable(supplier)) {
+        throw new FailureOperation("供应商已使用，无法删除");
+      }
+
+      DbContext.Remove(supplier);
+
+      return true;
+    }
 
     public bool HasId(int warehouseId, int id)
     {
@@ -50,14 +68,6 @@ namespace Tiantong.Wms.Api
       if (!HasId(warehouseId, id)) {
         throw new FailureOperation("无法在仓库中找到该供应商");
       }
-    }
-
-    public Supplier EnsureGetByOwner(int id, int userId)
-    {
-      var supplier = EnsureGet(id);
-      _warehouses.EnsureOwner(supplier.warehouse_id, userId);
-
-      return supplier;
     }
 
     public void EnsureNameUnique(int warehouseId, string name)

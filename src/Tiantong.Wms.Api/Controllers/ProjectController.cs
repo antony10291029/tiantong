@@ -15,18 +15,14 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
-    private ProjectItemRepository _projectItems;
-
     public ProjectController(
       IAuth auth,
       ProjectRepository projects,
-      WarehouseRepository warehouses,
-      ProjectItemRepository projectItems
+      WarehouseRepository warehouses
     ) {
       _auth = auth;
       _projects = projects;
       _warehouses = warehouses;
-      _projectItems = projectItems;
     }
 
     public class CreateParams
@@ -72,21 +68,18 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("工程已创建", project.id);
     }
 
-    public class DeleteParams
+    public class RemoveParams
     {
-      [Nonzero]
       public int id { get; set; }
     }
 
-    public object Delete([FromBody] DeleteParams param)
+    public object Remove([FromBody] RemoveParams param)
     {
       _auth.EnsureOwner();
+      var project = _projects.EnsureGet(param.id);
+      _warehouses.EnsureOwner(project.warehouse_id, _auth.User.id);
 
-      var project = _projects.EnsureGetByOwner(param.id, _auth.User.id);
-      if (_projectItems.HasProject(project.warehouse_id, project.id)) {
-        return FailureOperation("工程已使用，无法删除");
-      }
-      _projects.Remove(project.id);
+      _projects.Remove(project);
       _projects.UnitOfWork.SaveChanges();
 
       return SuccessOperation("工程已删除");
@@ -115,7 +108,8 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] ProjectUpdateParams param)
     {
       _auth.EnsureOwner();
-      var project = _projects.EnsureGetByOwner(param.id, _auth.User.id);
+      var project = _projects.EnsureGet(param.id);
+      _warehouses.EnsureOwner(project.warehouse_id, _auth.User.id);
 
       if (param.name != null) project.name = param.name;
       if (param.comment != null) project.comment = param.comment;
@@ -181,18 +175,16 @@ namespace Tiantong.Wms.Api
 
     public class FindParams
     {
-      [Nonzero]
-      public int warehouse_id { get; set; }
-
-      [Nonzero]
-      public int project_id { get; set; }
+      public int id { get; set; }
     }
 
     public Project Find([FromBody] FindParams param)
     {
       _auth.EnsureOwner();
+      var project = _projects.EnsureGet(param.id);
+      _warehouses.EnsureOwner(project.warehouse_id, _auth.User.id);
 
-      return _projects.EnsureGet(param.project_id, param.warehouse_id, _auth.User.id);
+      return project;
     }
   }
 }

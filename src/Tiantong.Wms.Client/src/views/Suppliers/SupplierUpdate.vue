@@ -1,7 +1,8 @@
 <template>
-  <AsyncLoader class="modal is-active" :handler="getData">
+  <AsyncLoader
+    class="modal is-active" :handler="getData">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card" style="width: 480px">
       <header class="modal-card-head">
         <p class="modal-card-title">供应商编辑</p>
       </header>
@@ -109,10 +110,10 @@ export default class extends Vue {
     this.$confirm({
       width: 400,
       title: '确认删除',
-      content: '供应商删除后将无法恢复，如果供应商已被订单使用，则无法删除。',
+      content: '供应商删除后将无法恢复',
       handler: async () => {
         try {
-          await axios.post('/suppliers/delete', { supplier_id: this.supplierId })
+          await axios.post('/suppliers/remove', { id: this.supplierId })
           this.handleClose()
           this.$emit('refresh')
         } catch (error) {

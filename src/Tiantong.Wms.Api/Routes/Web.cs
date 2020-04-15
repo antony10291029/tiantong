@@ -50,14 +50,14 @@ namespace Tiantong.Wms.Api
       Post("/locations/all", "Location.All");
 
       Post("/projects/create", "Project.Create");
-      Post("/projects/delete", "Project.Delete");
+      Post("/projects/remove", "Project.Remove");
       Post("/projects/update", "Project.Update");
       Post("/projects/search", "Project.Search");
       Post("/projects/find", "Project.Find");
       Post("/projects/all", "Project.All");
 
       Post("/departments/create", "Department.Create");
-      Post("/departments/delete", "Department.Delete");
+      Post("/departments/remove", "Department.Remove");
       Post("/departments/update", "Department.Update");
       Post("/departments/find", "Department.Find");
       Post("/departments/all", "Department.All");
@@ -86,7 +86,7 @@ namespace Tiantong.Wms.Api
       Post("/items/delete", "Item.Delete");
 
       Post("/suppliers/create", "Supplier.Create");
-      Post("/suppliers/delete", "Supplier.Delete");
+      Post("/suppliers/remove", "Supplier.Remove");
       Post("/suppliers/update", "Supplier.Update");
       Post("/suppliers/search", "Supplier.Search");
       Post("/suppliers/find", "Supplier.Find");

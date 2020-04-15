@@ -110,8 +110,7 @@ import DatePicker from '@/components/DatePicker/index.vue'
       dataApi: '/projects/find',
       updateApi: '/projects/update',
       dataParams: (vm: any) => ({
-        warehouse_id: vm.warehouseId,
-        project_id: vm.projectId
+        id: vm.projectId
       }),
     })
   ],
@@ -153,10 +152,10 @@ export default class extends Vue {
     this.$confirm({
       width: 400,
       title: '确认删除',
-      content: '删除后将无法恢复，如果项目被订单所使用，则无法删除。',
+      content: '工程删除后将无法恢复',
       handler: async () => {
         try {
-          await axios.post('/projects/delete', { id: this.projectId })
+          await axios.post('/projects/remove', { id: this.projectId })
           this.handleClose()
           this.$emit('refresh')
         } finally {}

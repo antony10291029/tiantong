@@ -118,6 +118,7 @@ export default class extends Vue {
 
   async handleUpdate () {
     await this.orderEntity.update()
+    await this.getOrderEntity()
   }
 
   handleDelete () {

@@ -9,7 +9,7 @@
       style="width: 400px"
     >
       <header class="modal-card-head">
-        <p class="modal-card-title">添加部门</p>
+        <p class="modal-card-title">部门信息</p>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -101,7 +101,7 @@ export default class extends Vue {
       title: '提示',
       content: '删除后将无法恢复',
       handler: async () => {
-        await axios.post('departments/delete', { id: this. departmentId})
+        await axios.post('departments/remove', { id: this. departmentId})
         this.$emit('updated')
         this.handleClose()
       }

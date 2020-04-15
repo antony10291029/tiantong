@@ -5,17 +5,13 @@ namespace Tiantong.Wms.Api
 {
   public class ProjectRepository : Repository<Project, int>
   {
-    private WarehouseRepository _warehouses;
-
-    private ProjectItemRepository _projectItems;
+    private PurchaseOrderRepository _purchaseOrders;
 
     public ProjectRepository(
       DbContext db,
-      WarehouseRepository warehouses,
-      ProjectItemRepository projectItems
+      PurchaseOrderRepository purchaseOrders
     ) : base(db) {
-      _warehouses = warehouses;
-      _projectItems = projectItems;
+      _purchaseOrders = purchaseOrders;
     }
 
     //
@@ -25,6 +21,24 @@ namespace Tiantong.Wms.Api
       return Table.Where(project => project.warehouse_id == warehouseId)
         .OrderBy(project => project.number)
         .ToArray();
+    }
+
+    // Remove
+
+    public bool IsRemovable(Project project)
+    {
+      return !_purchaseOrders.HasProject(project.id);
+    }
+
+    public override bool Remove(Project project)
+    {
+      if (!IsRemovable(project)) {
+        throw new FailureOperation("工程已被使用，不可删除");
+      }
+
+      DbContext.Remove(project);
+
+      return true;
     }
 
     public bool HasNumber(int warehouseId, string number)
@@ -53,29 +67,6 @@ namespace Tiantong.Wms.Api
       if (!HasId(warehouseId, id)) {
         throw new FailureOperation("工程不存在");
       }
-    }
-
-    public Project EnsureGet(int id, int warehouseId, int userId)
-    {
-      var project = Get(id);
-
-      if (
-        project == null ||
-        project.warehouse_id != warehouseId ||
-        !_warehouses.HasOwner(warehouseId, userId)
-      ) {
-        throw new FailureOperation("工程不存在");
-      }
-
-      return project;
-    }
-
-    public Project EnsureGetByOwner(int id, int userId)
-    {
-      var project = EnsureGet(id);
-      _warehouses.EnsureOwner(project.warehouse_id, userId);
-
-      return project;
     }
 
     public void EnsureNumberUnique(int warehouseId, string number)

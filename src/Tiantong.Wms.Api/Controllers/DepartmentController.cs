@@ -47,20 +47,20 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("供应商信息已保存");
     }
 
-    public class DeleteParams
+    public class RemoveParams
     {
       public int id { get; set; }
     }
 
-    public object Delete([FromBody] DeleteParams param)
+    public object Remove([FromBody] RemoveParams param)
     {
       _auth.EnsureOwner();
       var department = _departments.EnsureGet(param.id);
       _warehouses.EnsureOwner(department.warehouse_id, _auth.User.id);
-      department.is_deleted = true;
+      _departments.Remove(department);
       _departments.UnitOfWork.SaveChanges();
 
-      return SuccessOperation("部门已删除成功");
+      return SuccessOperation("部门已删除");
     }
 
     public class FindParams
@@ -91,7 +91,6 @@ namespace Tiantong.Wms.Api
 
       return _departments.Table
         .Where(department =>
-          (department.is_deleted == false) &&
           (department.warehouse_id == param.warehouse_id) &&
           (
             param.search == null ? true :

@@ -13,18 +13,14 @@ namespace Tiantong.Wms.Api
 
     private WarehouseRepository _warehouses;
 
-    private OrderItemRepository _orderItems;
-
     public SupplierController(
       IAuth auth,
       SupplierRepository suppliers,
-      WarehouseRepository warehouses,
-      OrderItemRepository orderItems
+      WarehouseRepository warehouses
     ) {
       _auth = auth;
       _suppliers = suppliers;
       _warehouses = warehouses;
-      _orderItems = orderItems;
     }
 
     public class SupplierCreateParams
@@ -58,24 +54,20 @@ namespace Tiantong.Wms.Api
       return SuccessOperation("供应商已添加", supplier.id);
     }
 
-    public class SupplierDeleteParams
+    public class RemoveParams
     {
-      [Nonzero]
-      public int supplier_id { get; set; }
+      public int id { get; set; }
     }
 
-    public object Delete([FromBody] SupplierDeleteParams param)
+    public object Remove([FromBody] RemoveParams param)
     {
-      _auth.EnsureOwner();
+      var supplier = _suppliers.EnsureGet(param.id);
+      _warehouses.EnsureOwner(supplier.warehouse_id, _auth.User.id);
 
-      if (_orderItems.HasSupplier(param.supplier_id)) {
-        return FailureOperation("供应商已使用，无法被删除");
-      } else {
-        _suppliers.Remove(param.supplier_id);
-        _suppliers.UnitOfWork.SaveChanges();
+      _suppliers.Remove(supplier);
+      _suppliers.UnitOfWork.SaveChanges();
 
-        return SuccessOperation("供应商已删除");
-      }
+      return SuccessOperation("供应商已删除");
     }
 
     public class SupplierUpdateParams
@@ -93,7 +85,8 @@ namespace Tiantong.Wms.Api
     public object Update([FromBody] SupplierUpdateParams param)
     {
       _auth.EnsureOwner();
-      var supplier = _suppliers.EnsureGetByOwner(param.id, _auth.User.id);
+      var supplier = _suppliers.EnsureGet(param.id);
+      _warehouses.EnsureOwner(supplier.warehouse_id, _auth.User.id);
 
       if (param.name != null) {
         _suppliers.EnsureNameUnique(supplier.warehouse_id, param.name);

@@ -12,7 +12,5 @@ namespace Tiantong.Wms.Api
 
     public string comment { get; set; } = "";
 
-    public bool is_deleted { get; set; } = false;
-
   }
 }

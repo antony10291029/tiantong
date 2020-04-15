@@ -32,8 +32,6 @@ namespace Tiantong.Wms.Api
       services.AddScoped<ItemRepository>();
       services.AddScoped<StockRepository>();
       services.AddScoped<PurchaseOrderRepository>();
-      services.AddScoped<OrderItemRepository>();
-      services.AddScoped<ProjectItemRepository>();
     }
 
     public void Configure(IApplicationBuilder app)
