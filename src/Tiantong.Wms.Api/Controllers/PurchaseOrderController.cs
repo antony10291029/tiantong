@@ -246,7 +246,7 @@ namespace Tiantong.Wms.Api
 
       var entities =  _orders.Table
         .Include(order => order.items)
-          .ThenInclude(order => order.finance)
+          .ThenInclude(order => order.invoice)
         .Include(order => order.items)
           .ThenInclude(order =>  order.projects)
         .Include(order => order.payments)

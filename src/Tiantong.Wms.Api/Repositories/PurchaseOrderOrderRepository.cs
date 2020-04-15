@@ -79,7 +79,7 @@ namespace Tiantong.Wms.Api
             }
 
             DbContext.Entry(oldItem).CurrentValues.SetValues(item);
-            DbContext.Entry(oldItem.finance).CurrentValues.SetValues(item.finance);
+            DbContext.Entry(oldItem.invoice).CurrentValues.SetValues(item.invoice);
           }
         }
       }
@@ -94,7 +94,7 @@ namespace Tiantong.Wms.Api
     {
       var order = Table
         .Include(o => o.items)
-          .ThenInclude(oi => oi.finance)
+          .ThenInclude(oi => oi.invoice)
         .Include(o => o.items)
           .ThenInclude(oi => oi.projects)
         .Include(o => o.payments)

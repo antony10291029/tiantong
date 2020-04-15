@@ -11,7 +11,6 @@ import {
   PurchaseOrderItem,
   PurchaseOrderPayment,
 } from '@/Entities'
-import PurchaseOrderItemFinance from '@/Entities/PurchaseOrderItemFinance'
 
 export class OrderEntity {
   applicant: User

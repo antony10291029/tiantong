@@ -368,7 +368,7 @@ namespace Tiantong.Wms.Api
                 comment = $"测试物品备注_{j}",
                 delivery_cycle = _random.Int(30, 90).ToString() + '天',
 
-                finance = new PurchaseOrderItemFinance {
+                invoice = new Invoice {
                   name = $"测试物品_{j}",
                   specification = $"测试规格_{j}",
                   unit = "个",
@@ -377,8 +377,8 @@ namespace Tiantong.Wms.Api
                   amount = _random.Int(10000, 100000),
                   tax_rate = _random.Int(1, 20),
                   tax_amount = _random.Int(1000, 10000),
-                  invoice_type = "增值税专用发票",
-                  invoice_number = _random.Int(100000009, 999999999).ToString(),
+                  type = "增值税专用发票",
+                  number = _random.Int(100000009, 999999999).ToString(),
                 },
                 projects = _random.Array(projects, _random.Int(0, 3)).Select(
                   (project, index) => new PurchaseOrderItemProject {

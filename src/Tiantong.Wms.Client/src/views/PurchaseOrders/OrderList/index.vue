@@ -53,7 +53,7 @@
         :orders="entityList"
         :relationships="relationships"
         v-slot="{
-          order, orderItem, itemProject, itemFinance,
+          order, orderItem, itemProject, invoice,
           good, item, project,
           supplier, applicant, department,
           isOrderShow, orderRowspan, orderIndex,
@@ -113,9 +113,9 @@
           <td :rowspan="orderRowspan">
             <router-link :to="`${baseURL}/${order.id}/detail`">
               <span class="icon">
-                <i class="iconfont icon-edit"></i>
+                <i class="iconfont icon-detail"></i>
               </span>
-              <span>编辑</span>
+              <span>详情</span>
             </router-link>
           </td>
         </template>

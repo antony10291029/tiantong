@@ -51,7 +51,7 @@ export default class extends Vue {
     return {
       orderItem: orderItem,
       orderItemIndex: orderItemIndex,
-      orderItemFinance: orderItem.finance,
+      invoice: orderItem.invoice,
       itemProjectIndex: itemProjectIndex,
       itemProject: itemProject || new PurchaseOrderItemProject,
       good: this.goods[orderItem.good_id],

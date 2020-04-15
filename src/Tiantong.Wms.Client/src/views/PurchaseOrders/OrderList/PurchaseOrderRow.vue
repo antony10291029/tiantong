@@ -39,7 +39,7 @@ export default class extends Vue {
       order,
       orderItem: item,
       itemProject: project,
-      itemFinance: item.finance,
+      invoice: item.invoice,
       orderIndex,
       itemIndex,
       projectIndex,

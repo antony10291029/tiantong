@@ -9,6 +9,14 @@ namespace Tiantong.Wms.Api
   {
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Good> Goods { get; set; }
+
+    public DbSet<Item> Items { get; set; }
+
+    public DbSet<Stock> Stocks { get; set; }
+
+    public DbSet<Invoice> Invoices { get; set; }
+
     public DbSet<Warehouse> Warehouses { get; set; }
 
     public DbSet<WarehouseUser> WarehouseUsers { get; set; }
@@ -27,12 +35,6 @@ namespace Tiantong.Wms.Api
 
     public DbSet<GoodCategory> GoodCategories { get; set; }
 
-    public DbSet<Good> Goods { get; set; }
-
-    public DbSet<Item> Items { get; set; }
-
-    public DbSet<Stock> Stocks { get; set; }
-
     public DbSet<StockRecord> StockRecords { get; set; }
 
     public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
@@ -40,8 +42,6 @@ namespace Tiantong.Wms.Api
     public DbSet<PurchasePayment> PurchasePayments { get; set; }
 
     public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
-
-    public DbSet<PurchaseOrderItemFinance> PurchaseOrderItemFinances { get; set; }
 
     public DbSet<PurchaseOrderItemProject> PurchaseItemProjects { get; set; }
 
@@ -52,10 +52,7 @@ namespace Tiantong.Wms.Api
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-      builder.Entity<PurchaseOrderItem>(item => {
-        item.HasOne(o => o.finance).WithOne()
-          .HasForeignKey<PurchaseOrderItemFinance>(o => o.id);
-      });
+
     }
   }
 }

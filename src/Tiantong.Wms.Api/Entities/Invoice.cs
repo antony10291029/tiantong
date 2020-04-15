@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Wms.Api
 {
-  [Table("purchase_order_item_finances")]
-  public class PurchaseOrderItemFinance : Entity
+  [Table("invoices")]
+  public class Invoice : Entity
   {
     public virtual string name { get; set; }
 
@@ -24,9 +24,9 @@ namespace Tiantong.Wms.Api
 
     public virtual double tax_amount { get; set; }
 
-    public virtual string invoice_number { get; set; }
+    public virtual string type { get; set; } = "";
 
-    public virtual string invoice_type { get; set; } = "";
+    public virtual string number { get; set; }
 
   }
 }

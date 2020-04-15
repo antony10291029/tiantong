@@ -3,6 +3,7 @@ create table if not exists purchase_order_items (
   order_id int not null,
   good_id int not null,
   item_id int not null,
+  invoice_id int not null,
   "index" int not null,
   price float not null,
   quantity int not null,

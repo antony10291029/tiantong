@@ -35,6 +35,7 @@
           </div>
           <FinishButton
             class="control"
+            :disabled="isChanged"
             :orderId="orderId"
             :entity="orderEntity"
             :warehouseId="warehouseId"

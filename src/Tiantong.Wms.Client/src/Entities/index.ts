@@ -1,6 +1,7 @@
 import User from './User'
 import Good from './Good'
 import Item from './Item'
+import Invoice from './Invoice'
 import Project from './Project'
 import Location from './Location'
 import Supplier from './Supplier'
@@ -16,6 +17,7 @@ export {
   User,
   Good,
   Item,
+  Invoice,
   Project,
   Location,
   Supplier,

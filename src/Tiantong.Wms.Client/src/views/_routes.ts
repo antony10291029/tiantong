@@ -40,6 +40,7 @@ const routes = [
       },
       {
         path: '/warehouses/:warehouseId',
+        redirect: '/warehouses/:warehouseId/purchase-orders/',
         name: 'Warehouse',
         props: (route: any) => ({ warehouseId: +route.params.warehouseId }),
         component: () => import('./Warehouse/index.vue'),
@@ -157,6 +158,7 @@ const routes = [
           },
           {
             path: 'purchase-orders',
+            name: 'PurchaseOrders',
             component: () => import('./PurchaseOrders/index.vue'),
             children: [
               {

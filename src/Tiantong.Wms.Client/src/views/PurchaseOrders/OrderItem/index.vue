@@ -181,10 +181,10 @@
             :orderItems="entity.order.items"
             :warehouseId="warehouseId"
             v-slot="{
+              itemProject, itemProjectIndex,
               orderItem, orderItemIndex, orderItemRowspan,
-              itemProject, itemProjectIndex, orderItemFinance,
               isItemGoodShow, isOrderItemShow, isItemProjectsShow,
-              project, good, item,
+              project, good, item, invoice,
             }"
           >
             <template v-if="isOrderItemShow">
@@ -287,13 +287,13 @@
               <EditableCell
                 :readonly="readonly"
                 style="width: 1px"
-                v-model="orderItemFinance.name"
+                v-model="invoice.name"
                 :rowspan="orderItemRowspan"
               />
               <EditableCell
                 :readonly="readonly"
                 style="width: 1px"
-                v-model="orderItemFinance.specification"
+                v-model="invoice.specification"
                 :rowspan="orderItemRowspan"
               />
               <EditableCell
@@ -301,43 +301,43 @@
                 type="number"
                 style="width: 1px"
                 :rowspan="orderItemRowspan"
-                :value="orderItemFinance.quantity"
-                @change="handleFinanceQuantityChange(orderItem, $event)"
+                :value="invoice.quantity"
+                @change="handleInvoiceQuantityChange(orderItem, $event)"
               />
               <th
                 style="width: 1px"
                 :rowspan="orderItemRowspan"
               >
-                {{orderItemFinance.price.toFixed(2)}}
+                {{invoice.price.toFixed(2)}}
               </th>
               <th
                 style="width: 1px"
                 :rowspan="orderItemRowspan"
               >
-                {{orderItemFinance.amount.toFixed(2)}}
+                {{invoice.amount.toFixed(2)}}
               </th>
               <th
                 style="width: 1px"
                 :rowspan="orderItemRowspan"
               >
-                {{orderItemFinance.tax_amount.toFixed(2)}}
+                {{invoice.tax_amount.toFixed(2)}}
               </th>
               <EditableCell
                 :readonly="readonly"
                 type="number"
                 style="width: 1px"
                 :rowspan="orderItemRowspan"
-                :value="orderItemFinance.tax_rate"
+                :value="invoice.tax_rate"
                 @change="handleTaxRateChange(orderItem, $event)"
               />
               <InvoiceTypeSelector
-                :value="orderItemFinance.invoice_type"
+                :value="invoice.invoice_type"
                 :rowspan="orderItemRowspan"
                 @change="handleInvoiceTypeChange(orderItem, $event)"
               />
               <EditableCell
                 :readonly="readonly"
-                v-model="orderItemFinance.invoice_number"
+                v-model="invoice.invoice_number"
                 :rowspan="orderItemRowspan"
                 style="width: 1px"
               />
@@ -372,10 +372,10 @@
               <th colspan="2">工程用量</th>
               <th>{{totalProjectsQuantity}}</th>
               <th colspan="4">金额 / 税额 / 总额</th>
-              <th>{{totalFinanceAmount.toFixed(2)}}</th>
-              <th>{{totalFinanceTaxAmount.toFixed(2)}}</th>
+              <th>{{totalInvoiceAmount.toFixed(2)}}</th>
+              <th>{{totalInvoiceTaxAmount.toFixed(2)}}</th>
               <th colspan="3">
-                {{(totalFinanceAmount + totalFinanceTaxAmount).toFixed(2)}}
+                {{(totalInvoiceAmount + totalInvoiceTaxAmount).toFixed(2)}}
               </th>
               <th colspan="2"></th>
             </tr>
@@ -404,19 +404,19 @@ import AsyncLoader from '@/components/AsyncLoader.vue'
 import { OrderEntity } from './OrderEntity'
 import { dragscroll } from 'vue-dragscroll'
 import {
+  User,
   Good,
   Item,
+  Invoice,
   Project,
   Supplier,
   Department,
   PurchaseOrder,
-  PurchaseOrderPayment,
   PurchaseOrderItem,
+  PurchaseOrderPayment,
   PurchaseOrderItemProject,
   WarehouseUser,
-  User,
 } from '@/Entities'
-import PurchaseOrderItemFinance from '../../../Entities/PurchaseOrderItemFinance'
 
 @Component({
   name: 'PurchaseOrderTemplate',
@@ -470,29 +470,29 @@ export default class extends Vue {
     }, 0)
   }
 
-  get totalFinanceAmount () {
+  get totalInvoiceAmount () {
     return this.entity.order.items.reduce((sum, item) => {
-      return sum + item.finance.amount
+      return sum + item.invoice.amount
     }, 0)
   }
 
-  get totalFinanceTaxAmount () {
+  get totalInvoiceTaxAmount () {
     return this.entity.order.items.reduce((sum, item) => {
-      return sum + item.finance.tax_amount
+      return sum + item.invoice.tax_amount
     }, 0)
   }
 
   handleGoodItemSelect (index: number, good: Good, item: Item) {
     let { order, goods, items } = this.entity
-    let { finance } = order.items[index]
+    let { invoice } = order.items[index]
 
     this.$set(goods, good.id, good)
     this.$set(items, item.id, item)
     order.items[index].good_id = good.id
     order.items[index].item_id = item.id
-    finance.name = good.name
-    finance.unit = item.unit
-    finance.specification = item.name
+    invoice.name = good.name
+    invoice.unit = item.unit
+    invoice.specification = item.name
   }
 
   handleApplicantSelect (user: User) {
@@ -545,57 +545,57 @@ export default class extends Vue {
   }
 
   handleItemPriceChange (item: PurchaseOrderItem, price: number) {
-    item.price = item.finance.price = price
-    this.calculateFinance(item)
+    item.price = item.invoice.price = price
+    this.calculateInvoice(item)
   }
 
   handleItemQuantityChange (item: PurchaseOrderItem, quantity: number) {
-    item.quantity = item.finance.quantity = quantity
-    this.calculateFinance(item)
+    item.quantity = item.invoice.quantity = quantity
+    this.calculateInvoice(item)
   }
 
   handleInvoiceTypeChange (item: PurchaseOrderItem, type: string) {
-    let { finance } = item
+    let { invoice } = item
 
     if (type === '增值税专用发票') {
-      if (finance.tax_rate === 0) {
-        finance.tax_rate = 13
+      if (invoice.tax_rate === 0) {
+        invoice.tax_rate = 13
       }
     } else {
-      finance.tax_rate = 0
+      invoice.tax_rate = 0
     }
 
-    finance.invoice_type = type
-    this.calculateFinance(item)
+    invoice.invoice_type = type
+    this.calculateInvoice(item)
   }
 
   handleTaxRateChange (item: PurchaseOrderItem, rate: number) {
-    item.finance.tax_rate = rate
-    this.calculateFinance(item)
+    item.invoice.tax_rate = rate
+    this.calculateInvoice(item)
   }
 
-  handleFinanceQuantityChange (item: PurchaseOrderItem, quantity: number) {
-    item.finance.quantity = quantity
-    this.calculateFinance(item)
+  handleInvoiceQuantityChange (item: PurchaseOrderItem, quantity: number) {
+    item.invoice.quantity = quantity
+    this.calculateInvoice(item)
   }
 
-  calculateFinance (item: PurchaseOrderItem) {
-    let { finance } = item
+  calculateInvoice (item: PurchaseOrderItem) {
+    let { invoice } = item
     let total = item.quantity * item.price
 
-    if (finance.invoice_type === '增值税专用发票') {
-      finance.amount = total / (1 + 0.01 * finance.tax_rate)
-      finance.tax_amount = total - finance.amount
+    if (invoice.invoice_type === '增值税专用发票') {
+      invoice.amount = total / (1 + 0.01 * invoice.tax_rate)
+      invoice.tax_amount = total - invoice.amount
     } else {
-      finance.tax_amount = 0
-      finance.price = item.price
-      finance.amount = item.price * item.quantity
+      invoice.tax_amount = 0
+      invoice.price = item.price
+      invoice.amount = item.price * item.quantity
     }
 
-    if (finance.quantity !== 0) {
-      finance.price = finance.amount / finance.quantity
+    if (invoice.quantity !== 0) {
+      invoice.price = invoice.amount / invoice.quantity
     } else {
-      finance.price = 0
+      invoice.price = 0
     }
   }
 }

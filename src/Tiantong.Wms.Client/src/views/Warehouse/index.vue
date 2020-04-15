@@ -72,7 +72,7 @@ interface Menu {
 
 const menus: Menu[] = [
   { icon: 'inbound', text: '录料单', route: 'purchase-orders' },
-  // { icon: 'picking', text: '领料单', route: 'pickings' },
+  { icon: 'picking', text: '领料单', route: 'pickings' },
   // { icon: 'return', text: '返料单', route: 'returns' },
   // { icon: 'inventory', text: '盘点', route: 'inventory' },
   { icon: 'item', text: '库存', route: 'goods' },

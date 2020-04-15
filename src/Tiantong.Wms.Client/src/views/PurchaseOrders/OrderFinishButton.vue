@@ -1,8 +1,9 @@
 <template>
   <div>
     <a
+      :disabled="disabled"
       class="button is-success"
-      @click="isShow = true"
+      @click="!disabled && (isShow = true)"
     >入库</a>
     <AsyncLoader
       v-if="isShow"
@@ -60,7 +61,7 @@
             :disabled="locationId === 0"
             class="button is-success"
             :handler="handleSubmit"
-          >提交</AsyncButton>
+          >入库</AsyncButton>
         </footer>
       </div>
     </AsyncLoader>
@@ -96,6 +97,11 @@ export default Vue.extend({
       type: OrderEntity,
       required: true
     },
+
+    disabled: {
+      type: Boolean,
+      required: true
+    }
   },
 
   data: () => ({

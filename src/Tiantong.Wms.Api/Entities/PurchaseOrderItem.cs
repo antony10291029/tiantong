@@ -14,6 +14,8 @@ namespace Tiantong.Wms.Api
 
     public virtual int item_id { get; set; }
 
+    public virtual int invoice_id { get; set; }
+
     public virtual int index { get; set; }
 
     public virtual double price { get; set; }
@@ -26,7 +28,8 @@ namespace Tiantong.Wms.Api
 
     public virtual DateTime arrived_at { get; set; } = DateTime.Now;
 
-    public virtual PurchaseOrderItemFinance finance { get; set; }
+    [ForeignKey("invoice_id")]
+    public virtual Invoice invoice { get; set; }
 
     [ForeignKey("order_item_id")]
     public virtual List<PurchaseOrderItemProject> projects { get; set; }
