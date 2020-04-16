@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Renet.Web;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tiantong.Wms.Api
 {
@@ -325,8 +325,7 @@ namespace Tiantong.Wms.Api
               location_id = location.id,
               quantity = _random.Int(10, 100),
               records = _random.Enumerate(1, 10).Select(i => new StockRecord {
-                order_type = "test",
-                order_number = $"{_random.Int(1000000, 1900000)}",
+                order_id = _random.Int(0, 10),
                 quantity = _random.Int(1, 10),
               }).ToList()
             });
@@ -352,6 +351,7 @@ namespace Tiantong.Wms.Api
             number = $"PO{i}",
             status = _random.Bool() ? OrderStatus.Created : OrderStatus.Finished,
             comment = "测试录料单",
+            type = OrderType.PurchaseRequisition,
             operator_id = warehouse.owner_user_id,
             applicant_id = _random.Array(users).user_id,
             department_id = _random.Array(departments).id,

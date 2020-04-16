@@ -15,6 +15,7 @@ namespace Tiantong.Wms.Api
     public override Order Add(Order order)
     {
       order.status = OrderStatus.Created;
+      order.type = OrderType.PurchaseRequisition;
       DbContext.Add(order);
 
       return order;
@@ -23,7 +24,6 @@ namespace Tiantong.Wms.Api
     public override Order Update(Order order)
     {
       var oldOrder = EnsureGet(order.warehouse_id, order.id);
-
       if (oldOrder.status != OrderStatus.Created) {
         throw new FailureOperation("订单已入库，无法再次修改");
       }
@@ -85,6 +85,7 @@ namespace Tiantong.Wms.Api
       }
 
       DbContext.Entry(oldOrder).CurrentValues.SetValues(order);
+      DbContext.Entry(oldOrder).Property(o => o.type).IsModified = false;
       DbContext.Entry(oldOrder).Property(o => o.status).IsModified = false;
 
       return order;
@@ -98,7 +99,11 @@ namespace Tiantong.Wms.Api
         .Include(o => o.items)
           .ThenInclude(oi => oi.projects)
         .Include(o => o.payments)
-        .Where(o => o.warehouse_id == warehouseId && o.id == id)
+        .Where(o =>
+          o.id == id &&
+          o.warehouse_id == warehouseId &&
+          o.type == OrderType.PurchaseRequisition
+        )
         .SingleOrDefault();
 
       if (order == null) {

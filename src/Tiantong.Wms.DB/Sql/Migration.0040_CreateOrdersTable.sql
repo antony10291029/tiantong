@@ -6,6 +6,7 @@ create table if not exists orders (
   applicant_id int not null,
   supplier_id int not null,
   number varchar(255),
+  type varchar(255) not null,
   status varchar(255) not null,
   comment varchar(255) not null,
   due_time timestamp(0) not null,

@@ -145,8 +145,7 @@ namespace Tiantong.Wms.Api
         var records = new List<StockRecord>() {
           new StockRecord {
             quantity = quantity,
-            order_type = OrderTypes.Purchase,
-            order_number = order.id.ToString(),
+            order_id = order.id
           }
         };
         stock.quantity += quantity;
@@ -252,6 +251,7 @@ namespace Tiantong.Wms.Api
         .Include(order => order.payments)
         .Where(order =>
           order.warehouse_id == param.warehouse_id &&
+          order.type == OrderType.PurchaseRequisition &&
           (param.status == null ?
             order.status != OrderStatus.Filed:
             order.status == param.status) &&

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Tiantong.Wms.Api
 {
@@ -18,6 +19,9 @@ namespace Tiantong.Wms.Api
     public virtual int department_id { get; set; }
 
     public virtual int supplier_id { get; set; }
+
+    [JsonIgnore]
+    public virtual string type { get; set; }
 
     public virtual string status { get; set; } = "";
 
