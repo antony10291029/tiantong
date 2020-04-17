@@ -29,17 +29,23 @@
       </div>
     </div>
 
-    <div class="field" style="width: 320px">
-      <label class="label">供应商</label>
-      <div class="control">
-        <SupplierSelector
-          :readonly="readonly"
-          :warehouseId="warehouseId"
-          :supplier="entity.supplier"
-          @select="handleSupplierSelect"
-        />
+    <slot name="supplier">
+      <div
+        v-if="hasSupplier"
+        class="field"
+        style="width: 320px"
+      >
+        <label class="label">供应商</label>
+        <div class="control">
+          <SupplierSelector
+            :readonly="readonly"
+            :warehouseId="warehouseId"
+            :supplier="entity.supplier"
+            @select="handleSupplierSelect"
+          />
+        </div>
       </div>
-    </div>
+    </slot>
 
     <div class="field" style="width: 320px">
       <label class="label">日期</label>
@@ -51,16 +57,19 @@
       </div>
     </div>
 
-    <div class="field" style="width: 600px">
+    <div
+      v-if="hasPayments"
+      class="field" style="width: 600px"
+    >
       <label class="label">付款信息</label>
       <div class="control">
-        <Table>
+        <table class="table is-bordered is-nowrap is-vcentered">
           <thead>
             <th>#</th>
             <th>金额</th>
             <th style="width: 1px">付款日期</th>
             <th style="width: 1px">截止日期</th>
-            <th>付款说明</th>
+            <th style="width: 240px">付款说明</th>
             <th
               v-if="!readonly"
               class="is-unselectable"
@@ -74,7 +83,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="(payment, index) in entity.order.payments.filter(payment => !payment.is_deleted)"
+              v-for="(payment, index) in entity.order.payments"
               :key="`${index}_${$uid()}`"
             >
               <th style="width: 1px">
@@ -98,9 +107,10 @@
                 v-model="payment.paid_at"
               />
               <EditableCell
+                type="textarea"
                 :readonly="readonly"
-                v-model="payment.comment"
                 style="text-align: left"
+                v-model="payment.comment"
               ></EditableCell>
               <td
                 v-if="!readonly"
@@ -117,20 +127,20 @@
               </td>
             </tr>
           </tbody>
-        </Table>
+        </table>
       </div>
     </div>
 
     <div class="field">
       <label class="label">采购列表</label>
-      <div class="control">
-        <Table class="is-nowrap">
+      <div class="control" v-style:width="itemsTableWidth">
+        <table class="table is-fullwidth is-bordered is-vcentered is-centered is-nowrap">
           <thead>
             <tr>
               <th></th>
-              <th colspan="8">货品信息</th>
+              <th :colspan="hasPurchase ? 8 : 3">货品信息</th>
               <th colspan="3">工程信息</th>
-              <th colspan="9">财务信息</th>
+              <th v-if="hasInvoice" colspan="9">财务信息</th>
               <th :colspan="readonly ? 1 : 2">其他</th>
             </tr>
             <tr>
@@ -139,27 +149,31 @@
               <th>规格</th>
               <th>单位</th>
 
-              <th>交货期</th>
-              <th>到货日期</th>
-
-              <th>数量</th>
-              <th>单价</th>
-              <th>总价</th>
+              <template v-if="hasPurchase">
+                <th>交货期</th>
+                <th>到货日期</th>
+                <th>数量</th>
+                <th>单价</th>
+                <th>总价</th>
+              </template>
 
               <th>工程编号</th>
               <th>工程</th>
               <th>用量</th>
 
-              <th>货名</th>
-              <th>规格</th>
-              <th>数量</th>
-              <th>单价</th>
-              <th>金额</th>
-              <th>税额</th>
-              <th>税率</th>
-              <th>类型</th>
-              <th>发票号码</th>
-              <th>备注</th>
+              <template v-if="hasInvoice">
+                <th>货名</th>
+                <th>规格</th>
+                <th>数量</th>
+                <th>单价</th>
+                <th>金额</th>
+                <th>税额</th>
+                <th>税率</th>
+                <th>类型</th>
+                <th>发票号码</th>
+              </template>
+
+              <th style="min-width: 120px">备注</th>
 
               <th
                 v-if="!readonly"
@@ -194,7 +208,7 @@
 
               <GoodSelector
                 v-if="!isItemGoodShow"
-                :colspan="3"
+                colspan="3"
                 :readonly="readonly"
                 :warehouseId="warehouseId"
                 :rowspan="orderItemRowspan"
@@ -202,6 +216,7 @@
                 :item="entity.items[orderItem.item_id] || null"
                 @select="handleGoodItemSelect(orderItemIndex, $event.good, $event.item)"
               >
+                <span class="has-text-grey is-italic">无</span>
               </GoodSelector>
               <template v-else>
                 <GoodSelector
@@ -216,53 +231,56 @@
                 >{{text}}</GoodSelector>
               </template>
 
-              <EditableCell
-                :readonly="readonly"
-                v-model="orderItem.delivery_cycle"
-                :rowspan="orderItemRowspan"
-                style="width: 1px"
-              ></EditableCell>
-              <DatePicker
-                tag="td"
-                initial="today"
-                :readonly="readonly"
-                :rowspan="orderItemRowspan"
-                v-model="orderItem.arrived_at"
-              />
-
-              <EditableCell
-                :readonly="readonly"
-                type="number"
-                :value="orderItem.quantity"
-                @change="handleItemQuantityChange(orderItem, $event)"
-                :rowspan="orderItemRowspan"
-                style="width: 1px"
-              ></EditableCell>
-              <EditableCell
-                :readonly="readonly"
-                type="number"
-                style="width: 1px"
-                :value="orderItem.price"
-                @change="handleItemPriceChange(orderItem, $event)"
-                :rowspan="orderItemRowspan"
-              ></EditableCell>
-              <th
-                style="width: 1px"
-                :rowspan="orderItemRowspan"
-              >
-                {{(orderItem.price * orderItem.quantity).toFixed(2)}}
-              </th>
+              <template v-if="hasPurchase">
+                <EditableCell
+                  :readonly="readonly"
+                  v-model="orderItem.delivery_cycle"
+                  :rowspan="orderItemRowspan"
+                  style="width: 1px"
+                />
+                <DatePicker
+                  tag="td"
+                  initial="today"
+                  :readonly="readonly"
+                  :rowspan="orderItemRowspan"
+                  v-model="orderItem.arrived_at"
+                />
+                <EditableCell
+                  :readonly="readonly"
+                  type="number"
+                  :value="orderItem.quantity"
+                  @change="handleItemQuantityChange(orderItem, $event)"
+                  :rowspan="orderItemRowspan"
+                  style="width: 1px"
+                />
+                <EditableCell
+                  :readonly="readonly"
+                  type="number"
+                  style="width: 1px"
+                  :value="orderItem.price"
+                  @change="handleItemPriceChange(orderItem, $event)"
+                  :rowspan="orderItemRowspan"
+                />
+                <th
+                  style="width: 1px"
+                  :rowspan="orderItemRowspan"
+                >
+                  {{(orderItem.price * orderItem.quantity).toFixed(2)}}
+                </th>
+              </template>
             </template>
 
             <template v-if="!isItemProjectsShow">
               <ProjectsSelector
                 colspan="3"
                 :readonly="readonly"
-                :warehouseId="warehouseId"
                 :orderItem="orderItem"
+                :warehouseId="warehouseId"
                 :itemProjects="orderItem.projects"
                 @change="handleProjectChange(orderItem, $event.itemProjects, $event.projects)"
-              >无</ProjectsSelector>
+              >
+                <span class="has-text-grey is-italic">无</span>
+              </ProjectsSelector>
             </template>
             <template v-else>
               <ProjectsSelector
@@ -284,64 +302,68 @@
             </template>
 
             <template v-if="isOrderItemShow">
+              <template v-if="hasInvoice">
+                <EditableCell
+                  :readonly="readonly"
+                  style="width: 1px"
+                  v-model="invoice.name"
+                  :rowspan="orderItemRowspan"
+                />
+                <EditableCell
+                  :readonly="readonly"
+                  style="width: 1px"
+                  v-model="invoice.specification"
+                  :rowspan="orderItemRowspan"
+                />
+                <EditableCell
+                  :readonly="readonly"
+                  type="number"
+                  style="width: 1px"
+                  :rowspan="orderItemRowspan"
+                  :value="invoice.quantity"
+                  @change="handleInvoiceQuantityChange(orderItem, $event)"
+                />
+                <th
+                  style="width: 1px"
+                  :rowspan="orderItemRowspan"
+                >
+                  {{invoice.price.toFixed(2)}}
+                </th>
+                <th
+                  style="width: 1px"
+                  :rowspan="orderItemRowspan"
+                >
+                  {{invoice.amount.toFixed(2)}}
+                </th>
+                <th
+                  style="width: 1px"
+                  :rowspan="orderItemRowspan"
+                >
+                  {{invoice.tax_amount.toFixed(2)}}
+                </th>
+                <EditableCell
+                  :readonly="readonly"
+                  type="number"
+                  style="width: 1px"
+                  :rowspan="orderItemRowspan"
+                  :value="invoice.tax_rate"
+                  @change="handleTaxRateChange(orderItem, $event)"
+                />
+                <InvoiceTypeSelector
+                  :value="invoice.type"
+                  :rowspan="orderItemRowspan"
+                  @change="handleInvoiceTypeChange(orderItem, $event)"
+                />
+                <EditableCell
+                  :readonly="readonly"
+                  v-model="invoice.number"
+                  :rowspan="orderItemRowspan"
+                  style="width: 1px"
+                />
+              </template>
               <EditableCell
-                :readonly="readonly"
-                style="width: 1px"
-                v-model="invoice.name"
-                :rowspan="orderItemRowspan"
-              />
-              <EditableCell
-                :readonly="readonly"
-                style="width: 1px"
-                v-model="invoice.specification"
-                :rowspan="orderItemRowspan"
-              />
-              <EditableCell
-                :readonly="readonly"
-                type="number"
-                style="width: 1px"
-                :rowspan="orderItemRowspan"
-                :value="invoice.quantity"
-                @change="handleInvoiceQuantityChange(orderItem, $event)"
-              />
-              <th
-                style="width: 1px"
-                :rowspan="orderItemRowspan"
-              >
-                {{invoice.price.toFixed(2)}}
-              </th>
-              <th
-                style="width: 1px"
-                :rowspan="orderItemRowspan"
-              >
-                {{invoice.amount.toFixed(2)}}
-              </th>
-              <th
-                style="width: 1px"
-                :rowspan="orderItemRowspan"
-              >
-                {{invoice.tax_amount.toFixed(2)}}
-              </th>
-              <EditableCell
-                :readonly="readonly"
-                type="number"
-                style="width: 1px"
-                :rowspan="orderItemRowspan"
-                :value="invoice.tax_rate"
-                @change="handleTaxRateChange(orderItem, $event)"
-              />
-              <InvoiceTypeSelector
-                :value="invoice.type"
-                :rowspan="orderItemRowspan"
-                @change="handleInvoiceTypeChange(orderItem, $event)"
-              />
-              <EditableCell
-                :readonly="readonly"
-                v-model="invoice.number"
-                :rowspan="orderItemRowspan"
-                style="width: 1px"
-              />
-              <EditableCells
+                type="textarea"
+                style="text-align: left"
                 :readonly="readonly"
                 :rowspan="orderItemRowspan"
                 v-model="orderItem.comment"
@@ -364,23 +386,28 @@
           </PurchaseOrderItemRows>
           <thead>
             <tr>
-              <th colspan="5">合计</th>
-              <th>总数</th>
-              <th>{{totalQuantity}}</th>
-              <th>总价</th>
-              <th>{{totalAmount.toFixed(2)}}</th>
+              <th :colspan="hasPurchase ? 5 : 4">合计</th>
+              <template v-if="hasPurchase">
+                <th>总数</th>
+                <th>{{totalQuantity}}</th>
+                <th>总价</th>
+                <th>{{totalAmount.toFixed(2)}}</th>
+              </template>
               <th colspan="2">工程用量</th>
               <th>{{totalProjectsQuantity}}</th>
-              <th colspan="4">金额 / 税额 / 总额</th>
-              <th>{{totalInvoiceAmount.toFixed(2)}}</th>
-              <th>{{totalInvoiceTaxAmount.toFixed(2)}}</th>
-              <th colspan="3">
-                {{(totalInvoiceAmount + totalInvoiceTaxAmount).toFixed(2)}}
-              </th>
+
+              <template v-if="hasInvoice">
+                <th colspan="4">金额 / 税额 / 总额</th>
+                <th>{{totalInvoiceAmount.toFixed(2)}}</th>
+                <th>{{totalInvoiceTaxAmount.toFixed(2)}}</th>
+                <th colspan="3">
+                  {{(totalInvoiceAmount + totalInvoiceTaxAmount).toFixed(2)}}
+                </th>
+              </template>
               <th colspan="2"></th>
             </tr>
           </thead>
-        </Table>
+        </table>
       </div>
     </div>
     <slot name="footer"></slot>
@@ -390,7 +417,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import DatePicker from '@/components/DatePicker/index.vue'
-import Table from '@/components/Table.vue'
 import Textarea from '@/components/Textarea.vue'
 import PurchaseOrderItemRows from './PurchaseOrderItemRows.vue'
 import GoodSelector from '@/views/common/GoodSelector/index.vue'
@@ -399,10 +425,10 @@ import ProjectsSelector from '@/views/common/ProjectsSelector.vue'
 import DepartmentSelector from '@/views/common/DepartmentSelector.vue'
 import WarehouseUserSelector from '@/views/common/WarehouseUserSelector.vue'
 import InvoiceTypeSelector from './InvoiceTypeSelector.vue'
-import PurchaseOrderStatusSelector from './PurchaseOrderStatusSelector.vue'
+import StatusSelector from './StatusSelector.vue'
 import AsyncLoader from '@/components/AsyncLoader.vue'
-import { OrderEntity } from './OrderEntity'
 import { dragscroll } from 'vue-dragscroll'
+import OrderEntity from './OrderEntity'
 import {
   User,
   Good,
@@ -423,8 +449,8 @@ import {
   directives: {
     dragscroll
   },
+  comments: true,
   components: {
-    Table,
     Textarea,
     DatePicker,
     AsyncLoader,
@@ -435,7 +461,7 @@ import {
     DepartmentSelector,
     WarehouseUserSelector,
     InvoiceTypeSelector,
-    PurchaseOrderStatusSelector,
+    StatusSelector,
   }
 })
 export default class extends Vue {
@@ -444,6 +470,21 @@ export default class extends Vue {
 
   @Prop({ required: true })
   entity!: OrderEntity
+
+  @Prop({ default: true })
+  hasSupplier!: boolean
+
+  @Prop({ default: true })
+  hasPayments!: boolean
+
+  @Prop({ default: true })
+  hasInvoice!: boolean
+
+  @Prop({ default: true })
+  hasPurchase!: boolean
+
+  @Prop({ default: '100%' })
+  itemsTableWidth!: string
 
   @Prop({ default: () => () => {} })
   loader!: () => {}
@@ -545,12 +586,12 @@ export default class extends Vue {
   }
 
   handleItemPriceChange (item: OrderItem, price: number) {
-    item.price = item.invoice.price = price
+    item.price = item.invoice!.price = price
     this.calculateInvoice(item)
   }
 
   handleItemQuantityChange (item: OrderItem, quantity: number) {
-    item.quantity = item.invoice.quantity = quantity
+    item.quantity = item.invoice!.quantity = quantity
     this.calculateInvoice(item)
   }
 
@@ -558,8 +599,8 @@ export default class extends Vue {
     let { invoice } = item
 
     if (type === '增值税专用发票') {
-      if (invoice.tax_rate === 0) {
-        invoice.tax_rate = 13
+      if (invoice!.tax_rate === 0) {
+        invoice!.tax_rate = 13
       }
     } else {
       invoice.tax_rate = 0

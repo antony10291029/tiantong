@@ -27,8 +27,7 @@ namespace Tiantong.Wms.Api
       StockRepository stocks,
       LocationRepository locations,
       WarehouseRepository warehouses,
-      GoodCategoryRepository itemCategories,
-      PurchaseOrderRepository purchaseOrders
+      GoodCategoryRepository itemCategories
     ) {
       _auth = auth;
       _goods = goods;

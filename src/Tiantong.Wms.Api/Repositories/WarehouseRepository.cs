@@ -5,9 +5,11 @@ namespace Tiantong.Wms.Api
 {
   public class WarehouseRepository : Repository<Warehouse, int>
   {
-    public WarehouseRepository(DbContext db) : base(db)
-    {
+    private IAuth _auth;
 
+    public WarehouseRepository(DbContext db, IAuth auth) : base(db)
+    {
+      _auth = auth;
     }
 
     public Warehouse[] All()
@@ -36,6 +38,11 @@ namespace Tiantong.Wms.Api
     public bool HasId(int id)
     {
       return Table.Any(wh => wh.id == id);
+    }
+
+    public bool IsOwner(int warehouseId, int userId)
+    {
+      return Table.Any(wh => wh.id == warehouseId && wh.owner_user_id == userId);
     }
 
     public bool HasOwner(int id, int userId)
@@ -80,6 +87,18 @@ namespace Tiantong.Wms.Api
     {
       if (!HasOwner(warehouseId, userId)) {
         throw new FailureOperation("仓库认证失败");
+      }
+    }
+
+    public void EnsureOwnership(int warehouseId)
+    {
+      if (
+        !Table.Any(w =>
+          w.id == warehouseId &&
+          w.owner_user_id == _auth.User.id
+        )
+      ) {
+        throw new FailureOperation("仓库身份认证失败");
       }
     }
 

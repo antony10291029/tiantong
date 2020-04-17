@@ -10,13 +10,13 @@ namespace Tiantong.Wms.Api
 
     public StockRepository _stocks { get; }
 
-    private OrderRepository _orders { get; }
+    private BaseOrderRepository _orders { get; }
 
     public GoodRepository(
       DbContext db,
       ItemRepository items,
       StockRepository stocks,
-      OrderRepository orders
+      BaseOrderRepository orders
     ) : base(db) {
       Items = items;
       _stocks = stocks;

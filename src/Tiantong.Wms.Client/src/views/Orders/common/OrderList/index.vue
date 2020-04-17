@@ -30,7 +30,7 @@
       <thead>
         <tr>
           <th></th>
-          <th colspan="7">订单信息</th>
+          <th colspan="7">录料单信息</th>
           <th colspan="3">工程信息</th>
           <th></th>
         </tr>
@@ -49,7 +49,7 @@
           <th>操作</th>
         </tr>
       </thead>
-      <PurchaseOrderRow
+      <OrderRow
         :orders="entityList"
         :relationships="relationships"
         v-slot="{
@@ -70,20 +70,36 @@
             <DateWrapper :value="order.created_at"/>
           </td>
           <td :rowspan="orderRowspan">
-            <div>{{applicant.name}}</div>
-            <div style="height: 0.5rem"></div>
-            <div>{{department.name}}</div>
-            <div style="height: 0.5rem"></div>
-            <div>{{supplier.name}}</div>
+            <template v-if="applicant">
+              <div v-if="applicant">{{applicant.name}}</div>
+              <div style="height: 0.5rem"></div>
+            </template>
+            <template v-if="department">
+              <div v-if="department">{{department.name}}</div>
+              <div style="height: 0.5rem"></div>
+            </template>
+            <template v-if="supplier">
+              <div>{{supplier.name}}</div>
+            </template>
           </td>
         </template>
         <template v-if="isItemShow">
-          <td :rowspan="itemRowspan">
-            {{good.name}}
-          </td>
-          <td :rowspan="itemRowspan">
-            {{item.name}}
-          </td>
+          <td
+            v-if="good"
+            :rowspan="itemRowspan"
+          >{{good.name}}</td>
+          <td
+            v-else
+            class="has-text-grey is-italic"
+          >无</td>
+          <td
+            v-if="item"
+            :rowspan="itemRowspan"
+          >{{item.name}}</td>
+          <td
+            v-else
+            class="has-text-grey is-italic"
+          >无</td>
           <td :rowspan="itemRowspan">
             {{orderItem.quantity}}
           </td>
@@ -119,7 +135,7 @@
             </router-link>
           </td>
         </template>
-      </PurchaseOrderRow>
+      </OrderRow>
     </Table>
 
     <div style="height: 1rem"></div>
@@ -140,7 +156,7 @@ import Table from '@/components/Table.vue'
 import Pagination from '@/components/Pagination.vue'
 import SearchField from '@/components/SearchField.vue'
 import DateWrapper from '@/components/wrappers/DateWrapper.vue'
-import PurchaseOrderRow from './PurchaseOrderRow.vue'
+import OrderRow from './OrderRow.vue'
 import OrderStatusTag from './OrderStatusTag.vue'
 
 @Component({
@@ -152,7 +168,7 @@ import OrderStatusTag from './OrderStatusTag.vue'
     SearchField,
     DateWrapper,
     OrderStatusTag,
-    PurchaseOrderRow
+    OrderRow
   }
 })
 export default class extends DataSet {
@@ -162,9 +178,12 @@ export default class extends DataSet {
   @Prop({ required: true })
   warehouseId!: number
 
+  @Prop({ required: true })
+  path!: string
+
   pageSize = 10
 
-  api = '/purchase-orders/search'
+  api = this.path
 
   status: string | null = null
 

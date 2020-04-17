@@ -23,7 +23,7 @@ export default class PurchaseOrder {
 
   due_time: string = DateTime.now
 
-  created_at: string = DateTime.minValue
+  created_at: string = DateTime.now
 
   finished_at: string = DateTime.now
 

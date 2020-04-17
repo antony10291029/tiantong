@@ -8,7 +8,6 @@ namespace Tiantong.Wms.Api
   {
     public virtual DbContext DbContext { get; set; }
   
-
     public virtual IUnitOfWork UnitOfWork { get => DbContext; }
 
     public DbSet<TEntity> Table { get => DbContext.Set<TEntity>(); }
@@ -16,6 +15,11 @@ namespace Tiantong.Wms.Api
     public Repository(DbContext db)
     {
       DbContext = db;
+    }
+
+    public DbSet<T> Set<T>() where T: class
+    {
+      return DbContext.Set<T>();
     }
 
     public virtual TEntity Add(TEntity entity)

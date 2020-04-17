@@ -5,11 +5,11 @@ namespace Tiantong.Wms.Api
 {
   public class SupplierRepository : Repository<Supplier, int>
   {
-    private OrderRepository _orders;
+    private BaseOrderRepository _orders;
 
     public SupplierRepository(
       DbContext db,
-      OrderRepository orders
+      BaseOrderRepository orders
     ) : base(db) {
       _orders = orders;
     }
@@ -45,9 +45,14 @@ namespace Tiantong.Wms.Api
       );
     }
 
-    public void Ensure(int warehouseId, int id)
+    public void EnsureExists(int warehouseId, int supplierId)
     {
-      if (!Table.Any(supplier => supplier.warehouse_id == warehouseId && supplier.id == id)) {
+      if (!
+        Table.Any(supplier =>
+          supplier.id == supplierId &&
+          supplier.warehouse_id == warehouseId
+        )
+      ) {
         throw new FailureOperation("供应商不存在");
       }
     }

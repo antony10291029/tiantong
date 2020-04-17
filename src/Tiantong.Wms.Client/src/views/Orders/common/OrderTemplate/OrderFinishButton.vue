@@ -4,7 +4,9 @@
       :disabled="disabled"
       class="button is-success"
       @click="!disabled && (isShow = true)"
-    >入库</a>
+    >
+      <slot></slot>
+    </a>
     <AsyncLoader
       v-if="isShow"
       :handler="getLocations"
@@ -61,7 +63,7 @@
             :disabled="locationId === 0"
             class="button is-success"
             :handler="handleSubmit"
-          >入库</AsyncButton>
+          >提交</AsyncButton>
         </footer>
       </div>
     </AsyncLoader>
@@ -74,7 +76,7 @@ import axios from '@/providers/axios'
 import { Location } from '@/Entities'
 import AsyncLoader from '@/components/AsyncLoader.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
-import { OrderEntity } from './PurchaseOrder/OrderEntity'
+import OrderEntity from './OrderEntity'
 
 export default Vue.extend({
   components: {
@@ -94,7 +96,7 @@ export default Vue.extend({
     },
 
     entity: {
-      type: OrderEntity,
+      type: Object,
       required: true
     },
 
@@ -142,7 +144,7 @@ export default Vue.extend({
       this.$confirm({
         width: '360px',
         title: '提示',
-        content: '确认入库后，订单将不可编辑或删除',
+        content: `提交后，订单将不可编辑或删除`,
         handler: async () => {
           await this.entity.finish(this.locationId)
           this.isShow = false

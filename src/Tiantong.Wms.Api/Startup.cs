@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Renet.Web;
 using DBCore;
 using DBCore.Postgres;
-using Tiantong.Wms.DB;
 
 namespace Tiantong.Wms.Api
 {
@@ -33,7 +32,9 @@ namespace Tiantong.Wms.Api
       services.AddScoped<ItemRepository>();
       services.AddScoped<StockRepository>();
       services.AddScoped<OrderRepository>();
-      services.AddScoped<PurchaseOrderRepository>();
+      services.AddScoped<BaseOrderRepository>();
+      services.AddScoped<RequisitionOrderRepository>();
+      services.AddScoped<PurchaseRequisitionOrderRepository>();
     }
 
     public void Configure(IApplicationBuilder app)

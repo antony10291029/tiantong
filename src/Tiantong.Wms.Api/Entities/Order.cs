@@ -10,6 +10,7 @@ namespace Tiantong.Wms.Api
   {
     public virtual int warehouse_id { get; set; }
 
+    [JsonIgnore]
     public virtual string number { get; set; }
 
     public virtual int operator_id { get; set; }

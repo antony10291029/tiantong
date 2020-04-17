@@ -92,14 +92,23 @@ namespace Tiantong.Wms.Api
       Post("/suppliers/find", "Supplier.Find");
       Post("/suppliers/all", "Supplier.All");
 
-      Post("/purchase-orders/create", "PurchaseOrder.Create");
-      Post("/purchase-orders/delete", "PurchaseOrder.Delete");
-      Post("/purchase-orders/update", "PurchaseOrder.Update");
-      Post("/purchase-orders/finish", "PurchaseOrder.Finish");
-      Post("/purchase-orders/restore", "PurchaseOrder.Restore");
-      Post("/purchase-orders/file", "PurchaseOrder.File");
-      Post("/purchase-orders/search", "PurchaseOrder.Search");
-      Post("/purchase-orders/find", "PurchaseOrder.Find");
+      Post("/purchase-requisition-orders/create", "PurchaseRequisitionOrder.Create");
+      Post("/purchase-requisition-orders/delete", "PurchaseRequisitionOrder.Delete");
+      Post("/purchase-requisition-orders/update", "PurchaseRequisitionOrder.Update");
+      Post("/purchase-requisition-orders/finish", "PurchaseRequisitionOrder.Finish");
+      Post("/purchase-requisition-orders/restore", "PurchaseRequisitionOrder.Restore");
+      Post("/purchase-requisition-orders/file", "PurchaseRequisitionOrder.File");
+      Post("/purchase-requisition-orders/find", "PurchaseRequisitionOrder.Find");
+      Post("/purchase-requisition-orders/search", "PurchaseRequisitionOrder.Search");
+
+      Post("/requisition-orders/create", "RequisitionOrder.Create");
+      Post("/requisition-orders/delete", "RequisitionOrder.Delete");
+      Post("/requisition-orders/update", "RequisitionOrder.Update");
+      Post("/requisition-orders/finish", "RequisitionOrder.Finish");
+      Post("/requisition-orders/restore", "RequisitionOrder.Restore");
+      Post("/requisition-orders/file", "RequisitionOrder.File");
+      Post("/requisition-orders/search", "RequisitionOrder.Search");
+      Post("/requisition-orders/find", "RequisitionOrder.Find");
 
     }
   }

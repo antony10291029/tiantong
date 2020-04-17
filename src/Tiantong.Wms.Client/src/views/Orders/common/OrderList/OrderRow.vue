@@ -16,6 +16,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Order, OrderItem, OrderItemProject } from '@/Entities'
+import { IOrderRelationships } from './OrderEntities'
 
 @Component({
   name: 'PurchaseOrderRow'
@@ -25,7 +26,7 @@ export default class extends Vue {
   orders!: Array<any>
 
   @Prop({ required: true })
-  relationships: any
+  relationships!: IOrderRelationships
 
   getProps (
     order: Order,
@@ -39,15 +40,15 @@ export default class extends Vue {
       order,
       orderItem: item,
       itemProject: project,
-      invoice: item.invoice,
+      invoice: item.invoice ?? null,
       orderIndex,
       itemIndex,
       projectIndex,
-      good: this.relationships.goods[item.good_id],
-      item: this.relationships.items[item.item_id],
-      project: project === null ? null : this.relationships.projects[project.project_id],
-      supplier: this.relationships.suppliers[order.supplier_id],
-      department: this.relationships.departments[order.department_id],
+      good: this.relationships.goods[item.good_id] ?? null,
+      item: this.relationships.items[item.item_id] ?? null,
+      project: project === null ? null : this.relationships.projects[project.project_id] ?? null,
+      supplier: this.relationships.suppliers[order.supplier_id] ?? null,
+      department: this.relationships.departments[order.department_id] ?? null,
       applicant: this.relationships.users[order.applicant_id],
       orderRowspan: order.items.reduce(
         (count, item) => count + Math.max(item.projects.length, 1), 0

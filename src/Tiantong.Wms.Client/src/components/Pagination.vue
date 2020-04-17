@@ -55,6 +55,9 @@ export default class extends Vue {
   @Prop({ required: true })
   total!: number
 
+  @Prop({ default: 7 })
+  length!: number
+
   get lastPage () {
     return Math.max(Math.ceil(this.total / this.pageSize), 1)
   }
@@ -67,15 +70,28 @@ export default class extends Vue {
     const HasLeft = P >= N / 2
     const HasRight = L - P >= N / 2 - 1
 
-    if (No) {
-      return [...new Array(L).keys()].map(i => i + 1)
-    } else if (HasLeft && HasRight) {
-      return [1, 0, P - 2, P - 1, P, P + 1, P + 2, 0, L]
-    } else if (HasLeft && !HasRight) {
-      return [1, 0, L - 6, L - 5, L - 4, L - 3, L - 2, L - 1, L]
-    } else if (!HasLeft && HasRight) {
-      return [1, 2, 3, 4, 5, 6, 7, 0, L]
+    if (this.length == 9) {
+      if (No) {
+        return [...new Array(L).keys()].map(i => i + 1)
+      } else if (HasLeft && HasRight) {
+        return [1, 0, P - 2, P - 1, P, P + 1, P + 2, 0, L]
+      } else if (HasLeft && !HasRight) {
+        return [1, 0, L - 6, L - 5, L - 4, L - 3, L - 2, L - 1, L]
+      } else if (!HasLeft && HasRight) {
+        return [1, 2, 3, 4, 5, 6, 7, 0, L]
+      }
+    } else if (this.length == 7) {
+      if (No) {
+        return [...new Array(L).keys()].map(i => i + 1)
+      } else if (HasLeft && HasRight) {
+        return [1, 0,P - 1, P, P + 1, 0, L]
+      } else if (HasLeft && !HasRight) {
+        return [1, 0, L - 4, L - 3, L - 2, L - 1, L]
+      } else if (!HasLeft && HasRight) {
+        return [1, 2, 3, 4, 5, 0, L]
+      }
     }
+
   }
 
   change (page: number) {

@@ -5,11 +5,11 @@ namespace Tiantong.Wms.Api
 {
   public class ProjectRepository : Repository<Project, int>
   {
-    private OrderRepository _orders;
+    private BaseOrderRepository _orders;
 
     public ProjectRepository(
       DbContext db,
-      OrderRepository orders
+      BaseOrderRepository orders
     ) : base(db) {
       _orders = orders;
     }
@@ -49,6 +49,18 @@ namespace Tiantong.Wms.Api
     public bool HasId(int warehouseId, int id)
     {
       return Table.Any(project => project.warehouse_id == warehouseId && project.id == id);
+    }
+
+    public void EnsureExists(int warehouseId, int[] projectIds)
+    {
+      if (
+        !Table.Any(p =>
+          projectIds.Contains(p.id) &&
+          p.warehouse_id == warehouseId
+        )
+      ) {
+        throw new FailureOperation("工程不存在");
+      }
     }
 
     public Project EnsureGet(int id)

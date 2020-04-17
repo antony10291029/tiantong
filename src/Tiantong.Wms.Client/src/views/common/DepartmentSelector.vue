@@ -42,7 +42,7 @@
             <tbody>
               <tr
                 v-for="(department, index) in departments" :key="department.id"
-                @click="currentDepartment = department"
+                @click="handleCheck(department)"
               >
                 <td>{{index + 1}}</td>
                 <td>{{department.name}}</td>
@@ -113,6 +113,14 @@ export default class extends Vue {
     })
 
     this.entities = response.data
+  }
+
+  handleCheck (department: Department) {
+    if (this.currentDepartment === department) {
+      this.currentDepartment = new Department()
+    } else {
+      this.currentDepartment = department
+    }
   }
 
   handleSelect () {

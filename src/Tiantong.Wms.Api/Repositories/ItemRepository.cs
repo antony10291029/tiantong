@@ -1,4 +1,4 @@
-using System.Globalization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Renet.Web;
@@ -9,12 +9,12 @@ namespace Tiantong.Wms.Api
   {
     private StockRepository _stocks;
 
-    private OrderRepository _orders;
+    private BaseOrderRepository _orders;
 
     public ItemRepository(
       DbContext db,
       StockRepository stocks,
-      OrderRepository orders
+      BaseOrderRepository orders
     ) : base(db) {
       _stocks = stocks;
       _orders = orders;

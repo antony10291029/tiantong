@@ -14,7 +14,7 @@ namespace Tiantong.Wms.Api
     [JsonIgnore]
     public virtual string password { get; set; }
 
-    [StringRange(2, 10, ErrorMessage = "姓名长度必须在2～10之间")]
+    [StringRange(2, 50, ErrorMessage = "姓名长度必须在2～50之间")]
     public virtual string name { get; set; } = "";
 
     [StringIn("owner", "keeper", ErrorMessage = "非法用户类型")]

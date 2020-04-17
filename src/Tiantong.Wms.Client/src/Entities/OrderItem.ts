@@ -1,5 +1,6 @@
 import OrderItemProject from './OrderItemProject'
 import Invoice from './Invoice'
+import { DateTime } from '@/utils/common'
 
 export default class PurchaseOrderItem {
   id: number = 0
@@ -20,7 +21,7 @@ export default class PurchaseOrderItem {
 
   delivery_cycle: string = '30天'
 
-  arrived_at: string = ''
+  arrived_at: string = DateTime.now
 
   invoice: Invoice
 

@@ -8,7 +8,8 @@
     v-text="value"
     @focus="handleFocus"
     @blur="handleChange"
-    @keypress.enter="handleChange"
+    v-class:is-textarea="type === 'textarea'"
+    @keypress.enter="type !== 'textarea' && handleChange($event)"
   />
   <td
     v-else
@@ -56,7 +57,12 @@ export default class extends Vue {
   }
 
   getValue (event: any) {
-    let value = event.target.innerText.trim()
+    let value = event.target.innerText
+
+    if (this.type !== 'textarea') {
+      console.log(1000)
+      value = value.trim()
+    }
 
     if (value === '') {
       value = this.getDefaultValue()
@@ -84,7 +90,10 @@ export default class extends Vue {
   }
 
   handleChange (event: any) {
-    this.$emit('change', this.getValue(event))
+    let value = this.getValue(event)
+    if (value !== this.value) {
+      this.$emit('change', value)
+    }
   }
 
 }

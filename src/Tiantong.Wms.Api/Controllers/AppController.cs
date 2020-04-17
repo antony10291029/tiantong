@@ -119,7 +119,7 @@ namespace Tiantong.Wms.Api
       InsertGoodCategories();
       InsertGoods();
       InsertStocks();
-      InsertPurchaseOrders();
+      InsertOrders();
 
       return SuccessOperation("测试数据建立完毕");
     }
@@ -165,6 +165,10 @@ namespace Tiantong.Wms.Api
     private void InsertWarehouseUsers()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
+        _db.WarehouseUsers.Add(new WarehouseUser {
+          warehouse_id = warehouse.id,
+          user_id = warehouse.owner_user_id,
+        });
         foreach (var i in _random.Enumerate(20, 30)) {
           _db.WarehouseUsers.Add(new WarehouseUser {
             warehouse_id = warehouse.id,
@@ -289,7 +293,7 @@ namespace Tiantong.Wms.Api
     private void InsertGoods()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _random.For(20, 30)(i => {
+        _random.For(500, 500)(i => {
           _db.Goods.Add(new Good {
             warehouse_id = warehouse.id,
             number = $"item_000{i}",
@@ -336,7 +340,7 @@ namespace Tiantong.Wms.Api
       _db.SaveChanges();
     }
 
-    public void InsertPurchaseOrders()
+    public void InsertOrders()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
         var projects = _db.Projects.Where(pj => pj.warehouse_id == warehouse.id).ToArray();
@@ -345,13 +349,13 @@ namespace Tiantong.Wms.Api
         var users = _db.WarehouseUsers.Include(wu => wu.user).Where(wu => wu.warehouse_id == warehouse.id).ToArray();
         var goods = _db.Goods.Include(good => good.items).Where(good => good.warehouse_id == warehouse.id).ToArray();
 
-        foreach (var i in _random.Enumerate(20, 30)) {
+        foreach (var i in _random.Enumerate(1000, 1000)) {
           _db.Orders.Add(new Order {
             warehouse_id = warehouse.id,
-            number = $"PO{i}",
+            number = $"PR{i}",
             status = _random.Bool() ? OrderStatus.Created : OrderStatus.Finished,
-            comment = "测试录料单",
-            type = OrderType.PurchaseRequisition,
+            comment = "测试订单",
+            type = _random.Bool() ? OrderType.PurchaseRequisition : OrderType.Requisition,
             operator_id = warehouse.owner_user_id,
             applicant_id = _random.Array(users).user_id,
             department_id = _random.Array(departments).id,

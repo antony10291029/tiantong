@@ -1,5 +1,5 @@
 <template>
-  <OrderDetail
+  <OrderTemplate
     :entity="orderEntity"
     :loader="getOrderEntity"
     :warehouseId="warehouseId"
@@ -40,7 +40,7 @@
             :entity="orderEntity"
             :warehouseId="warehouseId"
             @finished="getOrderEntity"
-          />
+          >出库</FinishButton>
           <a
             class="button is-danger is-light"
             @click="handleDelete"
@@ -64,26 +64,22 @@
         </template>
       </div>
     </template>
-  </OrderDetail>
+  </OrderTemplate>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { OrderEntity } from './PurchaseOrder/OrderEntity'
-import OrderDetail from './PurchaseOrder/index.vue'
+import OrderEntity from './OrderEntity'
+import OrderTemplate from './OrderTemplate.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
-import FinishButton from './OrderFinishButton.vue'
-import {
-  User, Supplier, Project, Good, Item,
-  Department, Order, OrderItem,
-} from '../../Entities'
+import FinishButton from '../common/OrderTemplate/OrderFinishButton.vue'
 
 @Component({
-  name: 'PurchaseOrderDetail',
+  name: 'OrderDetail',
   components: {
     AsyncButton,
     FinishButton,
-    OrderDetail,
+    OrderTemplate,
   }
 })
 export default class extends Vue {

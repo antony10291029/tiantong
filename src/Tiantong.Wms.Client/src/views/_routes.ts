@@ -40,7 +40,7 @@ const routes = [
       },
       {
         path: '/warehouses/:warehouseId',
-        redirect: '/warehouses/:warehouseId/purchase-orders/',
+        redirect: '/warehouses/:warehouseId/purchase-requisition-orders/',
         name: 'Warehouse',
         props: (route: any) => ({ warehouseId: +route.params.warehouseId }),
         component: () => import('./Warehouse/index.vue'),
@@ -157,25 +157,46 @@ const routes = [
             ]
           },
           {
-            path: 'purchase-orders',
-            name: 'PurchaseOrders',
-            component: () => import('./PurchaseOrders/index.vue'),
+            path: 'purchase-requisition-orders',
+            component: () => import('./Orders/PurchaseRequisition/index.vue'),
             children: [
               {
                 path: '',
                 name: 'PurchaseOrderList',
-                component: () => import('./PurchaseOrders/OrderList/index.vue')
+                component: () => import('./Orders/PurchaseRequisition/OrderList.vue')
               },
               {
                 path: 'create',
                 name: 'PurchaseOrderCreate',
-                component: () => import('./PurchaseOrders/PurchaseOrderCreate.vue')
+                component: () => import('./Orders/PurchaseRequisition/OrderCreate.vue')
               },
               {
                 path: ':orderId/detail',
                 name: 'PurchaseOrderDetail',
                 props: (route: any) => ({ orderId: + route.params.orderId }),
-                component: () => import('./PurchaseOrders/PurchaseOrderDetail.vue')
+                component: () => import('./Orders/PurchaseRequisition/OrderDetail.vue')
+              }
+            ]
+          },
+          {
+            path: 'requisition-orders',
+            component: () => import('./Orders/Requisition/index.vue'),
+            children: [
+              {
+                path: '',
+                name: 'RequisitionOrderList',
+                component: () => import('./Orders/Requisition/OrderList.vue')
+              },
+              {
+                path: 'create',
+                name: 'RequisitionOrderCreate',
+                component: () => import('./Orders/Requisition/OrderCreate.vue')
+              },
+              {
+                path: ':orderId/detail',
+                name: 'RequisitionOrderDetail',
+                props: (route: any) => ({ orderId: + route.params.orderId }),
+                component: () => import('./Orders/Requisition/OrderDetail.vue')
               }
             ]
           },

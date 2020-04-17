@@ -5,11 +5,11 @@ namespace Tiantong.Wms.Api
 {
   public class DepartmentRepository : Repository<Department, int>
   {
-    private OrderRepository _orders;
+    private BaseOrderRepository _orders;
 
     public DepartmentRepository(
       DbContext db,
-      OrderRepository orders
+      BaseOrderRepository orders
     ) : base(db) {
       _orders = orders;
     }

@@ -15,7 +15,7 @@
         class="modal-background"
         @click="handleClose"
       ></div>
-      <div class="modal-card" style="height: 100%">
+      <div class="modal-card" style="height: 100%; width: 800px">
         <header class="modal-card-head is-flex is-vcentered">
           <p class="modal-card-title">选择物品</p>
         </header>
@@ -56,15 +56,18 @@
                 <template v-for="(item, itemIndex) in good.items">
                   <tr :key="`${good.id}_${item.id}`">
                     <template v-if="itemIndex == 0">
-                      <td :rowspan="good.items.length">
-                        {{goodIndex + 1}}
-                      </td>
-                      <td :rowspan="good.items.length">
-                        {{good.name}}
-                      </td>
-                      <td :rowspan="good.items.length">
-                        {{good.comment}}
-                      </td>
+                      <td
+                        @click="handleSelectItem(good, item)"
+                        :rowspan="good.items.length"
+                      >{{goodIndex + 1}}</td>
+                      <td
+                        @click="handleSelectItem(good, item)"
+                        :rowspan="good.items.length"
+                      >{{good.name}}</td>
+                      <td
+                        @click="handleSelectItem(good, item)"
+                        :rowspan="good.items.length"
+                      >{{good.comment}}</td>
                     </template>
                     <td @click="handleSelectItem(good, item)">
                       {{item.name}}

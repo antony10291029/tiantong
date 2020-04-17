@@ -42,7 +42,7 @@
             <tbody>
               <tr
                 v-for="(supplier, index) in suppliers" :key="supplier.id"
-                @click="currentSupplier = supplier"
+                @click="handleCheck(supplier)"
               >
                 <td>{{index + 1}}</td>
                 <td>{{supplier.name}}</td>
@@ -120,6 +120,14 @@ export default class extends Vue {
     })
 
     this.entities = response.data
+  }
+
+  handleCheck (supplier: Supplier) {
+    if (this.currentSupplier === supplier) {
+      this.currentSupplier = new Supplier()
+    } else {
+      this.currentSupplier = supplier
+    }
   }
 
   handleSelect () {

@@ -35,23 +35,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { OrderEntity } from './PurchaseOrder/OrderEntity'
-import OrderDetail from './PurchaseOrder/index.vue'
+import OrderEntity from './OrderEntity'
+import OrderDetail from './OrderTemplate.vue'
 import { dragscroll } from 'vue-dragscroll'
-import axios from '@/providers/axios'
 import AsyncButton from '@/components/AsyncButton.vue'
-import {
-  User,
-  Good,
-  Item,
-  Project,
-  Supplier,
-  Department,
-  Order,
-  OrderPayment,
-  OrderItem,
-  OrderItemProject,
-} from '@/Entities'
+import axios from '@/providers/axios'
 
 @Component({
   name: 'PurchaseOrderCreate',

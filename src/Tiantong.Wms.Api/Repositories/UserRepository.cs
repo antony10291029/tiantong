@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using Renet.Web;
-using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Wms.Api
 {
@@ -73,17 +71,31 @@ namespace Tiantong.Wms.Api
 
     // select
 
+    public User GetByEmail(string email)
+    {
+      return Table.FirstOrDefault(user => user.email == email);
+    }
+
     public User FindByEmail(string email)
     {
-      try {
-        return Table.Where(user => user.email == email).First();
-      } catch (Exception e) {
-        if (e.Message == "Sequence contains no elements") {
-          throw new HttpException("Fail to find user by email");
-        } else {
-          throw e;
-        }
+      var user = GetByEmail(email);
+
+      if (user == null) {
+        throw new FailureOperation("用户邮箱不存在");
       }
+
+      return user;
+    }
+
+    public User EnsureGet(int id)
+    {
+      var user = Get(id);
+
+      if (user == null) {
+        throw new FailureOperation("该用户不存在");
+      }
+
+      return user;
     }
 
     public User[] Search()

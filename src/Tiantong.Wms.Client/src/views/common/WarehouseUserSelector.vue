@@ -43,7 +43,7 @@
               <tr
                 v-for="({ user }, index) in warehouseUsers"
                 :key="user.id"
-                @click="currentUser = user"
+                @click="handleCheck(user)"
               >
                 <td>{{index + 1}}</td>
                 <td>{{user.email}}</td>
@@ -114,6 +114,14 @@ export default class extends Vue {
     })
 
     this.entities = response.data
+  }
+
+  handleCheck (user: User) {
+    if (this.currentUser === user) {
+      this.currentUser = new User()
+    } else {
+      this.currentUser = user
+    }
   }
 
   handleSelect () {

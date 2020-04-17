@@ -1,3 +1,5 @@
+import { DateTime } from '@/utils/common'
+
 export default class OrderPayment {
   id: number = 0
 
@@ -11,8 +13,8 @@ export default class OrderPayment {
 
   is_paid: boolean = false
 
-  due_time: string = ''
+  due_time: string = DateTime.minValue
 
-  paid_at: string = ''
+  paid_at: string = DateTime.minValue
 
 }

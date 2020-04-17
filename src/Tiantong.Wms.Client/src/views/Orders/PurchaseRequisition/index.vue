@@ -1,7 +1,7 @@
 <template>
   <router-view
     :warehouseId="warehouseId"
-    :baseURL="baseURL + '/purchase-orders'"
+    :baseURL="baseURL + '/purchase-requisition-orders'"
   ></router-view>
 </template>
 
@@ -9,7 +9,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({
-  name: 'PurchaseOrders',
+  name: 'PurchaseRequisition',
 })
 export default class extends Vue {
   @Prop({ required: true })

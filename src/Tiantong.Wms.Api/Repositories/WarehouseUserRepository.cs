@@ -8,44 +8,117 @@ namespace Tiantong.Wms.Api
   {
     private UserRepository _users;
 
+    private WarehouseRepository _warehouses;
+
     public WarehouseUserRepository(
       DbContext db,
-      UserRepository users
+      UserRepository users,
+      WarehouseRepository warehouses
     ) : base(db) {
       _users = users;
+      _warehouses = warehouses;
     }
+
+    // Create
 
     public override WarehouseUser Add(WarehouseUser wu)
     {
-      var user = _users.Table
-        .Where(item => item.email == wu.user.email)
-        .FirstOrDefault();
-
-      if (user != null) {
-        wu.user_id = wu.user.id = user.id;
-
+      _warehouses.EnsureOwnership(wu.warehouse_id);
+      if (wu.user == null) {
         EnsureUnique(wu);
-        _users.Update(user, wu.user);
+        DbContext.Add(wu);
+      } else if (wu.user != null) {
+        var user = _users.GetByEmail(wu.user.email);
 
-        wu.user = null;
+        if (user != null) {
+          wu.user_id = user.id;
+          EnsureUnique(wu);
+          user.name = wu.user.name;
+          wu.user = null;
+          DbContext.Add(wu);
+        } else {
+          wu.user.type = "owner";
+          wu.user.password = "123456";
+          _users.EnsureUnique(wu.user);
+          _users.EncodePassword(wu.user);
+        }
+
+        DbContext.Add(wu);
       } else {
-        wu.user.type = "keeper";
-        wu.user.password = "123456";
-        _users.EnsureUnique(wu.user);
-        _users.EncodePassword(wu.user);
+        throw new FailureOperation("仓库信息错误");
       }
-
-      DbContext.Add(wu);
 
       return wu;
     }
 
-    public WarehouseUser Get(int warehouseId, int userId)
+    public override bool Remove(int id)
+    {
+      var wu = EnsureGet(id);
+      _warehouses.EnsureOwnership(wu.warehouse_id);
+
+      if (_warehouses.IsOwner(wu.warehouse_id, wu.user_id)) {
+        throw new FailureOperation("无法删除仓库的拥有者");
+      } else {
+        DbContext.Remove(wu);
+      }
+
+      return true;
+    }
+
+    // Update
+
+    public override WarehouseUser Update(WarehouseUser wu)
+    {
+      var oldWu = EnsureGet(wu.warehouse_id, wu.user_id);
+      _warehouses.EnsureOwnership(wu.warehouse_id);
+      _users.EnsureUnique(wu.user);
+
+      var user = wu.user;
+      var oldUser = _users.EnsureGet(user.id);
+
+      oldUser.name = user.name;
+      oldUser.email = user.email;
+
+      return wu;
+    }
+
+    // Select
+
+    public WarehouseUser Find(int id)
+    {
+      var wu = EnsureGet(id);
+      _warehouses.EnsureOwnership(wu.warehouse_id);
+
+      return wu;
+    }
+
+    public IEntities<WarehouseUser, int> SearchAll(int warehouseId, string search)
     {
       return Table
         .Include(wu => wu.user)
-        .Where(wu => wu.warehouse_id == warehouseId && wu.user_id == userId)
-        .FirstOrDefault();
+        .OrderBy(wu => wu.id)
+        .Where(wu =>
+          wu.warehouse_id == warehouseId &&
+          (
+            search == null ? true :
+            wu.user.name.Contains(search) ||
+            wu.user.email.Contains(search)
+          )
+        )
+        .OrderBy(wu => wu.user.name)
+        .ToEntities();
+    }
+
+    public void EnsureExists(int warehouseId, int userId)
+    {
+      if (
+        !Table.Any(wu =>
+          wu.user_id == userId &&
+          wu.warehouse_id == warehouseId
+        )
+      ) {
+        throw new FailureOperation("用户不存在");
+      }
     }
 
     public void EnsureUnique(WarehouseUser wu)
@@ -62,10 +135,29 @@ namespace Tiantong.Wms.Api
 
     public WarehouseUser EnsureGet(int id)
     {
-      var wu = Table.Where(item => item.id == id).SingleOrDefault();
+      var wu = Table
+        .Include(wu => wu.user)
+        .Where(wu => wu.id == id)
+        .SingleOrDefault();
 
       if (wu == null) {
         throw new FailureOperation("用户不存在");
+      }
+
+      return wu;
+    }
+
+    public WarehouseUser EnsureGet(int warehouseId, int userId)
+    {
+      var wu = Table
+        .Include(wu => wu.user)
+        .FirstOrDefault(wu =>
+          wu.user_id == userId &&
+          wu.warehouse_id == warehouseId
+        );
+
+      if (wu == null) {
+        throw new FailureOperation("该用户不存在");
       }
 
       return wu;
