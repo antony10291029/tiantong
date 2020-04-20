@@ -19,12 +19,26 @@ namespace Tiantong.Wms.Api
     }
 
     // insert
-
     public override User Add(User user)
     {
       EncodePassword(user);
 
       return base.Add(user);
+    }
+
+    public User Register(User user)
+    {
+      var entity = new User {
+        name = user.name,
+        email = user.email,
+        type = UserTypes.Owner,
+        password = user.password,
+      };
+
+      EnsureUnique(entity);
+      Add(entity);
+
+      return entity;
     }
 
     // delete
@@ -76,7 +90,7 @@ namespace Tiantong.Wms.Api
       return Table.FirstOrDefault(user => user.email == email);
     }
 
-    public User FindByEmail(string email)
+    public User EnsureGetByEmail(string email)
     {
       var user = GetByEmail(email);
 

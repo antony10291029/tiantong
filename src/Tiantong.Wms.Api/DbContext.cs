@@ -9,6 +9,10 @@ namespace Tiantong.Wms.Api
   {
     public DbSet<User> Users { get; set; }
 
+    public DbSet<EmailVerification> EmailVerifications { get; set; }
+
+    public DbSet<PasswordReset> PasswordResets { get; set; }
+
     public DbSet<Good> Goods { get; set; }
 
     public DbSet<Item> Items { get; set; }

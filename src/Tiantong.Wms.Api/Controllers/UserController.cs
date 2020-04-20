@@ -33,33 +33,19 @@ namespace Tiantong.Wms.Api
 
     //
 
-    public class RegisterUserParams
+    public class RegisterParams: User
     {
       [Required]
-      [EmailAddress]
-      [UserEmailUnique]
-      public string email { get; set; }
-
-      [Required]
       [MaxLength(20)]
-      public string password { get; set; }
-
-      [MaxLength(20)]
-      public string name { get; set; } = "";
+      public override string password { get; set; }
     }
 
-    public object Register([FromBody] RegisterUserParams param)
+    public object Register([FromBody] RegisterParams user)
     {
-      var user = new User {
-        type = UserTypes.Owner,
-        email = param.email,
-        password = param.password,
-        name = param.name,
-      };
-      _users.Add(user);
+      _users.Register(user);
       _users.UnitOfWork.SaveChanges();
 
-      return JsonMessage("Success to register user");
+      return SuccessOperation("注册成功");
     }
 
     //
@@ -113,15 +99,20 @@ namespace Tiantong.Wms.Api
 
     public object AuthByEmail([FromBody] AuthEmailParams param)
     {
-      var user = _users.FindByEmail(param.email);
+      var user = _users.EnsureGetByEmail(param.email);
 
       if (!_users.MatchUserPassword(user, param.password)) {
-        throw new HttpException("email and password is not matched", 401);
+        throw new HttpException("登陆失败，账号或密码错误", 400);
       }
 
       var (token, expired_at, refresh_at) = _auth.Encode(user);
 
-      return new { token, expired_at, refresh_at };
+      return SuccessOperation(new {
+        token,
+        expired_at,
+        refresh_at,
+        message = "登陆成功"
+      });
     }
 
     public object RefreshToken()

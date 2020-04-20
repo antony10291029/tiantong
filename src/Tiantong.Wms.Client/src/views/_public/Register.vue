@@ -3,20 +3,17 @@
     <div class="columns is-vcentered is-gapless">
       <div
         class="login column is-3"
-        style="min-width: 360px;"
+        style="min-width: 360px"
       >
         <section class="section">
           <div class="title is-4 has-text-centered">
-            WMS 登陆
+            WMS 注册
           </div>
 
           <div class="field">
             <label class="label">电子邮箱</label>
             <div class="control has-icons-left">
-              <input
-                v-model.lazy="params.email"
-                class="input" type="text"
-              >
+              <input v-model.lazy="params.email" class="input" type="text">
               <span class="icon is-left">
                 <i class="iconfont icon-email"></i>
               </span>
@@ -26,30 +23,40 @@
           <div class="field">
             <label class="label">密码</label>
             <div class="control has-icons-left">
-              <input
-                v-model="params.password"
-                @keypress.enter="handleSubmit"
-                class="input" type="password"
-              >
+              <input v-model="params.password" class="input" type="password">
               <span class="icon is-left">
                 <i class="iconfont icon-password"></i>
               </span>
             </div>
           </div>
 
-          <div style="height: 0.5rem"></div>
-
-          <div class="has-text-centered">
-            <a
-              v-loading="isPending"
-              @click="handleSubmit"
-              class="button is-vcentered is-info is-outlined"
-            >登录</a>
+          <div class="field">
+            <label class="label">姓名</label>
+            <div class="control has-icons-left">
+              <input
+                class="input"
+                v-model="params.name"
+                @keypress.enter="handleSubmit"
+              >
+              <span class="icon is-left">
+                <i class="iconfont icon-name"></i>
+              </span>
+            </div>
           </div>
+
           <div style="height: 1rem"></div>
           <div class="has-text-centered">
-            <router-link to="/register">
-              没有账户？点击注册！
+            <AsyncButton
+              :handler="handleSubmit"
+              class="button is-vcentered is-info is-outlined"
+              @click="handleSubmit(params)"
+            >注册</AsyncButton>
+          </div>
+
+          <div style="height: 1rem"></div>
+          <div class="has-text-centered">
+            <router-link to="/login">
+              已有账户，直接登录！
             </router-link>
           </div>
         </section>
@@ -62,38 +69,35 @@
 <script>
 import axios from '@/providers/axios'
 import token from '@/providers/token'
-import router from '@/providers/router'
-import { notify } from '@/providers/notify'
+import { handleLogin } from './Login'
 import LoginBackground from './common/LoginBackground.vue'
-
-export async function handleLogin (params) {
-  const response = await axios.post('/auth/email', params)
-  token.set(response.data.token)
-  router.push('/home')
-}
+import AsyncButton from '@/components/AsyncButton.vue'
 
 export default {
-  name: 'Login',
+  name: 'Register',
   components: {
     LoginBackground,
+    AsyncButton,
   },
   data: () => ({
     params: {
       email: '',
       password: '',
+      name: '',
     },
     isPending: false
   }),
   methods: {
     async handleSubmit () {
       try {
+        this.isPending = true
+        await axios.post('/users/register', this.params)
         await handleLogin(this.params)
-        notify.info('登陆成功')
       } catch (error) {
-        notify.danger('登录失败，请重试')
+        this.isPending = false
         throw error
       }
     }
-  },
+  }
 }
 </script>

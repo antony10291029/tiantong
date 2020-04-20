@@ -12,13 +12,13 @@ namespace Tiantong.Wms.Api
     public virtual string email { get; set; }
 
     [JsonIgnore]
+    public virtual string type { get; set; }
+
+    [JsonIgnore]
     public virtual string password { get; set; }
 
     [StringRange(2, 50, ErrorMessage = "姓名长度必须在2～50之间")]
     public virtual string name { get; set; } = "";
-
-    [StringIn("owner", "keeper", ErrorMessage = "非法用户类型")]
-    public virtual string type { get; set; }
 
     public virtual bool is_enabled { get; set; } = true;
 

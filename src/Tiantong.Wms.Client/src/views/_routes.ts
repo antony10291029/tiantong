@@ -10,17 +10,22 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import('./Public/Register.vue'),
+    component: () => import('./_public/Register.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('./Public/Login.vue'),
+    component: () => import('./_public/Login.vue'),
+  },
+  {
+    path: '/password-reset',
+    name: 'PasswordReset',
+    component: () => import('./_public/PasswordReset/index.vue')
   },
   {
     path: '/unauthorization',
     name: 'Unthorization',
-    component: () => import('./Public/Unauthorization.vue')
+    component: () => import('./_public/Unauthorization.vue')
   },
   {
     path: '/',
@@ -240,12 +245,12 @@ const routes = [
   {
     path: '/test',
     name: 'Test',
-    component: () => import('./Public/Test.vue')
+    component: () => import('./_public/Test.vue')
   },
   {
     path: '*',
     name: 'NotFound',
-    component: () => import('./Public/NotFound.vue')
+    component: () => import('./_public/NotFound.vue')
   }
 ]
 

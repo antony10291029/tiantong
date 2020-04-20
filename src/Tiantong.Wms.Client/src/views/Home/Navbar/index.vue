@@ -43,11 +43,11 @@
 
           <div class="navbar-dropdown is-right">
             <router-link
-              to="/setting"
+              to="/password-reset"
               class="navbar-item"
               exact-active-class="is-active"
             >
-              设置
+              密码重置
             </router-link>
             <router-link
               to="/warehouses"

@@ -26,6 +26,11 @@ namespace Tiantong.Wms.Api
       Post("/auth/email", "User.AuthByEmail");
       Post("/auth/token/refresh", "User.RefreshToken");
 
+      Post("/password/reset/email/create", "PasswordReset.CreateByEmail");
+      Post("/password/reset/email/submit", "PasswordReset.SubmitByEmail");
+
+      Post("/verifications/email/verify", "EmailVerification.Verify");
+
       Post("/warehouses/create", "Warehouse.Create");
       Post("/warehouses/delete", "Warehouse.Delete");
       Post("/warehouses/update", "Warehouse.Update");

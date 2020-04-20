@@ -6,7 +6,7 @@ namespace Tiantong.Wms.DB
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.0030_CreateGoodCategoriesTable");
+      db.ExecuteFromSql("Migration.004000_CreateGoodCategoriesTable");
     }
 
     public void Down(DbContext db)

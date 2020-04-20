@@ -14,10 +14,10 @@ export default class extends Vue{
   @Prop({ required: true })
   value!: string
 
-  @Prop({ default: () => createdStatus })
+  @Prop({ required: true })
   createdStatus!: IStatus
 
-  @Prop({ default: () => finishedStatus })
+  @Prop({ required: true })
   finishedStatus!: IStatus
 
   get result () {
@@ -34,16 +34,6 @@ export default class extends Vue{
       }
     }
   }
-}
-
-const createdStatus: IStatus = {
-  text: '未完成',
-  color: 'warning'
-}
-
-const finishedStatus: IStatus = {
-  text: '已完成',
-  color: 'success'
 }
 
 interface IStatus {

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Renet.Web;
-using DBCore;
 using DBCore.Postgres;
 
 namespace Tiantong.Wms.Api
@@ -10,6 +9,9 @@ namespace Tiantong.Wms.Api
   {
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddSingleton<Mail>();
+      services.AddHostedService<MailHostedService>();
+
       services.AddControllers();
       services.AddHttpContextAccessor();
       services.AddSingleton<PostgresBuilder, DbBuilder>();
@@ -20,6 +22,8 @@ namespace Tiantong.Wms.Api
       services.AddSingleton<IRandom, Random>();
 
       services.AddScoped<UserRepository>();
+      services.AddScoped<PasswordResetRepository>();
+      services.AddScoped<EmailVerificationRepository>();
       services.AddScoped<WarehouseRepository>();
       services.AddScoped<WarehouseUserRepository>();
       services.AddScoped<DepartmentRepository>();

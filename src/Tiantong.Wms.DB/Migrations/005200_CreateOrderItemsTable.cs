@@ -6,7 +6,7 @@ namespace Tiantong.Wms.DB
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.0042_CreateOrderItemsTable");
+      db.ExecuteFromSql("Migration.005200_CreateOrderItemsTable");
     }
 
     public void Down(DbContext db)

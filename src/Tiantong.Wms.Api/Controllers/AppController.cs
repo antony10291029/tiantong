@@ -293,7 +293,7 @@ namespace Tiantong.Wms.Api
     private void InsertGoods()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _random.For(500, 500)(i => {
+        _random.For(20, 40)(i => {
           _db.Goods.Add(new Good {
             warehouse_id = warehouse.id,
             number = $"item_000{i}",
@@ -349,7 +349,7 @@ namespace Tiantong.Wms.Api
         var users = _db.WarehouseUsers.Include(wu => wu.user).Where(wu => wu.warehouse_id == warehouse.id).ToArray();
         var goods = _db.Goods.Include(good => good.items).Where(good => good.warehouse_id == warehouse.id).ToArray();
 
-        foreach (var i in _random.Enumerate(1000, 1000)) {
+        foreach (var i in _random.Enumerate(20, 40)) {
           _db.Orders.Add(new Order {
             warehouse_id = warehouse.id,
             number = $"PR{i}",

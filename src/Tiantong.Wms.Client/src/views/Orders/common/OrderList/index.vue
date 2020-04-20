@@ -65,7 +65,11 @@
             {{orderIndex + 1}}
           </td>
           <td :rowspan="orderRowspan">
-            <OrderStatusTag :value="order.status" />
+            <OrderStatusTag
+              :value="order.status"
+              :createdStatus="createdStatus"
+              :finishedStatus="finishedStatus"
+            />
             <div style="height: 0.5rem"></div>
             <DateWrapper :value="order.created_at"/>
           </td>
@@ -181,6 +185,13 @@ export default class extends DataSet {
   @Prop({ required: true })
   path!: string
 
+  @Prop({ default: () => createdStatus })
+  createdStatus!: object
+
+  @Prop({ default: () => finishedStatus })
+  finishedStatus!: object
+
+
   pageSize = 10
 
   api = this.path
@@ -194,5 +205,15 @@ export default class extends DataSet {
     }
   }
 
+}
+
+const createdStatus = {
+  text: '未完成',
+  color: 'warning'
+}
+
+const finishedStatus = {
+  text: '已完成',
+  color: 'success'
 }
 </script>
