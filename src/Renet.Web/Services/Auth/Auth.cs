@@ -50,27 +50,28 @@ namespace Renet.Web
         throw new AuthException("Authorization token must start with `Bearer `");
       }
       token = token.Substring(7);
-      var data = "";
 
       try {
-        data = new JwtBuilder()
+        var data = new JwtBuilder()
           .WithAlgorithm(new HMACSHA256Algorithm())
           .WithSecret(_secret)
           .Decode(token);
+
+        var json = JsonDocument.Parse(data);
+        var id = json.RootElement.GetProperty("id").GetInt32();
+        var exp = json.RootElement.GetProperty("exp").GetDateTime();
+        var rfa = json.RootElement.GetProperty("rfa").GetDateTime();
+
+        if (exp < DateTime.Now) {
+          throw new AuthTokenExpiredException("Auth token is expired");
+        }
+
+        return (id, exp, rfa);
+      } catch (AuthTokenExpiredException e) {
+        throw e;
       } catch {
         throw new AuthException("unable to decode Authorization token");
       }
-
-      var json = JsonDocument.Parse(data);
-      var id = json.RootElement.GetProperty("id").GetInt32();
-      var exp = json.RootElement.GetProperty("exp").GetDateTime();
-      var rfa = json.RootElement.GetProperty("rfa").GetDateTime();
-
-      if (exp < DateTime.Now) {
-        throw new AuthTokenExpiredException("Auth token is expired");
-      }
-
-      return (id, exp, rfa);
     }
   }
 }

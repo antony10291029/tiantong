@@ -40,7 +40,7 @@ namespace Renet.Web.Test
         if (expiredAt < DateTime.Now) {
           Assert.Fail("expect throw exception when auth token is expired");
         }
-      } catch (Exception) {
+      } catch (AuthTokenExpiredException) {
         if (expiredAt > DateTime.Now) {
           Assert.Fail("unexpected exception because token is valid");
         }
