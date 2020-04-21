@@ -74,6 +74,16 @@ namespace Tiantong.Wms.Api
     public override WarehouseUser Update(WarehouseUser wu)
     {
       var oldWu = EnsureGet(wu.warehouse_id, wu.user_id);
+      if (oldWu.department_id != wu.department_id) {
+        if (oldWu.department.type == DepartmentType.Owner) {
+          var count = Table
+            .Include(wu => wu.department)
+            .Count(wu => wu.department.id == oldWu.department_id);
+          if (count == 1) {
+            throw new FailureOperation("唯一仓库所有者不可变更");
+          }
+        }
+      }
       EnsureUser(wu.warehouse_id);
       _users.EnsureUnique(wu.user);
 
@@ -82,6 +92,7 @@ namespace Tiantong.Wms.Api
 
       oldUser.name = user.name;
       oldUser.email = user.email;
+      oldWu.department_id = wu.department_id;
 
       return wu;
     }
@@ -99,6 +110,18 @@ namespace Tiantong.Wms.Api
         );
     }
 
+    public void EnsureOwner(int warehouseId, int userId)
+    {
+      if (!IsOwner(warehouseId, userId)) {
+        throw new FailureOperation("该操作需要仓库所有者权限");
+      }
+    }
+
+    public void EnsureOwner(int warehouseId)
+    {
+      EnsureOwner(warehouseId, _auth.User.id);
+    }
+
     public WarehouseUser Find(int id)
     {
       var wu = EnsureGet(id);
@@ -111,6 +134,7 @@ namespace Tiantong.Wms.Api
     {
       return Table
         .Include(wu => wu.user)
+        .Include(wu => wu.department)
         .OrderBy(wu => wu.id)
         .Where(wu =>
           wu.warehouse_id == warehouseId &&
@@ -164,6 +188,7 @@ namespace Tiantong.Wms.Api
     {
       var wu = Table
         .Include(wu => wu.user)
+        .Include(wu => wu.department)
         .Where(wu => wu.id == id)
         .SingleOrDefault();
 
@@ -178,6 +203,7 @@ namespace Tiantong.Wms.Api
     {
       var wu = Table
         .Include(wu => wu.user)
+        .Include(wu => wu.department)
         .FirstOrDefault(wu =>
           wu.user_id == userId &&
           wu.warehouse_id == warehouseId

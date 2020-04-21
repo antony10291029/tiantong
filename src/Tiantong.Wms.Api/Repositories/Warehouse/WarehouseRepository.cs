@@ -26,7 +26,7 @@ namespace Tiantong.Wms.Api
       _auth = auth;
       Areas = new AreaRepository(db, this);
       Locations = new LocationRepository(db, this);
-      Departments = new DepartmentRepository(db, orders);
+      Departments = new DepartmentRepository(db, orders, this);
       Users = new WarehouseUserRepository(auth, db, users, this);
     }
 
@@ -34,17 +34,20 @@ namespace Tiantong.Wms.Api
     {
       var area = new Area { name = "默认区域" };
       var location = new Location { name  = "默认位置" };
-      var ownerDepartment = new Department {
-        name = "仓库所有者",
-        type = DepartmentType.Owner,
+      var userDepartment = new Department {
+        name = "仓库普通成员",
+        comment = "系统默认创建",
+        type = DepartmentType.User,
       };
       var adminDepartment = new Department {
         name = "仓库管理员",
+        comment = "系统默认创建",
         type = DepartmentType.Admin,
       };
-      var userDepartment = new Department {
-        name = "仓库普通成员",
-        type = DepartmentType.User,
+      var ownerDepartment = new Department {
+        name = "仓库所有者",
+        comment = "系统默认创建",
+        type = DepartmentType.Owner,
       };
       var WarehouseUser = new WarehouseUser {
         user_id = id == 0 ? _auth.User.id : id
@@ -85,23 +88,36 @@ namespace Tiantong.Wms.Api
       return Add(warehouse, 0);
     }
 
-    public Warehouse[] Search(int userId)
+    public override Warehouse Update(Warehouse warehouse)
+    {
+      Users.EnsureOwner(warehouse.id, _auth.User.id);
+
+      var oldWarehouse = Table.FirstOrDefault(
+        w => w.id == warehouse.id
+      );
+
+      DbContext.Entry(oldWarehouse).CurrentValues.SetValues(warehouse);
+
+      return warehouse;
+    }
+
+    public Warehouse[] Search()
     {
       return Users.Table
         .Include(wu => wu.warehouse)
-        .Where(wu => wu.user_id == userId)
+        .Where(wu => wu.user_id == _auth.User.id)
         .Select(wu => wu.warehouse)
         .OrderBy(wh => wh.number)
         .OrderBy(wh => wh.id)
         .ToArray();
     }
 
-    public Warehouse Find(int warehouseId, int userId)
+    public Warehouse Find(int warehouseId)
     {
       var warehouse = Users.Table
         .Include(wu => wu.warehouse)
         .Where(wu =>
-          wu.user_id == userId &&
+          wu.user_id == _auth.User.id &&
           wu.warehouse_id == warehouseId
         )
         .Select(wu => wu.warehouse)

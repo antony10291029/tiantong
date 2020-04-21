@@ -17,6 +17,7 @@
     <Table>
       <thead>
         <th style="width: 1px">#</th>
+        <th>部门</th>
         <th>邮箱</th>
         <th>姓名</th>
         <th style="width: 1px">操作</th>
@@ -24,6 +25,7 @@
       <tbody>
         <tr v-for="(entity, index) in warehouseUsers" :key="entity.id">
           <td>{{index + 1}}</td>
+          <td>{{entity.department.name}}</td>
           <td>{{entity.user.email}}</td>
           <td>{{entity.user.name}}</td>
           <td>

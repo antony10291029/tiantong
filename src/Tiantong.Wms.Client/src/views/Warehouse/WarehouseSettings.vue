@@ -1,32 +1,39 @@
 <template>
-  <AsyncLoader :handler="getData" class="is-flex-auto" style="max-width: 800px; padding: 1rem">
+  <AsyncLoader
+    :handler="getWarehouse"
+    class="is-flex-auto" style="max-width: 800px; padding: 1rem"
+  >
     <h1 class="title is-size-4">仓库设置</h1>
 
     <div class="field">
       <label class="label">名称</label>
       <div class="control">
-        <input class="input" type="text" v-model="params.name">
+        <input class="input" type="text" v-model="warehouse.name">
       </div>
     </div>
 
     <div class="field">
       <label class="label">编号</label>
       <div class="control">
-        <input class="input" type="text" v-model="params.number">
+        <Input
+          :default="null"
+          class="input" type="text"
+          v-model="warehouse.number"
+        />
       </div>
     </div>
 
     <div class="field">
       <label class="label">地址</label>
       <div class="control">
-        <Textarea v-model="params.address"></Textarea>
+        <Textarea v-model="warehouse.address"></Textarea>
       </div>
     </div>
 
     <div class="field">
       <label class="label">备注</label>
       <div class="control">
-        <Textarea v-model="params.comment"></Textarea>
+        <Textarea v-model="warehouse.comment"></Textarea>
       </div>
     </div>
 
@@ -47,12 +54,13 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import cloneDeep from 'lodash/cloneDeep'
-import axios from '@/providers/axios'
 import { Warehouse, getDiffs, isModified } from '@/Entities'
 import AsyncButton from '@/components/AsyncButton.vue'
 import AsyncLoader from '@/components/AsyncLoader.vue'
 import DataModifier from '@/mixins/data-modifier'
 import Textarea from '@/components/Textarea.vue'
+import axios from '@/providers/axios'
+import isEqual from 'lodash/isEqual'
 
 @Component({
   name: 'WarehouseSettings',
@@ -60,24 +68,36 @@ import Textarea from '@/components/Textarea.vue'
     AsyncButton,
     AsyncLoader,
     Textarea
-  },
-  mixins: [
-    DataModifier({
-      dataApi: 'warehouses/find',
-      dataParams: (vm: any) => ({ warehouse_id: vm.warehouseId }),
-      updateApi: 'warehouses/update',
-      data: 'warehouse'
-    })
-  ]
+  }
 })
 export default class extends Vue {
   @Prop({ required: true })
   warehouseId!: number
-  params = {
-    name: '',
-    number: '',
-    address: '',
-    comment: ''
+
+  warehouse: Warehouse = new Warehouse
+
+  sourceData: Warehouse = new Warehouse
+
+  get isChanged () {
+    return !isEqual(this.warehouse, this.sourceData)
+  }
+
+  handleReset () {
+    this.warehouse = cloneDeep(this.sourceData)
+  }
+
+  async handleSave () {
+    await axios.post('/warehouses/update', this.warehouse)
+    await this.getWarehouse()
+  }
+
+  async getWarehouse () {
+    let response = await axios.post('warehouses/find', {
+      id: this.warehouseId
+    })
+
+    this.sourceData = response.data
+    this.handleReset()
   }
 }
 </script>

@@ -23,6 +23,18 @@
             >
           </div>
         </div>
+
+        <div class="field">
+          <label class="label">部门</label>
+          <div class="control">
+            <DepartmentSelector
+              :warehouseId="warehouseId"
+              :department="warehouseUser.department"
+              @select="handleDepartmentSelect"
+            />
+          </div>
+        </div>
+
       </section>
       <footer class="modal-card-foot">
         <AsyncButton
@@ -44,14 +56,17 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import UserEmailField from './UserEmailField.vue'
 import axios from '../../providers/axios'
-import { WarehouseUser } from '@/Entities'
+import { WarehouseUser, Department } from '@/Entities'
 import AsyncButton from '@/components/AsyncButton.vue'
+import DepartmentSelector from '@/views/common/DepartmentSelector.vue'
+import cloneDeep from 'lodash/cloneDeep'
 
 @Component({
   name: 'WarehouseUserCreate',
   components: {
     AsyncButton,
     UserEmailField,
+    DepartmentSelector
   }
 })
 export default class extends Vue {
@@ -64,8 +79,15 @@ export default class extends Vue {
     this.$router.go(-1)
   }
 
+  handleDepartmentSelect (department: Department) {
+    this.warehouseUser.department = department
+    this.warehouseUser.department_id = department.id
+  }
+
   async handleSubmit () {
-    await axios.post('/warehouses/users/create', this.warehouseUser)
+    const param = cloneDeep(this.warehouseUser)
+    param.department = null
+    await axios.post('/warehouses/users/create', param)
     this.$emit('updated')
     this.handleClose()
   }

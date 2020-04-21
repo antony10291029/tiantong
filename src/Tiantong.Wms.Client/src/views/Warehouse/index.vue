@@ -57,7 +57,7 @@ export default class extends Vue {
 
   async getWarehouse () {
     var response = await axios.post('/warehouses/find', {
-      warehouse_id: this.warehouseId
+      id: this.warehouseId
     })
 
     this.warehouse = response.data
