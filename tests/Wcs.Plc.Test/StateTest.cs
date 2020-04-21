@@ -102,7 +102,7 @@ namespace Wcs.Plc.Test
       state.Collect(0);
       state.AddGetHook(_ => state.UncollectAsync());
       state.Set(100);
-      state.IntervalManager.Start().TryWait();
+      state.IntervalManager.Start().WaitAsync().AssertFinishIn();
     }
 
     [Test]
@@ -113,7 +113,7 @@ namespace Wcs.Plc.Test
 
       state.Heartbeat(0);
       state.AddSetHook(value => state.UnheartbeatAsync());
-      manager.Start().TryWait();
+      manager.Start().WaitAsync().AssertFinishIn();
     }
 
     [Test]
@@ -127,7 +127,7 @@ namespace Wcs.Plc.Test
       state.Watch().Event("watch");
       state.Collect(0);
       state.Set(1);
-      state.IntervalManager.Start().TryWait();
+      state.IntervalManager.Start().WaitAsync().AssertFinishIn();
     }
   }
 }

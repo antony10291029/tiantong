@@ -12,7 +12,7 @@ namespace Wcs.Plc.Test
 
       try {
         interval.SetHandler(() => {});
-        interval.Start().TryWait(1);
+        interval.Start().WaitAsync().AssertFinishIn(1);
         Assert.Fail("expect to throw exception when Interval.TryWait is timeout");
       } catch {}
     }
@@ -24,7 +24,7 @@ namespace Wcs.Plc.Test
       var interval = new Interval();
 
       interval.SetTimes(1).SetHandler(() => flag = true);
-      interval.Start().TryWait();
+      interval.Start().WaitAsync().AssertFinishIn();
 
       Assert.IsTrue(flag);
     }
@@ -36,7 +36,7 @@ namespace Wcs.Plc.Test
 
       try {
         interval.SetTimes(0).SetHandler(() => {});
-        interval.Start().TryWait(5);
+        interval.Start().WaitAsync().AssertFinishIn(1);
         Assert.Fail("expect not to stop interval with Interval.SetTime(0)");
       } catch {}
     }
@@ -49,7 +49,7 @@ namespace Wcs.Plc.Test
       var interval = new Interval();
 
       interval.SetTime(0).SetTimes(n).SetHandler(() => times++);
-      interval.Start().TryWait();
+      interval.Start().WaitAsync().AssertFinishIn();
 
       Assert.AreEqual(n, times);
     }
@@ -76,7 +76,7 @@ namespace Wcs.Plc.Test
 
       interval.SetTimes(m).SetHandler(() => times++);
       for (var i = 0; i < n; i++) {
-        interval.Start().TryWait();
+        interval.Start().WaitAsync().AssertFinishIn();
       }
 
       Assert.AreEqual(times, n * m);

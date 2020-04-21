@@ -15,13 +15,6 @@ namespace Tiantong.Wms.Api
       TaskQueue = taskQueue;
     }
 
-    protected void Enqueue(Func<CancellationToken, Task> task)
-    {
-      TaskQueue.Enqueue(task);
-    }
-
-    //
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
       await BackgroundProcessing(stoppingToken);

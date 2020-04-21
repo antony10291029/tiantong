@@ -1,5 +1,6 @@
 using System;
 using Wcs.Plc;
+using Wcs.Plc.DB.Sqlite;
 
 namespace App.CommandLine
 {
@@ -8,8 +9,10 @@ namespace App.CommandLine
     static void Main()
     {
       var plc = new Plc();
+      var migrator =  new Migrator();
+      migrator.Migrate();
 
-      plc.Name("测试200smart").UseS7200Smart("192.168.20.3", 102);
+      plc.Name("测试200smart").UseS7200Smart("192.168.20.10", 102);
 
       plc.State("hb").Int("D1.100").Heartbeat(1000).Collect(1000);
       plc.State("scanner").String("D1.120", 10).Collect(1000);

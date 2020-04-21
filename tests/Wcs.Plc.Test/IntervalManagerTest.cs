@@ -28,7 +28,7 @@ namespace Wcs.Plc.Test
       manager.Add(new Interval(() => {}, 100));
 
       try {
-        manager.Start().TryWait(1);
+        manager.Start().WaitAsync().AssertFinishIn(1);
         Assert.Fail("except to throw exception when IntervalManager.TryWait is timeout");
       } catch {};
     }
@@ -44,7 +44,7 @@ namespace Wcs.Plc.Test
       });
 
       for (var i = 0; i < n; i++) {
-        manager.Start().TryWait();
+        manager.Start().WaitAsync().AssertFinishIn();
       }
 
       Assert.AreEqual(n * m * time, times);
@@ -92,7 +92,7 @@ namespace Wcs.Plc.Test
         var interval = intervals[i];
         manager.Remove(interval);
       }
-      manager.TryWait();
+      manager.WaitAsync().AssertFinishIn();
 
       Assert.IsTrue(true);
     }
@@ -113,7 +113,7 @@ namespace Wcs.Plc.Test
 
       manager.Start();
       manager.Clear();
-      manager.TryWait();
+      manager.WaitAsync().AssertFinishIn();
 
       Assert.IsTrue(true);
     }

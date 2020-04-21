@@ -25,6 +25,9 @@ namespace Wcs.Plc.Entities
     [Column("port")]
     public int Port { get; set; } = 0;
 
+    [Column("is_running")]
+    public bool IsRunning { get; set; } = false;
+
     [Column("created_at")]
     [Required]
     public DateTime CreatedAt { get; set; }

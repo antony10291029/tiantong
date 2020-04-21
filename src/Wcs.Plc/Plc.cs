@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Wcs.Plc.Entities;
 
@@ -7,21 +8,21 @@ namespace Wcs.Plc
 {
   public class Plc : IPlc
   {
+    public Event Event;
+
     public EventPlugin EventLogger;
 
     public IStatePlugin StateLogger;
 
     public StateManager StateManager;
 
-    public Event Event;
-
-    public PlcConnection PlcConnection;
-
     public IntervalManager IntervalManager;
 
     public DatabaseProvider DatabaseProvider;
 
     public IStateClientProvider StateClientProvider;
+
+    public PlcConnection PlcConnection { get; set; }
 
     public Plc()
     {
@@ -32,9 +33,12 @@ namespace Wcs.Plc
 
     private IStateClientProvider GetStateClientProvider()
     {
+      var host = PlcConnection.Host;
+      var port = PlcConnection.Port;
+
       switch (PlcConnection.Model) {
-        case "S7200Smart": return new S7ClientProvider();
         case "test" : return new StateTestClientProvider();
+        case "S7200Smart": return new S7ClientProvider(host, port);
         default: throw new Exception("plc model is not supporting");
       }
     }
@@ -113,7 +117,7 @@ namespace Wcs.Plc
 
     public virtual IPlc UseS7200Smart(string host, int port = 102)
     {
-      StateClientProvider = new S7ClientProvider();
+      StateClientProvider = new S7ClientProvider(host, port);
       Model("S7200Smart").Host(host).Port(port).Build();
 
       return this;
@@ -161,11 +165,16 @@ namespace Wcs.Plc
           conn.Port = PlcConnection.Port;
           PlcConnection = conn;
         }
-
-        db.SaveChanges();
       } else {
-        throw new Exception("Plc Connection Id or Name does not existed");
+        throw new Exception("Plc Connection Id or Name is required");
       }
+
+      if (PlcConnection.IsRunning) {
+        throw new Exception($"PlcConnection Name({name}) is running");
+      }
+
+      PlcConnection.IsRunning = true;
+      db.SaveChanges();
     }
 
     public IStateManager State(string name)
@@ -226,6 +235,8 @@ namespace Wcs.Plc
     public IPlc Stop()
     {
       IntervalManager.Stop();
+      PlcConnection.IsRunning = false;
+      DatabaseProvider.Resolve().SaveChanges();
 
       return this;
     }
@@ -247,7 +258,9 @@ namespace Wcs.Plc
 
     public void Run()
     {
-      IntervalManager.Run();
+      Console.WriteLine("PLC后台程序开始执行");
+      RunAsync().GetAwaiter().GetResult();
     }
+
   }
 }

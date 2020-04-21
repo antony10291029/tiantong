@@ -7,9 +7,9 @@ namespace Wcs.Plc
   {
     private S7TcpClient _client;
 
-    public S7ClientProvider()
+    public S7ClientProvider(string host, int  port)
     {
-      _client = new S7TcpClient("192.168.20.3", 102);
+      _client = new S7TcpClient(host, port);
       _client.Use200Smart();
       _client.Connect();
     }

@@ -72,6 +72,8 @@ namespace Wcs.Plc
 
   public abstract class State<T> : State, IState<T>
   {
+    public T CurrentValue;
+
     private Hooks<T> _gethooks = new Hooks<T>();
 
     private Hooks<T> _sethooks = new Hooks<T>();
@@ -238,7 +240,7 @@ namespace Wcs.Plc
     public T Get()
     {
       var tasks = new List<Task>();
-      var data = HandleGet();
+      var data = CurrentValue = HandleGet();
 
       foreach (var hook in _gethooks.Values) {
         hook(data);

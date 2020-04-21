@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Renet.Tcp
 {
-  public class RenetTcpClient
+  public class RenetTcpClient: IDisposable
   {
-    private string _host;
+    public int Port;
 
-    private int _port;
+    public string Host;
 
     private Stream _stream;
 
@@ -23,10 +23,26 @@ namespace Renet.Tcp
 
     public RenetTcpClient(string host, int port)
     {
-      _host = host;
-      _port = port;
-      _client = new TcpClient(_host, _port);
+      Host = host;
+      Port = port;
+      _client = new TcpClient();
+      _client.Connect(Host, Port);
       _stream = _client.GetStream();
+    }
+
+    ~RenetTcpClient()
+    {
+      Dispose();
+    }
+
+    public void Dispose()
+    {
+      if (_client != null) {
+        _client.Dispose();
+      }
+      if (_stream != null) {
+        _stream.Dispose();
+      }
     }
 
     public void Close()
@@ -65,6 +81,7 @@ namespace Renet.Tcp
 
     public virtual bool Connect(int time = 0)
     {
+
       return true;
     }
 

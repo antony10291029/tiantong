@@ -1,10 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
   public interface IPlc
   {
+    PlcConnection PlcConnection { get; }
+
     IPlc Id(int id);
 
     IPlc Model(string key);
@@ -16,6 +19,8 @@ namespace Wcs.Plc
     IPlc Port(int port);
 
     IPlc Build();
+
+    IPlc UseTest();
 
     IPlc UseS7200Smart(string host, int port = 102);
 

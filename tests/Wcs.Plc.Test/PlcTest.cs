@@ -17,7 +17,7 @@ namespace Wcs.Plc.Test
       plc.Int("hb").Set(1);
 
       try {
-        plc.Start().TryWait(1);
+        plc.Start().WaitAsync().AssertFinishIn(1);
         Assert.Fail("except to throw exception when Plc.TryWait is timeout");
       } catch {}
     }
@@ -35,7 +35,7 @@ namespace Wcs.Plc.Test
         plc.Stop();
       });
 
-      plc.Start().TryWait();
+      plc.Start().WaitAsync().AssertFinishIn();
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Wcs.Plc.Test
         plc.Stop();
       });
 
-      plc.Start().TryWait();
+      plc.Start().WaitAsync().AssertFinishIn();
     }
 
     [Test]
