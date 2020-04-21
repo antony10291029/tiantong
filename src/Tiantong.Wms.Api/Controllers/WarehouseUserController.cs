@@ -10,9 +10,9 @@ namespace Tiantong.Wms.Api
   {
     private WarehouseUserRepository _warehouseUsers;
 
-    public WarehouseUserController(WarehouseUserRepository warehouseUsers)
+    public WarehouseUserController(WarehouseRepository warehouses)
     {
-      _warehouseUsers = warehouseUsers;
+      _warehouseUsers = warehouses.Users;
     }
 
     public object Create([FromBody] WarehouseUser wu)

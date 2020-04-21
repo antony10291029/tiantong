@@ -6,7 +6,7 @@ namespace Tiantong.Wms.Api
 {
   public class WarehouseController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private AreaRepository _areas;
 
@@ -23,14 +23,13 @@ namespace Tiantong.Wms.Api
     private WarehouseUserRepository _warehouseUsers;
 
     public WarehouseController(
-      IAuth auth,
+      Auth auth,
       AreaRepository areas,
       LocationRepository locations,
       SupplierRepository suppliers,
       WarehouseRepository warehouses,
       DepartmentRepository departments,
-      GoodCategoryRepository goodCategories,
-      WarehouseUserRepository warehouseusers
+      GoodCategoryRepository goodCategories
     ) {
       _auth = auth;
       _areas = areas;
@@ -39,7 +38,7 @@ namespace Tiantong.Wms.Api
       _warehouses = warehouses;
       _departments = departments;
       _goodCategories = goodCategories;
-      _warehouseUsers = warehouseusers;
+      _warehouseUsers = warehouses.Users;
     }
 
     public class WarehouseCreateParams
@@ -57,7 +56,7 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] WarehouseCreateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       _warehouses.UnitOfWork.BeginTransaction();
 
       var warehouse = new Warehouse {
@@ -112,8 +111,8 @@ namespace Tiantong.Wms.Api
 
     public object Delete([FromBody] WarehouseDeleteParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
       _warehouses.Remove(param.warehouse_id);
       _warehouses.UnitOfWork.SaveChanges();
 
@@ -138,7 +137,7 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] WarehouseUpdateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var warehouse = _warehouses.EnsureGetByOwner(param.id, _auth.User.id);
 
       if (param.number != null) warehouse.number = param.number;
@@ -155,7 +154,7 @@ namespace Tiantong.Wms.Api
 
     public Warehouse[] Search()
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
 
       return _warehouses.Search(_auth.User.id);
     }
@@ -168,7 +167,7 @@ namespace Tiantong.Wms.Api
 
     public Warehouse Find([FromBody] FindParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
 
       return _warehouses.Find(param.warehouse_id, _auth.User.id);
     }

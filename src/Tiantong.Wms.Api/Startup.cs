@@ -17,15 +17,14 @@ namespace Tiantong.Wms.Api
       services.AddSingleton<PostgresBuilder, DbBuilder>();
       services.AddDbContext<DbContext>();
       services.AddScoped<MigratorProvider>();
-      services.AddScoped<IAuth, Auth>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
 
+      services.AddScoped<Auth>();
       services.AddScoped<UserRepository>();
       services.AddScoped<PasswordResetRepository>();
       services.AddScoped<EmailVerificationRepository>();
       services.AddScoped<WarehouseRepository>();
-      services.AddScoped<WarehouseUserRepository>();
       services.AddScoped<DepartmentRepository>();
       services.AddScoped<AreaRepository>();
       services.AddScoped<LocationRepository>();

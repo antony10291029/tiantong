@@ -3,7 +3,7 @@ namespace Tiantong.Wms.Api
   public class RequisitionOrderRepository : OrderRepository
   {
     public RequisitionOrderRepository(
-      IAuth auth,
+      Auth auth,
       DbContext db,
       GoodRepository goods,
       StockRepository stocks,
@@ -11,9 +11,8 @@ namespace Tiantong.Wms.Api
       LocationRepository locations,
       SupplierRepository suppliers,
       WarehouseRepository warehouses,
-      DepartmentRepository departments,
-      WarehouseUserRepository warehouseUsers
-    ) : base(auth, db, goods, stocks, projects, locations, suppliers, warehouses, departments, warehouseUsers) {
+      DepartmentRepository departments
+    ) : base(auth, db, goods, stocks, projects, locations, suppliers, warehouses, departments) {
 
     }
 

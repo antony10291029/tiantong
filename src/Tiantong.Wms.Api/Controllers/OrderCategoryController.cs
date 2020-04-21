@@ -6,14 +6,14 @@
 // {
 //   public class OrderCategoryController : BaseController
 //   {
-//     private IAuth _auth;
+//     private Auth _auth;
 
 //     private WarehouseRepository _warehouses;
 
 //     private OrderCategoryRepository _orderCategories;
 
 //     public OrderCategoryController(
-//       IAuth auth,
+//       Auth auth,
 //       WarehouseRepository warehouses,
 //       OrderCategoryRepository orderCategories
 //     ) {
@@ -40,9 +40,9 @@
 
 //     public object Create([FromBody] OrderCategoryCreateParams param)
 //     {
-//       _auth.EnsureOwner();
+//       _auth.EnsureUser();
 //       var warehouseId = (int) param.warehouse_id;
-//       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+//       _warehouses.EnsureUser(warehouseId, _auth.User.id);
 //       _orderCategories.EnsureNameUnique(warehouseId, param.type, param.name);
 
 //       var category = new OrderCategory {
@@ -69,7 +69,7 @@
 
 //     public object Delete([FromBody] OrderCategoryDeleteParams param)
 //     {
-//       _auth.EnsureOwner();
+//       _auth.EnsureUser();
 //       var OrderCategory =  _orderCategories.EnsureGetByOwner((int) param.id, _auth.User.id);
 //       _orderCategories.Remove(OrderCategory.id);
 //       _orderCategories.UnitOfWork.SaveChanges();
@@ -91,7 +91,7 @@
 
 //     public object Update([FromBody] ProjectUpdateParams param)
 //     {
-//       _auth.EnsureOwner();
+//       _auth.EnsureUser();
 //       var category = _orderCategories.EnsureGetByOwner((int) param.id, _auth.User.id);
 
 //       if (param.comment != null) category.comment = param.comment;
@@ -115,9 +115,9 @@
 
 //     public OrderCategory[] Search([FromBody] OrderCategorySearchParams param)
 //     {
-//       _auth.EnsureOwner();
+//       _auth.EnsureUser();
 //       var warehouseId = (int) param.warehouse_id;
-//       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+//       _warehouses.EnsureUser(warehouseId, _auth.User.id);
 
 //       return _orderCategories.Search(warehouseId);
 //     }

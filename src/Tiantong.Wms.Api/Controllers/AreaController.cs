@@ -7,13 +7,13 @@ namespace Tiantong.Wms.Api
 {
   public class AreaController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private AreaRepository _areas;
 
     private WarehouseRepository _warehouses;
 
-    public AreaController(IAuth auth, AreaRepository areas, WarehouseRepository warehouses)
+    public AreaController(Auth auth, AreaRepository areas, WarehouseRepository warehouses)
     {
       _auth = auth;
       _areas = areas;
@@ -39,9 +39,9 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] AreaCreateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _warehouses.EnsureUser(warehouseId, _auth.User.id);
       _areas.EnsureNumberUnique(warehouseId, param.number);
 
       var area = new Area {
@@ -69,7 +69,7 @@ namespace Tiantong.Wms.Api
 
     public object Delete([FromBody] AreaDeleteParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var area = _areas.EnsureGetByOwner((int) param.id, _auth.User.id);
       _areas.Remove(area.id);
       _areas.UnitOfWork.SaveChanges();
@@ -95,7 +95,7 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] AreaUpdateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var area = _areas.EnsureGetByOwner((int) param.id, _auth.User.id);
 
       if (param.name != null) area.name = param.name;
@@ -122,9 +122,9 @@ namespace Tiantong.Wms.Api
 
     public Area[] Search([FromBody] AreaSearchParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _warehouses.EnsureUser(warehouseId, _auth.User.id);
 
       return _areas.Search(warehouseId);
     }

@@ -1,8 +1,7 @@
 using System;
 using System.Text.Json;
-using Renet.Web;
 
-namespace Tiantong.Wms.Api
+namespace Renet.Web
 {
   public class AuthException : Exception, IHttpException
   {

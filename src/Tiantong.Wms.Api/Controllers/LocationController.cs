@@ -8,7 +8,7 @@ namespace Tiantong.Wms.Api
 {
   public class LocationController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private AreaRepository _areas;
 
@@ -17,7 +17,7 @@ namespace Tiantong.Wms.Api
     private WarehouseRepository _warehouses;
 
     public LocationController(
-      IAuth auth,
+      Auth auth,
       AreaRepository areas,
       LocationRepository locations,
       WarehouseRepository warehouses
@@ -48,7 +48,7 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] LocationCreateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var area = _areas.EnsureGetByOwner((int) param.area_id, _auth.User.id);
       _locations.EnsureNumberUnique(area.warehouse_id, param.number);
       var location = new Location {
@@ -78,7 +78,7 @@ namespace Tiantong.Wms.Api
 
     public object Delete([FromBody] LocationDeleteParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var location = _locations.EnsureGetByOwner((int) param.id, _auth.User.id);
       _locations.Remove(location.id);
       _locations.UnitOfWork.SaveChanges();
@@ -106,7 +106,7 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] LocationUpdateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var location = _locations.EnsureGetByOwner((int) param.id, _auth.User.id);
 
       if (param.name != null) location.name = param.name;
@@ -132,15 +132,15 @@ namespace Tiantong.Wms.Api
 
     public Location[] Search([FromBody] SearchParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _locations.Search(param.warehouse_id);
     }
 
     public IEntities<Location, int> All([FromBody] SearchParams param)
     {
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _locations.Table
         .Where(l => l.warehouse_id == param.warehouse_id)

@@ -47,7 +47,7 @@ namespace Tiantong.Wms.Api
     public Location EnsureGetByOwner(int id, int userId)
     {
       var location = EnsureGet(id);
-      _warehouses.EnsureOwner(location.warehouse_id, userId);
+      _warehouses.EnsureUser(location.warehouse_id, userId);
 
       return location;
     }

@@ -7,11 +7,11 @@ namespace Tiantong.Wms.Api
 {
   public class UserController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private UserRepository _users;
 
-    public UserController(UserRepository users, IAuth auth)
+    public UserController(UserRepository users, Auth auth)
     {
       _auth = auth;
       _users = users;
@@ -26,7 +26,7 @@ namespace Tiantong.Wms.Api
 
     public IPagination<User> Search([FromBody] SearchParams param)
     {
-      _auth.EnsureType(UserTypes.Root);
+      _auth.EnsureType(UserType.Root);
 
       return _users.Table.Paginate(param.page, param.page_size);
     }
@@ -81,7 +81,7 @@ namespace Tiantong.Wms.Api
 
     public User GetPersonProfile()
     {
-      _auth.Ensure();
+      _auth.EnsureValid();
 
       return _auth.User;
     }
@@ -117,7 +117,7 @@ namespace Tiantong.Wms.Api
 
     public object RefreshToken()
     {
-      _auth.Ensure();
+      _auth.EnsureValid();
 
       var (token, expired_at, refresh_at) = _auth.Encode(_auth.User);
 

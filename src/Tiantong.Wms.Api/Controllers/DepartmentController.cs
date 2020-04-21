@@ -7,14 +7,14 @@ namespace Tiantong.Wms.Api
 {
   public class DepartmentController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private DepartmentRepository _departments;
 
     private WarehouseRepository _warehouses;
 
     public DepartmentController(
-      IAuth auth,
+      Auth auth,
       WarehouseRepository warehouses,
       DepartmentRepository departments
     ) {
@@ -25,8 +25,8 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] Department department)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(department.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(department.warehouse_id, _auth.User.id);
       _departments.EnsureUnique(department);
 
       _departments.Add(department);
@@ -37,8 +37,8 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] Department department)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(department.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(department.warehouse_id, _auth.User.id);
 
       _departments.EnsureUnique(department);
       _departments.Update(department);
@@ -54,9 +54,9 @@ namespace Tiantong.Wms.Api
 
     public object Remove([FromBody] RemoveParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var department = _departments.EnsureGet(param.id);
-      _warehouses.EnsureOwner(department.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(department.warehouse_id, _auth.User.id);
       _departments.Remove(department);
       _departments.UnitOfWork.SaveChanges();
 
@@ -70,9 +70,9 @@ namespace Tiantong.Wms.Api
 
     public Department Find([FromBody] FindParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var department = _departments.EnsureGet(param.id);
-      _warehouses.EnsureOwner(department.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(department.warehouse_id, _auth.User.id);
 
       return department;
     }
@@ -86,8 +86,8 @@ namespace Tiantong.Wms.Api
 
     public IEntities<Department, int> All([FromBody] AllParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _departments.Table
         .Where(department =>

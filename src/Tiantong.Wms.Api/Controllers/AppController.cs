@@ -9,7 +9,7 @@ namespace Tiantong.Wms.Api
 {
   public class AppController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private DbContext _db;
 
@@ -22,7 +22,7 @@ namespace Tiantong.Wms.Api
     private UserRepository _users;
 
     public AppController(
-      IAuth auth,
+      Auth auth,
       DbContext db,
       MigratorProvider migratorProvider,
       IRandom random,
@@ -85,7 +85,7 @@ namespace Tiantong.Wms.Api
     private void InitializeRootUser()
     {
       var user = new User {
-        type = UserTypes.Root,
+        type = UserType.Root,
         password = _config.GetValue("root_password", "123456"),
         email = _config.GetValue("root_email", "root@system.com"),
       };
@@ -135,7 +135,7 @@ namespace Tiantong.Wms.Api
     {
       _random.For(2, 2)(i => {
         _users.Add(new User {
-          type = UserTypes.Owner,
+          type = UserType.User,
           password = "123456",
           name = $"测试用户_{i}",
           email = "owner" + (i == 1 ? "" : i.ToString()) + "@wms.com"

@@ -7,14 +7,14 @@
 // {
 //   public class StockRecordController : BaseController
 //   {
-//     private IAuth _auth;
+//     private Auth _auth;
 
 //     private WarehouseRepository _warehouses;
 
 //     private StockRecordRepository _stockRecords;
 
 //     public StockRecordController(
-//       IAuth auth,
+//       Auth auth,
 //       WarehouseRepository warehouses,
 //       StockRecordRepository stockRecords
 //     ) {
@@ -31,9 +31,9 @@
 
 //     public StockRecord[] Search([FromBody] StockRecordSearchParams param)
 //     {
-//       _auth.EnsureOwner();
+//       _auth.EnsureUser();
 //       var warehouseId = (int) param.warehouse_id;
-//       _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+//       _warehouses.EnsureUser(warehouseId, _auth.User.id);
 
 //       return _stockRecords.Table
 //         .Where(record => record.warehouse_id == warehouseId)

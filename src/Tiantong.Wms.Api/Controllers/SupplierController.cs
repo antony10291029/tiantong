@@ -7,14 +7,14 @@ namespace Tiantong.Wms.Api
 {
   public class SupplierController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private SupplierRepository _suppliers;
 
     private WarehouseRepository _warehouses;
 
     public SupplierController(
-      IAuth auth,
+      Auth auth,
       SupplierRepository suppliers,
       WarehouseRepository warehouses
     ) {
@@ -38,8 +38,8 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] SupplierCreateParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
       _suppliers.EnsureNameUnique(param.warehouse_id, param.name);
 
       var supplier = new Supplier {
@@ -62,7 +62,7 @@ namespace Tiantong.Wms.Api
     public object Remove([FromBody] RemoveParams param)
     {
       var supplier = _suppliers.EnsureGet(param.id);
-      _warehouses.EnsureOwner(supplier.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(supplier.warehouse_id, _auth.User.id);
 
       _suppliers.Remove(supplier);
       _suppliers.UnitOfWork.SaveChanges();
@@ -84,9 +84,9 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] SupplierUpdateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var supplier = _suppliers.EnsureGet(param.id);
-      _warehouses.EnsureOwner(supplier.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(supplier.warehouse_id, _auth.User.id);
 
       if (param.name != null) {
         _suppliers.EnsureNameUnique(supplier.warehouse_id, param.name);
@@ -109,8 +109,8 @@ namespace Tiantong.Wms.Api
 
     public IPagination<Supplier> Search([FromBody] SearchParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _suppliers.Table
         .Where(supplier =>
@@ -132,8 +132,8 @@ namespace Tiantong.Wms.Api
 
     public Supplier Find([FromBody] FindParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
       _suppliers.EnsureId(param.warehouse_id, param.supplier_id);
 
       return _suppliers.EnsureGet(param.supplier_id);
@@ -146,8 +146,8 @@ namespace Tiantong.Wms.Api
 
     public IEntities<Supplier, int> All([FromBody] AllParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _suppliers.Table
         .Where(supplier => supplier.warehouse_id == param.warehouse_id)

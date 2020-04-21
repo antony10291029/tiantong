@@ -4,12 +4,12 @@ namespace Tiantong.Wms.DB
 {
   public class CreateDepartmentsTable : IMigration
   {
-    public void Up(DBCore.DbContext db)
+    public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.003200_CreateDepartmentsTable");
+      db.ExecuteFromSql("Migration.003100_CreateDepartmentsTable");
     }
 
-    public void Down(DBCore.DbContext db)
+    public void Down(DbContext db)
     {
       db.ExecuteSql("drop table if exists departments");
     }

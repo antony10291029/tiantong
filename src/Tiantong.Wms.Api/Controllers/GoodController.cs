@@ -8,7 +8,7 @@ namespace Tiantong.Wms.Api
 {
   public class GoodController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private GoodRepository _goods;
 
@@ -21,7 +21,7 @@ namespace Tiantong.Wms.Api
     private GoodCategoryRepository _goodCategories;
 
     public GoodController(
-      IAuth auth,
+      Auth auth,
       GoodRepository goods,
       ItemRepository items,
       StockRepository stocks,
@@ -39,8 +39,8 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] Good good)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(good.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(good.warehouse_id, _auth.User.id);
 
       _goods.Add(good);
       _goods.UnitOfWork.SaveChanges();
@@ -61,7 +61,7 @@ namespace Tiantong.Wms.Api
 
     public object AddGoodItem([FromBody] AddGoodItemParams param)
     {
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       var good = _goods.Table.Include(g => g.items)
         .FirstOrDefault(g =>
@@ -101,7 +101,7 @@ namespace Tiantong.Wms.Api
     public object Delete([FromBody] DeleteParams param)
     {
       var good = _goods.EnsureGet(param.id);
-      _warehouses.EnsureOwner(good.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(good.warehouse_id, _auth.User.id);
 
       _goods.Remove(good);
       _goods.UnitOfWork.SaveChanges();
@@ -111,8 +111,8 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] Good good)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(good.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(good.warehouse_id, _auth.User.id);
       _goods.Update(good);
       _goods.UnitOfWork.SaveChanges();
 
@@ -127,9 +127,9 @@ namespace Tiantong.Wms.Api
 
     public IPagination<Good> Search([FromBody] SearchParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var warehouseId = (int) param.warehouse_id;
-      _warehouses.EnsureOwner(warehouseId, _auth.User.id);
+      _warehouses.EnsureUser(warehouseId, _auth.User.id);
 
       var goods = _goods.Table
         .Include(good => good.items)
@@ -159,10 +159,10 @@ namespace Tiantong.Wms.Api
 
     public Good Find([FromBody] FindParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
 
       var good = _goods.EnsureGet(param.id);
-      _warehouses.EnsureOwner(good.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(good.warehouse_id, _auth.User.id);
       good.items = good.items.OrderBy(item => item.index).ToList();
 
       return good;
@@ -177,7 +177,7 @@ namespace Tiantong.Wms.Api
     {
       var item = _goods.Items.EnsureGet(param.id);
       var good = _goods.EnsureGet(item.good_id);
-      _warehouses.EnsureOwner(good.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(good.warehouse_id, _auth.User.id);
       if (_goods.Items.isRemovable(item)) {
         return new { deletable = true };
       } else {

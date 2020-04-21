@@ -7,7 +7,7 @@ namespace Tiantong.Wms.Api
 {
   public class GoodCategoryController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private WarehouseRepository _warehouses;
 
@@ -16,7 +16,7 @@ namespace Tiantong.Wms.Api
     private GoodCategoryRepository _itemCategories;
 
     public GoodCategoryController(
-      IAuth auth,
+      Auth auth,
       GoodRepository goods,
       WarehouseRepository warehouses,
       GoodCategoryRepository itemCategories
@@ -44,8 +44,8 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] GoodCategoryCreateParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
       _itemCategories.EnsureNameUnique(param.warehouse_id, param.name);
 
       if (param.number != null) {
@@ -73,7 +73,7 @@ namespace Tiantong.Wms.Api
 
     public object Delete([FromBody] GoodCategoryDeleteParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var category =  _itemCategories.EnsureGetByOwner(param.category_id, _auth.User.id);
 
       // if (_goods.HasCategory(category.warehouse_id, category.id)) {
@@ -102,7 +102,7 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] UpdateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var category = _itemCategories.EnsureGetByOwner(param.id, _auth.User.id);
 
       if (param.comment != null) category.comment = param.comment;
@@ -130,8 +130,8 @@ namespace Tiantong.Wms.Api
 
     public IPagination<GoodCategory> Search([FromBody] SearchParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _itemCategories.Table
         .Where(category =>
@@ -153,8 +153,8 @@ namespace Tiantong.Wms.Api
 
     public GoodCategory Find([FromBody] FindParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _itemCategories.EnsureGet(param.category_id, param.warehouse_id);
     }

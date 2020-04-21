@@ -4,12 +4,12 @@ namespace Tiantong.Wms.DB
 {
   public class CreatePasswordResetsTable : IMigration
   {
-    public void Up(DBCore.DbContext db)
+    public void Up(DbContext db)
     {
       db.ExecuteFromSql("Migration.001200_CreatePasswordResetsTable");
     }
 
-    public void Down(DBCore.DbContext db)
+    public void Down(DbContext db)
     {
       db.ExecuteSql("drop table if exists password_resets");
     }

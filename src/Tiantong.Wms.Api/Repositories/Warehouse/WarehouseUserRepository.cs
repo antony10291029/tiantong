@@ -6,15 +6,19 @@ namespace Tiantong.Wms.Api
 {
   public class WarehouseUserRepository : Repository<WarehouseUser, int>
   {
+    private Auth _auth;
+
     private UserRepository _users;
 
     private WarehouseRepository _warehouses;
 
     public WarehouseUserRepository(
+      Auth auth,
       DbContext db,
       UserRepository users,
       WarehouseRepository warehouses
     ) : base(db) {
+      _auth = auth;
       _users = users;
       _warehouses = warehouses;
     }
@@ -23,7 +27,7 @@ namespace Tiantong.Wms.Api
 
     public override WarehouseUser Add(WarehouseUser wu)
     {
-      _warehouses.EnsureOwnership(wu.warehouse_id);
+      EnsureUser(wu.warehouse_id);
       if (wu.user == null) {
         EnsureUnique(wu);
         DbContext.Add(wu);
@@ -54,7 +58,7 @@ namespace Tiantong.Wms.Api
     public override bool Remove(int id)
     {
       var wu = EnsureGet(id);
-      _warehouses.EnsureOwnership(wu.warehouse_id);
+      EnsureUser(wu.warehouse_id);
 
       if (_warehouses.IsOwner(wu.warehouse_id, wu.user_id)) {
         throw new FailureOperation("无法删除仓库的拥有者");
@@ -70,7 +74,7 @@ namespace Tiantong.Wms.Api
     public override WarehouseUser Update(WarehouseUser wu)
     {
       var oldWu = EnsureGet(wu.warehouse_id, wu.user_id);
-      _warehouses.EnsureOwnership(wu.warehouse_id);
+      EnsureUser(wu.warehouse_id);
       _users.EnsureUnique(wu.user);
 
       var user = wu.user;
@@ -87,7 +91,7 @@ namespace Tiantong.Wms.Api
     public WarehouseUser Find(int id)
     {
       var wu = EnsureGet(id);
-      _warehouses.EnsureOwnership(wu.warehouse_id);
+      EnsureUser(wu.warehouse_id);
 
       return wu;
     }
@@ -107,6 +111,18 @@ namespace Tiantong.Wms.Api
         )
         .OrderBy(wu => wu.user.name)
         .ToEntities();
+    }
+
+    public void EnsureUser(int warehouseId)
+    {
+      if (
+        !Table.Any(wu =>
+          wu.user_id == _auth.User.id &&
+          wu.warehouse_id == warehouseId
+        )
+      ) {
+        throw new FailureOperation("仓库用户认证失败");
+      }
     }
 
     public void EnsureExists(int warehouseId, int userId)

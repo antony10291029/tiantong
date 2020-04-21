@@ -9,7 +9,7 @@ namespace Tiantong.Wms.Api
 
     public IQueryable<User> Owners
     {
-      get => Table.Where(user => user.type == UserTypes.Owner)
+      get => Table.Where(user => user.type == UserType.User)
         .OrderBy(user => user.id);
     }
 
@@ -31,7 +31,7 @@ namespace Tiantong.Wms.Api
       var entity = new User {
         name = user.name,
         email = user.email,
-        type = UserTypes.Owner,
+        type = UserType.User,
         password = user.password,
       };
 

@@ -9,7 +9,7 @@ namespace Tiantong.Wms.Api
 {
   public class OrderRepository : BaseOrderRepository
   {
-    protected IAuth Auth;
+    protected Auth Auth;
 
     protected GoodRepository Goods;
 
@@ -25,10 +25,8 @@ namespace Tiantong.Wms.Api
 
     protected DepartmentRepository Departments;
 
-    protected WarehouseUserRepository WarehouseUsers;
-
     public OrderRepository(
-      IAuth auth,
+      Auth auth,
       DbContext db,
       GoodRepository goods,
       StockRepository stocks,
@@ -36,8 +34,7 @@ namespace Tiantong.Wms.Api
       LocationRepository locations,
       SupplierRepository suppliers,
       WarehouseRepository warehouses,
-      DepartmentRepository departments,
-      WarehouseUserRepository warehouseUsers
+      DepartmentRepository departments
     ) : base(db) {
       Auth = auth;
       Goods = goods;
@@ -47,7 +44,6 @@ namespace Tiantong.Wms.Api
       Suppliers = suppliers;
       Warehouses = warehouses;
       Departments = departments;
-      WarehouseUsers = warehouseUsers;
     }
 
     protected virtual bool RequireSupplier { get; } = false;
@@ -58,14 +54,12 @@ namespace Tiantong.Wms.Api
 
     private void EnsureRelationships(Order order)
     {
-      Warehouses.EnsureOwnership(order.warehouse_id);
-
-      WarehouseUsers.EnsureExists(order.warehouse_id, order.operator_id);
+      Warehouses.Users.EnsureExists(order.warehouse_id, order.operator_id);
       if (RequireDepartment || (order.department_id != 0)) {
         Departments.EnsureExists(order.warehouse_id, order.department_id);
       }
       if (RequireApplicant || (order.applicant_id != 0)) {
-        WarehouseUsers.EnsureExists(order.warehouse_id, order.applicant_id);
+        Warehouses.Users.EnsureExists(order.warehouse_id, order.applicant_id);
       }
       if (RequireSupplier || (order.supplier_id != 0)) {
         Suppliers.EnsureExists(order.warehouse_id, order.supplier_id);
@@ -103,7 +97,7 @@ namespace Tiantong.Wms.Api
 
     public void Remove(int warehouseId, int orderId, string type)
     {
-      Warehouses.EnsureOwnership(warehouseId);
+      Warehouses.Users.EnsureUser(warehouseId);
       var order = EnsureGet(warehouseId, orderId, type);
       if (order.status != OrderStatus.Created) {
         throw new FailureOperation("无法删除已完成的订单");
@@ -193,7 +187,7 @@ namespace Tiantong.Wms.Api
 
     public void Finish(int warehouseId, int orderId, int locationId, string type)
     {
-      Warehouses.EnsureOwnership(warehouseId);
+      Warehouses.Users.EnsureUser(warehouseId);
 
       var order = EnsureGet(warehouseId, orderId, type);
 
@@ -235,7 +229,7 @@ namespace Tiantong.Wms.Api
 
     public void File(int warehouseId, int orderId, string type)
     {
-      Warehouses.EnsureOwnership(warehouseId);
+      Warehouses.Users.EnsureUser(warehouseId);
       var order = EnsureGet(warehouseId, orderId, type);
 
       if (order.status != OrderStatus.Finished) {
@@ -247,7 +241,7 @@ namespace Tiantong.Wms.Api
 
     public void Restore(int warehouseId, int orderId, string type)
     {
-      Warehouses.EnsureOwnership(warehouseId);
+      Warehouses.Users.EnsureUser(warehouseId);
       var order = EnsureGet(warehouseId, orderId, type);
 
       if (order.status != OrderStatus.Filed) {
@@ -283,7 +277,7 @@ namespace Tiantong.Wms.Api
 
     public object Find(int warehouseId, int orderId, string type)
     {
-      Warehouses.EnsureOwnership(warehouseId);
+      Warehouses.Users.EnsureUser(warehouseId);
 
       var order = EnsureGet(warehouseId, orderId, type);
       var goodIds = order.items.Select(item => item.good_id).ToArray();
@@ -303,7 +297,7 @@ namespace Tiantong.Wms.Api
 
     public IPagination<Order> Search(int warehouseId, string type, string status, string search, int page, int pageSize)
     {
-      Warehouses.EnsureOwnership(warehouseId);
+      Warehouses.Users.EnsureUser(warehouseId);
 
       var itemIds = Enumerable.Empty<int>();
       var goodIds = Enumerable.Empty<int>();

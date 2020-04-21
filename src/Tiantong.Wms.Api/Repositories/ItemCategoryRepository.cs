@@ -71,7 +71,7 @@ namespace Tiantong.Wms.Api
     public GoodCategory EnsureGetByOwner(int id, int userId)
     {
       var category = EnsureGet(id);
-      _warehouses.EnsureOwner(category.warehouse_id, userId);
+      _warehouses.EnsureUser(category.warehouse_id, userId);
 
       return category;
     }

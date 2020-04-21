@@ -8,7 +8,7 @@
 // {
 //   public class OrderInboundCompleteController : BaseController
 //   {
-//     private IAuth _auth;
+//     private Auth _auth;
 
 //     private ItemRepository _items;
 
@@ -29,7 +29,7 @@
 //     private OrderCategoryRepository _orderCategories;
 
 //     public OrderInboundCompleteController(
-//       IAuth auth,
+//       Auth auth,
 //       ItemRepository items,
 //       OrderRepository orders,
 //       StockRepository stocks,
@@ -94,13 +94,13 @@
 
 //     public object Handle([FromBody] Params param)
 //     {
-//       // _auth.EnsureOwner();
+//       // _auth.EnsureUser();
 
 //       // var itemKeys = param.items.Select(item => item.key).ToArray();
 //       // var itemIds = param.items.Select(item => item.item_id).ToArray();
 //       // var locationIds = param.items.Select(item => item.location_id).ToArray();
 
-//       // _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+//       // _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 //       // _orders.EnsureNumberUnique(param.warehouse_id, param.number);
 //       // _orderCategories.EnsureId(param.warehouse_id, param.category_id);
 //       // _suppliers.EnsureId(param.warehouse_id, param.supplier_id);
@@ -164,8 +164,8 @@
 
 //     public Order[] Search([FromBody] SearchParams param)
 //     {
-//       _auth.EnsureOwner();
-//       _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+//       _auth.EnsureUser();
+//       _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
 //       return _orders.Table.Where(order => order.type == "inbound").ToArray();
 //     }

@@ -9,14 +9,14 @@ namespace Tiantong.Wms.Api
 {
   public class ProjectController : BaseController
   {
-    private IAuth _auth;
+    private Auth _auth;
 
     private ProjectRepository _projects;
 
     private WarehouseRepository _warehouses;
 
     public ProjectController(
-      IAuth auth,
+      Auth auth,
       ProjectRepository projects,
       WarehouseRepository warehouses
     ) {
@@ -48,8 +48,8 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] CreateParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
       _projects.EnsureNumberUnique(param.warehouse_id, param.number);
 
       var project = new Project {
@@ -75,9 +75,9 @@ namespace Tiantong.Wms.Api
 
     public object Remove([FromBody] RemoveParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var project = _projects.EnsureGet(param.id);
-      _warehouses.EnsureOwner(project.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(project.warehouse_id, _auth.User.id);
 
       _projects.Remove(project);
       _projects.UnitOfWork.SaveChanges();
@@ -107,9 +107,9 @@ namespace Tiantong.Wms.Api
 
     public object Update([FromBody] ProjectUpdateParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var project = _projects.EnsureGet(param.id);
-      _warehouses.EnsureOwner(project.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(project.warehouse_id, _auth.User.id);
 
       if (param.name != null) project.name = param.name;
       if (param.comment != null) project.comment = param.comment;
@@ -142,8 +142,8 @@ namespace Tiantong.Wms.Api
 
     public IPagination<Project> Search([FromBody] SearchParams param)
     {
-      _auth.EnsureOwner();
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _auth.EnsureUser();
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _projects.Table
         .Where(project =>
@@ -166,7 +166,7 @@ namespace Tiantong.Wms.Api
 
     public IEntities<Project, int> All([FromBody] SearchAllParams param)
     {
-      _warehouses.EnsureOwner(param.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(param.warehouse_id, _auth.User.id);
 
       return _projects.Table.Where(
         project => project.warehouse_id == param.warehouse_id
@@ -180,9 +180,9 @@ namespace Tiantong.Wms.Api
 
     public Project Find([FromBody] FindParams param)
     {
-      _auth.EnsureOwner();
+      _auth.EnsureUser();
       var project = _projects.EnsureGet(param.id);
-      _warehouses.EnsureOwner(project.warehouse_id, _auth.User.id);
+      _warehouses.EnsureUser(project.warehouse_id, _auth.User.id);
 
       return project;
     }
