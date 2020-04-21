@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
 
@@ -56,11 +55,7 @@ namespace Tiantong.Wms.Api
 
     public object Create([FromBody] WarehouseCreateParams param)
     {
-      _auth.EnsureUser();
-      _warehouses.UnitOfWork.BeginTransaction();
-
       var warehouse = new Warehouse {
-        owner_user_id = _auth.User.id,
         number = param.number,
         name = param.name,
         address = param.address,
@@ -68,41 +63,10 @@ namespace Tiantong.Wms.Api
         is_enabled = param.is_enabled,
       };
       _warehouses.Add(warehouse);
-      _warehouses.UnitOfWork.SaveChanges();
-
-      var area = _areas.Add(new Area {
-        warehouse_id = warehouse.id,
-        name = "默认区域",
-      });
-      _warehouses.UnitOfWork.SaveChanges();
-
-      _locations.Add(new Location {
-        warehouse_id = warehouse.id,
-        area_id = area.id, 
-        name = "默认位置"
-      });
-      _suppliers.Add(new Supplier {
-        warehouse_id = warehouse.id,
-        name = "默认供应商",
-      });
-      _goodCategories.Add(new GoodCategory {
-        warehouse_id = warehouse.id,
-        name = "默认货类"
-      });
-      _departments.Add(new Department {
-        warehouse_id = warehouse.id,
-        name = "默认部门",
-      });
-      _warehouseUsers.Add(new WarehouseUser {
-        warehouse_id = warehouse.id,
-        user_id = warehouse.owner_user_id,
-      });
-      _warehouses.UnitOfWork.SaveChanges();
-      _warehouses.UnitOfWork.Commit();
 
       return SuccessOperation("仓库已创建", warehouse.id);
     }
-
+ 
     public class WarehouseDeleteParams
     {
       [Nonzero]

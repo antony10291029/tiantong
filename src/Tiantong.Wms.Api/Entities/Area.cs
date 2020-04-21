@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Tiantong.Wms.Api
 {
@@ -18,5 +20,8 @@ namespace Tiantong.Wms.Api
 
     public bool is_enabled { get; set; } = true;
 
+    [JsonIgnore]
+    [ForeignKey("area_id")]
+    public List<Location> locations { get; set; }
   }
 }

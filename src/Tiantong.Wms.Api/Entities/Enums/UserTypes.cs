@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 namespace Tiantong.Wms.Api
 {
   public static class UserType

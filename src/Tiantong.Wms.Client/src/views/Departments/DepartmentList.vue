@@ -20,8 +20,8 @@
     <Table>
       <thead>
         <th style="width: 1px">#</th>
-        <th>邮箱</th>
-        <th>姓名</th>
+        <th>部门</th>
+        <th>备注</th>
         <th style="width: 1px">操作</th>
       </thead>
       <tbody>

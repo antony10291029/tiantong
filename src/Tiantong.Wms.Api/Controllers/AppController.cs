@@ -21,13 +21,16 @@ namespace Tiantong.Wms.Api
 
     private UserRepository _users;
 
+    private WarehouseRepository _warehouses;
+
     public AppController(
       Auth auth,
       DbContext db,
       MigratorProvider migratorProvider,
       IRandom random,
       IConfiguration config,
-      UserRepository users
+      UserRepository users,
+      WarehouseRepository warehouses
     ) {
       _db = db;
       _migratorProvider = migratorProvider;
@@ -35,6 +38,7 @@ namespace Tiantong.Wms.Api
       _config = config;
       _random = random;
       _users = users;
+      _warehouses = warehouses;
     }
 
     public object Home()
@@ -149,26 +153,19 @@ namespace Tiantong.Wms.Api
     {
       _users.Owners.OrderBy(user => user.id).Take(3).ToList().ForEach(owner => {
         _random.For(2, 2)(i => {
-          _db.Warehouses.Add(new Warehouse() {
-            owner_user_id = owner.id,
+          _warehouses.Add(new Warehouse() {
             number = $"WH000{i}",
             name = $"测试仓库 {i}",
             address = $"地址 {i}",
             comment = $"备注 {i}",
-          });
+          }, owner.id);
         });
       });
-
-      _db.SaveChanges();
     }
 
     private void InsertWarehouseUsers()
     {
       foreach (var warehouse in _db.Warehouses.ToArray()) {
-        _db.WarehouseUsers.Add(new WarehouseUser {
-          warehouse_id = warehouse.id,
-          user_id = warehouse.owner_user_id,
-        });
         foreach (var i in _random.Enumerate(20, 30)) {
           _db.WarehouseUsers.Add(new WarehouseUser {
             warehouse_id = warehouse.id,
@@ -192,7 +189,8 @@ namespace Tiantong.Wms.Api
           _db.Departments.Add(new Department {
             warehouse_id = warehouse.id,
             name = $"测试部门{i}",
-            comment = $"测试部门备注_{i}"
+            comment = $"测试部门备注_{i}",
+            type = DepartmentType.Custom
           });
         });
       });
@@ -356,7 +354,7 @@ namespace Tiantong.Wms.Api
             status = _random.Bool() ? OrderStatus.Created : OrderStatus.Finished,
             comment = "测试订单",
             type = _random.Bool() ? OrderType.PurchaseRequisition : OrderType.Requisition,
-            operator_id = warehouse.owner_user_id,
+            operator_id = _random.Array(users).id,
             applicant_id = _random.Array(users).user_id,
             department_id = _random.Array(departments).id,
             supplier_id = _random.Array(suppliers).id,

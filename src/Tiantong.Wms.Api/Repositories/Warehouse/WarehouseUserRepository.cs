@@ -60,7 +60,7 @@ namespace Tiantong.Wms.Api
       var wu = EnsureGet(id);
       EnsureUser(wu.warehouse_id);
 
-      if (_warehouses.IsOwner(wu.warehouse_id, wu.user_id)) {
+      if (IsOwner(wu.warehouse_id, wu.user_id)) {
         throw new FailureOperation("无法删除仓库的拥有者");
       } else {
         DbContext.Remove(wu);
@@ -87,6 +87,17 @@ namespace Tiantong.Wms.Api
     }
 
     // Select
+
+    public bool IsOwner(int warehouseId, int userId)
+    {
+      return Table
+        .Include(wu => wu.department)
+        .Any(wu => 
+          wu.user_id == userId &&
+          wu.warehouse_id == warehouseId &&
+          wu.department.type == DepartmentType.Owner
+        );
+    }
 
     public WarehouseUser Find(int id)
     {
