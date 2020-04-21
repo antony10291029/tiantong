@@ -132,7 +132,7 @@ export default class extends DataEditor {
 
   async handleItemDelete (item: Item, index: number) {
     if (item.id != 0) {
-      await axios.post('/goods/items/deletable', { id: item.id })
+      await axios.post('/goods/items/removable', { id: item.id })
     }
     this.good.items.splice(index, 1)
   }
