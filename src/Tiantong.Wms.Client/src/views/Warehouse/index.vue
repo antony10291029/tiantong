@@ -1,7 +1,7 @@
 <template>
   <AsyncLoader
     class="is-flex"
-    :handler="getWarehouse"
+    :handler="getData"
     v-slot="{ isLoading }"
   >
     <aside
@@ -22,9 +22,11 @@
       class="is-flex-auto"
       style="overflow: auto; padding: 1rem;"
       v-if="!isLoading"
-      :warehouseId="warehouseId"
-      :warehouse="warehouse"
       :baseURL="baseURL"
+      :user="user"
+      :warehouse="warehouse"
+      :department="department"
+      :warehouseId="warehouseId"
     ></router-view>
   </AsyncLoader>
 </template>
@@ -34,7 +36,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import axios from '@/providers/axios'
 import MenuItem from './MenuItem.vue'
 import AsyncLoader from '@/components/AsyncLoader.vue'
-import { Warehouse } from '@/Entities'
+import { Warehouse, WarehouseUser } from '@/Entities'
 
 @Component({
   name: 'Warehouse',
@@ -51,8 +53,23 @@ export default class extends Vue {
 
   public warehouse?: Warehouse
 
+  public warehouseUser?: WarehouseUser
+
+  get user () {
+    return this.warehouseUser?.user
+  }
+
+  get department () {
+    return this.warehouseUser?.department
+  }
+
   get baseURL () {
     return `/warehouses/${this.warehouseId}`
+  }
+
+  async getData () {
+    await this.getWarehouse()
+    await this.getWarehouseUser()
   }
 
   async getWarehouse () {
@@ -61,6 +78,14 @@ export default class extends Vue {
     })
 
     this.warehouse = response.data
+  }
+
+  async getWarehouseUser () {
+    var response = await axios.post('/warehouses/users/person', {
+      warehouse_id: this.warehouseId
+    })
+
+    this.warehouseUser = response.data
   }
 }
 

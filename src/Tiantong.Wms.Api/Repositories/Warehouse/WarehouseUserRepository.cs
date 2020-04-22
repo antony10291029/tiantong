@@ -41,7 +41,7 @@ namespace Tiantong.Wms.Api
           wu.user = null;
           DbContext.Add(wu);
         } else {
-          wu.user.type = "owner";
+          wu.user.type = UserType.User;
           wu.user.password = "123456";
           _users.EnsureUnique(wu.user);
           _users.EncodePassword(wu.user);
@@ -110,6 +110,16 @@ namespace Tiantong.Wms.Api
         );
     }
 
+    public bool HasUser(int warehouseId, int userId)
+    {
+      return Table
+        .Include(wu => wu.department)
+        .Any(wu =>
+          wu.user_id == userId &&
+          wu.warehouse_id == warehouseId
+        );
+    }
+
     public void EnsureOwner(int warehouseId, int userId)
     {
       if (!IsOwner(warehouseId, userId)) {
@@ -126,6 +136,26 @@ namespace Tiantong.Wms.Api
     {
       var wu = EnsureGet(id);
       EnsureUser(wu.warehouse_id);
+
+      return wu;
+    }
+
+    public class PersonParams
+    {
+      public int warehouse_id { get; set; }
+    }
+
+    public WarehouseUser Person(int warehouseId)
+    {
+      var userId = _auth.User.id;
+      var wu = Table
+        .Include(wu => wu.user)
+        .Include(wu => wu.department)
+        .FirstOrDefault(wu => wu.warehouse_id == warehouseId && wu.user_id == userId);
+
+      if (wu == null) {
+        throw new FailureOperation("该用户不存在");
+      }
 
       return wu;
     }

@@ -51,6 +51,16 @@ namespace Tiantong.Wms.Api
       return _warehouseUsers.Find(param.id);
     }
 
+    public class PersonParams
+    {
+      public int warehouse_id { get; set; }
+    }
+
+    public WarehouseUser Person([FromBody] PersonParams param)
+    {
+      return _warehouseUsers.Person(param.warehouse_id);
+    }
+
     public class AllParams
     {
       public int warehouse_id { get; set; }

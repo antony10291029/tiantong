@@ -5,4 +5,9 @@ export default class Department {
 
   name: string = ''
 
+  type: string = 'user'
+
+  static isAdmin (department: Department) {
+    return department.type === 'owner' || department.type == 'admin'
+  }
 }

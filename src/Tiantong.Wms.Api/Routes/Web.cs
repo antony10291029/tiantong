@@ -40,6 +40,7 @@ namespace Tiantong.Wms.Api
       Post("/warehouses/users/create", "WarehouseUser.Create");
       Post("/warehouses/users/delete", "WarehouseUser.Delete");
       Post("/warehouses/users/update", "WarehouseUser.Update");
+      Post("/warehouses/users/person", "WarehouseUser.Person");
       Post("/warehouses/users/find", "WarehouseUser.Find");
       Post("/warehouses/users/all", "WarehouseUser.All");
 

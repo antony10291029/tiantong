@@ -1,6 +1,6 @@
 <template>
   <router-view
-    :warehouseId="warehouseId"
+    v-bind="$attrs"
     :baseURL="baseURL + '/requisition-orders'"
   ></router-view>
 </template>
@@ -12,9 +12,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
   name: 'PurchaseRequisition',
 })
 export default class extends Vue {
-  @Prop({ required: true })
-  warehouseId!: number
-
   @Prop({ required: true })
   baseURL!: string
 }

@@ -163,25 +163,6 @@ namespace Tiantong.Wms.Api
       });
     }
 
-    private void InsertWarehouseUsers()
-    {
-      foreach (var warehouse in _db.Warehouses.ToArray()) {
-        foreach (var i in _random.Enumerate(20, 30)) {
-          _db.WarehouseUsers.Add(new WarehouseUser {
-            warehouse_id = warehouse.id,
-            user = _users.Add(new User {
-              type = $"keeper",
-              name = $"用户_{i}",
-              password = "aeoikj",
-              email = $"warehouse{warehouse.id}_user{i}@wms.com"
-            })
-          });
-        }
-      }
-
-      _db.SaveChanges();
-    }
-
     private void InsertDepartments()
     {
       _db.Warehouses.ToList().ForEach(warehouse => {
@@ -194,6 +175,27 @@ namespace Tiantong.Wms.Api
           });
         });
       });
+
+      _db.SaveChanges();
+    }
+
+    private void InsertWarehouseUsers()
+    {
+      foreach (var warehouse in _db.Warehouses.ToArray()) {
+        var departments = _db.Departments.Where(w => w.warehouse_id == warehouse.id).ToArray();
+        foreach (var i in _random.Enumerate(20, 30)) {
+          _db.WarehouseUsers.Add(new WarehouseUser {
+            warehouse_id = warehouse.id,
+            department_id = _random.Array(departments).id,
+            user = new User {
+              type = UserType.User,
+              name = $"用户_{i}",
+              password = "aeoikj",
+              email = $"warehouse{warehouse.id}_user{i}@wms.com"
+            }
+          });
+        }
+      }
 
       _db.SaveChanges();
     }

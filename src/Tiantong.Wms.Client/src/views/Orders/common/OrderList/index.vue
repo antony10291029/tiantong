@@ -32,7 +32,7 @@
           <th></th>
           <th colspan="7">录料单信息</th>
           <th colspan="3">工程信息</th>
-          <th></th>
+          <th v-if="isAdmin"></th>
         </tr>
         <tr>
           <th>#</th>
@@ -46,7 +46,7 @@
           <th>工程编号</th>
           <th>工程名</th>
           <th>用量</th>
-          <th>操作</th>
+          <th v-if="isAdmin">操作</th>
         </tr>
       </thead>
       <OrderRow
@@ -129,7 +129,7 @@
           </td>
         </template>
 
-        <template v-if="isOrderShow">
+        <template v-if="isOrderShow && isAdmin">
           <td :rowspan="orderRowspan">
             <router-link :to="`${baseURL}/${order.id}/detail`">
               <span class="icon">
@@ -162,6 +162,7 @@ import SearchField from '@/components/SearchField.vue'
 import DateWrapper from '@/components/wrappers/DateWrapper.vue'
 import OrderRow from './OrderRow.vue'
 import OrderStatusTag from './OrderStatusTag.vue'
+import { Department } from '../../../../Entities'
 
 @Component({
   name: 'PurchaseOrderList',
@@ -183,6 +184,9 @@ export default class extends DataSet {
   warehouseId!: number
 
   @Prop({ required: true })
+  department!: Department
+
+  @Prop({ required: true })
   path!: string
 
   @Prop({ default: () => createdStatus })
@@ -190,7 +194,6 @@ export default class extends DataSet {
 
   @Prop({ default: () => finishedStatus })
   finishedStatus!: object
-
 
   pageSize = 10
 
@@ -203,6 +206,10 @@ export default class extends DataSet {
       warehouse_id: this.warehouseId,
       status: this.status
     }
+  }
+
+  get isAdmin () {
+    return Department.isAdmin(this.department)
   }
 
 }

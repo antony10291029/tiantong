@@ -159,7 +159,7 @@ namespace Tiantong.Wms.Api
 
     public void EnsureUser(int warehouseId, int userId)
     {
-      if (!Users.IsOwner(warehouseId, userId)) {
+      if (!Users.HasUser(warehouseId, userId)) {
         throw new FailureOperation("仓库认证失败");
       }
     }

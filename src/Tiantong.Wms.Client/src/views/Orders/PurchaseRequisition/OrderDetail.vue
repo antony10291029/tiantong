@@ -2,6 +2,7 @@
   <OrderTemplate
     :entity="orderEntity"
     :loader="getOrderEntity"
+    :department="department"
     :warehouseId="warehouseId"
   >
     <template #header>
@@ -73,6 +74,7 @@ import OrderEntity from './OrderEntity'
 import OrderTemplate from './OrderTemplate.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
 import FinishButton from '../common/OrderTemplate/OrderFinishButton.vue'
+import { Department } from '../../../Entities'
 
 @Component({
   name: 'OrderDetail',
@@ -88,6 +90,9 @@ export default class extends Vue {
 
   @Prop({ required: true })
   warehouseId!: number
+
+  @Prop({ required: true })
+  department!: Department
 
   @Prop({ required: true })
   orderId!: number

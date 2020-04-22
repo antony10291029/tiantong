@@ -1,51 +1,53 @@
 <template>
   <AsyncLoader
     :handler="getWarehouse"
-    class="is-flex-auto" style="max-width: 800px; padding: 1rem"
+    class="is-flex-auto" style="padding: 1rem"
   >
     <h1 class="title is-size-4">仓库设置</h1>
 
-    <div class="field">
-      <label class="label">名称</label>
-      <div class="control">
-        <input class="input" type="text" v-model="warehouse.name">
+    <div style="max-width: 600px;">
+      <div class="field">
+        <label class="label">名称</label>
+        <div class="control">
+          <input class="input" type="text" v-model="warehouse.name">
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="label">编号</label>
-      <div class="control">
-        <Input
-          :default="null"
-          class="input" type="text"
-          v-model="warehouse.number"
-        />
+      <div class="field">
+        <label class="label">编号</label>
+        <div class="control">
+          <Input
+            :default="null"
+            class="input" type="text"
+            v-model="warehouse.number"
+          />
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="label">地址</label>
-      <div class="control">
-        <Textarea v-model="warehouse.address"></Textarea>
+      <div class="field">
+        <label class="label">地址</label>
+        <div class="control">
+          <Textarea v-model="warehouse.address"></Textarea>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="label">备注</label>
-      <div class="control">
-        <Textarea v-model="warehouse.comment"></Textarea>
+      <div class="field">
+        <label class="label">备注</label>
+        <div class="control">
+          <Textarea v-model="warehouse.comment"></Textarea>
+        </div>
       </div>
-    </div>
 
-    <div class="field is-grouped">
-      <div class="control">
-        <AsyncButton
-          :disabled="!isChanged"
-          :handler="handleSave"
-          class="button is-info"
-        >
-          提交
-        </AsyncButton>
+      <div class="field is-grouped">
+        <div class="control">
+          <AsyncButton
+            :disabled="!isChanged"
+            :handler="handleSave"
+            class="button is-info"
+          >
+            提交
+          </AsyncButton>
+        </div>
       </div>
     </div>
   </asyncLoader>
