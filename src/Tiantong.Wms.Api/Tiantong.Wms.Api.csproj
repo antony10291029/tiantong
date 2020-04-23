@@ -3,15 +3,18 @@
     <AssemblyName>Tiantong.Wms.Api</AssemblyName>
     <Title>$(AssemblyName)</Title>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JWT" Version="6.1.0" />
+    <PackageReference Include="Microsoft.NETCore.Targets" Version="3.0.0" PrivateAssets="all" />
     <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
     <ProjectReference Include="..\DBCore.Postgres\DBCore.Postgres.csproj" />
     <ProjectReference Include="..\Tiantong.Wms.DB\Tiantong.Wms.DB.csproj" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="docker-compose.yaml" CopyToOutputDirectory="Always" />
   </ItemGroup>
 </Project>

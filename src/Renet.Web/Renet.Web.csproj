@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JWT" Version="6.1.0" />
+    <PackageReference Include="Microsoft.NETCore.Targets" Version="3.0.0" PrivateAssets="all" />
+    <PackageReference Include="JWT" Version="6.1.4" />
   </ItemGroup>
 </Project>
