@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Tiantong.Wms.Api
@@ -11,10 +10,10 @@ namespace Tiantong.Wms.Api
 
     private IRandom _random;
 
-    public Hash(IConfiguration config, IRandom random)
+    public Hash(Config config, IRandom random)
     {
       _random = random;
-      _salt = Encoding.ASCII.GetBytes(config["app_key"]);
+      _salt = Encoding.ASCII.GetBytes(config.APP_KEY);
     }
 
     public string Make(string content)

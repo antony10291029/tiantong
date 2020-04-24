@@ -11,26 +11,26 @@ namespace Tiantong.Wms.Api
   {
     private Auth _auth;
 
+    private Config _config;
+
     private DbContext _db;
 
-    private MigratorProvider _migratorProvider;
-
     private IRandom _random;
-
-    private IConfiguration _config;
 
     private UserRepository _users;
 
     private WarehouseRepository _warehouses;
 
+    private MigratorProvider _migratorProvider;
+
     public AppController(
       Auth auth,
       DbContext db,
-      MigratorProvider migratorProvider,
+      Config config,
       IRandom random,
-      IConfiguration config,
       UserRepository users,
-      WarehouseRepository warehouses
+      WarehouseRepository warehouses,
+      MigratorProvider migratorProvider
     ) {
       _db = db;
       _migratorProvider = migratorProvider;
@@ -43,7 +43,16 @@ namespace Tiantong.Wms.Api
 
     public object Home()
     {
-      return JsonMessage(_config["app_name"]);
+      return JsonMessage(_config.APP_NAME);
+    }
+
+    [HttpPost]
+    [Route("/env")]
+    public object Environment()
+    {
+      return new {
+        environment = _config.ENV
+      };
     }
 
     // 初始化一个 root 用户
@@ -90,8 +99,8 @@ namespace Tiantong.Wms.Api
     {
       var user = new User {
         type = UserType.Root,
-        password = _config.GetValue("root_password", "123456"),
-        email = _config.GetValue("root_email", "root@system.com"),
+        email = _config.ROOT_EMAIL,
+        password = _config.ROOT_PASSWORD,
       };
 
       _users.Add(user);

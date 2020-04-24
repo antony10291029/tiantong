@@ -30,12 +30,12 @@ namespace Tiantong.Wms.Api
 
     public Auth(
       DbContext db,
-      IConfiguration config,
+      Config config,
       IHttpContextAccessor httpAccessor
     ) : base(
-      config.GetValue<string>("app_name"),
-      config.GetValue<int>("jwt:ttl"),
-      config.GetValue<int>("jwt:rft")
+      config.APP_NAME,
+      config.JWT_TTL,
+      config.JWT_RFT
     ) {
       _db = db;
       _httpAccessor = httpAccessor;

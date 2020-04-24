@@ -5,13 +5,13 @@ namespace Tiantong.Wms.Api
 {
   public class DbBuilder: PostgresBuilder
   {
-    public DbBuilder(IConfiguration conf)
+    public DbBuilder(Config config)
     {
-      Host(conf.GetValue("pg:host", "localhost"));
-      Port(conf.GetValue("pg:port", 5432));
-      Username(conf.GetValue("pg:username", "postgres"));
-      Password(conf.GetValue("pg:password", "password"));
-      Database(conf.GetValue("pg:database", "postgres"));
+      Host(config.PG_HOST);
+      Port(config.PG_PORT);
+      Username(config.PG_USERNAME);
+      Password(config.PG_PASSWORD);
+      Database(config.PG_DATABASE);
     }
   }  
 }

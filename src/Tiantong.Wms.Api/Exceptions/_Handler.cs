@@ -18,7 +18,7 @@ namespace Tiantong.Wms.Api
 
       if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, context);
-      } else if (Env.IsDevelopment()) {
+      } else if (Env.IsProduction()) {
         await ShowDevelopmentException(ex, context, ResolveExceptionExpander(ex));
       } else {
         await ShowUnprocessedError(ex, context);

@@ -10,9 +10,9 @@ namespace Tiantong.Wms.Api
   {
     private MailAddress _fromAddress;
 
-    public Mail(IConfiguration config)
+    public Mail(Config config)
     {
-      _fromAddress = new MailAddress("postman@wms.als-yuchuan.com", "天瞳WMS");
+      _fromAddress = new MailAddress(config.MAIL_ADDRESSER, config.MAIL_NAME);
     }
 
     public void Send(string email, string code)
