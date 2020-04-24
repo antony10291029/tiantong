@@ -12,7 +12,7 @@ namespace App.CommandLine
       var migrator =  new Migrator();
       migrator.Migrate();
 
-      plc.Name("测试200smart").UseS7200Smart("192.168.20.10", 102);
+      plc.Name("测试200smart").UseS7200Smart("localhost", 1080);
 
       plc.State("hb").Int("D1.100").Heartbeat(1000).Collect(1000);
       plc.State("scanner").String("D1.120", 10).Collect(1000);

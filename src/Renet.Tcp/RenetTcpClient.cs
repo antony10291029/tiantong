@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Renet.Tcp
@@ -26,8 +27,8 @@ namespace Renet.Tcp
       Host = host;
       Port = port;
       _client = new TcpClient();
-      _client.Connect(Host, Port);
-      _stream = _client.GetStream();
+      _client.ReceiveTimeout = 10;
+      _client.SendTimeout = 10;
     }
 
     ~RenetTcpClient()
@@ -81,6 +82,20 @@ namespace Renet.Tcp
 
     public virtual bool Connect(int time = 0)
     {
+      var tokenSource = new CancellationTokenSource();
+      var delay = Task.Delay(1000, tokenSource.Token);
+      var task = _client.ConnectAsync(Host, Port);
+
+      task.ContinueWith(_ => tokenSource.Cancel());
+
+      try {
+        delay.GetAwaiter().GetResult();
+        throw new Exception("连接已超时");
+      } catch (TaskCanceledException) {
+
+      }
+
+      _stream = _client.GetStream();
 
       return true;
     }
