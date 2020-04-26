@@ -6,17 +6,6 @@ namespace Tiantong.Wms.Api
   {
     public override void Define()
     {
-      Get("/", "App.Home");
-      Post("/", "App.Home");
-
-      Post("/dev/initialize", "App.Initialize");
-      Post("/dev/restore", "App.Restore");
-      Post("/dev/seed", "App.InsertTestData");
-      Post("/dev/migrate", "App.Migrate");
-      Post("/dev/rollback", "App.Rollback");
-      Post("/dev/refresh", "App.Refresh");
-      Post("/dev/reseed", "App.Reseed");
-
       Post("/users/search", "User.Search");
 
       Post("/users/register", "User.Register");

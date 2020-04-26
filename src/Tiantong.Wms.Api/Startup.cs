@@ -23,6 +23,7 @@ namespace Tiantong.Wms.Api
 
       services.AddScoped<Auth>();
       services.AddScoped<UserRepository>();
+      services.AddScoped<RootRepository>();
       services.AddScoped<PasswordResetRepository>();
       services.AddScoped<EmailVerificationRepository>();
       services.AddScoped<WarehouseRepository>();
