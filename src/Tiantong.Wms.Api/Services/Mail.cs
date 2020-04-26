@@ -8,38 +8,39 @@ namespace Tiantong.Wms.Api
 {
   public class Mail : TaskQueue
   {
-    private MailAddress _fromAddress;
+    private string _stmpHost;
+
+    public int _stmpPort;
+
+    public string _stmpAddress;
+
+    public string _stmpPassword;
 
     public Mail(Config config)
     {
-      _fromAddress = new MailAddress(config.MAIL_ADDRESSER, config.MAIL_NAME);
+      _stmpHost = config.STMP_HOST;
+      _stmpPort = config.STMP_PORT;
+      _stmpAddress = config.STMP_ADDRESS;
+      _stmpPassword = config.STMP_PASSWORD;
     }
 
-    public void Send(string email, string code)
+    public void Send(MailMessage msg)
     {
       Enqueue(async CancellationToken => {
-        var msg = new MailMessage();
-        var toAddress = new MailAddress(email);
-        Console.WriteLine(email, code);
-
-        msg.To.Add(toAddress);
-        msg.From = _fromAddress;
-        msg.ReplyToList.Add(_fromAddress);
-
-        msg.Subject = "密码找回";
-        string html = $@"您的邮箱验证码为: {code}";
-        msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
-
-        var client = new SmtpClient("smtpdm.aliyun.com", 25);
-        var credentials = new NetworkCredential("postman@wms.als-yuchuan.com", "TiantongWms9217");
-        client.Credentials = credentials;
-        try {
-          await client.SendMailAsync(msg);
-          Console.WriteLine("邮件已发送");
-        } catch (Exception e) {
-          Console.WriteLine(e.Message);
-        }
+        var client = new SmtpClient(_stmpHost, _stmpPort);
+        client.Credentials = new NetworkCredential(_stmpAddress, _stmpPassword);
+        await client.SendMailAsync(msg);
       });
+    }
+
+    public void ResetPassword(string email, string verifyCode)
+    {
+      var msg = new MailMessage();
+      msg.From = new MailAddress(_stmpAddress, "天瞳WMS");
+      msg.To.Add(new MailAddress(email));
+      msg.Subject = "密码找回";
+      string html = $"您的邮箱验证码为: {verifyCode}";
+      msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
     }
   }
 

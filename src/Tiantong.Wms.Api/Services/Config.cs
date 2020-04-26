@@ -8,7 +8,13 @@ namespace Tiantong.Wms.Api
   {
     public string ENV { get; }
 
+    public bool IsProduction { get => ENV == "Production"; }
+
+    public bool IsDevelopment { get => ENV == "Development"; }
+
     public string APP_NAME { get; }
+
+    public string APP_VERSION { get; }
 
     public string APP_KEY { get; }
 
@@ -28,9 +34,13 @@ namespace Tiantong.Wms.Api
 
     //
 
-    public string MAIL_ADDRESSER { get; }
+    public string STMP_HOST { get; }
 
-    public string MAIL_NAME { get; }
+    public int STMP_PORT { get; }
+
+    public string STMP_ADDRESS { get; }
+
+    public string STMP_PASSWORD { get; }
 
     //
 
@@ -47,7 +57,9 @@ namespace Tiantong.Wms.Api
     public Config(IConfiguration config, IHostEnvironment env)
     {
       ENV = env.EnvironmentName;
+      
       APP_NAME = config.GetValue("app_name", "APP");
+      APP_VERSION = config.GetValue("app_version", "0.1.0");
       APP_KEY = "base64:t33sHNNsdml4eq2IdROC9I1aLQTasGQy6ecnLWzqsXo=";
 
       ROOT_EMAIL = config.GetValue("root_email", "root@wms.com");
@@ -57,7 +69,10 @@ namespace Tiantong.Wms.Api
       JWT_TTL = config.GetValue("jwt:ttl", 864000000);
       JWT_RFT = config.GetValue("jwt:rft", 864000000);
 
-      MAIL_ADDRESSER = config.GetValue("mail:addresser", "postman@wms.com");
+      STMP_HOST = config.GetValue("stmp:host", "smtpdm.aliyun.com");
+      STMP_PORT = config.GetValue("stmp:port", 25);
+      STMP_ADDRESS = config.GetValue("stmp:address", "");
+      STMP_PASSWORD = config.GetValue("stmp:password", "");
 
       PG_HOST = config.GetValue("pg:host", "localhost");
       PG_PORT = config.GetValue("pg:port", 5432);

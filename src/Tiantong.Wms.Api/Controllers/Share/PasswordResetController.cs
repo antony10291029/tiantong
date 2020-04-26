@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -27,7 +26,7 @@ namespace Tiantong.Wms.Api
     {
       var entity = _passwordResets.CreateByEmail(param.email, 1800);
       _passwordResets.UnitOfWork.SaveChanges();
-      _mail.Send(param.email, entity.email_verification.code);
+      _mail.ResetPassword(param.email, entity.email_verification.code);
 
       return SuccessOperation("验证码已发送至您的邮箱", entity.id);
     }
