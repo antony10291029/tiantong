@@ -127,13 +127,14 @@ namespace DBCore
       return this;
     }
 
-    public void Migrate()
+    public int Migrate()
     {
       EnsureInitialized();
 
+      var count = 0;
+      var batchId = 1;
       var dbcontext = GetDbContext();
       var data = dbcontext.Migrations.ToList();
-      var batchId = 1;
 
       if (data.Count() > 0) {
         batchId = data.Max(mg => mg.BatchId) + 1;
@@ -156,22 +157,26 @@ namespace DBCore
 
         Helper.Success("migrated: ");
         Helper.Message($"{mg.Key}\n");
+        count++;
       }
 
       dbcontext.SaveChanges();
       dbcontext.Database.CommitTransaction();
 
       Helper.Success("Database migrations completed successfully!\n");
+
+      return count;
     }
 
-    public void Rollback()
+    public int Rollback()
     {
       EnsureInitialized();
 
+      var count = 0;
       var dbcontext = GetDbContext();
       var migrations = dbcontext.Migrations.ToList();
 
-      if (migrations.Count() == 0) return;
+      if (migrations.Count() == 0) return count;
 
       var batchId = migrations.Max(mg => mg.BatchId);
 
@@ -188,6 +193,7 @@ namespace DBCore
         _migrationInstances[mg.FileName].Down(dbcontext);
         Helper.Warning("dropped: ");
         Helper.Message($"{mg.FileName}\n");
+        count++;
       }
 
       var items = dbcontext.Migrations.Where(mg => mg.BatchId == batchId).ToList();
@@ -195,6 +201,8 @@ namespace DBCore
       dbcontext.Migrations.RemoveRange(items);
       dbcontext.SaveChanges();
       dbcontext.Database.CommitTransaction();
+
+      return count;
     }
 
     public void Refresh()

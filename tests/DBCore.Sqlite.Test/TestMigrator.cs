@@ -10,10 +10,10 @@ namespace DBCore.Sqlite.Test
     public void TestMigrateDefaultDirectory()
     {
       var db = new Database();
-      var mg = new Migrator();
+      var mg = new Migrator().UseDbContext(db);
 
-      mg.UseDbContext(db).Migrate();
-
+      Assert.AreEqual(2, mg.Migrate());
+      Assert.AreEqual(0, mg.Migrate());
       Assert.IsTrue(db.HasTable("users"));
       Assert.IsTrue(db.HasTable("roles"));
       Assert.IsFalse(db.HasTable("foo"));
@@ -26,8 +26,8 @@ namespace DBCore.Sqlite.Test
       var mg = new Migrator();
 
       mg.UseDbContext(db).Migrate();
-      mg.Rollback();
-
+      Assert.AreEqual(2, mg.Rollback());
+      Assert.AreEqual(0, mg.Rollback());
       Assert.IsFalse(db.HasTable("users"));
     }
 
@@ -49,9 +49,9 @@ namespace DBCore.Sqlite.Test
     {
       var db = new Database();
       var mg = new Migrator();
+      var count = mg.UseDbContext(db).UseMigrationDirectory("MigrationsFoo").Migrate();
 
-      mg.UseDbContext(db).UseMigrationDirectory("MigrationsFoo").Migrate();
-
+      Assert.AreEqual(1, count);
       Assert.IsTrue(db.HasTable("foo"));
       Assert.IsFalse(db.HasTable("users"));
     }

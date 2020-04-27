@@ -2,9 +2,9 @@ namespace DBCore
 {
   public interface IMigrator
   {
-    void Migrate();
+    int Migrate();
 
-    void Rollback();
+    int Rollback();
 
     void Refresh();
 

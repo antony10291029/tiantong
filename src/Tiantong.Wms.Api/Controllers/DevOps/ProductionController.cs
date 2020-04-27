@@ -23,9 +23,9 @@ namespace Tiantong.Wms.Api
     [Route("/prod/migrate")]
     public object Migrate()
     {
-      _migratorProvider.Migrator.Migrate();
-
-      _rootRepository.Create();
+      if (_migratorProvider.Migrator.Migrate() != 0) {
+        _rootRepository.Create();
+      };
 
       return SuccessOperation("系统更新完毕");
     }
