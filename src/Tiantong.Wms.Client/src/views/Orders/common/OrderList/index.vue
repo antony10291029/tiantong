@@ -30,7 +30,7 @@
       <thead>
         <tr>
           <th></th>
-          <th colspan="7">录料单信息</th>
+          <th colspan="7">订单信息</th>
           <th colspan="3">工程信息</th>
           <th v-if="isAdmin"></th>
         </tr>

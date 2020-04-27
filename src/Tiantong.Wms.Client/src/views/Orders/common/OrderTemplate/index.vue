@@ -132,7 +132,7 @@
     </div>
 
     <div class="field">
-      <label class="label">采购列表</label>
+      <label class="label">货品列表</label>
       <div class="control" v-style:width="itemsTableWidth">
         <table class="table is-fullwidth is-bordered is-vcentered is-centered is-nowrap">
           <thead>
