@@ -6,11 +6,12 @@ services:
     container_name: dotnet-tiantong-api
     image: mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine
     restart: always
+    working_dir: /app
+    network_mode: host
     volumes:
       - ./:/app/
     ports:
-      - 5000:80
-    working_dir: /app
+      - 5000:5000
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-    command: ["dotnet", "/app/Tiantong.Wms.Api.dll"]
+    command: ["dotnet", "Tiantong.Wms.Api.dll"]

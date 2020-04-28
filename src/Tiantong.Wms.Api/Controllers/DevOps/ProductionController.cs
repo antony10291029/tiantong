@@ -16,7 +16,7 @@ namespace Tiantong.Wms.Api
     ) {
       _rootRepository = rootRepository;
       _migratorProvider = migratorProvider;
-      auth.EnsureRoot();
+      // auth.EnsureRoot();
     }
 
     [HttpPost]
