@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RuntimeIdentifiers>win10-x64;osx.10.11-x64</RuntimeIdentifiers>
+    <AssemblyName>Wcs.Plc.Protocol</AssemblyName>
+    <Title>$(AssemblyName)</Title>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
   </ItemGroup>
-
 </Project>

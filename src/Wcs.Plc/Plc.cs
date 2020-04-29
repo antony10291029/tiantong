@@ -78,7 +78,7 @@ namespace Wcs.Plc
     {
       StateClientProvider = PlcConnection.Model switch {
         "test" => new StateTestClientProvider(),
-        "S7200Smart"=> new S7ClientProvider(PlcConnection.Host, PlcConnection.Port),
+        "S7200Smart"=> new S7200SmartClientProvider(PlcConnection.Host, PlcConnection.Port),
         _ => throw new Exception("plc model is not supporting"),
       };
     }

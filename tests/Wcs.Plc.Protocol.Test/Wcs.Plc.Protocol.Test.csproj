@@ -1,3 +1,4 @@
+
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -10,6 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/Wcs.Plc.Snap7/Wcs.Plc.Snap7.csproj" />
+    <ProjectReference Include="../../src/Wcs.Plc.Protocol/Wcs.Plc.Protocol.csproj" />
   </ItemGroup>
 </Project>

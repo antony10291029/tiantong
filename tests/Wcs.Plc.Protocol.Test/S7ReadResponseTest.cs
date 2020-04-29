@@ -1,9 +1,9 @@
 using NUnit.Framework;
 
-namespace Wcs.Plc.Snap7.Test
+namespace Wcs.Plc.Protocol.Test
 {
   [TestFixture]
-  public class ResponseTest
+  public class S7ReadRedsponseTest
   {
     [Test]
     public void TestString()
@@ -13,13 +13,13 @@ namespace Wcs.Plc.Snap7.Test
         0x32, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, 0x0E, 0x01, 0x00, 0x04, 0x01,
         0xFF, 0x04, 0x00, 0x50, 0x09, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x00, 0x00, 0x00
       };
-      var res = new S7Response();
+      var res = new S7ReadResponse();
 
-      res.SetMessage(message);
+      res.Message = message;
       Assert.AreEqual(res.IsDataResponse, true);
       Assert.AreEqual(res.ErrorCode, new byte[] { 0x01, 0x00 });
       Assert.AreEqual(res.Data, new byte[] { 0x09, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39 });
-      Assert.AreEqual(res.ToString(), "123456789");
+      Assert.AreEqual(res.GetString(), "123456789");
     }
 
     [Test]
@@ -30,10 +30,10 @@ namespace Wcs.Plc.Snap7.Test
         0x32, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, 0x08, 0x00, 0x00, 0x04, 0x01,
         0xFF, 0x04, 0x00, 0x20, 0x00, 0x00, 0x30, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00
       };
-      var res = new S7Response();
+      var res = new S7ReadResponse();
 
-      res.SetMessage(message);
-      Assert.AreEqual(res.ToInt32(), 12345);
+      res.Message = message;
+      Assert.AreEqual(res.GetInt32(), 12345);
     }
 
     [Test]
@@ -44,10 +44,10 @@ namespace Wcs.Plc.Snap7.Test
         0x32, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, 0x05, 0x00, 0x00, 0x04, 0x01,
         0xFF, 0x04, 0x00, 0x08, 0x01, 0xF0, 0x00
       };
-      var res = new S7Response();
+      var res = new S7ReadResponse();
 
-      res.SetMessage(message);
-      Assert.AreEqual(res.ToBool(), true);
+      res.Message = message;
+      Assert.AreEqual(res.GetBool(), true);
     }
   } 
 }

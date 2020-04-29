@@ -1,22 +1,25 @@
-using System;
-using Wcs.Plc.Snap7;
+using Wcs.Plc.Protocol;
 
 namespace Wcs.Plc
 {
-  public class S7ClientProvider : IStateClientProvider
+  public abstract class S7ClientProvider : IStateClientProvider
   {
-    private S7TcpClient _client;
+    protected S7TcpClient _client;
 
-    public S7ClientProvider(string host, int  port)
+    public S7ClientProvider(string host, int port)
     {
       _client = new S7TcpClient(host, port);
-      _client.Use200Smart();
-      _client.Reconnect();
     }
 
     public IStateClient Resolve()
     {
-      return new S7Client(_client);
+      return new StateRenetTcpClient(
+        _client,
+        new S7ReadRequest(),
+        new S7ReadResponse(),
+        new S7WriteRequest(),
+        new S7WriteResponse()
+      );
     }
   }
 }

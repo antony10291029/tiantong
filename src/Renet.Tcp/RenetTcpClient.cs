@@ -64,12 +64,12 @@ namespace Renet.Tcp
     {
       var buffer = new byte[BufferLength];
 
-      SendMessage(message, buffer);
+      Send(message, buffer);
 
       return buffer;
     }
 
-    public void SendMessage(byte[] message, byte[] buffer)
+    public void Send(byte[] message, byte[] buffer)
     {
       lock (_sendingLock) {
         _stream.Write(message, 0, message.Length);

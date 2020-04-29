@@ -1,10 +1,10 @@
 using System;
 
-namespace Wcs.Plc.Snap7
+namespace Wcs.Plc.Protocol
 {
-  public class S7RequestMessage
+  public class S7ReadRequest: IPlcReadRequest
   {
-    public byte[] Message = new byte[] {
+    protected byte[] _msg = new byte[] {
       0x03,    // 0.  报文头
       0x00,    // 1.  报文头
       0x00,    // 2.  参数 - 长度(1)
@@ -41,6 +41,20 @@ namespace Wcs.Plc.Snap7
       // 0x00, // 33. data 长度 - 1
       // 0x00, // 34. data 长度 - 2
     };
+
+    public byte[] Message { get => _msg; }
+
+    public void UseReadCommand()
+    {
+      Message[17] = 0x04;
+    }
+
+    public void UseWriteCommand()
+    {
+      Message[17] = 0x05;
+    }
+
+    //
 
     private byte TransDataType(string prefix)
     {
@@ -118,15 +132,7 @@ namespace Wcs.Plc.Snap7
       return (type, TransAddressOffset(offset), TransDbBlock(block));
     }
 
-    public void UseReadCommand()
-    {
-      Message[17] = 0x04;
-    }
-
-    public void UseWriteCommand()
-    {
-      Message[17] = 0x05;
-    }
+    //
 
     public void SetMessageLength()
     {
@@ -134,78 +140,48 @@ namespace Wcs.Plc.Snap7
       Message[3] = (byte)(Message.Length % 256);
     }
 
-    public void SetParameterDataLength(int length)
+    private void SetParameterDataLength(int length)
     {
       Message[23] = (byte)(length / 256);             // 4.  数据点数量 - 1
       Message[24] = (byte)(length % 256);             // 5.  数据点数量 - 2
     }
 
-    public void SetParameterDbBlock(int block)
+    private void SetParameterDbBlock(int block)
     {
       Message[25] = (byte)(block / 256);              // 6.  DB 块长度 - 1
       Message[26] = (byte)(block % 256);              // 7.  DB 块长度 - 2
     }
 
-    public void SetParameterDataType(string type)
+    private void SetParameterDataType(string type)
     {
       Message[27] = TransDataType(type);
     }
 
-    public void SetParameterOffset(int offset)
+    private void SetParameterOffset(int offset)
     {
       Message[28] = (byte)(offset / 256 / 256 % 256); // 9.  偏移位置 - 1
       Message[29] = (byte)(offset / 256 % 256);       // 10. 偏移位置 - 2
       Message[30] = (byte)(offset % 256);             // 11. 偏移位置 - 3
     }
 
-    public void SetDataLength(int length)
-    {
-      Array.Resize(ref Message, 31 + 4 + length);
-
-      Message[33] = (byte)(length * 8 / 256);
-      Message[34] = (byte)(length * 8 % 256);
-      Message[15] = (byte)((length + 4) / 256);
-      Message[16] = (byte)((length + 4) % 256);
-      SetParameterDataLength(length);
-      SetMessageLength();
-    }
-
-    public void SetDataHeader()
-    {
-      Message[31] = 0x00;
-      Message[32] = 0x04;
-    }
-
-    public void SetAddress(string dataType, int offset, int length, int block)
-    {
-      SetParameterDataLength(length);
-      SetParameterDbBlock(block);
-      SetParameterDataType(dataType);
-      SetParameterOffset(offset);
-      SetMessageLength();
-    }
-
-    public void SetAddress(string address, int length)
+    protected void SetAddress(string address, int length)
     {
       var (db, offset, block) = TransAddress(address);
-      SetAddress(db, offset, length, block);
+
+      SetParameterDataLength(length);
+      SetParameterDbBlock(block);
+      SetParameterDataType(db);
+      SetParameterOffset(offset);
     }
 
-    public void UseData(int length = 0)
+    //
+
+    public void UseAddress(string address, int length)
     {
-      SetDataLength(length);
-      SetDataHeader();
+      UseReadCommand();
+      SetAddress(address, length);
+      SetMessageLength();
     }
 
-    public void SetDataValue(byte[] data)
-    {
-      var length = Message.Length - 19 - 12 - 4;
-
-      if (length != data.Length) {
-        throw new Exception("data length is invalid");
-      }
-
-      Array.Copy(data, 0, Message, 19 + 12 + 4, data.Length);
-    }
   }
 }
