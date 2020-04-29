@@ -100,7 +100,7 @@ namespace Wcs.Plc
       return _task != null;
     }
 
-    private async Task RunTask()
+    private async Task HandleTask()
     {
       var times = 0;
 
@@ -113,7 +113,7 @@ namespace Wcs.Plc
           await _handler(_tokenSource.Token);
         } catch (Exception e) {
           Console.WriteLine(e);
-          break;
+          // break;
         }
         if (_delayer != null) {
           try {
@@ -126,7 +126,7 @@ namespace Wcs.Plc
     public Interval Start()
     {
       _tokenSource = new CancellationTokenSource();
-      _task = RunTask();
+      _task = HandleTask();
 
       return this;
     }
