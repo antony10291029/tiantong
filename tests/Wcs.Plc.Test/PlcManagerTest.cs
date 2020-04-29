@@ -35,7 +35,7 @@ namespace Wcs.Plc.Test
 
       plc.Start();
       Task.Delay(1).ContinueWith(task => plc.Stop());
-      manager.WaitAsync().AssertFinishIn(10);
+      manager.WaitAsync().AssertFinishIn(100);
     }
   }
 }
