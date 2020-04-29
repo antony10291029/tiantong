@@ -11,7 +11,7 @@ namespace Wcs.Plc
     {
       _client = new S7TcpClient(host, port);
       _client.Use200Smart();
-      _client.Connect();
+      _client.Reconnect();
     }
 
     public IStateClient Resolve()

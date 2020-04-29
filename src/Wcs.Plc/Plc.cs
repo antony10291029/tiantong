@@ -31,20 +31,6 @@ namespace Wcs.Plc
 
     //
 
-    private IStateClientProvider GetStateClientProvider()
-    {
-      var host = PlcConnection.Host;
-      var port = PlcConnection.Port;
-
-      switch (PlcConnection.Model) {
-        case "test" : return new StateTestClientProvider();
-        case "S7200Smart": return new S7ClientProvider(host, port);
-        default: throw new Exception("plc model is not supporting");
-      }
-    }
-
-    //
-
     public IPlc Id(int id)
     {
       PlcConnection.Id = id;
@@ -90,7 +76,11 @@ namespace Wcs.Plc
 
     public virtual void ResolveStateClientProvider()
     {
-      StateClientProvider = GetStateClientProvider();
+      StateClientProvider = PlcConnection.Model switch {
+        "test" => new StateTestClientProvider(),
+        "S7200Smart"=> new S7ClientProvider(PlcConnection.Host, PlcConnection.Port),
+        _ => throw new Exception("plc model is not supporting"),
+      };
     }
 
     //
@@ -117,7 +107,6 @@ namespace Wcs.Plc
 
     public virtual IPlc UseS7200Smart(string host, int port = 102)
     {
-      StateClientProvider = new S7ClientProvider(host, port);
       Model("S7200Smart").Host(host).Port(port).Build();
 
       return this;
@@ -169,11 +158,11 @@ namespace Wcs.Plc
         throw new Exception("Plc Connection Id or Name is required");
       }
 
-      if (PlcConnection.IsRunning) {
-        throw new Exception($"PlcConnection Name({name}) is running");
-      }
+      // if (PlcConnection.IsRunning) {
+      //   throw new Exception($"PlcConnection Name({name}) is running");
+      // }
 
-      PlcConnection.IsRunning = true;
+      // PlcConnection.IsRunning = true;
       db.SaveChanges();
     }
 
@@ -235,7 +224,6 @@ namespace Wcs.Plc
     public IPlc Stop()
     {
       IntervalManager.Stop();
-      PlcConnection.IsRunning = false;
       DatabaseProvider.Resolve().SaveChanges();
 
       return this;
@@ -253,12 +241,11 @@ namespace Wcs.Plc
 
     public Task RunAsync()
     {
-      return IntervalManager.RunAsync();
+      return Start().WaitAsync();
     }
 
     public void Run()
     {
-      Console.WriteLine("PLC后台程序开始执行");
       RunAsync().GetAwaiter().GetResult();
     }
 

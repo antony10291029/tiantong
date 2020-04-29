@@ -28,18 +28,14 @@ namespace Wcs.Plc.Snap7
       };
     }
 
-    public override bool Connect(int time = 0)
+    public override void Connected()
     {
-      base.Connect();
-
       try {
         Console.WriteLine($"正在连接: 200Smart: IP: {Host}, Port: {Port}");
         Send(CheckHead1);
         Send(CheckHead2);
-        return true;
       } catch {
         Console.WriteLine($"连接失败: IP: {Host}, Port: {Port}");
-        return false;
       }
     }
 
