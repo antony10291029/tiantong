@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Renet\Renet.csproj" />
     <ProjectReference Include="..\Wcs.Plc\Wcs.Plc.csproj" />
   </ItemGroup>
 </Project>
