@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Renet;
 using Renet.Web;
 
 namespace Tiantong.Wms.Api

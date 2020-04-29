@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.Targets" Version="3.0.0" PrivateAssets="all" />
+    <ProjectReference Include="..\Renet\Renet.csproj" />
     <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
     <ProjectReference Include="..\DBCore.Postgres\DBCore.Postgres.csproj" />

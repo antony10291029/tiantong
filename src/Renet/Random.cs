@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
-namespace Tiantong.Wms.Api
+namespace Renet
 {
   public class Random : IRandom
   {
