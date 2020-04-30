@@ -7,13 +7,6 @@ namespace Wcs.Plc
   {
     private Interval _interval;
 
-    public override string Type { get => "Int"; }
-
-    public override IStateInt ToStateInt()
-    {
-      return this;
-    }
-
     ~StateInt()
     {
       if (_interval != null) {

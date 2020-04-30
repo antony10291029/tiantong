@@ -22,8 +22,6 @@ namespace Wcs.Plc
 
     public abstract int Length { get; set; }
 
-    public abstract string Type { get; }
-
     public void UseAddress(string key, int length)
     {
       Key = key;
@@ -31,20 +29,6 @@ namespace Wcs.Plc
       StateClient.SetAddress(key, length);
     }
 
-    public virtual IStateBool ToStateBool()
-    {
-      throw new StateConversationException(Type, "Bool");
-    }
-
-    public virtual IStateInt ToStateInt()
-    {
-      throw new StateConversationException(Type, "Int");
-    }
-
-    public virtual IStateString ToStateString()
-    {
-      throw new StateConversationException(Type, "String");
-    }
   }
 
   public class StateConversationException : Exception

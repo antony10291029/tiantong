@@ -12,8 +12,8 @@ namespace App.CommandLine
 
       plc.Name("测试200smart").UseMC3E("192.168.20.11", 8000);
 
-      plc.State("心跳").Int("D100", 1).Heartbeat(100).Collect(100);
-      plc.State("扫码器").String("D120", 10).Collect(100);
+      plc.Define("心跳").Int("D100", 1).Heartbeat(100).Collect(100);
+      plc.Define("扫码器").String("D120", 10).Collect(100);
 
       plc.Int("心跳").Watch(value => value > 0).Event("event");
       plc.String("扫码器").Watch(value => value != "000000000").Event("scanning");

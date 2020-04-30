@@ -4,13 +4,6 @@ namespace Wcs.Plc
 {
   public class StateString : State<string>, IStateString
   {
-    public override string Type { get => "String"; }
-
-    public override IStateString ToStateString()
-    {
-      return this;
-    }
-
     protected override int CompareDataTo(string data, string value)
     {
       return data.CompareTo(value);

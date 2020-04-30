@@ -23,29 +23,6 @@ namespace Wcs.Plc.Test
       return state;
     }
 
-    [Test]
-    public void TestConversation()
-    {
-      var types = new [] { "Bool", "Int", "String" };
-      var states = new State[] { new StateBool(), new StateInt(), new StateString() };
-
-      foreach (var state in states) {
-        foreach (var type in types) {
-          try {
-            try {
-              typeof(State).GetMethod($"ToState{type}").Invoke(state, null);
-            } catch (TargetInvocationException ex) { throw ex.GetBaseException(); }
-            if (state.Type != type) {
-              Assert.Fail($"convert state from {state.Type} to {type} should be failed");
-            }
-          } catch (StateConversationException ex) {
-            Assert.AreEqual(ex.To, type);
-            Assert.AreEqual(ex.From, state.Type);
-          }
-        }
-      }
-    }
-
     [TestCase(0)]
     public void TestStateInt(int value)
     {

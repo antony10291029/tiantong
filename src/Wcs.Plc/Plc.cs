@@ -174,7 +174,7 @@ namespace Wcs.Plc
       db.SaveChanges();
     }
 
-    public IStateManager State(string name)
+    public IStateManager Define(string name)
     {
       StateManager.Name = name;
 
@@ -185,17 +185,17 @@ namespace Wcs.Plc
 
     public IStateBool Bool(string name)
     {
-      return StateManager.States[name].ToStateBool();
+      return (IStateBool) StateManager.States[name];
     }
 
     public IStateInt Int(string name)
     {
-      return StateManager.States[name].ToStateInt();
+      return (IStateInt) StateManager.States[name];
     }
 
     public IStateString String(string name)
     {
-      return StateManager.States[name].ToStateString();
+      return (IStateString) StateManager.States[name];
     }
 
     //

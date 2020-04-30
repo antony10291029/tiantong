@@ -29,9 +29,9 @@ namespace Wcs.Plc
       manager.SetName("int").Int("D3");
       manager.SetName("string").String("D4");
 
-      var bool_ = states["bool"].ToStateBool();
-      var int_ = states["int"].ToStateInt();
-      var string_ = states["string"].ToStateString();
+      var bool_ = (IStateBool) states["bool"];
+      var int_ = (IStateInt) states["int"];
+      var string_ = (IStateString) states["string"];
 
       bool_.Set(true);
       int_.Set(100);

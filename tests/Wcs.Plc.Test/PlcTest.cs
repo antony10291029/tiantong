@@ -13,7 +13,7 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.UseTest();
-      plc.State("hb").Int("D1").Collect(0);
+      plc.Define("hb").Int("D1").Collect(0);
       plc.Int("hb").Set(1);
 
       try {
@@ -28,7 +28,7 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.UseTest();
-      plc.State("bool data").Bool("D1").Collect(0);
+      plc.Define("bool data").Bool("D1").Collect(0);
       plc.Bool("bool data").Watch("==", true).Event("event");
       plc.Bool("bool data").Set(true);
       plc.On<bool>("event", _ => {
@@ -44,7 +44,7 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.UseTest();
-      plc.State("hb").Int("D1").Heartbeat(0).Collect(0);
+      plc.Define("hb").Int("D1").Heartbeat(0).Collect(0);
       plc.Int("hb").Watch(value => value > 1).Event("stop");
       plc.On<int>("stop", _ => {
         plc.Stop();

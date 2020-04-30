@@ -30,7 +30,7 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.Name("test plc").UseTest();
-      plc.State("hb").Int("D100").Heartbeat(1);
+      plc.Define("hb").Int("D100").Heartbeat(1);
       manager.Plcs.Add(plc.PlcConnection.Name, plc);
 
       plc.Start();
