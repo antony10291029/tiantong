@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Wcs.Plc
 {
-  public class StateTestClientStore
+  public class StateTestDriverStore
   {
     private Dictionary<string, string> _store = new Dictionary<string, string>();
 

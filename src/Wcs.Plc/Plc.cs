@@ -20,7 +20,7 @@ namespace Wcs.Plc
 
     public DatabaseProvider DatabaseProvider;
 
-    public IStateClientProvider StateClientProvider;
+    public IStateDriverProvider StateDriverProvider;
 
     public PlcConnection PlcConnection { get; set; }
 
@@ -74,12 +74,12 @@ namespace Wcs.Plc
       DatabaseProvider.Migrate();
     }
 
-    public virtual void ResolveStateClientProvider()
+    public virtual void ResolveStateDriverProvider()
     {
-      StateClientProvider = PlcConnection.Model switch {
-        "test" => new StateTestClientProvider(),
-        "MC3E" => new MC3EClientProvider(PlcConnection.Host, PlcConnection.Port),
-        "S7200Smart"=> new S7200SmartClientProvider(PlcConnection.Host, PlcConnection.Port),
+      StateDriverProvider = PlcConnection.Model switch {
+        "test" => new StateTestDriverProvider(),
+        "MC3E" => new MC3EDriverProvider(PlcConnection.Host, PlcConnection.Port),
+        "S7200Smart"=> new S7200SmartDriverProvider(PlcConnection.Host, PlcConnection.Port),
         _ => throw new Exception("plc model is not supporting"),
       };
     }
@@ -91,7 +91,7 @@ namespace Wcs.Plc
       Event = new Event();
       IntervalManager = new IntervalManager();
       ResolveDatabaseProvider();
-      ResolveStateClientProvider();
+      ResolveStateDriverProvider();
       ResolveEventLogger();
       ResolveStateLogger();
       ResolveStateManager();
@@ -134,7 +134,7 @@ namespace Wcs.Plc
 
     public virtual void ResolveStateManager()
     {
-      StateManager = new StateManager(Event, IntervalManager, StateClientProvider, StateLogger);
+      StateManager = new StateManager(Event, IntervalManager, StateDriverProvider, StateLogger);
     }
 
     public virtual void HandlePlcConnection()

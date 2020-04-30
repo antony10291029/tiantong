@@ -4,7 +4,7 @@ using Renet.Tcp;
 
 namespace Wcs.Plc
 {
-  public class StateRenetTcpClient : IStateClient
+  public class StateTcpDriver : IStateDriver
   {
     private IPlcReadRequest _readRequest;
 
@@ -16,7 +16,7 @@ namespace Wcs.Plc
 
     private RenetTcpClient _client;
 
-    public StateRenetTcpClient(
+    public StateTcpDriver(
       RenetTcpClient client,
       IPlcReadRequest readRequest,
       IPlcReadResponse readResponse,

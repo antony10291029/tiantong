@@ -3,19 +3,19 @@ using Wcs.Plc.Protocol;
 
 namespace Wcs.Plc
 {
-  public class MC3EClientProvider : IStateClientProvider
+  public class MC3EDriverProvider : IStateDriverProvider
   {
     protected RenetTcpClient _client;
 
-    public MC3EClientProvider(string host, int port)
+    public MC3EDriverProvider(string host, int port)
     {
       _client = new RenetTcpClient(host, port);
       _client.Connect();
     }
 
-    public IStateClient Resolve()
+    public IStateDriver Resolve()
     {
-      return new StateRenetTcpClient(
+      return new StateTcpDriver(
         _client,
         new MC3EReadRequest(),
         new MC3EReadResponse(),

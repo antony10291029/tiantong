@@ -2,18 +2,18 @@ using Wcs.Plc.Protocol;
 
 namespace Wcs.Plc
 {
-  public abstract class S7ClientProvider : IStateClientProvider
+  public abstract class S7DriverProvider : IStateDriverProvider
   {
     protected S7TcpClient _client;
 
-    public S7ClientProvider(string host, int port)
+    public S7DriverProvider(string host, int port)
     {
       _client = new S7TcpClient(host, port);
     }
 
-    public IStateClient Resolve()
+    public IStateDriver Resolve()
     {
-      return new StateRenetTcpClient(
+      return new StateTcpDriver(
         _client,
         new S7ReadRequest(),
         new S7ReadResponse(),

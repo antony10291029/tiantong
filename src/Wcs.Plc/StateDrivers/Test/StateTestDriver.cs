@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public class StateTestClient : IStateClient
+  public class StateTestDriver : IStateDriver
   {
-    public StateTestClientStore Store;
+    public StateTestDriverStore Store;
 
     private string Key;
 

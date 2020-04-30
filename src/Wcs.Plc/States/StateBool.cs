@@ -11,12 +11,12 @@ namespace Wcs.Plc
 
     protected override bool HandleGet()
     {
-      return StateClient.GetBool();
+      return Driver.GetBool();
     }
 
     protected override void HandleSet(bool data)
     {
-      StateClient.SetBool(data);
+      Driver.SetBool(data);
     }
   }
 }

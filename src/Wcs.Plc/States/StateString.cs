@@ -11,12 +11,12 @@ namespace Wcs.Plc
 
     protected override string HandleGet()
     {
-      return StateClient.GetString();
+      return Driver.GetString();
     }
 
     protected override void HandleSet(string data)
     {
-      StateClient.SetString(data);
+      Driver.SetString(data);
     }
   }
 }

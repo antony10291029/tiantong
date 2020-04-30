@@ -12,7 +12,7 @@ namespace Wcs.Plc
 
     public Event Event;
 
-    public IStateClient StateClient;
+    public IStateDriver Driver;
 
     public IntervalManager IntervalManager;
 
@@ -26,7 +26,7 @@ namespace Wcs.Plc
     {
       Key = key;
       Length = length;
-      StateClient.SetAddress(key, length);
+      Driver.SetAddress(key, length);
     }
 
   }

@@ -18,7 +18,7 @@ namespace Wcs.Plc.Test
       var state = new StateInt() {
         Event = new Event(),
         IntervalManager = new IntervalManager(),
-        StateClient = new StateTestClient() { Store = new StateTestClientStore() }
+        Driver = new StateTestDriver() { Store = new StateTestDriverStore() }
       };
       var connection = new PlcConnection() { Id = 1 };
       var count = 0;

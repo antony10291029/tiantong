@@ -10,11 +10,11 @@ namespace Wcs.Plc.Test
     public T ResolveState<T>() where T : State, new()
     {
       var state = new T();
-      var client = new StateTestClient() {
-        Store = new StateTestClientStore()
+      var driver = new StateTestDriver() {
+        Store = new StateTestDriverStore()
       };
 
-      state.StateClient = client;
+      state.Driver = driver;
       state.Event = new Event();
       state.IntervalManager = new IntervalManager();
       state.Name = "test";

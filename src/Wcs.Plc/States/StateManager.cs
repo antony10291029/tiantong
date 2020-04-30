@@ -12,18 +12,18 @@ namespace Wcs.Plc
 
     private IntervalManager _intervalManager;
 
-    private IStateClientProvider _stateClientProvider;
+    private IStateDriverProvider _stateDriverProvider;
 
     public States States { get; } = new States();
 
     public string Name { get; set; }
 
-    public StateManager(Event event_, IntervalManager manager, IStateClientProvider provider, IStatePlugin stateLogger)
+    public StateManager(Event event_, IntervalManager manager, IStateDriverProvider provider, IStatePlugin stateLogger)
     {
       _event = event_;
       _stateLogger = stateLogger;
       _intervalManager = manager;
-      _stateClientProvider = provider;
+      _stateDriverProvider = provider;
     }
 
     public IStateManager SetName(string name)
@@ -38,7 +38,7 @@ namespace Wcs.Plc
       var state = new T() {
         Event = _event,
         IntervalManager = _intervalManager,
-        StateClient = _stateClientProvider.Resolve()
+        Driver = _stateDriverProvider.Resolve()
       };
 
       state.Name = Name;

@@ -21,12 +21,12 @@ namespace Wcs.Plc
 
     protected override int HandleGet()
     {
-      return StateClient.GetInt();
+      return Driver.GetInt();
     }
 
     protected override void HandleSet(int data)
     {
-      StateClient.SetInt(data);
+      Driver.SetInt(data);
     }
 
     public IStateInt Heartbeat(int time = 1000, int maxTimes = 10000)

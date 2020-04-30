@@ -12,9 +12,9 @@ namespace Wcs.Plc
       var plcConnection = new PlcConnection();
       var db = (new DatabaseProvider()).Resolve();
       var intervalManager = new IntervalManager();
-      var clientProvider = new StateTestClientProvider();
+      var driverProvider = new StateTestDriverProvider();
       var logger = new StateLogger(intervalManager, db, plcConnection);
-      var manager = new StateManager(event_, intervalManager, clientProvider,logger);
+      var manager = new StateManager(event_, intervalManager, driverProvider,logger);
 
       return manager;
     }
