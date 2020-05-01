@@ -159,6 +159,11 @@ namespace Wcs.Plc
       return watcher;
     }
 
+    public void Watch(Action<T> handler)
+    {
+      AddGetHook(value => handler(value));
+    }
+
     public IWatcher<T> Watch()
     {
       return CreateWatcher().When(_ => true);

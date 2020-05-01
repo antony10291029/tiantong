@@ -20,6 +20,8 @@ namespace Wcs.Plc
 
     IStateHook<T> AddSetHook(Action<T> hook);
 
+    void Watch(Action<T> handler);
+
     IWatcher<T> Watch();
 
     IWatcher<T> Watch(T value);
