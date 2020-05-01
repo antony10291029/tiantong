@@ -18,13 +18,13 @@ namespace Wcs.Plc.Protocol
       }
     }
 
+    private int _length;
+
     public byte[] ResultCode;
 
     public byte[] ErrorCode;
 
     public byte[] Data;
-
-    public int Length;
 
     public bool IsError
     {
@@ -33,27 +33,27 @@ namespace Wcs.Plc.Protocol
 
     public void UseBool()
     {
-
+      throw new Exception("暂时不支持 Bool 类型");
     }
 
     public void UseUInt16()
     {
-
+      _length = 2;
     }
 
     public void UseInt32()
     {
-
+      throw new Exception("暂时不支持 Int32 类型");
     }
 
     public void UseString(int length)
     {
-
+      _length = length;
     }
 
     public void UseBytes(int length)
     {
-
+      throw new Exception("暂时不支持 Bytes 类型");
     }
 
     private void GetResultCode()
@@ -65,25 +65,25 @@ namespace Wcs.Plc.Protocol
     {
       if (IsError) {
         ErrorCode = Message[11..13];
+        throw new Exception($"PLC读取错误，结束代码: {ResultCode}, 异常代码: {ErrorCode}");
       }
     }
 
     private void GetData()
     {
-      Length = BitConverter.ToInt16(Message[7..9]) - 2;
-      Data = ErrorCode = Message[11..(11 + Length)];
+      Data = Message[11..(11 + _length)];
     }
 
     //
 
     public ushort GetUInt16()
     {
-      return 0;
+      return BitConverter.ToUInt16(Data);
     }
 
     public int GetInt32()
     {
-      return BitConverter.ToUInt16(Data);
+      return BitConverter.ToInt32(Data);
     }
 
     public bool GetBool()

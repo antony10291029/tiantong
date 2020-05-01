@@ -22,8 +22,9 @@ namespace App.CommandLine
       var request = new MC3EWriteRequest();
       var response = new MC3EWriteResponse();
 
-      request.UseAddress("M100");
-      request.UseData(100);
+      request.UseUInt16();
+      request.UseAddress("D100");
+      request.UseData(200);
 
       Console.WriteLine(
         BitConverter.ToString(request.Message)
@@ -38,14 +39,14 @@ namespace App.CommandLine
       var request = new MC3EReadRequest();
       var response = new MC3EReadResponse();
 
-      request.UseAddress("M100");
+      request.UseUInt16();
+      response.UseUInt16();
+      request.UseAddress("D100");
 
       Console.WriteLine(BitConverter.ToString(request.Message));
 
       response.Message = client.TrySend(request.Message);
-      Console.WriteLine(BitConverter.ToString(response.ResultCode));
-      Console.WriteLine(BitConverter.ToString(response.Data));
-      Console.WriteLine(response.GetInt32());
+      Console.WriteLine(response.GetUInt16());
     }
   }
 }

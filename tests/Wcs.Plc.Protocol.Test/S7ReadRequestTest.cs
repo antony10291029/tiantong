@@ -14,26 +14,27 @@ namespace Wcs.Plc.Protocol.Test
       };
       var req = new S7ReadRequest();
 
-      req.UseAddress("D1.100", 4);
+      req.UseUInt16();
+      req.UseAddress("D1.100");
 
       Assert.AreEqual(req.Message, read);
     }
 
-    [Test]
-    public void test_d_1_100_bool_read_write()
-    {
-      var read = new [] {
-        0x03, 0x00, 0x00, 0x1F, 0x02, 0xF0, 0x80,
-        0x32, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x0E, 0x00, 0x00, 0x04, 0x01,
-        0x12, 0x0A, 0x10, 0x02, 0x00, 0x01, 0x00, 0x01, 0x84, 0x00, 0x03, 0x21
-      };
+    // [Test]
+    // public void test_d_1_100_bool_read_write()
+    // {
+      // var read = new [] {
+      //   0x03, 0x00, 0x00, 0x1F, 0x02, 0xF0, 0x80,
+      //   0x32, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x0E, 0x00, 0x00, 0x04, 0x01,
+      //   0x12, 0x0A, 0x10, 0x02, 0x00, 0x01, 0x00, 0x01, 0x84, 0x00, 0x03, 0x21
+      // };
 
-      var req = new S7ReadRequest();
+      // var req = new S7ReadRequest();
 
-      req.UseAddress("D1.100.1", 1);
+      // req.UseAddress("D1.100.1", 1);
 
-      Assert.AreEqual(req.Message, read);
-    }
+      // Assert.AreEqual(req.Message, read);
+    // }
 
     [Test]
     public void test_d_1_100_string_read_write()
@@ -46,23 +47,8 @@ namespace Wcs.Plc.Protocol.Test
 
       var req = new S7ReadRequest();
 
-      req.UseAddress("D1.100", 10);
-
-      Assert.AreEqual(req.Message, read);
-    }
-
-    [Test]
-    public void test_overlength_read_write()
-    {
-      var read = new [] {
-        0x03, 0x00, 0x00, 0x1F, 0x02, 0xF0, 0x80,
-        0x32, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x0E, 0x00, 0x00, 0x04,
-        0x01, 0x12, 0x0A, 0x10, 0x02, 0x00, 0x0A, 0x00, 0x01, 0x84, 0x00, 0x03, 0x20
-      };
-
-      var req = new S7ReadRequest();
-
-      req.UseAddress("D1.100", 10);
+      req.UseString(10);
+      req.UseAddress("D1.100");
 
       Assert.AreEqual(req.Message, read);
     }

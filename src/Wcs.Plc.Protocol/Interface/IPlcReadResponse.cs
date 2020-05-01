@@ -6,15 +6,15 @@ namespace Wcs.Plc.Protocol
   {
     byte[] Message { get; set; }
 
-    void UseBool() {}
+    void UseBool();
 
-    void UseUInt16() {}
+    void UseUInt16();
 
-    void UseInt32() {}
+    void UseInt32();
 
-    void UseString(int length) {}
+    void UseString(int length);
 
-    void UseBytes(int length) {}
+    void UseBytes(int length);
 
     //
 

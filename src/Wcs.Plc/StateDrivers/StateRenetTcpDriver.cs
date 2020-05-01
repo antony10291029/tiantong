@@ -1,6 +1,5 @@
-using System;
-using Wcs.Plc.Protocol;
 using Renet.Tcp;
+using Wcs.Plc.Protocol;
 
 namespace Wcs.Plc
 {

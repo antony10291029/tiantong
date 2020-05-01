@@ -31,23 +31,29 @@ namespace Wcs.Plc.Protocol
 
     public void UseBool()
     {
-      _length = 1;
+      throw new Exception("暂时不支持 Bool 类型");
     }
 
-    public void UseUShort()
+    public void UseUInt16()
     {
-      _length = 4;
+      _length = 2;
+      Data = new byte[2];
+    }
+
+    public void UseInt32()
+    {
+      throw new Exception("暂时不支持 Int32 类型");
     }
 
     public void UseString(int length)
     {
-      // Snap7: 在字符串前存储字符串的长度
       _length = length + 1;
+      Data = new byte[_length];
     }
 
     public void UseBytes(int length)
     {
-      _length = length;
+      throw new Exception("暂时不支持 Bytes 类型");
     }
 
     private void GetIsDataResponse()
@@ -67,50 +73,29 @@ namespace Wcs.Plc.Protocol
 
     private void GetData()
     {
-      var length = BitConverter.ToInt32(new byte[] { Message[16], Message[15], 0, 0 }) - 4;
-
-      if (length <= 0) {
-        return;
-      }
-
-      var data = new byte[length];
-      Array.Copy(Message, 25, data, 0, length);
-
-      Data = data;
+      Array.Copy(Message, 25, Data, 0, _length);
     }
 
     //
 
+    public bool GetBool()
+    {
+      throw new Exception("暂时不支持 bool 类型");
+    }
+
     public ushort GetUInt16()
     {
-      return 0;
+      return BitConverter.ToUInt16(Data);
     }
 
     public int GetInt32()
     {
-      if (Data.Length != _length) {
-        throw new Exception($"byte array length is not {_length}");
-      }
-      var data = new byte[Data.Length];
-
-      Array.Copy(Data, data, data.Length);
-      Array.Reverse(data);
-
-      return BitConverter.ToInt32(data);
-    }
-
-    public bool GetBool()
-    {
-      if (Data.Length != _length) {
-        throw new Exception($"byte array length is not {_length}");
-      }
-
-      return BitConverter.ToBoolean(Data);
+      throw new Exception("暂时不支持 int32 类型");
     }
 
     public string GetString()
     {
-      return Encoding.ASCII.GetString(Data, 1, Data.Length - 1);
+      return Encoding.ASCII.GetString(Data[1..]);
     }
 
     public byte[] GetBytes()

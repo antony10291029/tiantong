@@ -136,12 +136,6 @@ namespace Wcs.Plc.Protocol
       Message[3] = (byte)(Message.Length % 256);
     }
 
-    private void SetParameterDataLength(int length)
-    {
-      Message[23] = (byte)(length / 256);             // 4.  数据点数量 - 1
-      Message[24] = (byte)(length % 256);             // 5.  数据点数量 - 2
-    }
-
     private void SetParameterDbBlock(int block)
     {
       Message[25] = (byte)(block / 256);              // 6.  DB 块长度 - 1
@@ -160,22 +154,51 @@ namespace Wcs.Plc.Protocol
       Message[30] = (byte)(offset % 256);             // 11. 偏移位置 - 3
     }
 
-    protected void SetAddress(string address, int length)
+    protected void SetAddress(string address)
     {
       var (db, offset, block) = TransAddress(address);
 
-      SetParameterDataLength(length);
       SetParameterDbBlock(block);
       SetParameterDataType(db);
       SetParameterOffset(offset);
     }
 
-    //
+    private void UseDataCount(int count)
+    {
+      Message[23] = (byte)(count / 256);             // 4.  数据点数量 - 1
+      Message[24] = (byte)(count % 256);             // 5.  数据点数量 - 2
+    }
 
-    public void UseAddress(string address, int length)
+    public void UseBool()
+    {
+      throw new Exception("暂时不支持 Bool 类型");
+    }
+
+    public void UseUInt16()
     {
       UseReadCommand();
-      SetAddress(address, length);
+      UseDataCount(2);
+    }
+
+    public void UseInt32()
+    {
+      throw new Exception("暂时不支持 Int32 类型");
+    }
+
+    public void UseString(int length)
+    {
+      UseReadCommand();
+      UseDataCount(length + 1);
+    }
+
+    public void UseBytes(int length)
+    {
+      throw new Exception("暂时不支持 Bytes 类型");
+    }
+
+    public void UseAddress(string address)
+    {
+      SetAddress(address);
       SetMessageLength();
     }
 

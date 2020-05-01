@@ -38,8 +38,6 @@ namespace Wcs.Plc.Protocol
 
     public byte[] Message { get => _msg; }
 
-    protected bool IsWord = false;
-
     //
 
     private int TransAddressOffset(string offset)
@@ -96,7 +94,7 @@ namespace Wcs.Plc.Protocol
 
     //
 
-    protected void UseReadCommand()
+    protected void UseCommandReadInt16()
     {
       Message[11] = 0x01;
       Message[12] = 0x04;
@@ -104,7 +102,7 @@ namespace Wcs.Plc.Protocol
       Message[14] = 0x00;
     }
 
-    protected void UseWriteCommand()
+    protected void UseCommandWriteInt16()
     {
       Message[11] = 0x01;
       Message[12] = 0x14;
@@ -114,17 +112,14 @@ namespace Wcs.Plc.Protocol
 
     private void SetDataType(string type)
     {
-      var (db, isWord) = type switch {
-        "M" => (0x90, false),
-        "V" => (0x94, false),
-        "B" => (0xA0, false),
-        "D" => (0xA8, true),
-        "W" => (0xB4, true),
+      Message[18] = type switch {
+        "M" => 0x90,
+        "V" => 0x94,
+        "B" => 0xA0,
+        "D" => 0xA8,
+        "W" => 0xB4,
         _ => throw new Exception("data type is invalid")
       };
-
-      Message[18] = (byte) db;
-      IsWord = isWord;
     }
 
     private void SetDateOffset(int offset)
@@ -134,12 +129,6 @@ namespace Wcs.Plc.Protocol
       Message[17] = (byte)(offset / 256 / 256 % 256);   // 11. 偏移位置 - 3
     }
 
-    private void SetDataLength(int length)
-    {
-      Message[19] = (byte)(length % 256);
-      Message[20] = (byte)(length / 256);
-    }
- 
     protected void SetMessageLength()
     {
       Message[7] = (byte)((Message.Length - 9) % 256);
@@ -158,34 +147,41 @@ namespace Wcs.Plc.Protocol
 
     public void UseBool()
     {
-
+      throw new Exception("暂时不支持 Bool 类型");
     }
 
     public void UseUInt16()
     {
-
+      UseCommandReadInt16();
+      UseDataCount(1);
     }
 
     public void UseInt32()
     {
-
+      throw new Exception("暂时不支持 Int32 类型");
     }
 
     public void UseString(int length)
     {
-
+      UseCommandReadInt16();
+      UseDataCount((int) Math.Ceiling(length / 2.0));
     }
 
     public void UseBytes(int length)
     {
+      throw new Exception("暂时不支持 Bytes 类型");
+    }
 
+    private void UseDataCount(int count)
+    {
+      Message[19] = (byte)(count % 256);
+      Message[20] = (byte)(count / 256);
     }
 
     public void UseAddress(string address)
     {
       SetAddress(address);
       SetMessageLength();
-      UseReadCommand();
     }
 
   }
