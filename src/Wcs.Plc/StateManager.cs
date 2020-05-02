@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
@@ -33,7 +35,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    private T ResolveState<T>(string key, int length = 0) where T : State, new()
+    private T ResolveState<T>(string address, int length = 0) where T : State, new()
     {
       var state = new T() {
         Event = _event,
@@ -43,42 +45,42 @@ namespace Wcs.Plc
       state.Name = Name;
       state.Length = length;
       state.UseDriver(_stateDriverProvider.Resolve());
-      state.UseAddress(key);
+      state.UseAddress(address);
       States.Add(Name, state);
 
       return state;
     }
 
-    public IStateBool Bool(string key)
+    public IStateBool Bool(string address)
     {
-      var state = ResolveState<StateBool>(key);
+      var state = ResolveState<StateBool>(address);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateUInt16 UInt16(string key)
+    public IStateUInt16 UInt16(string address)
     {
-      var state = ResolveState<StateUInt16>(key);
+      var state = ResolveState<StateUInt16>(address);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateInt32 Int32(string key)
+    public IStateInt32 Int32(string address)
     {
-      var state = ResolveState<StateInt32>(key);
+      var state = ResolveState<StateInt32>(address);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateString String(string key, int length)
+    public IStateString String(string address, int length)
     {
-      var state = ResolveState<StateString>(key, length);
+      var state = ResolveState<StateString>(address, length);
 
       state.Use(_stateLogger);
       state.Length = length;
@@ -86,14 +88,14 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateUInt16 UShort(string key)
+    public IStateUInt16 UShort(string address)
     {
-      return UInt16(key);
+      return UInt16(address);
     }
 
-    public IStateInt32 Int(string key)
+    public IStateInt32 Int(string address)
     {
-      return Int32(key);
+      return Int32(address);
     }
 
   }

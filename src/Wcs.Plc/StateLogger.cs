@@ -45,7 +45,7 @@ namespace Wcs.Plc
           Operation = "read",
           PlcId = _plcConnection.Id,
           Name = state.Name,
-          Key = state.Key,
+          Key = state.Address,
           Length = state.Length,
           Value = JsonSerializer.Serialize(value),
         };
@@ -60,7 +60,7 @@ namespace Wcs.Plc
           Operation = "write",
           PlcId = _plcConnection.Id,
           Name = state.Name,
-          Key = state.Key,
+          Key = state.Address,
           Length = state.Length,
           Value = JsonSerializer.Serialize(value),
         };

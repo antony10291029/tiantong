@@ -18,9 +18,9 @@ namespace Wcs.Plc
 
     public Task HookTasks;
 
-    public abstract string Key { get; set; }
+    public string Address { get; set; }
 
-    public abstract int Length { get; set; }
+    public int Length { get; set; }
 
     public void UseDriver(IStateDriver driver)
     {
@@ -30,10 +30,10 @@ namespace Wcs.Plc
 
     protected abstract void HandleDriverResolved();
 
-    public void UseAddress(string key)
+    public void UseAddress(string address)
     {
-      Key = key;
-      Driver.UseAddress(key);
+      Address = address;
+      Driver.UseAddress(address);
     }
 
   }
@@ -54,29 +54,6 @@ namespace Wcs.Plc
 
   //
 
-  public class StateConversationException : Exception
-  {
-    public string From;
-
-    public string To;
-
-    public override string Message
-    {
-      get => $"fail to convert state from `{From}` to `{To}`";
-    }
-
-    public StateConversationException()
-    {
-
-    }
-
-    public StateConversationException(string from, string to)
-    {
-      To = to;
-      From = from;
-    }
-  }
-
   public abstract class State<T> : State, IState<T>
   {
     public T CurrentValue;
@@ -88,10 +65,6 @@ namespace Wcs.Plc
     private int _id = 0;
 
     private Interval _interval;
-
-    public override string Key { get; set; }
-
-    public override int Length { get; set; }
 
     ~State()
     {

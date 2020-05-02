@@ -5,12 +5,6 @@ namespace Wcs.Plc
 {
   public interface IState
   {
-    IState Collect(int interval = 1000);
-
-    Task UncollectAsync();
-
-    void Uncollect();
-
     S Convert<S>() where S : IState;
   }
 
@@ -19,6 +13,12 @@ namespace Wcs.Plc
     IStateHook<T> AddGetHook(Action<T> hook);
 
     IStateHook<T> AddSetHook(Action<T> hook);
+
+    IState Collect(int interval = 1000);
+
+    Task UncollectAsync();
+
+    void Uncollect();
 
     void Watch(Action<T> handler);
 

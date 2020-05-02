@@ -26,23 +26,23 @@ namespace Wcs.Plc
 
     IPlc UseMC3E(string host, int port);
 
-    IStateManager Define(string key);
+    IStateManager Define(string name);
 
     //
 
-    IStateBool Bool(string key);
+    IStateBool Bool(string name);
 
-    IStateUInt16 UInt16(string key);
+    IStateUInt16 UInt16(string name);
 
-    IStateString String(string key);
+    IStateString String(string name);
 
-    IStateBytes Bytes(string key);
+    IStateBytes Bytes(string name);
 
     //
 
-    IStateUInt16 UShort(string key);
+    IStateUInt16 UShort(string name);
 
-    IStateInt32 Int(string key);
+    IStateInt32 Int(string name);
 
     //
 
