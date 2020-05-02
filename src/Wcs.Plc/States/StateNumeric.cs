@@ -5,11 +5,11 @@ namespace Wcs.Plc
 {
   public abstract class StateNumeric<T> : State<T>
   {
-    private Interval _interval;
+    public Interval HeartbeatInterval;
 
     ~StateNumeric()
     {
-      if (_interval != null) {
+      if (HeartbeatInterval != null) {
         Unheartbeat();
       }
     }
@@ -21,19 +21,19 @@ namespace Wcs.Plc
       T times = default;
 
       time = Math.Max(time, 1);
-      _interval = new Interval();
-      _interval.SetTime(time);
-      _interval.SetHandler(() => HandleHeartbeat(ref times, ref maxValue));
-      IntervalManager.Add(_interval);
+      HeartbeatInterval = new Interval();
+      HeartbeatInterval.SetTime(time);
+      HeartbeatInterval.SetHandler(() => HandleHeartbeat(ref times, ref maxValue));
+      IntervalManager.Add(HeartbeatInterval);
 
       return this;
     }
 
     public Task UnheartbeatAsync()
     {
-      IntervalManager.Remove(_interval);
+      IntervalManager.Remove(HeartbeatInterval);
 
-      return _interval.WaitAsync();
+      return HeartbeatInterval.WaitAsync();
     }
 
     public void Unheartbeat()

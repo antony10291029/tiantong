@@ -21,5 +21,7 @@ namespace Wcs.Plc
         new S7WriteResponse()
       );
     }
+
+    public abstract void Boot();
   }
 }

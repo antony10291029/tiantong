@@ -8,8 +8,6 @@ namespace Wcs.Plc
   {
     public int Id { get; set; }
 
-    public int Times { get; protected set; } = 0;
-
     private int _time = 1;
 
     private Task _task = Task.Delay(0);
@@ -67,13 +65,6 @@ namespace Wcs.Plc
       return this;
     }
 
-    public Interval SetTimes(int times)
-    {
-      Times = times;
-
-      return this;
-    }
-
     public Interval SetHandler(Action handler)
     {
       _handler = _ => Task.Run(handler);
@@ -102,24 +93,11 @@ namespace Wcs.Plc
 
     private async Task HandleTask()
     {
-      var times = 0;
-
       while (!_tokenSource.Token.IsCancellationRequested) {
-        if (Times != 0) {
-          if (times < Times) times++;
-          else break;
-        }
+        await _handler(_tokenSource.Token);
         try {
-          await _handler(_tokenSource.Token);
-        } catch (Exception e) {
-          Console.WriteLine(e);
-          // break;
-        }
-        if (_delayer != null) {
-          try {
-            await _delayer(_tokenSource.Token);
-          } catch (TaskCanceledException) {}
-        }
+          await Task.Delay(_time, _tokenSource.Token);
+        } catch (TaskCanceledException) {}
       }
     }
 

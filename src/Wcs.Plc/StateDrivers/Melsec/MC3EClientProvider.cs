@@ -10,7 +10,6 @@ namespace Wcs.Plc
     public MC3EDriverProvider(string host, int port)
     {
       _client = new RenetTcpClient(host, port);
-      _client.Connect();
     }
 
     public IStateDriver Resolve()
@@ -22,6 +21,11 @@ namespace Wcs.Plc
         new MC3EWriteRequest(),
         new MC3EWriteResponse()
       );
+    }
+
+    public void Boot()
+    {
+      _client.Connect();
     }
   }
 }

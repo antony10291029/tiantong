@@ -4,8 +4,11 @@ namespace Wcs.Plc
   {
     public S7200SmartDriverProvider(string host, int port): base(host, port)
     {
-      _client.Use200Smart().Reconnect();
     }
 
+    public override void Boot()
+    {
+      _client.Use200Smart().Connect();
+    }
   }
 }

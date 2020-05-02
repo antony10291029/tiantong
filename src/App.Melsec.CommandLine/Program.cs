@@ -29,7 +29,7 @@ namespace App.CommandLine
       Console.WriteLine(
         BitConverter.ToString(request.Message)
       );
-      response.Message = client.TrySend(request.Message);
+      response.Message = client.Send(request.Message);
 
       Console.WriteLine(response.IsError);
     }
@@ -45,7 +45,7 @@ namespace App.CommandLine
 
       Console.WriteLine(BitConverter.ToString(request.Message));
 
-      response.Message = client.TrySend(request.Message);
+      response.Message = client.Send(request.Message);
       Console.WriteLine(response.GetUInt16());
     }
   }

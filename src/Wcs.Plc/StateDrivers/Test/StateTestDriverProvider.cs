@@ -9,5 +9,10 @@ namespace Wcs.Plc
 
       return client;
     }
+
+    public void Boot()
+    {
+
+    }
   }
 }

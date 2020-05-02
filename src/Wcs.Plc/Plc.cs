@@ -246,6 +246,7 @@ namespace Wcs.Plc
 
     public IPlc Start()
     {
+      StateDriverProvider.Boot();
       IntervalManager.Start();
 
       return this;
@@ -276,7 +277,14 @@ namespace Wcs.Plc
 
     public void Run()
     {
-      RunAsync().GetAwaiter().GetResult();
+      while (true) {
+        try {
+          RunAsync().GetAwaiter().GetResult();
+        } catch (Exception e) {
+          Console.WriteLine(e.Message);
+          Task.Delay(1000).GetAwaiter().GetResult();
+        }
+      }
     }
 
   }

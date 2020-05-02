@@ -58,17 +58,17 @@ namespace Wcs.Plc
   {
     public T CurrentValue;
 
+    public Interval CollectInterval;
+
     private Hooks<T> _gethooks = new Hooks<T>();
 
     private Hooks<T> _sethooks = new Hooks<T>();
 
     private int _id = 0;
 
-    private Interval _interval;
-
     ~State()
     {
-      if (_interval != null) {
+      if (CollectInterval != null) {
         Uncollect();
       }
     }
@@ -80,11 +80,6 @@ namespace Wcs.Plc
       if (plugin != null) {
         plugin.Install(this);
       }
-    }
-
-    public S Convert<S>() where S : IState
-    {
-      return (S)(object) this;
     }
 
     public IStateHook<T> AddSetHook(Func<T, Task> hook)
@@ -188,11 +183,11 @@ namespace Wcs.Plc
       Event.On<T>(key, handler);
     }
 
-    public IState Collect(int time = 1000)
+    public IState<T> Collect(int time = 1000)
     {
       time = Math.Max(time, 1);
-      _interval = new Interval(() => Get(), time);
-      IntervalManager.Add(_interval);
+      CollectInterval = new Interval(() => Get(), time);
+      IntervalManager.Add(CollectInterval);
 
       return this;
     }
@@ -201,14 +196,14 @@ namespace Wcs.Plc
     {
       Uncollect();
 
-      return _interval.WaitAsync();
+      return CollectInterval.WaitAsync();
     }
 
     public void Uncollect()
     {
-      IntervalManager.Remove(_interval);
-      _interval.WaitAsync().ContinueWith(_ => {
-        _interval = null;
+      IntervalManager.Remove(CollectInterval);
+      CollectInterval.WaitAsync().ContinueWith(_ => {
+        CollectInterval = null;
       });
     }
 

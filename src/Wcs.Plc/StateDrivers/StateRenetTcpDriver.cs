@@ -1,3 +1,4 @@
+using System;
 using Renet.Tcp;
 using Wcs.Plc.Protocol;
 
@@ -31,12 +32,12 @@ namespace Wcs.Plc
 
     private void Write()
     {
-      _writeResponse.Message = _client.TrySend(_writeRequest.Message);
+      _writeResponse.Message = _client.Send(_writeRequest.Message);
     }
 
     private void Read()
     {
-      _readResponse.Message = _client.TrySend(_readRequest.Message);
+      _readResponse.Message = _client.Send(_readRequest.Message);
     }
 
     public void UseBool()

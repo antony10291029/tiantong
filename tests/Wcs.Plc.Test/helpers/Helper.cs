@@ -10,13 +10,14 @@ namespace Wcs.Plc.Test
     {
       var tokenSource = new CancellationTokenSource();
       var delay = Task.Delay(time, tokenSource.Token);
-
-      task.ContinueWith(_ => tokenSource.Cancel());
+      var task_ = task.ContinueWith(_ => tokenSource.Cancel());
 
       try {
         delay.GetAwaiter().GetResult();
         throw new Exception($"interval overtime: expect to finish task in {time}ms");
       } catch (TaskCanceledException) {}
+
+      task.GetAwaiter().GetResult();
     }
 
   }

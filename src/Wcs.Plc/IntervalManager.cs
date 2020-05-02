@@ -1,37 +1,59 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace Wcs.Plc
 {
-  using Tasks = List<Task>;
   using Intervals = Dictionary<int, Interval>;
 
   public class IntervalManager
   {
     private int _id = 0;
 
-    private Intervals intervals = new Intervals();
+    public Intervals Intervals = new Intervals();
+
+    public IntervalManager()
+    {
+      var interval = new Interval();
+      interval.SetTime(100).SetHandler(() => {
+        foreach (var interval in Intervals.Values) {
+          var task = interval.WaitAsync();
+          if (task.IsCompleted) {
+            try {
+              task.GetAwaiter().GetResult();
+            } catch (Exception e) {
+              Stop();
+              throw e;
+            }
+          }
+        }
+      });
+      Add(interval);
+    }
 
     public void Add(Interval interval)
     {
       var id = _id++;
       interval.Id = id;
-      intervals.Add(id, interval);
+      Intervals.Add(id, interval);
     }
 
-    public void Remove(Interval interval)
+    public Task Remove(Interval interval)
     {
       var id = interval.Id;
       interval.Stop();
       interval.WaitAsync().ContinueWith(_ => {
         interval.Id = 0;
-        intervals.Remove(id);
+        Intervals.Remove(id);
       });
+
+      return interval.WaitAsync();
     }
 
     public bool IsRunning()
     {
-      foreach (var interval in intervals.Values) {
+      foreach (var interval in Intervals.Values) {
         if (interval.IsRunning()) {
           return true;
         }
@@ -42,7 +64,7 @@ namespace Wcs.Plc
 
     public IntervalManager Start()
     {
-      foreach (var interval in intervals.Values) {
+      foreach (var interval in Intervals.Values) {
         interval.Start();
       }
 
@@ -51,7 +73,7 @@ namespace Wcs.Plc
 
     public IntervalManager Stop()
     {
-      foreach (var interval in intervals.Values) {
+      foreach (var interval in Intervals.Values) {
         if (interval.IsRunning()) {
           interval.Stop();
         }
@@ -62,7 +84,7 @@ namespace Wcs.Plc
 
     public IntervalManager Clear()
     {
-      foreach (var interval in intervals.Values) {
+      foreach (var interval in Intervals.Values) {
         Remove(interval);
       }
 
@@ -71,13 +93,9 @@ namespace Wcs.Plc
 
     public Task WaitAsync()
     {
-      var tasks = new Tasks();
-
-      foreach (var interval in intervals.Values) {
-        tasks.Add(interval.WaitAsync());
-      }
-
-      return Task.WhenAll(tasks);
+      return Task.WhenAll(
+        Intervals.Values.Select(i => i.WaitAsync()).ToArray()
+      );
     }
 
     public void Wait()

@@ -31,7 +31,6 @@ namespace Renet.Tcp
     {
       Host = host;
       Port = port;
-      _client = new TcpClient();
     }
 
     public void Dispose()
@@ -62,28 +61,15 @@ namespace Renet.Tcp
       }
     }
 
-    public byte[] TrySend(byte[] message)
-    {
-      while (true) {
-        try {
-          return Send(message);
-        } catch (Exception e) {
-          Console.WriteLine(e.Message);
-          Connect();
-        }
-      }
-    }
-
     public void Connect()
     {
+      _client = new TcpClient();
+      _client.SendBufferSize = 512;
+      _client.ReceiveBufferSize = 512;
       if (_client.ConnectAsync(Host, Port).Wait(_ioTimeout)) {
-        lock (_sendingLock) {
-          _stream ??= _client.GetStream();
-          _stream.ReadTimeout = _stream.WriteTimeout = _ioTimeout;
-        }
+        _stream = _client.GetStream();
+        _stream.ReadTimeout = _stream.WriteTimeout = _ioTimeout;
         Connected();
-      } else {
-        throw new Exception("TCP连接超时");
       }
     }
 
@@ -92,30 +78,5 @@ namespace Renet.Tcp
 
     }
 
-    private async Task ReconnectAsync()
-    {
-      for (var i = 0; ; i++) {
-        Console.WriteLine("重连中");
-        try {
-          Connect();
-          break;
-        } catch (Exception e) {
-          Console.WriteLine(e.Message);
-          Console.WriteLine("正在重连: " + i);
-          await Task.Delay(ReconnectInterval);
-        }
-      };
-    }
-
-    public void Reconnect()
-    {
-      lock (_reconnectLock) {
-        if (_reconnectTask == null) {
-          _reconnectTask = ReconnectAsync();
-        }
-      }
-
-      _reconnectTask.GetAwaiter().GetResult();
-    }
   }
 }
