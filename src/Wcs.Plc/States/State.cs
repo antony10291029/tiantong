@@ -10,8 +10,6 @@ namespace Wcs.Plc
   {
     public string Name;
 
-    public Event Event;
-
     public IStateDriver Driver;
 
     public IntervalManager IntervalManager;
@@ -118,18 +116,20 @@ namespace Wcs.Plc
       _sethooks.Remove(id);
     }
 
-    protected IWatcher<T> CreateWatcher()
+    protected Watcher<T> CreateWatcher()
     {
-      var watcher = new Watcher<T>(Event);
+      var watcher = new Watcher<T>();
 
-      AddGetHook(value => watcher.Handle(value));
+      AddGetHook(value => watcher.Emit(value));
 
       return watcher;
     }
 
-    public void Watch(Action<T> handler)
+    public IState<T> Watch(Action<T> handler)
     {
-      AddGetHook(value => handler(value));
+      CreateWatcher().When(_ => true).On(handler);
+
+      return this;
     }
 
     public IWatcher<T> Watch()
@@ -173,16 +173,6 @@ namespace Wcs.Plc
 
     protected abstract int CompareDataTo(T data, T value);
 
-    public void On(string key, Func<T, Task> handler)
-    {
-      Event.On<T>(key, handler);
-    }
-
-    public void On(string key, Action<T> handler)
-    {
-      Event.On<T>(key, handler);
-    }
-
     public IState<T> Collect(int time = 1000)
     {
       time = Math.Max(time, 1);
@@ -194,17 +184,12 @@ namespace Wcs.Plc
 
     public Task UncollectAsync()
     {
-      Uncollect();
-
-      return CollectInterval.WaitAsync();
+      return IntervalManager.RemoveAsync(CollectInterval);
     }
 
     public void Uncollect()
     {
-      IntervalManager.Remove(CollectInterval);
-      CollectInterval.WaitAsync().ContinueWith(_ => {
-        CollectInterval = null;
-      });
+      UncollectAsync().GetAwaiter().GetResult();
     }
 
     public void Set(T data)

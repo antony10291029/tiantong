@@ -1,6 +1,6 @@
 namespace Wcs.Plc.Test
 {
-  public class EventUser
+  public class WatcherUser
   {
     public int Id { get; set; }
 

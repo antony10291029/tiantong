@@ -8,8 +8,6 @@ namespace Wcs.Plc
 
   public class StateManager : IStateManager
   {
-    private Event _event;
-
     private IStatePlugin _stateLogger;
 
     private IntervalManager _intervalManager;
@@ -20,9 +18,8 @@ namespace Wcs.Plc
 
     public string Name { get; set; }
 
-    public StateManager(Event event_, IntervalManager manager, IStateDriverProvider provider, IStatePlugin stateLogger)
+    public StateManager(IntervalManager manager, IStateDriverProvider provider, IStatePlugin stateLogger)
     {
-      _event = event_;
       _stateLogger = stateLogger;
       _intervalManager = manager;
       _stateDriverProvider = provider;
@@ -38,7 +35,6 @@ namespace Wcs.Plc
     private T ResolveState<T>(string address, int length = 0) where T : State, new()
     {
       var state = new T() {
-        Event = _event,
         IntervalManager = _intervalManager,
       };
 

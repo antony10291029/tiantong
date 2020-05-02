@@ -9,17 +9,11 @@ namespace Wcs.Plc.Test
     public void TestHandleCancel()
     {
       var result = 0;
-      var event_ = new Event();
-      var watcher = new Watcher<int>(event_);
-      var listener = event_.On<int>("event", value => result = value);
+      var watcher = new Watcher<int>();
+      
+      watcher.When(value => value != 0).On(value => result = value);
+      watcher.Emit(1);
 
-      watcher.When(value => value != 0).Event("event");
-      watcher.Handle(1);
-      Assert.AreEqual(result, 1);
-
-      watcher.OnCancel(() => listener.Cancel());
-      watcher.Cancel();
-      watcher.Handle(2);
       Assert.AreEqual(result, 1);
     }
 
@@ -27,18 +21,16 @@ namespace Wcs.Plc.Test
     public void TestCustomEvent()
     {
       var result = 0;
-      var event_ = new Event();
-      var watcher = new Watcher<EventUser>(event_);
-      var user = new EventUser() { Id = 1, Name = "test" };
+      var watcher = new Watcher<WatcherUser>();
+      var user = new WatcherUser() { Id = 1, Name = "test" };
 
-      event_.On<EventUser>("event", item => result = item.Id);
-      watcher.When(item => item.Id == 10).Event("event");
+      watcher.When(item => item.Id == 10).On(item => result = item.Id);
 
-      watcher.Handle(user);
+      watcher.Emit(user);
       Assert.AreEqual(result, 0);
 
       user.Id = 10;
-      watcher.Handle(user);
+      watcher.Emit(user);
       Assert.AreEqual(result, 10);
     }
   }

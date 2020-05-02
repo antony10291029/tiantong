@@ -32,10 +32,10 @@ namespace Wcs.Plc.Test
       manager.Start();
       for (var i = 0; i < n; i++) {
         var interval = intervals[i];
-        manager.Remove(interval).AssertFinishIn(100);
+        manager.Remove(interval);
       }
 
-      manager.Stop().WaitAsync();
+      manager.Stop().Wait();
 
       Assert.AreEqual(1, manager.Intervals.Count);
     }

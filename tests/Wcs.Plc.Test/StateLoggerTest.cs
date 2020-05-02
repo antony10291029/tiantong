@@ -16,7 +16,6 @@ namespace Wcs.Plc.Test
       var plcConnection = new PlcConnection();
       var logger = new StateLogger(manager, db, plcConnection);
       var state = new StateInt32() {
-        Event = new Event(),
         IntervalManager = new IntervalManager(),
         Driver = new StateTestDriver() { Store = new StateTestDriverStore() }
       };

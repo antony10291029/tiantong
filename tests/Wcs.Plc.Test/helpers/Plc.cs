@@ -7,12 +7,6 @@ namespace Wcs.Plc.Test
       DatabaseProvider = new TestDatabaseProvider();
     }
 
-    /// EventLogger 将被单独测试
-    public override void ResolveEventLogger()
-    {
-
-    }
-
     /// StateLogger 将被单独测试
     public override void ResolveStateLogger()
     {

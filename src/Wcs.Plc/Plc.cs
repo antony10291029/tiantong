@@ -8,10 +8,6 @@ namespace Wcs.Plc
 {
   public class Plc : IPlc
   {
-    public Event Event;
-
-    public EventPlugin EventLogger;
-
     public IStatePlugin StateLogger;
 
     public StateManager StateManager;
@@ -88,11 +84,9 @@ namespace Wcs.Plc
 
     public IPlc Build()
     {
-      Event = new Event();
       IntervalManager = new IntervalManager();
       ResolveDatabaseProvider();
       ResolveStateDriverProvider();
-      ResolveEventLogger();
       ResolveStateLogger();
       ResolveStateManager();
 
@@ -120,13 +114,6 @@ namespace Wcs.Plc
       return this;
     }
 
-    public virtual void ResolveEventLogger()
-    {
-      EventLogger = new EventLogger(IntervalManager, DatabaseProvider.Resolve());
-
-      Event.Use(EventLogger);
-    }
-
     public virtual void ResolveStateLogger()
     {
       StateLogger = new StateLogger(IntervalManager, DatabaseProvider.Resolve(), PlcConnection);
@@ -134,7 +121,7 @@ namespace Wcs.Plc
 
     public virtual void ResolveStateManager()
     {
-      StateManager = new StateManager(Event, IntervalManager, StateDriverProvider, StateLogger);
+      StateManager = new StateManager(IntervalManager, StateDriverProvider, StateLogger);
     }
 
     public virtual void HandlePlcConnection()
@@ -218,28 +205,6 @@ namespace Wcs.Plc
     public IStateInt32 Int(string name)
     {
       return Int32(name);
-    }
-
-    //
-
-    public void On<T>(string key, Func<T, Task> handler)
-    {
-      Event.On<T>(key, handler);
-    }
-
-    public void On(string key, Func<Task> handler)
-    {
-      Event.On(key, handler);
-    }
-
-    public void On<T>(string key, Action<T> handler)
-    {
-      Event.On<T>(key, handler);
-    }
-
-    public void On(string key, Action handler)
-    {
-      Event.On(key, handler);
     }
 
     //

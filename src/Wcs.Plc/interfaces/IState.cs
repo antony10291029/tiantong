@@ -20,7 +20,7 @@ namespace Wcs.Plc
 
     void Uncollect();
 
-    void Watch(Action<T> handler);
+    IState<T> Watch(Action<T> handler);
 
     IWatcher<T> Watch();
 
@@ -29,10 +29,6 @@ namespace Wcs.Plc
     IWatcher<T> Watch(Func<T, bool> cmp);
 
     IWatcher<T> Watch(string opt, T value);
-
-    void On(string key, Func<T, Task> handler);
-
-    void On(string key, Action<T> handler);
 
     void Set(T data);
 

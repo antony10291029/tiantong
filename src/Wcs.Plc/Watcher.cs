@@ -4,34 +4,17 @@ namespace Wcs.Plc
 {
   public class Watcher<T> : IWatcher<T>
   {
-    private Event _event;
-
     private Action _cancel;
 
-    private Action<T> _emmiter;
+    private Action<T> _handler;
 
     protected Func<T, bool> _when;
 
-    public Watcher(Event event_)
-    {
-      _event = event_;
-    }
-
-    public void Handle(T value)
+    public void Emit(T value)
     {
       if (_when(value)) {
-        _emmiter(value);
+        _handler(value);
       }
-    }
-
-    public void OnCancel(Action cancel)
-    {
-      _cancel = cancel;
-    }
-
-    public void Cancel()
-    {
-      _cancel();
     }
 
     public IWatcher<T> When(Func<T, bool> when)
@@ -41,29 +24,15 @@ namespace Wcs.Plc
       return this;
     }
 
-    public void Event(string key)
+    public void On(Action<T> handler)
     {
-      _emmiter = value => _event.Emit(key, value);
+      _handler = handler;
     }
 
-    public void EventVoid(string key)
+    public void OnCancel(Action cancel)
     {
-      _emmiter = _ => _event.Emit(key);
+      _cancel = cancel;
     }
 
-    public void Event<R>(string key, R payload)
-    {
-      _emmiter = _ => _event.Emit<R>(key, payload);
-    }
-
-    public void Event(string key, Func<T, T> handler)
-    {
-      _emmiter = value => _event.Emit(key, handler(value));
-    }
-
-    public void Event<R>(string key, Func<T, R> handler)
-    {
-      _emmiter = value => _event.Emit<R>(key, handler(value));
-    }
   }
 }

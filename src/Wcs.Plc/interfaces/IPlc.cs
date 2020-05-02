@@ -46,14 +46,6 @@ namespace Wcs.Plc
 
     //
 
-    void On<T>(string key, Func<T, Task> handler);
-
-    void On(string key, Func<Task> handler);
-
-    void On<T>(string key, Action<T> handler);
-
-    void On(string key, Action handler);
-
     IPlc Start();
 
     IPlc Stop();

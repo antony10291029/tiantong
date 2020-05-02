@@ -15,7 +15,6 @@ namespace Wcs.Plc.Test
       };
 
       state.Driver = driver;
-      state.Event = new Event();
       state.IntervalManager = new IntervalManager();
       state.Name = "test";
       state.UseAddress("D100");
@@ -123,11 +122,8 @@ namespace Wcs.Plc.Test
     public void TestWatcher()
     {
       var state = ResolveState<StateInt32>();
-      var event_ = new Event();
 
-      state.Event = event_;
-      event_.On<int>("watch", _ => state.Uncollect());
-      state.Watch().Event("watch");
+      state.Watch(_ => state.Uncollect());
       state.Collect(0);
       state.Set(1);
       state.CollectInterval.Start().WaitAsync().AssertFinishIn();

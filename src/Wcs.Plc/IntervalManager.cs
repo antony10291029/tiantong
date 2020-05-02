@@ -39,16 +39,18 @@ namespace Wcs.Plc
       Intervals.Add(id, interval);
     }
 
-    public Task Remove(Interval interval)
+    public async Task RemoveAsync(Interval interval)
     {
       var id = interval.Id;
       interval.Stop();
-      interval.WaitAsync().ContinueWith(_ => {
-        interval.Id = 0;
-        Intervals.Remove(id);
-      });
+      await interval.WaitAsync();
+      interval.Id = 0;
+      Intervals.Remove(id);
+    }
 
-      return interval.WaitAsync();
+    public void Remove(Interval interval)
+    {
+      RemoveAsync(interval).GetAwaiter().GetResult();
     }
 
     public bool IsRunning()

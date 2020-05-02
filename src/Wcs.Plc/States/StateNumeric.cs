@@ -31,9 +31,7 @@ namespace Wcs.Plc
 
     public Task UnheartbeatAsync()
     {
-      IntervalManager.Remove(HeartbeatInterval);
-
-      return HeartbeatInterval.WaitAsync();
+      return IntervalManager.RemoveAsync(HeartbeatInterval);
     }
 
     public void Unheartbeat()
