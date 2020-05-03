@@ -11,7 +11,7 @@ namespace Wcs.Plc.DB.Sqlite
 
     public void Down(DbContext db)
     {
-      db.ExecuteFromSql("Migration.DropPlcStateLogsTable");
+      db.ExecuteSql("DELETE TABLE IF NOT EXISTS plc_state_logs");
     }
   }
 }

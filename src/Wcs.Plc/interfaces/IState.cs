@@ -11,9 +11,9 @@ namespace Wcs.Plc
 
   public interface IStateBuilder<T>: IState
   {
-    IStateHook<T> AddGetHook(Action<T> hook);
+    IStateBuilder<T> AddGetHook(Action<T> hook);
 
-    IStateHook<T> AddSetHook(Action<T> hook);
+    IStateBuilder<T> AddSetHook(Action<T> hook);
 
     IStateBuilder<T> Watch(Action<T> handler);
 

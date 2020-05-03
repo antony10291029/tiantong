@@ -1,26 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
-  class Hooks<T> : Dictionary<int, Func<T, Task>> {};
-
-  //
-
-  public class StateHook<T> : IStateHook<T>
-  {
-    private Action _cancel;
-
-    public StateHook(Action cancel)
-    {
-      _cancel = cancel;
-    }
-
-    public void Cancel() => _cancel();
-  }
-
   //
 
   public abstract class StateBuilder: IState
@@ -60,48 +43,34 @@ namespace Wcs.Plc
   public abstract class StateBuilder<T>: StateBuilder, IStateBuilder<T>
   {
 
-    private Hooks<T> _gethooks = new Hooks<T>();
+    private List<Func<T, Task>> _gethooks = new List<Func<T, Task>>();
 
-    private Hooks<T> _sethooks = new Hooks<T>();
-
-    private int _hooksId = 0;
+    private List<Func<T, Task>> _sethooks = new List<Func<T, Task>>();
 
     public T CurrentValue;
 
-    public IStateHook<T> AddSetHook(Func<T, Task> hook)
+    public IStateBuilder<T> AddSetHook(Func<T, Task> hook)
     {
-      int id = _hooksId++;
-      _sethooks.Add(id, hook);
+      _sethooks.Add(hook);
 
-      return new StateHook<T>(() => RemoveSetHook(id));
+      return this;
     }
 
-    public IStateHook<T> AddGetHook(Func<T, Task> hook)
+    public IStateBuilder<T> AddGetHook(Func<T, Task> hook)
     {
-      int id = _hooksId++;
-      _gethooks.Add(id, hook);
+      _gethooks.Add(hook);
 
-      return new StateHook<T>(() => RemoveGetHook(id));
+      return this;
     }
 
-    public IStateHook<T> AddSetHook(Action<T> hook)
+    public IStateBuilder<T> AddSetHook(Action<T> hook)
     {
       return AddSetHook(data => Task.Run(() => hook(data)));
     }
 
-    public IStateHook<T> AddGetHook(Action<T> hook)
+    public IStateBuilder<T> AddGetHook(Action<T> hook)
     {
       return AddGetHook(data => Task.Run(() => hook(data)));
-    }
-
-    private void RemoveSetHook(int id)
-    {
-      _gethooks.Remove(id);
-    }
-
-    private void RemoveGetHook(int id)
-    {
-      _sethooks.Remove(id);
     }
 
     protected Watcher<T> CreateWatcher()
@@ -178,7 +147,7 @@ namespace Wcs.Plc
       var tasks = new List<Task>();
       HandleSet(data);
 
-      foreach (var hook in _sethooks.Values) {
+      foreach (var hook in _sethooks) {
         hook(data);
       }
     }
@@ -188,7 +157,7 @@ namespace Wcs.Plc
       var tasks = new List<Task>();
       var data = CurrentValue = HandleGet();
 
-      foreach (var hook in _gethooks.Values) {
+      foreach (var hook in _gethooks) {
         hook(data);
       }
 
