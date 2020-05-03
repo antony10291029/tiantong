@@ -37,14 +37,6 @@ namespace Wcs.Plc
 
     T Get();
 
-    Task UncollectAsync();
-
-    void Uncollect();
-
-    Task UnheartbeatAsync();
-
-    void Unheartbeat();
-
   }
 
 }

@@ -178,13 +178,6 @@ namespace Wcs.Plc
 
   public abstract class State<T>: StateBuilder<T>, IState<T>
   {
-    ~State()
-    {
-      if (CollectInterval != null) {
-        Uncollect();
-      }
-    }
-
     //
 
     public void Use(IStatePlugin plugin)
@@ -192,27 +185,6 @@ namespace Wcs.Plc
       if (plugin != null) {
         plugin.Install(this);
       }
-    }
-
-
-    public Task UncollectAsync()
-    {
-      return IntervalManager.RemoveAsync(CollectInterval);
-    }
-
-    public void Uncollect()
-    {
-      UncollectAsync().GetAwaiter().GetResult();
-    }
-
-    public Task UnheartbeatAsync()
-    {
-      return IntervalManager.RemoveAsync(HeartbeatInterval);
-    }
-
-    public void Unheartbeat()
-    {
-      UnheartbeatAsync().GetAwaiter().GetResult();
     }
 
   }

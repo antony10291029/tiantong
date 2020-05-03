@@ -5,13 +5,6 @@ namespace Wcs.Plc
 {
   public abstract class StateNumeric<T> : State<T>
   {
-    ~StateNumeric()
-    {
-      if (HeartbeatInterval != null) {
-        Unheartbeat();
-      }
-    }
-
     protected abstract void HandleHeartbeat(ref int times, ref int maxValue);
 
     public override IStateBuilder<T> Heartbeat(int time, int maxValue)
