@@ -7,7 +7,7 @@ namespace App.CommandLine
   {
     static void Main()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
       var random = new Renet.Random();
 
       plc.Name("测试200smart").UseS7200Smart("192.168.20.10", 102);

@@ -6,7 +6,7 @@ using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
-  public class Plc : IPlc
+  public class PlcWorker : IPlcWorker
   {
     public IStatePlugin StateLogger;
 
@@ -20,42 +20,42 @@ namespace Wcs.Plc
 
     public PlcConnection PlcConnection { get; set; }
 
-    public Plc()
+    public PlcWorker()
     {
       PlcConnection = new PlcConnection();
     }
 
     //
 
-    public IPlc Id(int id)
+    public IPlcWorker Id(int id)
     {
       PlcConnection.Id = id;
 
       return this;
     }
 
-    public IPlc Model(string model)
+    public IPlcWorker Model(string model)
     {
       PlcConnection.Model = model;
 
       return this;
     }
 
-    public IPlc Name(string name)
+    public IPlcWorker Name(string name)
     {
       PlcConnection.Name = name;
 
       return this;
     }
 
-    public IPlc Host(string host)
+    public IPlcWorker Host(string host)
     {
       PlcConnection.Host = host;
       
       return this;
     }
 
-    public IPlc Port(int port)
+    public IPlcWorker Port(int port)
     {
       PlcConnection.Port = port;
 
@@ -82,7 +82,7 @@ namespace Wcs.Plc
 
     //
 
-    public IPlc Build()
+    public IPlcWorker Build()
     {
       IntervalManager = new IntervalManager();
       ResolveDatabaseProvider();
@@ -95,19 +95,19 @@ namespace Wcs.Plc
       return this;
     }
 
-    public virtual IPlc UseTest()
+    public virtual IPlcWorker UseTest()
     {
       return Build();
     }
 
-    public virtual IPlc UseS7200Smart(string host, int port = 102)
+    public virtual IPlcWorker UseS7200Smart(string host, int port = 102)
     {
       Model("S7200Smart").Host(host).Port(port).Build();
 
       return this;
     }
 
-    public virtual IPlc UseMC3E(string host, int port)
+    public virtual IPlcWorker UseMC3E(string host, int port)
     {
       Model("MC3E").Host(host).Port(port).Build();
 
@@ -209,7 +209,7 @@ namespace Wcs.Plc
 
     //
 
-    public IPlc Start()
+    public IPlcWorker Start()
     {
       StateDriverProvider.Boot();
       IntervalManager.Start();
@@ -217,7 +217,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    public IPlc Stop()
+    public IPlcWorker Stop()
     {
       IntervalManager.Stop();
       DatabaseProvider.Resolve().SaveChanges();

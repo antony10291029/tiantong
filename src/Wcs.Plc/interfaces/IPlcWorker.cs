@@ -4,27 +4,27 @@ using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
-  public interface IPlc
+  public interface IPlcWorker
   {
     PlcConnection PlcConnection { get; }
 
-    IPlc Id(int id);
+    IPlcWorker Id(int id);
 
-    IPlc Model(string key);
+    IPlcWorker Model(string key);
 
-    IPlc Name(string key);
+    IPlcWorker Name(string key);
 
-    IPlc Host(string host);
+    IPlcWorker Host(string host);
 
-    IPlc Port(int port);
+    IPlcWorker Port(int port);
 
-    IPlc Build();
+    IPlcWorker Build();
 
-    IPlc UseTest();
+    IPlcWorker UseTest();
 
-    IPlc UseS7200Smart(string host, int port = 102);
+    IPlcWorker UseS7200Smart(string host, int port = 102);
 
-    IPlc UseMC3E(string host, int port);
+    IPlcWorker UseMC3E(string host, int port);
 
     IStateManager Define(string name);
 
@@ -46,9 +46,9 @@ namespace Wcs.Plc
 
     //
 
-    IPlc Start();
+    IPlcWorker Start();
 
-    IPlc Stop();
+    IPlcWorker Stop();
 
     Task WaitAsync();
 

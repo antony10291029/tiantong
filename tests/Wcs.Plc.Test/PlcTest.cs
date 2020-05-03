@@ -10,7 +10,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestTryWait()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.UseTest();
       plc.Define("hb").Int("D1").Collect(0);
@@ -25,7 +25,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestPlcCollectRunStop()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.UseTest();
       plc.Define("bool data").Bool("D1").Collect(0)
@@ -38,7 +38,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestAliasTypes()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.UseTest();
 
@@ -52,7 +52,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestPlcHeartbeat()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.UseTest();
       plc.Define("hb").Int("D1").Heartbeat(0).Collect(0)
@@ -64,7 +64,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestPlcConnectionIdException()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.Id(100);
       try {
@@ -76,7 +76,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestPlcConnectionId()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
       plc.ResolveDatabaseProvider();
       var db = plc.DatabaseProvider.Resolve();
       var connection = new PlcConnection {
@@ -103,7 +103,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestPlcConnectionName()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.ResolveDatabaseProvider();
       plc.Name("test").Model("melsec").Host("localhost").Port(1234);
@@ -115,7 +115,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestPlcConnectionNameExisted()
     {
-      var plc = new Plc();
+      var plc = new PlcWorker();
       plc.ResolveDatabaseProvider();
       var db = plc.DatabaseProvider.Resolve();
       var connection = new PlcConnection {

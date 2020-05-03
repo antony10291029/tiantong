@@ -1,6 +1,6 @@
 namespace Wcs.Plc.Test
 {
-  public class Plc : Wcs.Plc.Plc
+  public class PlcWorker : Wcs.Plc.PlcWorker
   {
     public override void ResolveDatabaseProvider()
     {

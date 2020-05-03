@@ -12,7 +12,7 @@ namespace Wcs.Plc.Test
       var manager = new PlcManager();
 
       for (var i = 0; i < 10; i++) {
-        var plc = new Plc();
+        var plc = new PlcWorker();
         plc.Name(i.ToString()).UseTest();
         plc.Start();
 
@@ -27,7 +27,7 @@ namespace Wcs.Plc.Test
     public void TestPlcItem()
     {
       var manager = new PlcManager();
-      var plc = new Plc();
+      var plc = new PlcWorker();
 
       plc.Name("test plc").UseTest();
       plc.Define("hb").Int("D100").Heartbeat(1);

@@ -7,7 +7,7 @@ namespace Wcs.Plc
 {
   public class PlcManager
   {
-    public Dictionary<string, IPlc> Plcs = new Dictionary<string, IPlc>();
+    public Dictionary<string, IPlcWorker> Plcs = new Dictionary<string, IPlcWorker>();
 
     public void Start()
     {
