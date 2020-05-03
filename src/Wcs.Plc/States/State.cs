@@ -8,17 +8,15 @@ namespace Wcs.Plc
 
   public abstract class StateBuilder: IState
   {
+    public string Name;
+
     public IntervalManager IntervalManager;
 
     public Interval CollectInterval;
 
     public Interval HeartbeatInterval;
 
-    public string Name;
-
     public IStateDriver Driver;
-
-    public Task HookTasks;
 
     public string Address { get; set; }
 
@@ -106,26 +104,19 @@ namespace Wcs.Plc
 
     public IWatcher<T> Watch(string opt, T value)
     {
-      return CreateWatcher().When(data => {
-        switch (opt) {
-          case ">":
-            return CompareDataTo(data, value) > 0;
-          case "<":
-            return CompareDataTo(data, value) < 0;
-          case "=":
-          case "==":
-            return CompareDataTo(data, value) == 0;
-          case ">=":
-            return CompareDataTo(data, value) >= 0;
-          case "<=":
-            return CompareDataTo(data, value) <= 0;
-          case "!=":
-          case "<>":
-            return CompareDataTo(data, value) != 0;
-          default:
-            throw new Exception($"Watcher operation '{opt}' is invalid");
-        }
-      });
+      Func<T, bool> cmp = opt switch {
+        ">"  => data => CompareDataTo(data, value) > 0,
+        "<"  => data => CompareDataTo(data, value) < 0,
+        "="  => data => CompareDataTo(data, value) == 0,
+        "==" => data => CompareDataTo(data, value) == 0,
+        ">=" => data => CompareDataTo(data, value) >= 0,
+        "<=" => data => CompareDataTo(data, value) <= 0,
+        "<>" => data => CompareDataTo(data, value) != 0,
+        "!=" => data => CompareDataTo(data, value) != 0,
+        _    => throw new Exception($"不支持该运算符{opt}")
+      };
+
+      return CreateWatcher().When(data => cmp(data));
     }
 
     protected virtual int CompareDataTo(T data, T value)
@@ -167,7 +158,6 @@ namespace Wcs.Plc
     protected abstract T HandleGet();
 
     protected abstract void HandleSet(T data);
-
 
     public virtual IStateBuilder<T> Heartbeat(int time, int maxValue)
     {
