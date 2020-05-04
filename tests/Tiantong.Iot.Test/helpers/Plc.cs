@@ -2,15 +2,21 @@ namespace Tiantong.Iot.Test
 {
   public class PlcWorker : Tiantong.Iot.PlcWorker
   {
-    public override void ResolveDatabaseProvider()
+    public override DatabaseProvider ResolveDatabaseProvider()
     {
-      DatabaseProvider = new TestDatabaseProvider();
+      return new TestDatabaseProvider();
+    }
+
+    public override IWatcherHttpClient ResolveWatcherHttpClient()
+    {
+      return new TestWatcherHttpClient();
     }
 
     /// StateLogger 将被单独测试
-    public override void ResolveStateLogger()
-    {
 
+    public override IStatePlugin ResolveStateLogger()
+    {
+      return null;
     }
   }
 }

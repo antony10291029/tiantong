@@ -10,7 +10,7 @@ namespace Tiantong.Iot.Test
     public void TestHandleCancel()
     {
       var result = 0;
-      var watcher = new Watcher<int>(new TestHttpClient());
+      var watcher = new Watcher<int>(new TestWatcherHttpClient());
       
       watcher.When(value => value != 0).On(value => result = value);
       watcher.Emit(1);
@@ -22,7 +22,7 @@ namespace Tiantong.Iot.Test
     public void TestCustomEvent()
     {
       var result = 0;
-      var watcher = new Watcher<WatcherUser>(new TestHttpClient());
+      var watcher = new Watcher<WatcherUser>(new TestWatcherHttpClient());
       var user = new WatcherUser() { Id = 1, Name = "test" };
 
       watcher.When(item => item.Id == 10).On(item => result = item.Id);
@@ -38,7 +38,7 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostNumber()
     {
-      var client = new TestHttpClient();
+      var client = new TestWatcherHttpClient();
       var watcher = new Watcher<int>(client);
       watcher.When(_ => true).HttpPost("test", "key", false, "{\"field\": 1}");
       watcher.Emit(100);
@@ -51,7 +51,7 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostNumberToString()
     {
-      var client = new TestHttpClient();
+      var client = new TestWatcherHttpClient();
       var watcher = new Watcher<int>(client);
       watcher.When(_ => true).HttpPost("test", "key", true);
       watcher.Emit(100);
@@ -63,7 +63,7 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostString()
     {
-      var client = new TestHttpClient();
+      var client = new TestWatcherHttpClient();
       var watcher = new Watcher<string>(client);
       watcher.When(_ => true).HttpPost("test", "string");
       watcher.Emit("hello world");
@@ -75,7 +75,7 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostStringToString()
     {
-      var client = new TestHttpClient();
+      var client = new TestWatcherHttpClient();
       var watcher = new Watcher<string>(client);
       watcher.When(_ => true).HttpPost("test", "string", true);
       watcher.Emit("hello world");

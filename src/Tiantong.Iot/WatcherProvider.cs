@@ -1,8 +1,13 @@
 namespace Tiantong.Iot
 {
-  public class BaseWatcherProvider: IWatcherProvider
+  public class WatcherProvider: IWatcherProvider
   {
-    public IWatcherHttpClient HttpClient { get;  } = new TestHttpClient();
+    public IWatcherHttpClient HttpClient { get; }
+
+    public WatcherProvider(IWatcherHttpClient httpClient)
+    {
+      HttpClient = httpClient;
+    }
 
     public IWatcher<T> Resolve<T>()
     {
@@ -10,24 +15,4 @@ namespace Tiantong.Iot
     }
   }
 
-  public class WatcherHttpClient: IWatcherHttpClient
-  {
-    public void Post(string url, string data)
-    {
-
-    }
-  }
-
-  public class TestHttpClient: IWatcherHttpClient
-  {
-    public string Url;
-
-    public string Data;
-
-    public void Post(string url, string data)
-    {
-      Url = url;
-      Data = data;
-    }
-  }
 }

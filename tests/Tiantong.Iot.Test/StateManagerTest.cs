@@ -12,7 +12,7 @@ namespace Tiantong.Iot
       var db = (new DatabaseProvider()).Resolve();
       var intervalManager = new IntervalManager();
       var driverProvider = new StateTestDriverProvider();
-      var watcherProvider = new BaseWatcherProvider();
+      var watcherProvider = new WatcherProvider(new WatcherHttpClient());
       var logger = new StateLogger(plc, intervalManager, db);
       var manager = new StateManager(intervalManager, driverProvider,logger, watcherProvider);
 
