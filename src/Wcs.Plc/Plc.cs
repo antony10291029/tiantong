@@ -123,38 +123,36 @@ namespace Wcs.Plc
       StateManager = new StateManager(IntervalManager, StateDriverProvider, StateLogger);
     }
 
-    public IStateManager Define(string name)
+    public IStateManager Define(string name, int id = 0)
     {
-      StateManager.Name = name;
-
-      return StateManager;
+      return StateManager.Name(name).Id(id);
     }
 
     //
 
     public IState<bool> Bool(string name)
     {
-      return (IState<bool>) StateManager.States[name];
+      return (IState<bool>) StateManager.StatesByName[name];
     }
 
     public IState<ushort> UInt16(string name)
     {
-      return (IState<ushort>) StateManager.States[name];
+      return (IState<ushort>) StateManager.StatesByName[name];
     }
 
     public IState<int> Int32(string name)
     {
-      return (IState<int>) StateManager.States[name];
+      return (IState<int>) StateManager.StatesByName[name];
     }
 
     public IState<string> String(string name)
     {
-      return (IState<string>) StateManager.States[name];
+      return (IState<string>) StateManager.StatesByName[name];
     }
 
     public IState<byte[]> Bytes(string name)
     {
-      return (IState<byte[]>) StateManager.States[name];
+      return (IState<byte[]>) StateManager.StatesByName[name];
     }
 
     //
@@ -167,6 +165,45 @@ namespace Wcs.Plc
     public IState<int> Int(string name)
     {
       return Int32(name);
+    }
+
+    //
+
+    public IState<bool> Bool(int id)
+    {
+      return (IState<bool>) StateManager.StatesById[id];
+    }
+
+    public IState<ushort> UInt16(int id)
+    {
+      return (IState<ushort>) StateManager.StatesById[id];
+    }
+
+    public IState<int> Int32(int id)
+    {
+      return (IState<int>) StateManager.StatesById[id];
+    }
+
+    public IState<string> String(int id)
+    {
+      return (IState<string>) StateManager.StatesById[id];
+    }
+
+    public IState<byte[]> Bytes(int id)
+    {
+      return (IState<byte[]>) StateManager.StatesById[id];
+    }
+
+    //
+
+    public IState<ushort> UShort(int id)
+    {
+      return UInt16(id);
+    }
+
+    public IState<int> Int(int id)
+    {
+      return Int32(id);
     }
 
     //

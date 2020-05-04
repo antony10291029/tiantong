@@ -4,6 +4,10 @@ namespace Wcs.Plc
 {
   public interface IStateManager
   {
+    IStateManager Id(int id);
+
+    IStateManager Name(string name);
+
     IState<bool> Bool(string name);
 
     IState<ushort> UInt16(string name);

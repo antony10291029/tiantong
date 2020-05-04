@@ -22,7 +22,7 @@ namespace Wcs.Plc
 
     IPlcWorker UseMC3E(string host, int port);
 
-    IStateManager Define(string name);
+    IStateManager Define(string name, int id = 0);
 
     //
 
@@ -39,6 +39,24 @@ namespace Wcs.Plc
     IState<ushort> UShort(string name);
 
     IState<int> Int(string name);
+
+    //
+
+    //
+
+    IState<bool> Bool(int id);
+
+    IState<ushort> UInt16(int id);
+
+    IState<string> String(int id);
+
+    IState<byte[]> Bytes(int id);
+
+    //
+
+    IState<ushort> UShort(int id);
+
+    IState<int> Int(int id);
 
     //
 

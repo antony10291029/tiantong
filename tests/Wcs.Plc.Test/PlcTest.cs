@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Wcs.Plc.Entities;
 using NUnit.Framework;
@@ -20,6 +21,18 @@ namespace Wcs.Plc.Test
         plc.Start().WaitAsync().AssertFinishIn(1);
         Assert.Fail("except to throw exception when Plc.TryWait is timeout");
       } catch {}
+    }
+
+    [Test]
+    public void TestGetId()
+    {
+      var plc = new PlcWorker().UseTest();
+
+      plc.Define("int", 100).Int("D1");
+      plc.Int(100);
+      try {
+        plc.Int(101);
+      } catch (Exception) {}
     }
 
     [Test]

@@ -13,7 +13,11 @@ namespace Wcs.Plc
     public void Emit(T value)
     {
       if (_when(value)) {
-        _handler(value);
+        try {
+          _handler(value);
+        } catch (Exception e) {
+          Console.WriteLine(e);
+        }
       }
     }
 

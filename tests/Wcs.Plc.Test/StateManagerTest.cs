@@ -22,11 +22,11 @@ namespace Wcs.Plc
     public void TestManagerStates()
     {
       var manager = ResolveManager();
-      var states = manager.States;
+      var states = manager.StatesByName;
 
-      manager.SetName("bool").Bool("D1");
-      manager.SetName("int").Int("D3");
-      manager.SetName("string").String("D4", 10);
+      manager.Name("bool").Bool("D1");
+      manager.Name("int").Int("D3");
+      manager.Name("string").String("D4", 10);
 
       var bool_ = (IState<bool>) states["bool"];
       var int_ = (IState<int>) states["int"];
@@ -45,9 +45,9 @@ namespace Wcs.Plc
     public void TestManagerRemove()
     {
       var manager = ResolveManager();
-      var states = manager.States;
+      var states = manager.StatesByName;
 
-      manager.SetName("bool").Bool("D1");
+      manager.Name("bool").Bool("D1");
       states.Remove("D1");
 
       try {
@@ -55,5 +55,6 @@ namespace Wcs.Plc
         Assert.Fail("state should be removed");
       } catch {}
     }
+
   }
 }

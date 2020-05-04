@@ -6,9 +6,9 @@ namespace Wcs.Plc
 {
   public abstract class State: IState
   {
-    public int Id;
+    public int _id;
 
-    public string Name;
+    public string _name;
 
     public string Address;
 
@@ -53,6 +53,20 @@ namespace Wcs.Plc
       if (plugin != null) {
         plugin.Install(this);
       }
+    }
+
+    public IState<T> Id(int id)
+    {
+      _id = id;
+
+      return this;
+    }
+
+    public IState<T> Name(string name)
+    {
+      _name = name;
+
+      return this;
     }
 
     public IState<T> AddSetHook(Func<T, Task> hook)

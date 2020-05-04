@@ -11,6 +11,10 @@ namespace Wcs.Plc
 
   public interface IState<T>: IState
   {
+    IState<T> Id(int id);
+
+    IState<T> Name(string name);
+
     IState<T> AddGetHook(Action<T> hook);
 
     IState<T> AddSetHook(Action<T> hook);

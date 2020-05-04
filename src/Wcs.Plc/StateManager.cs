@@ -4,8 +4,6 @@ using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
-  using States = Dictionary<string, IState>;
-
   public class StateManager : IStateManager
   {
     private IStatePlugin _stateLogger;
@@ -14,9 +12,13 @@ namespace Wcs.Plc
 
     private IStateDriverProvider _stateDriverProvider;
 
-    public States States { get; } = new States();
+    public Dictionary<int, IState> StatesById = new Dictionary<int, IState>();
 
-    public string Name { get; set; }
+    public Dictionary<string, IState> StatesByName = new Dictionary<string, IState>();
+
+    public int _id { get; set; }
+
+    private string _name { get; set; }
 
     public StateManager(IntervalManager manager, IStateDriverProvider provider, IStatePlugin stateLogger)
     {
@@ -25,9 +27,16 @@ namespace Wcs.Plc
       _stateDriverProvider = provider;
     }
 
-    public IStateManager SetName(string name)
+    public IStateManager Name(string name)
     {
-      Name = name;
+      _name = name;
+
+      return this;
+    }
+
+    public IStateManager Id(int id)
+    {
+      _id = id;
 
       return this;
     }
@@ -38,11 +47,14 @@ namespace Wcs.Plc
         IntervalManager = _intervalManager,
       };
 
-      state.Name = Name;
+      state.Id(_id).Name(_name);
       state.Length = length;
       state.UseDriver(_stateDriverProvider.Resolve());
       state.UseAddress(address);
-      States.Add(Name, state);
+      StatesByName.Add(_name, state);
+      if (_id != 0) {
+        StatesById.Add(_id, state);
+      }
       state.Use(_stateLogger);
 
       return state;

@@ -16,7 +16,7 @@ namespace Wcs.Plc.Test
 
       state.Driver = driver;
       state.IntervalManager = new IntervalManager();
-      state.Name = "test";
+      state._name = "test";
       state.UseAddress("D100");
 
       return state;
