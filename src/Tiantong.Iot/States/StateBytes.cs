@@ -4,9 +4,9 @@ namespace Tiantong.Iot
 {
   public class StateBytes : State<byte[]>
   {
-    protected override void HandleDriverResolved()
+    protected override void HandleDriverBuild()
     {
-      Driver.UseBytes(Length);
+      _driver.UseBytes(_length);
     }
 
     protected override int CompareDataTo(byte[] data, byte[] value)
@@ -16,12 +16,12 @@ namespace Tiantong.Iot
 
     protected override byte[] HandleGet()
     {
-      return Driver.GetBytes();
+      return _driver.GetBytes();
     }
 
     protected override void HandleSet(byte[] data)
     {
-      Driver.SetBytes(data);
+      _driver.SetBytes(data);
     }
   }
 }

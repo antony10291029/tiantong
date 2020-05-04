@@ -4,10 +4,7 @@ namespace Tiantong.Iot
   {
     public IStateDriver Resolve()
     {
-      var client = new StateTestDriver();
-      client.Store = new StateTestDriverStore();
-
-      return client;
+      return new StateTestDriver(new StateTestDriverStore());
     }
 
     public void Boot()

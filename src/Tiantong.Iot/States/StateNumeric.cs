@@ -12,10 +12,10 @@ namespace Tiantong.Iot
       int times = 0;
 
       time = Math.Max(time, 1);
-      HeartbeatInterval = new Interval();
-      HeartbeatInterval.SetTime(time);
-      HeartbeatInterval.SetHandler(() => HandleHeartbeat(ref times));
-      IntervalManager.Add(HeartbeatInterval);
+      _heartbeatInterval = new Interval();
+      _heartbeatInterval.SetTime(time);
+      _heartbeatInterval.SetHandler(() => HandleHeartbeat(ref times));
+      _intervalManager.Add(_heartbeatInterval);
 
       return this;
     }

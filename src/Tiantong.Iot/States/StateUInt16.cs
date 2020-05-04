@@ -9,9 +9,9 @@ namespace Tiantong.Iot
       _heartbeatMaxValue = 10000;
     }
 
-    protected override void HandleDriverResolved()
+    protected override void HandleDriverBuild()
     {
-      Driver.UseUInt16();
+      _driver.UseUInt16();
     }
 
     protected override int CompareDataTo(ushort data, ushort value)
@@ -21,12 +21,12 @@ namespace Tiantong.Iot
 
     protected override ushort HandleGet()
     {
-      return Driver.GetUInt16();
+      return _driver.GetUInt16();
     }
 
     protected override void HandleSet(ushort data)
     {
-      Driver.SetUInt16(data);
+      _driver.SetUInt16(data);
     }
 
     protected override void HandleHeartbeat(ref int times)

@@ -2,9 +2,9 @@ namespace Tiantong.Iot
 {
   public class StateString : State<string>
   {
-    protected override void HandleDriverResolved()
+    protected override void HandleDriverBuild()
     {
-      Driver.UseString(Length);
+      _driver.UseString(_length);
     }
 
     protected override int CompareDataTo(string data, string value)
@@ -14,12 +14,12 @@ namespace Tiantong.Iot
 
     protected override string HandleGet()
     {
-      return Driver.GetString();
+      return _driver.GetString();
     }
 
     protected override void HandleSet(string data)
     {
-      Driver.SetString(data);
+      _driver.SetString(data);
     }
   }
 }

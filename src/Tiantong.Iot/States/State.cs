@@ -10,33 +10,21 @@ namespace Tiantong.Iot
 
     public string _name;
 
-    public string Address;
+    public string _address;
 
-    public int Length;
+    public int _length;
 
-    public IStateDriver Driver;
+    public IStateDriver _driver;
 
-    public Interval CollectInterval;
+    public Interval _collectInterval;
 
-    public Interval HeartbeatInterval;
+    public Interval _heartbeatInterval;
 
-    public IntervalManager IntervalManager;
+    public IntervalManager _intervalManager;
 
-    public IWatcherProvider WatcherProvider;
+    public IWatcherProvider _watcherProvider;
 
-    public void UseDriver(IStateDriver driver)
-    {
-      Driver = driver;
-      HandleDriverResolved();
-    }
-
-    protected abstract void HandleDriverResolved();
-
-    public void UseAddress(string address)
-    {
-      Address = address;
-      Driver.UseAddress(address);
-    }
+    protected abstract void HandleDriverBuild();
 
   }
 
@@ -50,11 +38,11 @@ namespace Tiantong.Iot
 
     public T CurrentValue;
 
-    public void Use(IStatePlugin plugin)
+    public IState<T> Use(IStatePlugin plugin)
     {
-      if (plugin != null) {
-        plugin.Install(this);
-      }
+      plugin?.Install(this);
+
+      return this;
     }
 
     public IState<T> Id(int id)
@@ -71,33 +59,51 @@ namespace Tiantong.Iot
       return this;
     }
 
-    public IState<T> AddSetHook(Func<T, Task> hook)
+    public IState<T> Address(string address)
+    {
+      _address = address;
+
+      return this;
+    }
+
+    public IState<T> Length(int length)
+    {
+      _length = length;
+
+      return this;
+    }
+
+    public IState<T> Build()
+    {
+      _driver.UseAddress(_address);
+      HandleDriverBuild();
+
+      return this;
+    }
+
+    public void AddSetHook(Func<T, Task> hook)
     {
       _sethooks.Add(hook);
-
-      return this;
     }
 
-    public IState<T> AddGetHook(Func<T, Task> hook)
+    public void AddGetHook(Func<T, Task> hook)
     {
       _gethooks.Add(hook);
-
-      return this;
     }
 
-    public IState<T> AddSetHook(Action<T> hook)
+    public void AddSetHook(Action<T> hook)
     {
-      return AddSetHook(data => Task.Run(() => hook(data)));
+      AddSetHook(data => Task.Run(() => hook(data)));
     }
 
-    public IState<T> AddGetHook(Action<T> hook)
+    public void AddGetHook(Action<T> hook)
     {
-      return AddGetHook(data => Task.Run(() => hook(data)));
+      AddGetHook(data => Task.Run(() => hook(data)));
     }
 
     protected IWatcher<T> CreateWatcher()
     {
-      var watcher = WatcherProvider.Resolve<T>();
+      var watcher = _watcherProvider.Resolve<T>();
 
       AddGetHook(value => watcher.Emit(value));
 
@@ -150,10 +156,10 @@ namespace Tiantong.Iot
 
     public IState<T> Collect(int time = 1000)
     {
-      if (CollectInterval == null) {
+      if (_collectInterval == null) {
         time = Math.Max(time, 1);
-        CollectInterval = new Interval(() => Get(), time);
-        IntervalManager.Add(CollectInterval);
+        _collectInterval = new Interval(() => Get(), time);
+        _intervalManager.Add(_collectInterval);
       }
 
       return this;

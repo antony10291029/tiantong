@@ -11,13 +11,21 @@ namespace Tiantong.Iot
 
   public interface IState<T>: IState
   {
+    IState<T> Use(IStatePlugin plugin);
+
     IState<T> Id(int id);
 
     IState<T> Name(string name);
 
-    IState<T> AddGetHook(Action<T> hook);
+    IState<T> Address(string name);
 
-    IState<T> AddSetHook(Action<T> hook);
+    IState<T> Length(int length);
+
+    IState<T> Build();
+
+    void AddGetHook(Action<T> hook);
+
+    void AddSetHook(Action<T> hook);
 
     IState<T> Watch(Action<T> handler);
 

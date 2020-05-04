@@ -1,4 +1,4 @@
-namespace Tiantong.Iot
+namespace Tiantong.Iot.Test
 {
   public class TestWatcherHttpClient: IWatcherHttpClient
   {

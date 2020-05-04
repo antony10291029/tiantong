@@ -1,19 +1,18 @@
 using NUnit.Framework;
 using Tiantong.Iot.Entities;
 
-namespace Tiantong.Iot
+namespace Tiantong.Iot.Test
 {
   [TestFixture]
   public class StateManagerTest
   {
     private StateManager ResolveManager()
     {
-      var plc = new PlcWorker();
       var db = (new DatabaseProvider()).Resolve();
       var intervalManager = new IntervalManager();
       var driverProvider = new StateTestDriverProvider();
-      var watcherProvider = new WatcherProvider(new WatcherHttpClient());
-      var logger = new StateLogger(plc, intervalManager, db);
+      var watcherProvider = new TestWatcherProvider();
+      var logger = new StateLogger(0, intervalManager, db);
       var manager = new StateManager(intervalManager, driverProvider,logger, watcherProvider);
 
       return manager;
@@ -25,9 +24,9 @@ namespace Tiantong.Iot
       var manager = ResolveManager();
       var states = manager.StatesByName;
 
-      manager.Name("bool").Bool("D1");
-      manager.Name("int").Int("D3");
-      manager.Name("string").String("D4", 10);
+      manager.Name("bool").Bool("D1").Build();
+      manager.Name("int").Int("D3").Build();
+      manager.Name("string").String("D4", 10).Build();
 
       var bool_ = (IState<bool>) states["bool"];
       var int_ = (IState<int>) states["int"];

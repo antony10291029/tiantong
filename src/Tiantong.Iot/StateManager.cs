@@ -48,22 +48,28 @@ namespace Tiantong.Iot
       return this;
     }
 
-    private T ResolveState<T, U>(string address, int length = 0) where T : State<U>, new()
+    private void Add(IState state)
     {
-      var state = new T() {
-        IntervalManager = _intervalManager,
-      };
-
-      state.Id(_id).Name(_name);
-      state.Length = length;
-      state.UseDriver(_stateDriverProvider.Resolve());
-      state.UseAddress(address);
-      state.WatcherProvider = _watcherProvider;
       StatesByName.Add(_name, state);
       if (_id != 0) {
         StatesById.Add(_id, state);
       }
-      state.Use(_stateLogger);
+    }
+
+
+    private T ResolveState<T, U>(string address, int length = 0) where T : State<U>, new()
+    {
+      var state = new T() {
+        _intervalManager = _intervalManager,
+        _watcherProvider = _watcherProvider,
+        _driver = _stateDriverProvider.Resolve(),
+      };
+
+      Add(
+        state.Id(_id).Name(_name)
+        .Address(address).Length(length)
+        .Build().Use(_stateLogger)
+      );
 
       return state;
     }

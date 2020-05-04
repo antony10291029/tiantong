@@ -7,9 +7,9 @@ namespace Tiantong.Iot
       _heartbeatMaxValue = 10000;
     }
 
-    protected override void HandleDriverResolved()
+    protected override void HandleDriverBuild()
     {
-      Driver.UseInt32();
+      _driver.UseInt32();
     }
 
     protected override int CompareDataTo(int data, int value)
@@ -19,12 +19,12 @@ namespace Tiantong.Iot
 
     protected override int HandleGet()
     {
-      return Driver.GetInt32();
+      return _driver.GetInt32();
     }
 
     protected override void HandleSet(int data)
     {
-      Driver.SetInt32(data);
+      _driver.SetInt32(data);
     }
 
     protected override void HandleHeartbeat(ref int times)

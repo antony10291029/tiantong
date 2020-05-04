@@ -70,7 +70,7 @@ namespace Tiantong.Iot
 
     public virtual IStatePlugin ResolveStateLogger()
     {
-      return new StateLogger(this, IntervalManager, DatabaseProvider.Resolve());
+      return new StateLogger(_id, IntervalManager, DatabaseProvider.Resolve());
     }
 
     public virtual DatabaseProvider ResolveDatabaseProvider()

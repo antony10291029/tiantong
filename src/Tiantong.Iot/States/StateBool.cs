@@ -2,9 +2,9 @@ namespace Tiantong.Iot
 {
   public class StateBool : State<bool>
   {
-    protected override void HandleDriverResolved()
+    protected override void HandleDriverBuild()
     {
-      Driver.UseBool();
+      _driver.UseBool();
     }
 
     protected override int CompareDataTo(bool data, bool value)
@@ -14,12 +14,12 @@ namespace Tiantong.Iot
 
     protected override bool HandleGet()
     {
-      return Driver.GetBool();
+      return _driver.GetBool();
     }
 
     protected override void HandleSet(bool data)
     {
-      Driver.SetBool(data);
+      _driver.SetBool(data);
     }
   }
 }

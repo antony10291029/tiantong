@@ -2,9 +2,14 @@ namespace Tiantong.Iot
 {
   public class StateTestDriver : IStateDriver
   {
-    public StateTestDriverStore Store;
+    private StateTestDriverStore _store;
 
     private string Key;
+
+    public StateTestDriver(StateTestDriverStore store)
+    {
+      _store = store;
+    }
 
     public void UseBool()
     {
@@ -38,53 +43,53 @@ namespace Tiantong.Iot
 
     public void SetBool(bool data)
     {
-      Store.Set(Key, data);
+      _store.Set(Key, data);
     }
 
     public void SetUInt16(ushort data)
     {
-      Store.Set(Key, data);
+      _store.Set(Key, data);
     }
 
     public void SetInt32(int data)
     {
-      Store.Set(Key, data);
+      _store.Set(Key, data);
     }
 
 
     public void SetString(string data)
     {
-      Store.Set(Key, data);
+      _store.Set(Key, data);
     }
 
     public void SetBytes(byte[] data)
     {
-      Store.Set(Key, data);
+      _store.Set(Key, data);
     }
 
     public bool GetBool()
     {
-      return Store.Get<bool>(Key);
+      return _store.Get<bool>(Key);
     }
 
     public ushort GetUInt16()
     {
-      return Store.Get<ushort>(Key);
+      return _store.Get<ushort>(Key);
     }
 
     public int GetInt32()
     {
-      return Store.Get<int>(Key);
+      return _store.Get<int>(Key);
     }
 
     public string GetString()
     {
-      return Store.Get<string>(Key);
+      return _store.Get<string>(Key);
     }
 
     public byte[] GetBytes()
     {
-      return Store.Get<byte[]>(Key);
+      return _store.Get<byte[]>(Key);
     }
   }
 }
