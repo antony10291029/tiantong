@@ -22,6 +22,8 @@ namespace Tiantong.Iot
 
     public IntervalManager IntervalManager;
 
+    public IWatcherProvider WatcherProvider;
+
     public void UseDriver(IStateDriver driver)
     {
       Driver = driver;
@@ -93,9 +95,9 @@ namespace Tiantong.Iot
       return AddGetHook(data => Task.Run(() => hook(data)));
     }
 
-    protected Watcher<T> CreateWatcher()
+    protected IWatcher<T> CreateWatcher()
     {
-      var watcher = new Watcher<T>();
+      var watcher = WatcherProvider.Resolve<T>();
 
       AddGetHook(value => watcher.Emit(value));
 

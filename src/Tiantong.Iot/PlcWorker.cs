@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace Tiantong.Iot
 {
-
   public class PlcWorker : IPlcWorker
   {
     public int _id;
@@ -19,6 +18,8 @@ namespace Tiantong.Iot
     public IStatePlugin StateLogger;
 
     public StateManager StateManager;
+
+    public IWatcherProvider WatcherProvider;
 
     public IntervalManager IntervalManager;
 
@@ -65,6 +66,11 @@ namespace Tiantong.Iot
 
     //
 
+    public virtual void ResolveWatcherProvider()
+    {
+      WatcherProvider = new BaseWatcherProvider();
+    }
+
     public virtual void ResolveDatabaseProvider()
     {
       DatabaseProvider = new DatabaseProvider();
@@ -86,6 +92,7 @@ namespace Tiantong.Iot
     public IPlcWorker Build()
     {
       IntervalManager = new IntervalManager();
+      ResolveWatcherProvider();
       ResolveDatabaseProvider();
       ResolveStateDriverProvider();
       ResolveStateLogger();
@@ -120,7 +127,7 @@ namespace Tiantong.Iot
 
     public virtual void ResolveStateManager()
     {
-      StateManager = new StateManager(IntervalManager, StateDriverProvider, StateLogger);
+      StateManager = new StateManager(IntervalManager, StateDriverProvider, StateLogger, WatcherProvider);
     }
 
     public IStateManager Define(string name, int id = 0)

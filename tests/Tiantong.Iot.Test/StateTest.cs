@@ -122,7 +122,9 @@ namespace Tiantong.Iot.Test
     public void TestWatcher()
     {
       var state = ResolveState<StateInt32>();
+      var provider = new BaseWatcherProvider();
 
+      state.WatcherProvider = provider;
       state.Watch(_ => state.CollectInterval.Stop());
       state.Collect(0);
       state.Set(1);

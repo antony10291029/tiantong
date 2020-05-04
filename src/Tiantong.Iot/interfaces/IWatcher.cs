@@ -9,5 +9,7 @@ namespace Tiantong.Iot
     void Emit(T value);
 
     void On(Action<T> handler);
+
+    void HttpPost(string url, string valueKey, bool toString = false, string json = "{}");
   }
 }
