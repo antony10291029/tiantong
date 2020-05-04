@@ -9,6 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Renet\Renet.csproj" />
-    <ProjectReference Include="..\Wcs.Plc\Wcs.Plc.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
   </ItemGroup>
 </Project>

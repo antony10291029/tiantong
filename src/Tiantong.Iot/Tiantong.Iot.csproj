@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>App.Melsec.CommandLine</AssemblyName>
+    <AssemblyName>Tiantong.Iot</AssemblyName>
     <Title>$(AssemblyName)</Title>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tiantong.Iot.DB.Sqlite\Tiantong.Iot.DB.Sqlite.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot.Database\Tiantong.Iot.Database.csproj" />
     <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Protocol\Tiantong.Iot.Protocol.csproj" />
   </ItemGroup>

@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Text;
 using System;
 using Renet.Tcp;
-using Wcs.Plc.Protocol;
+using Tiantong.Iot.Protocol;
 
 namespace App.CommandLine
 {
