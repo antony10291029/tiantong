@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tiantong.Iot.Database\Tiantong.Iot.Database.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
     <ProjectReference Include="..\DbCore.Sqlite\DBCore.Sqlite.csproj" />
   </ItemGroup>

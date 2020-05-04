@@ -4,4 +4,8 @@
     <AssemblyName>Tiantong.Iot.Entities</AssemblyName>
     <Title>$(AssemblyName)</Title>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DBCore\DBCore.csproj" />
+  </ItemGroup>
 </Project>

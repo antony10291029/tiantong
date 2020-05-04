@@ -1,9 +1,10 @@
-﻿using DBCore.Sqlite;
+﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
+using DBCore.Sqlite;
 
 namespace Tiantong.Iot.DB.Sqlite
 {
-  public class SqliteDbContext : Tiantong.Iot.Database.DbContext
+  public class SqliteDbContext : Tiantong.Iot.Entities.DbContext
   {
     private SqliteBuilder _builder;
 
@@ -11,7 +12,11 @@ namespace Tiantong.Iot.DB.Sqlite
     {
       _builder = new SqliteBuilder();
 
-      _builder.UseDbFile("./sqlite.db");
+      if (!Directory.Exists("./DataSource")) {
+        Directory.CreateDirectory("./DataSource");
+      }
+
+      this.UseFile("./DataSource/sqlite.db");
     }
 
     public void UseFile(string path)

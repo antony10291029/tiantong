@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Iot.Entities
@@ -5,6 +7,7 @@ namespace Tiantong.Iot.Entities
   [Table("plc_states")]
   public class PlcState
   {
+    [Key]
     public virtual int id { get; set; }
 
     public virtual int plc_id { get; set; }
@@ -19,7 +22,7 @@ namespace Tiantong.Iot.Entities
 
     public virtual bool is_heartbeat { get; set; }
 
-    public virtual int heartbeat_interval { get; set; } = 1000;
+    public virtual int heartbeat_interval { get; set; }
 
     public virtual bool is_collect { get; set; }
 
@@ -27,5 +30,7 @@ namespace Tiantong.Iot.Entities
 
     public virtual bool open_log { get; set; }
 
+    [ForeignKey("state_id")]
+    public virtual List<HttpWatcher> http_watchers { get; set; }
   }
 }

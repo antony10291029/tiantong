@@ -9,25 +9,21 @@ namespace Tiantong.Iot.Entities
   public class Plc
   {
     [Key]
-    public virtual int Id { get; set; } = 0;
+    public virtual int id { get; set; }
+
+    public virtual string model { get; set; }
+
+    public virtual string name { get; set; }
+
+    public virtual string host { get; set; }
+
+    public virtual int port { get; set; }
 
     [Required]
-    public virtual string Model { get; set; } = "test";
-
-    [Required]
-    public virtual string Name { get; set; }
-
-    public virtual string Host { get; set; } = "";
-
-    public virtual int Port { get; set; } = 0;
-
-    public virtual bool IsRunning { get; set; } = false;
-
-    [Required]
-    public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
+    public virtual DateTime created_at { get; set; } = DateTime.Now;
 
     [ForeignKey("plc_id")]
-    public List<PlcState> States { get; set; }
+    public List<PlcState> states { get; set; }
 
   }
 }

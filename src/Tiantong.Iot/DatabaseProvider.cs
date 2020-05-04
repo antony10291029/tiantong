@@ -1,5 +1,4 @@
-using System.IO;
-using Tiantong.Iot.Database;
+using Tiantong.Iot.Entities;
 using Tiantong.Iot.DB.Sqlite;
 
 namespace Tiantong.Iot
@@ -8,22 +7,12 @@ namespace Tiantong.Iot
   {
     public virtual DbContext Resolve()
     {
-      var db = new SqliteDbContext();
-
-      if (!Directory.Exists("./DataSource")) {
-        Directory.CreateDirectory("./DataSource");
-      }
-      db.UseFile("./DataSource/sqlite.db");
-
-      return db;
+      return new SqliteDbContext();
     }
 
     public virtual void Migrate()
     {
-      var db = Resolve();
-      var migrator = new Migrator();
-
-      migrator.UseDbContext(db).Migrate();
+      new Migrator().UseDbContext(Resolve()).Migrate();
     }
   }
 }

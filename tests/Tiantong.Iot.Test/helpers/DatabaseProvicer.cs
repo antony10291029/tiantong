@@ -1,4 +1,4 @@
-using Tiantong.Iot.Database;
+using Tiantong.Iot.Entities;
 using Tiantong.Iot.DB.Sqlite;
 
 namespace Tiantong.Iot.Test
