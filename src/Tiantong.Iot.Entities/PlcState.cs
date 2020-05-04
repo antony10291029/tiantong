@@ -16,13 +16,15 @@ namespace Tiantong.Iot.Entities
 
     public virtual string type { get; set; }
 
-    public virtual string length { get; set; }
-
     public virtual string address { get; set; }
+
+    public virtual int length { get; set; }
 
     public virtual bool is_heartbeat { get; set; }
 
     public virtual int heartbeat_interval { get; set; }
+
+    public virtual int heartbeat_max_value { get; set; }
 
     public virtual bool is_collect { get; set; }
 

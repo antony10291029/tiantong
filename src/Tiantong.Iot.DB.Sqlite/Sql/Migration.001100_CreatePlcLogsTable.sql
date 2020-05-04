@@ -1,6 +1,8 @@
-CREATE TABLE IF NOT EXISTS "plc_connection_logs" (
+CREATE TABLE IF NOT EXISTS "plc_logs" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "plc_id" INTEGER NOT NULL,
+  "type" TEXT NOT NULL,
   "operation" TEXT NOT NULL,
+  "detail" TEXT NOT NULL,
   "created_at" TEXT NOT NULL
 );

@@ -16,7 +16,9 @@ namespace Tiantong.Iot.Entities
 
     public int watcher_id { get; set; }
 
-    public string body { get; set; }
+    public string request { get; set; }
+
+    public string response { get; set; }
 
     public string status_code { get; set; }
 

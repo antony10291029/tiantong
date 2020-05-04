@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Tiantong.Iot.Entities
 {
   [Table("plc_logs")]
-  public class PlcLogs
+  public class PlcLog
   {
     [Key]
     public int id { get; set; }

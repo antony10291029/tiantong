@@ -9,6 +9,8 @@ namespace Tiantong.Iot.Entities
     [Key]
     public virtual int id { get; set; }
 
+    public virtual int plc_id { get; set; }
+
     public virtual int state_id { get; set; }
 
     public virtual string url { get; set; }

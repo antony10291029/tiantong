@@ -19,7 +19,8 @@ namespace Tiantong.Iot.Entities
 
     public virtual int port { get; set; }
 
-    [Required]
+    public virtual string comment { get; set; }
+
     public virtual DateTime created_at { get; set; } = DateTime.Now;
 
     [ForeignKey("plc_id")]
