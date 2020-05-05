@@ -74,9 +74,9 @@ const routes = [
             component: () => import('./WarehouseUsers/WarehouseUserList.vue'),
             children: [
               {
-                path: 'create',
-                name: 'WarehouseUserCreate',
-                component: () => import('./WarehouseUsers/WarehouseUserCreate.vue')
+                path: 'invite',
+                name: 'WarehouseUserInvite',
+                component: () => import('./WarehouseUsers/WarehouseUserInvite.vue')
               },
               {
                 path: ':warehouseUserId/update',

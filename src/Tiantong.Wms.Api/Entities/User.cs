@@ -20,7 +20,7 @@ namespace Tiantong.Wms.Api
     [StringRange(2, 50, ErrorMessage = "姓名长度必须在2～50之间")]
     public virtual string name { get; set; } = "";
 
-    public virtual bool is_enabled { get; set; } = true;
+    public virtual bool is_verified { get; set; } = true;
 
     public virtual DateTime created_at { get; set; } = DateTime.Now;
 

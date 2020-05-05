@@ -5,7 +5,7 @@ namespace Renet.Web
 {
   public class FailureOperation : Exception, IHttpException
   {
-    public int Status { get; set; } = 400;
+    public int Status { get; set; } = 422;
 
     public string Body
     {

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
@@ -12,6 +11,8 @@ namespace Tiantong.Wms.Api
     public virtual int department_id { get; set; }
 
     public virtual int user_id { get; set; }
+
+    public virtual bool is_accepted { get; set; } = false;
 
     [JsonIgnore]
     [ForeignKey("warehouse_id")]

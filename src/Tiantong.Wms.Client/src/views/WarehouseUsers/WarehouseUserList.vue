@@ -8,7 +8,7 @@
       <div class="is-flex-auto"></div>
       <a
         class="button is-info"
-        @click="$router.push(`/warehouses/${warehouseId}/users/create`)"
+        @click="$router.push(`${baseURL}/users/invite`)"
       >
         添加
       </a>

@@ -29,7 +29,7 @@ function beforeError (error : AxiosError) : void {
   if (status === 401) {
     // Token.clear()
     Router.push('/unauthorization')
-  } else if (status === 400 || status === 422) {
+  } else if (status === 422) {
     notify.danger(error.response?.data.message)
   } else if (error.response?.status === 500) {
     notify.danger('非常抱歉，出现未知错误')

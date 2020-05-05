@@ -86,6 +86,20 @@ namespace Tiantong.Wms.Api
       return _auth.User;
     }
 
+    public class FindByEmailParams
+    {
+      public string email { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/users/find/email")]
+    public object FindByEmail([FromBody] FindByEmailParams param)
+    {
+      return new {
+        user = _users.GetByEmail(param.email)
+      };
+    }
+
     //
 
     public class AuthEmailParams {

@@ -9,11 +9,6 @@
           class="input" type="text"
         >
       </p>
-      <p class="control">
-        <a class="button is-static">
-          @als-yuchuan.com
-        </a>
-      </p>
     </div>
   </div>
 </template>
@@ -29,15 +24,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
   }
 })
 export default class extends Vue {
-  @Prop({ required: true })
-  value!: string
 
-  get inputValue () {
-    return this.value.split('@')[0]
-  }
-
-  handleInput (event: any) {
-    this.$emit('input', event.target.value + '@als-yuchuan.com')
-  }
 }
 </script>

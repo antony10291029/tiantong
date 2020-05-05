@@ -26,13 +26,6 @@ namespace Tiantong.Wms.Api
       Post("/warehouses/search", "Warehouse.Search");
       Post("/warehouses/find", "Warehouse.Find");
 
-      Post("/warehouses/users/create", "WarehouseUser.Create");
-      Post("/warehouses/users/delete", "WarehouseUser.Delete");
-      Post("/warehouses/users/update", "WarehouseUser.Update");
-      Post("/warehouses/users/person", "WarehouseUser.Person");
-      Post("/warehouses/users/find", "WarehouseUser.Find");
-      Post("/warehouses/users/all", "WarehouseUser.All");
-
       Post("/areas/create", "Area.Create");
       Post("/areas/delete", "Area.Delete");
       Post("/areas/update", "Area.Update");

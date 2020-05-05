@@ -26,8 +26,6 @@ namespace Tiantong.Wms.Api
 
     public DbSet<Department> Departments { get; set; }
 
-    public DbSet<DepartmentUser> DepartmentUsers { get; set; }
-
     public DbSet<Area> Areas { get; set; }
 
     public DbSet<Location> Locations { get; set; }

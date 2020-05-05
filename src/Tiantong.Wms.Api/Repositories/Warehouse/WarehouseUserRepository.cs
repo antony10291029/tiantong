@@ -25,7 +25,42 @@ namespace Tiantong.Wms.Api
 
     // Create
 
-    public override WarehouseUser Add(WarehouseUser wu)
+    public WarehouseUser Invite(int warehouseId, int departmentId, string email)
+    {
+      var user = _users.EnsureGetByEmail(email);
+      EnsureUnique(warehouseId, email);
+
+      var wu = new WarehouseUser {
+        warehouse_id = warehouseId,
+        department_id = departmentId,
+        user_id = user.id
+      };
+
+      DbContext.Add(wu);
+
+      return wu;
+    }
+
+    public WarehouseUser Add(int warehouseId, int departmentId, string email, string name)
+    {
+      EnsureUnique(warehouseId, email);
+
+      var user = new User {
+        email = email,
+        name = name,
+      };
+      var wu = new WarehouseUser {
+        warehouse_id = warehouseId,
+        department_id = departmentId,
+        user = user,
+      };
+
+      DbContext.Add(wu);
+
+      return wu;
+    }
+
+     public override WarehouseUser Add(WarehouseUser wu)
     {
       EnsureUser(wu.warehouse_id);
       if (wu.user == null) {
@@ -110,6 +145,19 @@ namespace Tiantong.Wms.Api
         );
     }
 
+    public bool IsAdmin(int warehouseId, int userId)
+    {
+      return Table
+        .Include(wu => wu.department)
+        .Any(wu =>
+          wu.user_id == userId &&
+          wu.warehouse_id == warehouseId && (
+            wu.department.type == DepartmentType.Owner ||
+            wu.department.type == DepartmentType.Admin
+          )
+        );
+    }
+
     public bool HasUser(int warehouseId, int userId)
     {
       return Table
@@ -130,6 +178,18 @@ namespace Tiantong.Wms.Api
     public void EnsureOwner(int warehouseId)
     {
       EnsureOwner(warehouseId, _auth.User.id);
+    }
+
+    public void EnsureAdmin(int warehouseId, int userId)
+    {
+      if (!IsAdmin(warehouseId, userId)) {
+        throw new FailureOperation("该操作需要仓库管理员权限");
+      }
+    }
+
+    public void EnsureAdmin(int warehouseId)
+    {
+      EnsureAdmin(warehouseId, _auth.User.id);
     }
 
     public WarehouseUser Find(int id)
@@ -199,6 +259,18 @@ namespace Tiantong.Wms.Api
         )
       ) {
         throw new FailureOperation("用户不存在");
+      }
+    }
+
+    public void EnsureUnique(int warehouseId, string email)
+    {
+      if (
+        Table.Include(wu => wu.user).Any(wu =>
+          wu.warehouse_id == warehouseId &&
+          wu.user.email == email
+        )
+      ) {
+        throw new FailureOperation("该用户已存在");
       }
     }
 
