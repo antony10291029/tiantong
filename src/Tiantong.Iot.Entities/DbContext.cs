@@ -1,5 +1,4 @@
-﻿using Tiantong.Iot.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Iot.Entities
 {
@@ -20,6 +19,8 @@ namespace Tiantong.Iot.Entities
     public DbSet<HttpWatcher> HttpWatchers { get; set; }
 
     public DbSet<HttpWatcherLog> HttpWatcherLogs { get; set; }
+
+    public DbSet<HttpWatcherError> HttpWatcherErrors { get; set; }
 
   }
 }

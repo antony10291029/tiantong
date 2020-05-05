@@ -163,5 +163,22 @@ namespace Tiantong.Iot.DB.Sqlite.Test
 
       db.SaveChanges();
     }
+
+    [Test]
+    public void TestHttpWatcherError()
+    {
+      var db = GetDb();
+
+      db.HttpWatcherErrors.Add(new HttpWatcherError {
+        id = 0,
+        plc_id = 0,
+        state_id = 0,
+        watcher_id = 0,
+        error = "error",
+        detail = "detail",
+      });
+
+      db.SaveChanges();
+    }
   }
 }
