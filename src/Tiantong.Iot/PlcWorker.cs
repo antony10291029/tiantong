@@ -85,7 +85,12 @@ namespace Tiantong.Iot
 
     public virtual IWatcherHttpClient ResolveWatcherHttpClient()
     {
-      return new WatcherHttpClient();
+      return new WatcherHttpClient(DatabaseProvider.Resolve());
+    }
+
+    public virtual StateManager ResolveStateManager()
+    {
+      return new StateManager(IntervalManager, StateDriverProvider, StateLogger, WatcherProvider);
     }
 
     public IStateDriverProvider ResolveStateDriverProvider()
@@ -103,11 +108,11 @@ namespace Tiantong.Iot
     public IPlcWorker Build()
     {
       IntervalManager = new IntervalManager();
-      WatcherProvider = ResolveWatcherProvider();
       DatabaseProvider = ResolveDatabaseProvider();
       StateDriverProvider = ResolveStateDriverProvider();
+      WatcherProvider = ResolveWatcherProvider();
       StateLogger = ResolveStateLogger();
-      ResolveStateManager();
+      StateManager = ResolveStateManager();
 
       DatabaseProvider.Migrate();
 
@@ -131,11 +136,6 @@ namespace Tiantong.Iot
       Model("MC3E").Host(host).Port(port).Build();
 
       return this;
-    }
-
-    public virtual void ResolveStateManager()
-    {
-      StateManager = new StateManager(IntervalManager, StateDriverProvider, StateLogger, WatcherProvider);
     }
 
     public IStateManager Define(string name, int id = 0)

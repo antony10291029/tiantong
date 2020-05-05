@@ -21,7 +21,7 @@ namespace App.CommandLine
         });
 
       plc.Define("扫码器").String("D1.120", 10).Collect(1000)
-        .Watch("!=", "0000000000").HttpPost("test", "value");
+        .Watch("!=", "0000000000").HttpPost("http://localhost:5000/test", "value");
 
       plc.Run();
     }

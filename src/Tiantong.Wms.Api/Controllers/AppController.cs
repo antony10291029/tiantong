@@ -21,6 +21,13 @@ namespace Tiantong.Wms.Api
     }
 
     [HttpPost]
+    [Route("/test")]
+    public object Test([FromBody] object data)
+    {
+      return data;
+    }
+
+    [HttpPost]
     [Route("/version")]
     public object Version()
     {
