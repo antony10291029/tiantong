@@ -38,6 +38,7 @@ namespace Wcs.Plc.DB.Sqlite.Test
       var plcConnection = new PlcConnection {
         Model = "melsec-q",
         Name = "lift",
+        IsRunning = true,
       };
       var plcConnectionLog = new PlcConnectionLog {
         PlcId = 1,

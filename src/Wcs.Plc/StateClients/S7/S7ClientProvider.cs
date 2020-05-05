@@ -16,7 +16,6 @@ namespace Wcs.Plc
 
     public IStateClient Resolve()
     {
-      Console.WriteLine("resolved");
       return new S7Client(_client);
     }
   }
