@@ -85,7 +85,7 @@ namespace Tiantong.Iot
 
     public virtual IWatcherHttpClient ResolveWatcherHttpClient()
     {
-      return new WatcherHttpClient(DatabaseProvider.Resolve());
+      return new WatcherHttpClient(DatabaseProvider.Resolve(), IntervalManager);
     }
 
     public virtual StateManager ResolveStateManager()

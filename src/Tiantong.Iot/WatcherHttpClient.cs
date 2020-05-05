@@ -3,6 +3,7 @@ using System.Text;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
@@ -15,20 +16,79 @@ namespace Tiantong.Iot
 
     private DbContext _db;
 
-    public WatcherHttpClient(DbContext _db)
+    private List<HttpWatcherLog> _logs = new List<HttpWatcherLog>();
+
+    private List<HttpWatcherError> _errorLogs = new List<HttpWatcherError>();
+
+    private readonly object _logLock = new object();
+
+    private readonly object _errorLogLock = new object();
+
+    public WatcherHttpClient(DbContext db, IntervalManager intervalManager)
     {
+      _db = db;
       _client.DefaultRequestHeaders
         .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+      var interval = new Interval();
+      interval.SetTime(500);
+      interval.SetHandler(HandleLogs);
+      intervalManager.Add(interval);
     }
 
-    public void Post(string uri, string data)
+    public async Task PostAsync(int plcId, int stateId, int watcherId, string uri, string data, Encoding encoding = null)
     {
-      var content = new StringContent(data, Encoding.UTF8, "application/json");
-      var task = _client.PostAsync(uri, content);
+      var content = new StringContent(data, encoding ?? Encoding.UTF8, "application/json");
 
-      var response = task.GetAwaiter().GetResult();
-      Console.WriteLine(response.StatusCode.ToString());
-      Console.WriteLine(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+      try {
+        var response = await _client.PostAsync(uri, content);
+        var statusCode = response.StatusCode.ToString();
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var log = new HttpWatcherLog {
+          plc_id = plcId,
+          state_id = stateId,
+          watcher_id = watcherId,
+          request = data,
+          response = responseContent,
+          status_code = statusCode
+        };
+        lock (_logLock) {
+          _logs.Add(log);
+        }
+      } catch (Exception e) {
+        var errorLog = new HttpWatcherError {
+          plc_id = plcId,
+          state_id = stateId,
+          watcher_id = watcherId,
+          error = e.Message,
+          detail = e.Source,
+        };
+        lock (_errorLogLock) {
+          _errorLogs.Add(errorLog);
+        }
+        throw e;
+      }
     }
+
+    public void HandleLogs()
+    {
+      HttpWatcherLog[] logs;
+      HttpWatcherError[] errorLogs;
+
+      lock (_logLock) {
+        logs = _logs.ToArray();
+        _logs.Clear();
+      }
+
+      lock (_errorLogs) {
+        errorLogs = _errorLogs.ToArray();
+        _errorLogs.Clear();
+      }
+
+      _db.AddRange(logs);
+      _db.AddRange(errorLogs);
+      _db.SaveChanges();
+    }
+
   }
 }
