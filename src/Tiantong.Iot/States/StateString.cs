@@ -7,7 +7,7 @@ namespace Tiantong.Iot
       _driver.UseString(_length);
     }
 
-    protected override int CompareDataTo(string data, string value)
+    protected override int CompareTo(string data, string value)
     {
       return data.CompareTo(value);
     }

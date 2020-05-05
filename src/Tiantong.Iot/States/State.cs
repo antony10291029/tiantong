@@ -75,8 +75,8 @@ namespace Tiantong.Iot
 
     public IState<T> Build()
     {
-      _driver.UseAddress(_address);
       HandleDriverBuild();
+      _driver.UseAddress(_address);
 
       return this;
     }
@@ -124,7 +124,7 @@ namespace Tiantong.Iot
 
     public IWatcher<T> Watch(T value)
     {
-      return CreateWatcher().When(data => CompareDataTo(data, value) == 0);
+      return CreateWatcher().When(data => CompareTo(data, value) == 0);
     }
 
     public IWatcher<T> Watch(Func<T, bool> cmp)
@@ -135,21 +135,21 @@ namespace Tiantong.Iot
     public IWatcher<T> Watch(string opt, T value)
     {
       Func<T, bool> cmp = opt switch {
-        ">"  => data => CompareDataTo(data, value) > 0,
-        "<"  => data => CompareDataTo(data, value) < 0,
-        "="  => data => CompareDataTo(data, value) == 0,
-        "==" => data => CompareDataTo(data, value) == 0,
-        ">=" => data => CompareDataTo(data, value) >= 0,
-        "<=" => data => CompareDataTo(data, value) <= 0,
-        "<>" => data => CompareDataTo(data, value) != 0,
-        "!=" => data => CompareDataTo(data, value) != 0,
+        ">"  => data => CompareTo(data, value) > 0,
+        "<"  => data => CompareTo(data, value) < 0,
+        "="  => data => CompareTo(data, value) == 0,
+        "==" => data => CompareTo(data, value) == 0,
+        ">=" => data => CompareTo(data, value) >= 0,
+        "<=" => data => CompareTo(data, value) <= 0,
+        "<>" => data => CompareTo(data, value) != 0,
+        "!=" => data => CompareTo(data, value) != 0,
         _    => throw new Exception($"不支持该运算符{opt}")
       };
 
       return CreateWatcher().When(data => cmp(data));
     }
 
-    protected virtual int CompareDataTo(T data, T value)
+    protected virtual int CompareTo(T data, T value)
     {
       throw new Exception("该操作暂时不支持");
     }

@@ -14,7 +14,7 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.UseTest();
-      plc.Define("hb").Int("D1").Collect(0);
+      plc.Define("hb").Int("D1", state => state.Collect(0));
       plc.Int("hb").Set(1);
 
       try {
@@ -28,7 +28,7 @@ namespace Tiantong.Iot.Test
     {
       var plc = new PlcWorker().UseTest();
 
-      plc.Define("int", 100).Int("D1");
+      plc.Define("int", 100).Int("D1", _ => {});
       plc.Int(100);
       try {
         plc.Int(101);
@@ -41,8 +41,10 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.UseTest();
-      plc.Define("bool data").Bool("D1").Collect(0)
-        .Watch("==", true).On(_ => plc.Stop());
+      plc.Define("bool data").Bool("D1", state => {
+        state.Collect(0);
+        state.Watch("==", true).On(_ => plc.Stop());
+      });
       plc.Bool("bool data").Set(true);
 
       plc.Start().WaitAsync().AssertFinishIn();
@@ -55,11 +57,11 @@ namespace Tiantong.Iot.Test
 
       plc.UseTest();
 
-      Assert.IsTrue(plc.Define("ushort").UShort("D1") is IState<ushort>);
-      Assert.IsTrue(plc.UShort("ushort") is IState<ushort>);
+     plc.Define("ushort").UShort("D1", _ => {});
+     Assert.IsTrue(plc.UShort("ushort") is IState<ushort>);
 
-      Assert.IsTrue(plc.Define("int").Int("D2") is IState<int>);
-      Assert.IsTrue(plc.Int("int") is IState<int>);
+     plc.Define("int").Int("D2", _ => {});
+     Assert.IsTrue(plc.Int("int") is IState<int>);
     }
 
     [Test]
@@ -68,8 +70,10 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.UseTest();
-      plc.Define("hb").Int("D1").Heartbeat(1).Collect(0)
-        .Watch(value => value > 1).On(_ =>  plc.Stop());
+      plc.Define("hb").Int("D1", state => {
+        state.Heartbeat(1).Collect(0);
+        state.Watch(value => value > 1).On(_ =>  plc.Stop());
+      });
 
       plc.Start().WaitAsync().AssertFinishIn();
     }

@@ -22,6 +22,7 @@ namespace Tiantong.Iot.Test
 
       _listener.Prefixes.Add(url);
       _listener.Start();
+
       var task = _listener.GetContextAsync();
       _task = task.ContinueWith(t => {
         var context = t.GetAwaiter().GetResult();
@@ -31,6 +32,8 @@ namespace Tiantong.Iot.Test
         var buffer = Encoding.UTF8.GetBytes("<<<testing watcher http server>>>");
         response.OutputStream.Write(buffer, 0, buffer.Length);
         response.OutputStream.Close();
+
+        _listener.GetContextAsync().GetAwaiter().GetResult();
         _listener.Close();
       });
 

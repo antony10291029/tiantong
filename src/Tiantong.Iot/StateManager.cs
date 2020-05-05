@@ -68,40 +68,48 @@ namespace Tiantong.Iot
       Add(
         state.Id(_id).Name(_name)
         .Address(address).Length(length)
-        .Build().Use(_stateLogger)
+        .Use(_stateLogger)
       );
 
       return state;
     }
 
-    public IState<bool> Bool(string address)
+    public void Bool(string address, Action<IState<bool>> builder)
     {
-      return ResolveState<StateBool, bool>(address);
+      var state = ResolveState<StateBool, bool>(address);
+      builder(state);
+      state.Build();
     }
 
-    public IState<ushort> UInt16(string address)
+    public void UInt16(string address, Action<IState<ushort>> builder)
     {
-      return ResolveState<StateUInt16, ushort>(address);
+      var state = ResolveState<StateUInt16, ushort>(address);
+      builder(state);
+      state.Build();
     }
 
-    public IState<int> Int32(string address)
+    public void Int32(string address, Action<IState<int>> builder)
     {
-      return ResolveState<StateInt32, int>(address);
+      var state = ResolveState<StateInt32, int>(address);
+      builder(state);
+      state.Build();
     }
 
-    public IState<string> String(string address, int length)
+    public void String(string address, int length, Action<IState<string>> builder)
     {
-      return ResolveState<StateString, string>(address, length);
+      var state = ResolveState<StateString, string>(address, length);
+      builder(state);
+      state.Build();
     }
 
-    public IState<ushort> UShort(string address)
+    public void UShort(string address, Action<IState<ushort>> builder)
     {
-      return UInt16(address);
+      UInt16(address, builder);
     }
 
-    public IState<int> Int(string address)
+    public void Int(string address, Action<IState<int>> builder)
     {
-      return Int32(address);
+      Int32(address, builder);
     }
 
   }

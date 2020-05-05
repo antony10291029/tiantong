@@ -30,7 +30,7 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.Name("test plc").UseTest();
-      plc.Define("hb").Int("D100").Heartbeat(1);
+      plc.Define("hb").Int("D100", state => state.Heartbeat(1));
       manager.Plcs.Add(plc._name, plc);
 
       plc.Start();

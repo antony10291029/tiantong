@@ -9,7 +9,7 @@ namespace Tiantong.Iot
       _driver.UseBytes(_length);
     }
 
-    protected override int CompareDataTo(byte[] data, byte[] value)
+    protected override int CompareTo(byte[] data, byte[] value)
     {
       throw new Exception("byte[] 类型不支持比较");
     }

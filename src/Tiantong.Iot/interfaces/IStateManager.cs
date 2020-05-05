@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 
 namespace Tiantong.Iot
 {
@@ -8,19 +8,19 @@ namespace Tiantong.Iot
 
     IStateManager Name(string name);
 
-    IState<bool> Bool(string name);
+    void Bool(string name, Action<IState<bool>> builder);
 
-    IState<ushort> UInt16(string name);
+    void UInt16(string name, Action<IState<ushort>> builder);
 
-    IState<int> Int32(string name);
+    void Int32(string name, Action<IState<int>> builder);
 
-    IState<string> String(string name, int length);
+    void String(string name, int length, Action<IState<string>> builder);
 
     //
 
-    IState<ushort> UShort(string name);
+    void UShort(string name, Action<IState<ushort>> builder);
 
-    IState<int> Int(string name);
+    void Int(string name, Action<IState<int>> builder);
 
   }
 }

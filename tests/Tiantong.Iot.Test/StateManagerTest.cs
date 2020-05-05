@@ -24,9 +24,9 @@ namespace Tiantong.Iot.Test
       var manager = ResolveManager();
       var states = manager.StatesByName;
 
-      manager.Name("bool").Bool("D1").Build();
-      manager.Name("int").Int("D3").Build();
-      manager.Name("string").String("D4", 10).Build();
+      manager.Name("bool").Bool("D1", _ => {});
+      manager.Name("int").Int("D3", _ => {});
+      manager.Name("string").String("D4", 10, _ => {});
 
       var bool_ = (IState<bool>) states["bool"];
       var int_ = (IState<int>) states["int"];
@@ -47,7 +47,7 @@ namespace Tiantong.Iot.Test
       var manager = ResolveManager();
       var states = manager.StatesByName;
 
-      manager.Name("bool").Bool("D1");
+      manager.Name("bool").Bool("D1", _ => {});
       states.Remove("D1");
 
       try {
