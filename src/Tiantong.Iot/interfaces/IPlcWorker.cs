@@ -13,7 +13,7 @@ namespace Tiantong.Iot
 
     IPlcWorker Name(string key);
 
-    IPlcWorker Host(string host);
+    IPlcWorker Host(string host, int port = 0);
 
     IPlcWorker Port(int port);
 

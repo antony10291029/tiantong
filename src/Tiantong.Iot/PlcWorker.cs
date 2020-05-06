@@ -57,9 +57,12 @@ namespace Tiantong.Iot
       return this;
     }
 
-    public IPlcWorker Host(string host)
+    public IPlcWorker Host(string host, int port = 0)
     {
       _host = host;
+      if (port != 0) {
+        _port = port;
+      }
       
       return this;
     }
