@@ -36,6 +36,42 @@ namespace Tiantong.Iot.Test
     }
 
     [Test]
+    public void TestWhenOpt()
+    {
+      var flag = "";
+      var watcher = new Watcher<string>(new TestWatcherHttpClient());
+      watcher.On(value => flag = value);
+
+      watcher.When("", "");
+      watcher.Emit("any");
+      Assert.AreEqual("any", flag);
+
+      watcher.When("=", "equal");
+      watcher.Emit("equ");
+      Assert.AreEqual("any", flag);
+      watcher.Emit("equal");
+      Assert.AreEqual("equal", flag);
+
+      watcher.When("!=", "not");
+      watcher.Emit("not");
+      Assert.AreEqual("equal", flag);
+      watcher.Emit("not_equal");
+      Assert.AreEqual("not_equal", flag);
+
+      watcher.When(">", "100");
+      watcher.Emit("10");
+      Assert.AreEqual("not_equal", flag);
+      watcher.Emit("101");
+      Assert.AreEqual("101", flag);
+
+      watcher.When("<", "100");
+      watcher.Emit("100");
+      Assert.AreEqual("101", flag);
+      watcher.Emit("99");
+      Assert.AreEqual("99", flag);
+    }
+
+    [Test]
     public void TestHttpPostNumber()
     {
       var client = new TestWatcherHttpClient();

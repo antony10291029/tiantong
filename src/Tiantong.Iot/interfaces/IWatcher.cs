@@ -7,6 +7,8 @@ namespace Tiantong.Iot
   {
     IWatcher Id(int plcId, int stateId, int watcherId);
 
+    void On(Action<string> handler);
+
     void On(Action handler);
 
     IWatcher When(string opt, string value);

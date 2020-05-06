@@ -24,6 +24,8 @@ namespace Tiantong.Iot
 
     public abstract void On(Action handler);
 
+    public abstract void On(Action<string> handler);
+
     public abstract IWatcher When(string opt, string value);
 
     public abstract void HttpPost(string url, string valueKey, bool toString, string json, Encoding encoding);
@@ -65,6 +67,7 @@ namespace Tiantong.Iot
     public override IWatcher When(string opt, string value)
     {
       _when = opt switch {
+        ""   => _ => true,
         "="  => data => data.ToString() == value,
         "==" => data => data.ToString() == value,
         "!=" => data => data.ToString() != value,
@@ -87,6 +90,11 @@ namespace Tiantong.Iot
     public override void On(Action handler)
     {
       On(_ => handler());
+    }
+
+    public override void On(Action<string> handler)
+    {
+      On(data => handler(data.ToString()));
     }
 
     public override void HttpPost(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
