@@ -1,12 +1,12 @@
 using System;
-using System.Threading.Tasks;
-using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
   public interface IState
   {
+    IState Collect(int interval = 1000);
 
+    IState Heartbeat(int interval = 1000, int maxValue = 10000);
   }
 
   public interface IState<T>: IState
@@ -36,12 +36,6 @@ namespace Tiantong.Iot
     IWatcher<T> Watch(Func<T, bool> cmp);
 
     IWatcher<T> Watch(string opt, T value);
-
-    IState<T> Collect(int interval = 1000);
-
-    IState<T> Heartbeat(int interval = 1000);
-
-    IState<T> HeartbeatMaxValue(T maxValue);
 
     void Set(T data);
 

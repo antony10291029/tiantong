@@ -29,9 +29,6 @@ namespace Tiantong.Iot
 
     protected override void HandleHeartbeat(ref int times)
     {
-      if (times < _heartbeatMaxValue) times++;
-      else times = 1;
-
       Set(times);
     }
 

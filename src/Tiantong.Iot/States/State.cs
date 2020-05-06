@@ -26,12 +26,17 @@ namespace Tiantong.Iot
 
     protected abstract void HandleDriverBuild();
 
+    public abstract IState Collect(int interval = 1000);
+
+    public virtual IState Heartbeat(int interval = 1000, int maxValue = 10000)
+    {
+      throw new Exception("该类型不支持心跳写入");
+    }
+
   }
 
   public abstract class State<T>: State, IState<T>
   {
-    protected T _heartbeatMaxValue;
-
     private List<Func<T, Task>> _gethooks = new List<Func<T, Task>>();
 
     private List<Func<T, Task>> _sethooks = new List<Func<T, Task>>();
@@ -154,7 +159,7 @@ namespace Tiantong.Iot
       throw new Exception("该操作暂时不支持");
     }
 
-    public IState<T> Collect(int time = 1000)
+    public override IState Collect(int time = 1000)
     {
       if (_collectInterval == null) {
         time = Math.Max(time, 1);
@@ -190,18 +195,6 @@ namespace Tiantong.Iot
     protected abstract T HandleGet();
 
     protected abstract void HandleSet(T data);
-
-    public virtual IState<T> Heartbeat(int interval = 1000)
-    {
-      throw new Exception("该类型不支持心跳写入");
-    }
-
-    public IState<T> HeartbeatMaxValue(T maxValue)
-    {
-      _heartbeatMaxValue = maxValue;
-
-      return this;
-    }
 
   }
 
