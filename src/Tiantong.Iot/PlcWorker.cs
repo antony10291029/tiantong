@@ -7,7 +7,7 @@ namespace Tiantong.Iot
   {
     public int _id;
 
-    public string _model = "test";
+    public string _model = PlcModel.Test;
 
     public string _name;
 
@@ -28,6 +28,13 @@ namespace Tiantong.Iot
     internal IStateDriverProvider StateDriverProvider { get; private set; }
 
     //
+
+    public IPlcWorker Config(Action<IPlcWorker> configer)
+    {
+      configer(this);
+
+      return Build();
+    }
 
     public IPlcWorker Id(int id)
     {
@@ -96,9 +103,9 @@ namespace Tiantong.Iot
     public IStateDriverProvider ResolveStateDriverProvider()
     {
       return _model switch {
-        "test" => new StateTestDriverProvider(),
-        "MC3E" => new MC3EDriverProvider(_host, _port),
-        "S7200Smart"=> new S7200SmartDriverProvider(_host, _port),
+        PlcModel.Test => new StateTestDriverProvider(),
+        PlcModel.MC3E => new MC3EDriverProvider(_host, _port),
+        PlcModel.S7200Smart=> new S7200SmartDriverProvider(_host, _port),
         _ => throw new Exception("plc model is not supporting"),
       };
     }
@@ -126,14 +133,14 @@ namespace Tiantong.Iot
 
     public virtual IPlcWorker UseS7200Smart(string host, int port = 102)
     {
-      Model("S7200Smart").Host(host).Port(port).Build();
+      Model(PlcModel.S7200Smart).Host(host).Port(port).Build();
 
       return this;
     }
 
     public virtual IPlcWorker UseMC3E(string host, int port)
     {
-      Model("MC3E").Host(host).Port(port).Build();
+      Model(PlcModel.MC3E).Host(host).Port(port).Build();
 
       return this;
     }

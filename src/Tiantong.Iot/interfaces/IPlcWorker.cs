@@ -1,9 +1,12 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Tiantong.Iot
 {
   public interface IPlcWorker
   {
+    IPlcWorker Config(Action<IPlcWorker> configer);
+
     IPlcWorker Id(int id);
 
     IPlcWorker Model(string key);

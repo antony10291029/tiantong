@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Text;
 using System.Net.Http;
@@ -39,10 +40,9 @@ namespace Tiantong.Iot
     public async Task PostAsync(int plcId, int stateId, int watcherId, string uri, string data, Encoding encoding = null)
     {
       var content = new StringContent(data, encoding ?? Encoding.UTF8, "application/json");
-
       try {
         var response = await _client.PostAsync(uri, content);
-        var statusCode = response.StatusCode.ToString();
+        var statusCode = response.StatusCode;
         var responseContent = await response.Content.ReadAsStringAsync();
         var log = new HttpWatcherLog {
           plc_id = plcId,
@@ -50,11 +50,13 @@ namespace Tiantong.Iot
           watcher_id = watcherId,
           request = data,
           response = responseContent,
-          status_code = statusCode
+          status_code = response.StatusCode.ToString()
         };
         lock (_logLock) {
           _logs.Add(log);
         }
+
+        Console.WriteLine($"success to send http watcher, uri: {uri}, request: {data}, response: {responseContent}, status: {statusCode}");
       } catch (Exception e) {
         var errorLog = new HttpWatcherError {
           plc_id = plcId,
@@ -66,6 +68,7 @@ namespace Tiantong.Iot
         lock (_errorLogLock) {
           _errorLogs.Add(errorLog);
         }
+        Console.WriteLine($"fail to send http watcher, error: {e.Message}, source: {e.Source}");
         throw e;
       }
     }

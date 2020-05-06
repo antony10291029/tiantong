@@ -13,7 +13,7 @@ namespace Tiantong.Iot.Test
     {
       var plc = new PlcWorker();
 
-      plc.UseTest();
+      plc.Config(_ => {});
       plc.Define("hb").Int("D1", state => state.Collect(0));
       plc.Int("hb").Set(1);
 
@@ -26,8 +26,9 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestGetId()
     {
-      var plc = new PlcWorker().UseTest();
+      var plc = new PlcWorker();
 
+      plc.Config(_ => {});
       plc.Define("int", 100).Int("D1", _ => {});
       plc.Int(100);
       try {
@@ -40,7 +41,7 @@ namespace Tiantong.Iot.Test
     {
       var plc = new PlcWorker();
 
-      plc.UseTest();
+      plc.Config(_ => {});
       plc.Define("bool data").Bool("D1", state => {
         state.Collect(0);
         state.Watch("==", true).On(_ => plc.Stop());
