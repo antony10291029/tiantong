@@ -37,6 +37,11 @@ namespace Tiantong.Iot
       intervalManager.Add(interval);
     }
 
+    public void Timeout(int mileseconds)
+    {
+      _client.Timeout = new TimeSpan(0, 0, 0, 0, mileseconds);
+    }
+
     public async Task PostAsync(int plcId, int stateId, int watcherId, string uri, string data, Encoding encoding = null)
     {
       var content = new StringContent(data, encoding ?? Encoding.UTF8, "application/json");

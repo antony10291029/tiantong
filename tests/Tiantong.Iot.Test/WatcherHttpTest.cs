@@ -20,7 +20,7 @@ namespace Tiantong.Iot.Test
       client.PostAsync(0, 0, 0, url, "test").GetAwaiter().GetResult();
 
       listener.Close();
-      listener.Wait();
+      // listener.Wait();
       client.HandleLogs();
       Assert.AreEqual(2, db.HttpWatcherLogs.Count());
     }
@@ -33,6 +33,7 @@ namespace Tiantong.Iot.Test
       var client = new WatcherHttpClient(db, manager);
       var url = $"http://localhost:{Port.Free()}/";
 
+      client.Timeout(1);
       try {
         client.PostAsync(0, 0, 0, url, "test").GetAwaiter().GetResult();
       } catch {}
