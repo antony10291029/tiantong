@@ -56,13 +56,12 @@ namespace Tiantong.Iot.Test
     {
       var plc = new PlcWorker();
 
-      plc.UseTest();
+      plc.Config(_ => {});
+      plc.Define("ushort").UShort("D1", _ => {});
+      Assert.IsTrue(plc.UShort("ushort") is IState<ushort>);
 
-     plc.Define("ushort").UShort("D1", _ => {});
-     Assert.IsTrue(plc.UShort("ushort") is IState<ushort>);
-
-     plc.Define("int").Int("D2", _ => {});
-     Assert.IsTrue(plc.Int("int") is IState<int>);
+      plc.Define("int").Int("D2", _ => {});
+      Assert.IsTrue(plc.Int("int") is IState<int>);
     }
 
     [Test]
@@ -70,7 +69,7 @@ namespace Tiantong.Iot.Test
     {
       var plc = new PlcWorker();
 
-      plc.UseTest();
+      plc.Config(_ => {});
       plc.Define("hb").Int("D1", state => {
         state.Heartbeat(1).Collect(0);
         state.When(">", "1").On(() =>  plc.Stop());
