@@ -23,23 +23,28 @@ namespace Tiantong.Iot.Test
       _listener.Prefixes.Add(url);
       _listener.Start();
 
-      var task = _listener.GetContextAsync();
-      _task = task.ContinueWith(t => {
-        var context = t.GetAwaiter().GetResult();
-        var response = context.Response;
+      _task = Task.Run(async () => {
+        while (_listener.IsListening) {
+          try {
+            var context = await _listener?.GetContextAsync();
+            var response = context.Response;
 
-        response.StatusCode = 200;
-        var buffer = Encoding.UTF8.GetBytes("<<<testing watcher http server>>>");
-        response.OutputStream.Write(buffer, 0, buffer.Length);
-        response.OutputStream.Close();
-
-        _listener.GetContextAsync().GetAwaiter().GetResult();
-        _listener.Close();
+            response.StatusCode = 200;
+            var buffer = Encoding.UTF8.GetBytes("<<<testing watcher http server>>>");
+            response.OutputStream.Write(buffer, 0, buffer.Length);
+            response.OutputStream.Close();
+          } catch {
+            break;
+          }
+        }
       });
 
-      Console.WriteLine($"http listener is starting on {url}");
-
       return url;
+    }
+
+    public void Close()
+    {
+      _listener.Close();
     }
 
     public void Wait()

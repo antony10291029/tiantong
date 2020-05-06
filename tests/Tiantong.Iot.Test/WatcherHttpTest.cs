@@ -8,7 +8,7 @@ namespace Tiantong.Iot.Test
   public class WatcherHttpClientTest
   {
     [Test]
-    public void TestHttpPost()
+    public void TestHttpPostScuccess()
     {
       var manager = new IntervalManager();
       var db = new TestDatabaseProvider().Resolve();
@@ -17,12 +17,31 @@ namespace Tiantong.Iot.Test
       var url = listener.Start();
 
       client.PostAsync(0, 0, 0, url, "test").GetAwaiter().GetResult();
-      try {
-        client.PostAsync(0, 0, 0, url, "error").GetAwaiter().GetResult();
-      } catch {}
+      client.PostAsync(0, 0, 0, url, "test").GetAwaiter().GetResult();
+
+      listener.Close();
+      listener.Wait();
       client.HandleLogs();
-      Assert.AreEqual(1, db.HttpWatcherLogs.Count());
-      Assert.AreEqual(1, db.HttpWatcherErrors.Count());
+      Assert.AreEqual(2, db.HttpWatcherLogs.Count());
+    }
+
+    [Test]
+    public void TestHttpPostFailure()
+    {
+      var manager = new IntervalManager();
+      var db = new TestDatabaseProvider().Resolve();
+      var client = new WatcherHttpClient(db, manager);
+      var url = $"http://localhost:{Port.Free()}/";
+
+      try {
+        client.PostAsync(0, 0, 0, url, "test").GetAwaiter().GetResult();
+      } catch {}
+      try {
+        client.PostAsync(0, 0, 0, url, "test").GetAwaiter().GetResult();
+      } catch {}
+
+      client.HandleLogs();
+      Assert.AreEqual(2, db.HttpWatcherErrors.Count());
     }
   }
 }
