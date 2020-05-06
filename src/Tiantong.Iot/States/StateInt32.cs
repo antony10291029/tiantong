@@ -12,11 +12,6 @@ namespace Tiantong.Iot
       _driver.UseInt32();
     }
 
-    protected override int CompareTo(int data, int value)
-    {
-      return data.CompareTo(value);
-    }
-
     protected override int HandleGet()
     {
       return _driver.GetInt32();

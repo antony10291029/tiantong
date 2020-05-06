@@ -13,6 +13,10 @@ namespace Tiantong.Iot.Entities
 
     public virtual int state_id { get; set; }
 
+    public virtual string opt { get; set; }
+
+    public virtual string value { get; set; }
+
     public virtual string url { get; set; }
 
     public virtual string value_key { get; set; }

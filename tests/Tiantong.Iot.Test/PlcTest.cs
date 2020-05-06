@@ -44,7 +44,7 @@ namespace Tiantong.Iot.Test
       plc.Config(_ => {});
       plc.Define("bool data").Bool("D1", state => {
         state.Collect(0);
-        state.Watch("==", true).On(_ => plc.Stop());
+        state.When("==", true.ToString()).On(() => plc.Stop());
       });
       plc.Bool("bool data").Set(true);
 
@@ -73,7 +73,7 @@ namespace Tiantong.Iot.Test
       plc.UseTest();
       plc.Define("hb").Int("D1", state => {
         state.Heartbeat(1).Collect(0);
-        state.Watch(value => value > 1).On(_ =>  plc.Stop());
+        state.When(">", "1").On(() =>  plc.Stop());
       });
 
       plc.Start().WaitAsync().AssertFinishIn();

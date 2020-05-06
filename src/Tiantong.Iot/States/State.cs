@@ -33,6 +33,50 @@ namespace Tiantong.Iot
       throw new Exception("该类型不支持心跳写入");
     }
 
+    public abstract IState Use(IStatePlugin plugin);
+
+    public IState Id(int id)
+    {
+      _id = id;
+
+      return this;
+    }
+
+    public IState Name(string name)
+    {
+      _name = name;
+
+      return this;
+    }
+
+    public IState Address(string address)
+    {
+      _address = address;
+
+      return this;
+    }
+
+    public IState Length(int length)
+    {
+      _length = length;
+
+      return this;
+    }
+
+    public IState Build()
+    {
+      HandleDriverBuild();
+      _driver.UseAddress(_address);
+
+      return this;
+    }
+
+    public abstract void Watch(Action handler);
+
+    public abstract void Watch(Action<string> handler);
+
+    public abstract IWatcher When(string opt, string value);
+
   }
 
   public abstract class State<T>: State, IState<T>
@@ -42,49 +86,6 @@ namespace Tiantong.Iot
     private List<Func<T, Task>> _sethooks = new List<Func<T, Task>>();
 
     public T CurrentValue;
-
-    public IState<T> Use(IStatePlugin plugin)
-    {
-      plugin?.Install(this);
-
-      return this;
-    }
-
-    public IState<T> Id(int id)
-    {
-      _id = id;
-
-      return this;
-    }
-
-    public IState<T> Name(string name)
-    {
-      _name = name;
-
-      return this;
-    }
-
-    public IState<T> Address(string address)
-    {
-      _address = address;
-
-      return this;
-    }
-
-    public IState<T> Length(int length)
-    {
-      _length = length;
-
-      return this;
-    }
-
-    public IState<T> Build()
-    {
-      HandleDriverBuild();
-      _driver.UseAddress(_address);
-
-      return this;
-    }
 
     public void AddSetHook(Func<T, Task> hook)
     {
@@ -106,7 +107,26 @@ namespace Tiantong.Iot
       AddGetHook(data => Task.Run(() => hook(data)));
     }
 
-    protected IWatcher<T> CreateWatcher()
+    public override IState Use(IStatePlugin plugin)
+    {
+      plugin?.Install(this);
+
+      return this;
+    }
+
+    public override void Watch(Action handler)
+    {
+      CreateWatcher().When(_ => true).On(handler);
+    }
+
+    public override void Watch(Action<string> handler)
+    {
+      CreateWatcher().When(_ => true).On(data => handler(data.ToString()));
+    }
+
+    //
+
+    private IWatcher<T> CreateWatcher()
     {
       var watcher = _watcherProvider.Resolve<T>();
 
@@ -115,48 +135,11 @@ namespace Tiantong.Iot
       return watcher;
     }
 
-    public IState<T> Watch(Action<T> handler)
+    //
+
+    public override IWatcher When(string opt, string value)
     {
-      CreateWatcher().When(_ => true).On(handler);
-
-      return this;
-    }
-
-    public IWatcher<T> Watch()
-    {
-      return CreateWatcher().When(_ => true);
-    }
-
-    public IWatcher<T> Watch(T value)
-    {
-      return CreateWatcher().When(data => CompareTo(data, value) == 0);
-    }
-
-    public IWatcher<T> Watch(Func<T, bool> cmp)
-    {
-      return CreateWatcher().When(cmp);
-    }
-
-    public IWatcher<T> Watch(string opt, T value)
-    {
-      Func<T, bool> cmp = opt switch {
-        ">"  => data => CompareTo(data, value) > 0,
-        "<"  => data => CompareTo(data, value) < 0,
-        "="  => data => CompareTo(data, value) == 0,
-        "==" => data => CompareTo(data, value) == 0,
-        ">=" => data => CompareTo(data, value) >= 0,
-        "<=" => data => CompareTo(data, value) <= 0,
-        "<>" => data => CompareTo(data, value) != 0,
-        "!=" => data => CompareTo(data, value) != 0,
-        _    => throw new Exception($"不支持该运算符{opt}")
-      };
-
-      return CreateWatcher().When(data => cmp(data));
-    }
-
-    protected virtual int CompareTo(T data, T value)
-    {
-      throw new Exception("该操作暂时不支持");
+      return CreateWatcher().When(opt, value);
     }
 
     public override IState Collect(int time = 1000)

@@ -5,23 +5,15 @@ using System.Collections.Generic;
 
 namespace Tiantong.Iot
 {
-  public class Watcher<T> : IWatcher<T>
+  public abstract class Watcher: IWatcher
   {
-    private int _plcId;
+    protected int _plcId;
 
-    private int _stateId;
+    protected int _stateId;
 
-    private int _watcherId;
+    protected int _watcherId;
 
-    private IWatcherHttpClient _httpClient;
-
-    private Action _cancel;
-
-    private Action<T> _handler;
-
-    protected Func<T, bool> _when;
-
-    public IWatcher<T> Id(int plcId, int stateId, int watcherId)
+    public IWatcher Id(int plcId, int stateId, int watcherId)
     {
       _plcId = plcId;
       _stateId = stateId;
@@ -29,6 +21,23 @@ namespace Tiantong.Iot
 
       return this;
     }
+
+    public abstract void On(Action handler);
+
+    public abstract IWatcher When(string opt, string value);
+
+    public abstract void HttpPost(string url, string valueKey, bool toString, string json, Encoding encoding);
+  }
+
+  public class Watcher<T> : Watcher, IWatcher<T>
+  {
+    private IWatcherHttpClient _httpClient;
+
+    private Action _cancel;
+
+    private Action<T> _handler;
+
+    protected Func<T, bool> _when;
 
     public Watcher(IWatcherHttpClient httpClient)
     {
@@ -53,12 +62,34 @@ namespace Tiantong.Iot
       return this;
     }
 
+    public override IWatcher When(string opt, string value)
+    {
+      _when = opt switch {
+        "="  => data => data.ToString() == value,
+        "==" => data => data.ToString() == value,
+        "!=" => data => data.ToString() != value,
+        "<>" => data => data.ToString() != value,
+        ">"  => data => double.Parse(data.ToString()) > double.Parse(value),
+        "<"  => data => double.Parse(data.ToString()) < double.Parse(value),
+        ">=" => data => double.Parse(data.ToString()) >= double.Parse(value),
+        "<=" => data => double.Parse(data.ToString()) <= double.Parse(value),
+        _  => throw new Exception("暂时不支持该操作符")
+      };
+
+      return this;
+    }
+
     public void On(Action<T> handler)
     {
       _handler = handler;
     }
 
-    public void HttpPost(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
+    public override void On(Action handler)
+    {
+      On(_ => handler());
+    }
+
+    public override void HttpPost(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
     {
       var data = JsonSerializer.Deserialize<Dictionary<string, object>>(json ?? "{}");
       _handler = value => {

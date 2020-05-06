@@ -137,6 +137,8 @@ namespace Tiantong.Iot.DB.Sqlite.Test
         id = 0,
         plc_id = 0,
         state_id = 0,
+        opt = "!=",
+        value = "value",
         url = "localhost",
         data = "{\"id\": 1}",
         value_key = "value",

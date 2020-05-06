@@ -120,7 +120,7 @@ namespace Tiantong.Iot.Test
     {
       var state = ResolveState<StateInt32, int>();
 
-      state.Watch(_ => state._collectInterval.Stop());
+      state.Watch(() => state._collectInterval.Stop());
       state.Collect(0);
       state.Set(1);
       state._collectInterval.Start().WaitAsync().AssertFinishIn();

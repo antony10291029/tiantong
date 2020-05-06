@@ -9,11 +9,6 @@ namespace Tiantong.Iot
       _driver.UseUInt16();
     }
 
-    protected override int CompareTo(ushort data, ushort value)
-    {
-      return data.CompareTo(value);
-    }
-
     protected override ushort HandleGet()
     {
       return _driver.GetUInt16();

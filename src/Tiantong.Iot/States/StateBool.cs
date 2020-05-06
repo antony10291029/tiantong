@@ -7,11 +7,6 @@ namespace Tiantong.Iot
       _driver.UseBool();
     }
 
-    protected override int CompareTo(bool data, bool value)
-    {
-      return data.CompareTo(value);
-    }
-
     protected override bool HandleGet()
     {
       return _driver.GetBool();

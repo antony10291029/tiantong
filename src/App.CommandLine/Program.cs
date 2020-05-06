@@ -26,7 +26,7 @@ namespace App.CommandLine
 
       plc.Define("扫码器").String("D1.120", 10, state => {
         state.Collect(1000);
-        state.Watch("!=", "0000000000").Id(1, 10, 100)
+        state.When("!=", "0000000000").Id(1, 10, 100)
           .HttpPost("http://localhost:5000/test", "value");
       });
 
