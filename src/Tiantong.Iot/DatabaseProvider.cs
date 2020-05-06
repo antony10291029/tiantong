@@ -5,14 +5,14 @@ namespace Tiantong.Iot
 {
   public class DatabaseProvider
   {
-    public virtual DbContext Resolve()
+    public virtual IotDbContext Resolve()
     {
-      return new SqliteDbContext();
+      return new IotSqliteDbcontext();
     }
 
     public virtual void Migrate()
     {
-      new Migrator().UseDbContext(Resolve()).Migrate();
+      new IotSqliteMigrator(Resolve()).Migrate();
     }
   }
 }

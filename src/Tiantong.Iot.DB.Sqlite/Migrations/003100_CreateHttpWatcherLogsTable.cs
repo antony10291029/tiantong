@@ -11,7 +11,7 @@ namespace Tiantong.Iot.DB.Sqlite
 
     public void Down(DbContext db)
     {
-      db.ExecuteSql("delete table if exists http_watcher_logs");
+      db.ExecuteSql("drop table if exists http_watcher_logs");
     }
   }
 }

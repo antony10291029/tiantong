@@ -5,16 +5,17 @@ namespace Tiantong.Iot.Test
 {
   public class TestDatabaseProvider : DatabaseProvider
   {
-    private DbContext _db;
+    private IotDbContext _db;
 
-    public override DbContext Resolve()
+    public override IotDbContext Resolve()
     {
       if (_db == null) {
-        var db = new SqliteDbContext();
-        var mg = new Migrator();
+        var db = new IotSqliteDbcontext();
+        var mg = new IotSqliteMigrator(db);
 
         db.UseInMemory();
-        mg.UseDbContext(db).Migrate();
+        mg.Migrate();
+
         _db = db;
       }
 

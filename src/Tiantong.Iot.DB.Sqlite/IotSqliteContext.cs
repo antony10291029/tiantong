@@ -1,14 +1,15 @@
 ﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
 using DBCore.Sqlite;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.DB.Sqlite
 {
-  public class SqliteDbContext : Tiantong.Iot.Entities.DbContext
+  public class IotSqliteDbcontext : IotDbContext
   {
     private SqliteBuilder _builder;
 
-    public SqliteDbContext()
+    public IotSqliteDbcontext()
     {
       _builder = new SqliteBuilder();
 

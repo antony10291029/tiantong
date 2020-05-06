@@ -11,7 +11,7 @@ namespace Tiantong.Iot.DB.Sqlite
 
     public void Down(DbContext db)
     {
-      db.ExecuteSql("delete table if exists plc_states");
+      db.ExecuteSql("drop table if exists plc_states");
     }
   }
 }

@@ -1,4 +1,3 @@
-using System.Linq;
 using NUnit.Framework;
 using Tiantong.Iot.Entities;
 
@@ -7,13 +6,13 @@ namespace Tiantong.Iot.DB.Sqlite.Test
   [TestFixture]
   public class DbContextTest
   {
-    private SqliteDbContext GetDb()
+    private IotSqliteDbcontext GetDb()
     {
-      var db = new SqliteDbContext();
-      var migrator = new Migrator();
+      var db = new IotSqliteDbcontext();
+      var migrator = new IotSqliteMigrator(db);
 
       db.UseInMemory();
-      migrator.UseDbContext(db).Migrate();
+      migrator.Migrate();
 
       return db;
     }

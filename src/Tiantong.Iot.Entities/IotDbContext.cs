@@ -2,7 +2,7 @@
 
 namespace Tiantong.Iot.Entities
 {
-  public class DbContext : DBCore.DbContext
+  public class IotDbContext : DBCore.DbContext
   {
     public DbSet<Plc> Plcs { get; set; }
 

@@ -15,7 +15,7 @@ namespace Tiantong.Iot
 
     private readonly object _sendLock = new object();
 
-    private DbContext _db;
+    private IotDbContext _db;
 
     private List<HttpWatcherLog> _logs = new List<HttpWatcherLog>();
 
@@ -25,7 +25,7 @@ namespace Tiantong.Iot
 
     private readonly object _errorLogLock = new object();
 
-    public WatcherHttpClient(DbContext db, IntervalManager intervalManager)
+    public WatcherHttpClient(IotDbContext db, IntervalManager intervalManager)
     {
       _db = db;
       _client.DefaultRequestHeaders

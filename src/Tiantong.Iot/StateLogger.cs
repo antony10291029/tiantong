@@ -6,7 +6,7 @@ namespace Tiantong.Iot
 {
   public class StateLogger : IStatePlugin
   {
-    private DbContext _db;
+    private IotDbContext _db;
 
     private int _plcId;
 
@@ -14,7 +14,7 @@ namespace Tiantong.Iot
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
-    public StateLogger(int plcId, IntervalManager manager, DbContext dbContext)
+    public StateLogger(int plcId, IntervalManager manager, IotDbContext dbContext)
     {
       _plcId = plcId;
       _db = dbContext;

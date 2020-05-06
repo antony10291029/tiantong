@@ -124,8 +124,6 @@ namespace Tiantong.Iot
       StateLogger = ResolveStateLogger();
       StateManager = ResolveStateManager();
 
-      DatabaseProvider.Migrate();
-
       return this;
     }
 
