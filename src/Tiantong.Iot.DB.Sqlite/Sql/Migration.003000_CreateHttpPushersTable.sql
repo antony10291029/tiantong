@@ -1,9 +1,7 @@
-CREATE TABLE IF NOT EXISTS "http_watchers" (
+CREATE TABLE IF NOT EXISTS "http_pushers" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "plc_id" INTEGER NOT NULL,
-  "state_id" INTEGER NOT NULL,
-  "opt" TEXT NOT NULL,
-  "value" TEXT NOT NULL,
+  "when_opt" TEXT NOT NULL,
+  "when_value" TEXT NOT NULL,
   "url" TEXT NOT NULL,
   "value_key" TEXT NOT NULL,
   "data" TEXT NOT NULL,

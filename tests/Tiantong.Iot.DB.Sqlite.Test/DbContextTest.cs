@@ -128,16 +128,28 @@ namespace Tiantong.Iot.DB.Sqlite.Test
     }
 
     [Test]
-    public void TestHttpWatcher()
+    public void TestStateHttpPushers()
     {
       var db = GetDb();
 
-      db.HttpWatchers.Add(new HttpWatcher {
+      db.PlcStateHttpPushers.Add(new PlcStateHttpPusher {
         id = 0,
-        plc_id = 0,
         state_id = 0,
-        opt = "!=",
-        value = "value",
+        pusher_id = 0,
+      });
+
+      db.SaveChanges();
+    }
+
+    [Test]
+    public void TestHttpPusher()
+    {
+      var db = GetDb();
+
+      db.HttpPushers.Add(new HttpPusher {
+        id = 0,
+        when_opt = "!=",
+        when_value = "value",
         url = "localhost",
         data = "{\"id\": 1}",
         value_key = "value",
@@ -148,15 +160,13 @@ namespace Tiantong.Iot.DB.Sqlite.Test
     }
 
     [Test]
-    public void TestHttpWatcherLog()
+    public void TestHttpPusherLog()
     {
       var db = GetDb();
 
-      db.HttpWatcherLogs.Add(new HttpWatcherLog {
+      db.HttpPusherLogs.Add(new HttpPusherLog {
         id = 0,
-        plc_id = 0,
-        state_id = 0,
-        watcher_id = 0,
+        pusher_id = 0,
         request = "data",
         response = "data",
         status_code = "400",
@@ -166,15 +176,13 @@ namespace Tiantong.Iot.DB.Sqlite.Test
     }
 
     [Test]
-    public void TestHttpWatcherError()
+    public void TestHttpPusherError()
     {
       var db = GetDb();
 
-      db.HttpWatcherErrors.Add(new HttpWatcherError {
+      db.HttpPusherErrors.Add(new HttpPusherError {
         id = 0,
-        plc_id = 0,
-        state_id = 0,
-        watcher_id = 0,
+        pusher_id = 0,
         error = "error",
         detail = "detail",
       });

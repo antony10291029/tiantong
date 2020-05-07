@@ -17,5 +17,6 @@ namespace Tiantong.Iot.Entities
     public virtual string value { get; set; }
 
     public virtual DateTime created_at { get; set; } = DateTime.Now;
+
   }
 }

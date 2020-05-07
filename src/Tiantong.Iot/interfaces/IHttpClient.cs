@@ -5,6 +5,6 @@ namespace Tiantong.Iot
 {
   public interface IWatcherHttpClient
   {
-    Task PostAsync(int plcId, int stateId, int watcherId, string url, string data, Encoding encoding = null);
+    Task PostAsync(int id, string url, string data, Encoding encoding = null);
   }
 }

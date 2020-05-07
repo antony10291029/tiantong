@@ -4,17 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Iot.Entities
 {
-  [Table("http_watcher_logs")]
-  public class HttpWatcherLog
+  [Table("http_pusher_logs")]
+  public class HttpPusherLog
   {
     [Key]
-    public int id { get; set; }
+    public virtual int id { get; set; }
 
-    public int plc_id { get; set; }
-
-    public int state_id { get; set; }
-
-    public int watcher_id { get; set; }
+    public virtual int pusher_id { get; set; }
 
     public string request { get; set; }
 

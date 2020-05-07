@@ -24,7 +24,7 @@ namespace Tiantong.Iot.Entities
     public virtual DateTime created_at { get; set; } = DateTime.Now;
 
     [ForeignKey("plc_id")]
-    public List<PlcState> states { get; set; }
+    public virtual List<PlcState> states { get; set; }
 
   }
 }

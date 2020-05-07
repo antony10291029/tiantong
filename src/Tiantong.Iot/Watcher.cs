@@ -7,17 +7,11 @@ namespace Tiantong.Iot
 {
   public abstract class Watcher: IWatcher
   {
-    protected int _plcId;
+    protected int _id;
 
-    protected int _stateId;
-
-    protected int _watcherId;
-
-    public IWatcher Id(int plcId, int stateId, int watcherId)
+    public IWatcher Id(int id)
     {
-      _plcId = plcId;
-      _stateId = stateId;
-      _watcherId = watcherId;
+      _id = id;
 
       return this;
     }
@@ -107,7 +101,7 @@ namespace Tiantong.Iot
           data[valueKey] = value;
         }
 
-        _httpClient.PostAsync(_plcId, _stateId, _watcherId, url, JsonSerializer.Serialize(data), encoding);
+        _httpClient.PostAsync(_id, url, JsonSerializer.Serialize(data), encoding);
       };
     }
 

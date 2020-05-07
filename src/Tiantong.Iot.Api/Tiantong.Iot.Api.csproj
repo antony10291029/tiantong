@@ -7,6 +7,7 @@
   <ItemGroup>
 
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
+    <ProjectReference Include="..\Renet\Renet.csproj" />
     <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
     <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />

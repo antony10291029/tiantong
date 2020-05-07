@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Renet;
 using Renet.Web;
 using Tiantong.Iot.Entities;
 
@@ -10,9 +12,12 @@ namespace Tiantong.Iot.Api
   {
     private Config _config;
 
-    public AppController(Config config)
+    private IRandom _random;
+
+    public AppController(Config config, IRandom random)
     {
       _config = config;
+      _random = random;
     }
 
     [HttpGet]
@@ -32,7 +37,7 @@ namespace Tiantong.Iot.Api
       var plc = new Plc {
         id = 1,
         name = "test",
-        model = PlcModel.Test,
+        model = PlcModel.S7200Smart,
         host = "192.168.20.10",
         port = 102,
         comment = "test plc comment",
@@ -49,17 +54,20 @@ namespace Tiantong.Iot.Api
             heartbeat_max_value = 10000,
             is_collect = true,
             collect_interval = 1000,
-            http_watchers = new List<HttpWatcher> {
-              new HttpWatcher {
+            state_http_pushers = new List<PlcStateHttpPusher> {
+              new PlcStateHttpPusher {
                 id = 1,
                 plc_id = 1,
                 state_id = 1,
-                opt = "",
-                value = "",
-                url = "http://localhost:5100/",
-                value_key = "heartbeat",
-                data = "{\"plc\": 1}",
-                to_string = false,
+                pusher_id = 1,
+                pusher = new HttpPusher {
+                  when_opt = "",
+                  when_value = "",
+                  url = "http://localhost:5100/",
+                  value_key = "heartbeat",
+                  data = "{\"plc\": 1}",
+                  to_string = false,
+                }
               }
             }
           },
@@ -75,17 +83,20 @@ namespace Tiantong.Iot.Api
             heartbeat_max_value = 0,
             is_collect = true,
             collect_interval = 1000,
-            http_watchers = new List<HttpWatcher> {
-              new HttpWatcher {
-                id = 1,
-                plc_id = 1,
-                state_id = 1,
-                opt = "",
-                value = "",
-                url = "http://localhost:5100/",
-                value_key = "scanner",
-                data = "{\"plc\": 1}",
-                to_string = false,
+            state_http_pushers = new List<PlcStateHttpPusher> {
+              new PlcStateHttpPusher {
+                id = 2,
+                plc_id = 2,
+                state_id = 2,
+                pusher_id = 2,
+                pusher = new HttpPusher {
+                  when_opt = "",
+                  when_value = "",
+                  url = "http://localhost:5100/",
+                  value_key = "scanner",
+                  data = "{\"plc\": 1}",
+                  to_string = false,
+                }
               }
             }
           }
@@ -94,7 +105,11 @@ namespace Tiantong.Iot.Api
 
       var worker = PlcBuilder.Build(plc);
 
-      worker.RunAsync();
+      worker.UShort("心跳").Watch(_ => {
+        worker.String("扫码器").Set(_random.String(10));
+      });
+
+      Task.Run(() => worker.Run());
 
       return SuccessOperation("Plc 运行中");
     }

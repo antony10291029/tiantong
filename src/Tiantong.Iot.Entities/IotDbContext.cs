@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Tiantong.Iot.Entities
 {
@@ -16,11 +17,17 @@ namespace Tiantong.Iot.Entities
 
     public DbSet<PlcStateError> PlcStateErrors { get; set; }
 
-    public DbSet<HttpWatcher> HttpWatchers { get; set; }
+    public DbSet<PlcStateHttpPusher> PlcStateHttpPushers { get; set; }
 
-    public DbSet<HttpWatcherLog> HttpWatcherLogs { get; set; }
+    public DbSet<HttpPusher> HttpPushers { get; set; }
 
-    public DbSet<HttpWatcherError> HttpWatcherErrors { get; set; }
+    public DbSet<HttpPusherLog> HttpPusherLogs { get; set; }
 
+    public DbSet<HttpPusherError> HttpPusherErrors { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+
+    }
   }
 }

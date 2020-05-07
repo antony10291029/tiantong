@@ -17,9 +17,9 @@ namespace Tiantong.Iot
 
     private IotDbContext _db;
 
-    private List<HttpWatcherLog> _logs = new List<HttpWatcherLog>();
+    private List<HttpPusherLog> _logs = new List<HttpPusherLog>();
 
-    private List<HttpWatcherError> _errorLogs = new List<HttpWatcherError>();
+    private List<HttpPusherError> _errorLogs = new List<HttpPusherError>();
 
     private readonly object _logLock = new object();
 
@@ -42,17 +42,15 @@ namespace Tiantong.Iot
       _client.Timeout = new TimeSpan(0, 0, 0, 0, mileseconds);
     }
 
-    public async Task PostAsync(int plcId, int stateId, int watcherId, string uri, string data, Encoding encoding = null)
+    public async Task PostAsync(int id, string uri, string data, Encoding encoding = null)
     {
       var content = new StringContent(data, encoding ?? Encoding.UTF8, "application/json");
       try {
         var response = await _client.PostAsync(uri, content);
         var statusCode = response.StatusCode;
         var responseContent = await response.Content.ReadAsStringAsync();
-        var log = new HttpWatcherLog {
-          plc_id = plcId,
-          state_id = stateId,
-          watcher_id = watcherId,
+        var log = new HttpPusherLog {
+          id = id,
           request = data,
           response = responseContent,
           status_code = response.StatusCode.ToString()
@@ -63,10 +61,8 @@ namespace Tiantong.Iot
 
         Console.WriteLine($"success to send http watcher, uri: {uri}, request: {data}, response: {responseContent}, status: {statusCode}");
       } catch (Exception e) {
-        var errorLog = new HttpWatcherError {
-          plc_id = plcId,
-          state_id = stateId,
-          watcher_id = watcherId,
+        var errorLog = new HttpPusherError {
+          id = id,
           error = e.Message,
           detail = e.Source,
         };
@@ -80,8 +76,8 @@ namespace Tiantong.Iot
 
     public void HandleLogs()
     {
-      HttpWatcherLog[] logs;
-      HttpWatcherError[] errorLogs;
+      HttpPusherLog[] logs;
+      HttpPusherError[] errorLogs;
 
       lock (_logLock) {
         logs = _logs.ToArray();

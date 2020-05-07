@@ -1,21 +1,18 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Iot.Entities
 {
-  [Table("http_watchers")]
-  public class HttpWatcher
+  [Table("http_pushers")]
+  public class HttpPusher
   {
     [Key]
     public virtual int id { get; set; }
 
-    public virtual int plc_id { get; set; }
+    public virtual string when_opt { get; set; }
 
-    public virtual int state_id { get; set; }
-
-    public virtual string opt { get; set; }
-
-    public virtual string value { get; set; }
+    public virtual string when_value { get; set; }
 
     public virtual string url { get; set; }
 
@@ -24,5 +21,6 @@ namespace Tiantong.Iot.Entities
     public virtual string data { get; set; }
 
     public virtual bool to_string { get; set; }
+
   }
 }

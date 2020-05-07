@@ -8,7 +8,7 @@ namespace Tiantong.Iot.Test
 
     public string Data;
 
-    public Task PostAsync(int plcId, int stateId, int watcherId, string url, string data, Encoding encoding = null)
+    public Task PostAsync(int id, string url, string data, Encoding encoding = null)
     {
       Url = url;
       Data = data;

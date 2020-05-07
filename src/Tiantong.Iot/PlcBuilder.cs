@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using System;
 using Tiantong.Iot.Entities;
 
@@ -41,10 +42,9 @@ namespace Tiantong.Iot
           builder.Collect(state.collect_interval);
         }
 
-        foreach (var watcher in state.http_watchers) {
-          builder.When(watcher.opt, watcher.value)
-            .Id(watcher.plc_id, watcher.state_id, watcher.id)
-            .HttpPost(watcher.url, watcher.value_key, watcher.to_string, watcher.data);
+        foreach (var pusher in state.http_pushers) {
+          builder.When(pusher.when_opt, pusher.when_value).Id(pusher.id)
+            .HttpPost(pusher.url, pusher.value_key, pusher.to_string, pusher.data);
         }
       };
     }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,6 +34,12 @@ namespace Tiantong.Iot.Entities
     public virtual bool open_log { get; set; }
 
     [ForeignKey("state_id")]
-    public virtual List<HttpWatcher> http_watchers { get; set; }
+    public virtual List<PlcStateHttpPusher> state_http_pushers { get; set; }
+
+    [NotMapped]
+    public List<HttpPusher> http_pushers
+    {
+      get => state_http_pushers?.Select(sp => sp.pusher).ToList();
+    }
   }
 }

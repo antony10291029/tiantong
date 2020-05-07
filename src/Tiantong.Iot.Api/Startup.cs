@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using DBCore;
+using Renet;
 using Renet.Web;
 using Tiantong.Iot.Entities;
 using Tiantong.Iot.DB.Sqlite;
@@ -13,6 +14,7 @@ namespace Tiantong.Iot.Api
     {
       services.AddControllers();
       services.AddSingleton<Config>();
+      services.AddSingleton<IRandom, Random>();
       services.AddDbContext<IotDbContext, IotSqliteDbcontext>();
       services.AddScoped<IMigrator, IotSqliteMigrator>();
     }

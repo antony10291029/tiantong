@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace Renet.Tcp
 {
@@ -15,13 +14,9 @@ namespace Renet.Tcp
 
     private TcpClient _client;
 
-    private Task _reconnectTask = null;
-
     private int _ioTimeout = 1000;
 
     private int BufferLength = 1024;
-
-    private int ReconnectInterval = 1000;
 
     private readonly object _sendingLock = new object();
 
