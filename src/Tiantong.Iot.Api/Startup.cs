@@ -17,6 +17,7 @@ namespace Tiantong.Iot.Api
       services.AddSingleton<IRandom, Random>();
       services.AddDbContext<IotDbContext, IotSqliteDbcontext>();
       services.AddScoped<IMigrator, IotSqliteMigrator>();
+      services.AddScoped<PlcRepository>();
     }
 
     public void Configure(IApplicationBuilder app)

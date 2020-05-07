@@ -57,7 +57,6 @@ namespace Tiantong.Iot.Api
             state_http_pushers = new List<PlcStateHttpPusher> {
               new PlcStateHttpPusher {
                 id = 1,
-                plc_id = 1,
                 state_id = 1,
                 pusher_id = 1,
                 pusher = new HttpPusher {
@@ -86,7 +85,6 @@ namespace Tiantong.Iot.Api
             state_http_pushers = new List<PlcStateHttpPusher> {
               new PlcStateHttpPusher {
                 id = 2,
-                plc_id = 2,
                 state_id = 2,
                 pusher_id = 2,
                 pusher = new HttpPusher {
