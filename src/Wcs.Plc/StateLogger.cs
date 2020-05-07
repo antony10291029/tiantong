@@ -9,16 +9,16 @@ namespace Wcs.Plc
   {
     private DbContext _db;
 
-    private PlcConnection _plcConnection;
+    private PlcWorker _plc;
 
     public Interval Interval = new Interval();
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
-    public StateLogger(IntervalManager manager, DbContext dbContext, PlcConnection plcConnection)
+    public StateLogger(PlcWorker plc, IntervalManager manager, DbContext dbContext)
     {
+      _plc = plc;
       _db = dbContext;
-      _plcConnection = plcConnection;
 
       manager.Add(Interval);
       Interval.SetTime(500);

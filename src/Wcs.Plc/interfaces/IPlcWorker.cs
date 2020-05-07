@@ -1,13 +1,9 @@
-using System;
 using System.Threading.Tasks;
-using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
   public interface IPlcWorker
   {
-    PlcConnection PlcConnection { get; }
-
     IPlcWorker Id(int id);
 
     IPlcWorker Model(string key);

@@ -97,7 +97,11 @@ namespace Wcs.Plc
         await _handler(_tokenSource.Token);
         try {
           await Task.Delay(_time, _tokenSource.Token);
-        } catch (TaskCanceledException) {}
+        } catch (TaskCanceledException) {
+        } catch (Exception e) {
+          Console.WriteLine(e);
+          throw e;
+        }
       }
     }
 

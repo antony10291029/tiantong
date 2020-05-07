@@ -1,14 +1,21 @@
 using System;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
 
   public class PlcWorker : IPlcWorker
   {
+    public int _id;
+
+    public string _model = "test";
+
+    public string _name;
+
+    public string _host;
+
+    public int _port;
+
     public IStatePlugin StateLogger;
 
     public StateManager StateManager;
@@ -19,46 +26,39 @@ namespace Wcs.Plc
 
     public IStateDriverProvider StateDriverProvider;
 
-    public PlcConnection PlcConnection { get; set; }
-
-    public PlcWorker()
-    {
-      PlcConnection = new PlcConnection();
-    }
-
     //
 
     public IPlcWorker Id(int id)
     {
-      PlcConnection.Id = id;
+      _id = id;
 
       return this;
     }
 
     public IPlcWorker Model(string model)
     {
-      PlcConnection.Model = model;
+      _model = model;
 
       return this;
     }
 
     public IPlcWorker Name(string name)
     {
-      PlcConnection.Name = name;
+      _name = name;
 
       return this;
     }
 
     public IPlcWorker Host(string host)
     {
-      PlcConnection.Host = host;
+      _host = host;
       
       return this;
     }
 
     public IPlcWorker Port(int port)
     {
-      PlcConnection.Port = port;
+      _port = port;
 
       return this;
     }
@@ -73,10 +73,10 @@ namespace Wcs.Plc
 
     public virtual void ResolveStateDriverProvider()
     {
-      StateDriverProvider = PlcConnection.Model switch {
+      StateDriverProvider = _model switch {
         "test" => new StateTestDriverProvider(),
-        "MC3E" => new MC3EDriverProvider(PlcConnection.Host, PlcConnection.Port),
-        "S7200Smart"=> new S7200SmartDriverProvider(PlcConnection.Host, PlcConnection.Port),
+        "MC3E" => new MC3EDriverProvider(_host, _port),
+        "S7200Smart"=> new S7200SmartDriverProvider(_host, _port),
         _ => throw new Exception("plc model is not supporting"),
       };
     }
@@ -90,8 +90,6 @@ namespace Wcs.Plc
       ResolveStateDriverProvider();
       ResolveStateLogger();
       ResolveStateManager();
-
-      HandlePlcConnection();
 
       return this;
     }
@@ -117,49 +115,12 @@ namespace Wcs.Plc
 
     public virtual void ResolveStateLogger()
     {
-      StateLogger = new StateLogger(IntervalManager, DatabaseProvider.Resolve(), PlcConnection);
+      StateLogger = new StateLogger(this, IntervalManager, DatabaseProvider.Resolve());
     }
 
     public virtual void ResolveStateManager()
     {
       StateManager = new StateManager(IntervalManager, StateDriverProvider, StateLogger);
-    }
-
-    public virtual void HandlePlcConnection()
-    {
-      var id = PlcConnection.Id;
-      var name = PlcConnection.Name;
-      var db = DatabaseProvider.Resolve();
-
-      if (id != 0) {
-        var conn = db.PlcConnections.SingleOrDefault(item => item.Id == id);
-
-        if (conn != null) {
-          PlcConnection = conn;
-        } else {
-          throw new Exception($"PlcConnection Id({id}) does not existed");
-        }
-      } else if (name != null) {
-        var conn = db.PlcConnections.SingleOrDefault(item => item.Name == name);
-
-        if (conn == null) {
-          db.PlcConnections.Add(PlcConnection);
-        } else {
-          conn.Model = PlcConnection.Model;
-          conn.Host = PlcConnection.Host;
-          conn.Port = PlcConnection.Port;
-          PlcConnection = conn;
-        }
-      } else {
-        throw new Exception("Plc Connection Id or Name is required");
-      }
-
-      // if (PlcConnection.IsRunning) {
-      //   throw new Exception($"PlcConnection Name({name}) is running");
-      // }
-
-      // PlcConnection.IsRunning = true;
-      db.SaveChanges();
     }
 
     public IStateManager Define(string name)
@@ -247,7 +208,7 @@ namespace Wcs.Plc
         try {
           RunAsync().GetAwaiter().GetResult();
         } catch (Exception e) {
-          Console.WriteLine(e.Message);
+          Console.WriteLine(e);
           Task.Delay(1000).GetAwaiter().GetResult();
         }
       }

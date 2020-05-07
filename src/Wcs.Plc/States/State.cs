@@ -4,23 +4,23 @@ using System.Collections.Generic;
 
 namespace Wcs.Plc
 {
-  //
-
   public abstract class State: IState
   {
+    public int Id;
+
     public string Name;
 
-    public IntervalManager IntervalManager;
+    public string Address;
+
+    public int Length;
+
+    public IStateDriver Driver;
 
     public Interval CollectInterval;
 
     public Interval HeartbeatInterval;
 
-    public IStateDriver Driver;
-
-    public string Address { get; set; }
-
-    public int Length { get; set; }
+    public IntervalManager IntervalManager;
 
     public void UseDriver(IStateDriver driver)
     {

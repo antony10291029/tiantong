@@ -16,7 +16,7 @@ namespace Wcs.Plc.Test
         plc.Name(i.ToString()).UseTest();
         plc.Start();
 
-        manager.Plcs.Add(plc.PlcConnection.Name, plc);
+        manager.Plcs.Add(plc._name, plc);
       }
 
       manager.Start();
@@ -31,7 +31,7 @@ namespace Wcs.Plc.Test
 
       plc.Name("test plc").UseTest();
       plc.Define("hb").Int("D100").Heartbeat(1);
-      manager.Plcs.Add(plc.PlcConnection.Name, plc);
+      manager.Plcs.Add(plc._name, plc);
 
       plc.Start();
       Task.Delay(1).ContinueWith(task => plc.Stop());
