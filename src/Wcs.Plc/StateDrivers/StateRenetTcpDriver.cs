@@ -30,51 +30,120 @@ namespace Wcs.Plc
       _writeResponse = writeResponse;
     }
 
-    public void SetAddress(string key, int length)
+    private void Write()
     {
-      _readRequest.UseAddress(key, length);
-      _writeRequest.UseAddress(key, length);
+      _writeResponse.Message = _client.TrySend(_writeRequest.Message);
+    }
+
+    private void Read()
+    {
+      _readResponse.Message = _client.TrySend(_readRequest.Message);
+    }
+
+    public void UseBool()
+    {
+      _readRequest.UseBool();
+      _readResponse.UseBool();
+      _writeRequest.UseBool();
+    }
+
+    public void UseUInt16()
+    {
+      _readRequest.UseUInt16();
+      _readResponse.UseUInt16();
+      _writeRequest.UseUInt16();
+    }
+
+    public void UseInt32()
+    {
+      _readRequest.UseInt32();
+      _readResponse.UseInt32();
+      _writeRequest.UseInt32();
+    }
+
+    public void UseString(int length)
+    {
+      _readRequest.UseString(length);
+      _readResponse.UseString(length);
+      _writeRequest.UseString(length);
+    }
+
+    public void UseBytes(int length)
+    {
+      _readRequest.UseBytes(length);
+      _readResponse.UseBytes(length);
+      _writeRequest.UseBytes(length);
+    }
+
+    public void UseAddress(string key)
+    {
+      _readRequest.UseAddress(key);
+      _writeRequest.UseAddress(key);
     }
 
     public void SetBool(bool data)
     {
       _writeRequest.UseData(data);
-
-      _writeResponse.Message = _client.TrySend(_writeRequest.Message);
+      Write();
     }
 
-    public void SetInt(int data)
+    public void SetUInt16(ushort data)
     {
       _writeRequest.UseData(data);
+      Write();
+    }
 
-      _writeResponse.Message = _client.TrySend(_writeRequest.Message);
+    public void SetInt32(int data)
+    {
+      _writeRequest.UseData(data);
+      Write();
     }
 
     public void SetString(string data)
     {
       _writeRequest.UseData(data);
-      _writeResponse.Message = _client.TrySend(_writeRequest.Message);
+      Write();
+    }
+
+    public void SetBytes(byte[] data)
+    {
+      _writeRequest.UseData(data);
+      Write();
     }
 
     public bool GetBool()
     {
-      _readResponse.Message = _client.TrySend(_readRequest.Message);
+      Read();
 
       return _readResponse.GetBool();
     }
 
-    public int GetInt()
+    public ushort GetUInt16()
     {
-      _readResponse.Message = _client.TrySend(_readRequest.Message);
+      Read();
+
+      return _readResponse.GetUInt16();
+    }
+
+    public int GetInt32()
+    {
+      Read();
 
       return _readResponse.GetInt32();
     }
 
     public string GetString()
     {
-      _readResponse.Message = _client.TrySend(_readRequest.Message);
+      Read();
 
       return _readResponse.GetString();
+    }
+
+    public byte[] GetBytes()
+    {
+      Read();
+
+      return _readResponse.GetBytes();
     }
   }
 }

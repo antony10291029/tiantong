@@ -27,6 +27,29 @@ namespace Wcs.Plc.Protocol
 
     public byte[] Data;
 
+    private int _length;
+
+    public void UseBool()
+    {
+      _length = 1;
+    }
+
+    public void UseUShort()
+    {
+      _length = 4;
+    }
+
+    public void UseString(int length)
+    {
+      // Snap7: 在字符串前存储字符串的长度
+      _length = length + 1;
+    }
+
+    public void UseBytes(int length)
+    {
+      _length = length;
+    }
+
     private void GetIsDataResponse()
     {
       IsDataResponse = Message[8] == 0x03;
@@ -58,10 +81,15 @@ namespace Wcs.Plc.Protocol
 
     //
 
+    public ushort GetUInt16()
+    {
+      return 0;
+    }
+
     public int GetInt32()
     {
-      if (Data.Length != 4) {
-        throw new Exception("byte array length is not 4");
+      if (Data.Length != _length) {
+        throw new Exception($"byte array length is not {_length}");
       }
       var data = new byte[Data.Length];
 
@@ -73,8 +101,8 @@ namespace Wcs.Plc.Protocol
 
     public bool GetBool()
     {
-      if (Data.Length != 1) {
-        throw new Exception("byte array length is not 1");
+      if (Data.Length != _length) {
+        throw new Exception($"byte array length is not {_length}");
       }
 
       return BitConverter.ToBoolean(Data);

@@ -4,7 +4,17 @@ namespace Wcs.Plc.Protocol
   {
     byte[] Message { get; }
 
-    void UseAddress(string address, int length);
+    void UseBool() {}
+
+    void UseUInt16() {}
+
+    void UseInt32() {}
+
+    void UseString(int length) {}
+
+    void UseBytes(int length) {}
+
+    void UseAddress(string address) {}
 
   }
 }

@@ -27,10 +27,10 @@ namespace Wcs.Plc
 
       manager.SetName("bool").Bool("D1");
       manager.SetName("int").Int("D3");
-      manager.SetName("string").String("D4");
+      manager.SetName("string").String("D4", 10);
 
       var bool_ = (IStateBool) states["bool"];
-      var int_ = (IStateInt) states["int"];
+      var int_ = (IStateInt32) states["int"];
       var string_ = (IStateString) states["string"];
 
       bool_.Set(true);

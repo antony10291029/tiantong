@@ -12,41 +12,67 @@ namespace Wcs.Plc.Protocol
       Array.Resize(ref _msg, 21 + length * 2);
     }
 
-    public new void UseAddress(string address, int length)
-    {
-      _length = length;
-      UseWriteCommand();
-      SetAddress(address, length);
-      SetDataLength(length);
-      SetMessageLength();
-    }
+    // public void UseBool()
+    // {
+
+    // }
+
+    // public void UseUShort()
+    // {
+
+    // }
+
+    // public void UseString(int length)
+    // {
+
+    // }
+
+    // public void UseBytes(int length)
+    // {
+
+    // }
+
+    // public void UseAddress(string address)
+    // {
+
+    // }
+
+    // public new void UseAddress(string address, int length)
+    // {
+    //   _length = length;
+    //   UseWriteCommand();
+    //   SetAddress(address, length);
+    //   SetDataLength(length);
+    //   SetMessageLength();
+    // }
 
     public void SetDataValue(byte[] data)
     {
       Array.Copy(data, 0, Message, 21, _length * 2);
     }
 
-    public byte[] UseData(byte[] data)
+    public void UseData(byte[] data)
     {
       SetDataValue(data);
-
-      return Message;
     }
 
-    public byte[] UseData(int data)
+    public void UseData(ushort data)
+    {
+
+    }
+
+    public void UseData(int data)
     {
       var bytes = BitConverter.GetBytes((ushort) data);
       UseData(bytes);
-
-      return Message;
     }
 
-    public byte[] UseData(bool data)
+    public void UseData(bool data)
     {
       throw new Exception("bool type is not supported");
     }
 
-    public byte[] UseData(string data)
+    public void UseData(string data)
     {
       var expectedLength = _length * 2;
 
@@ -59,8 +85,6 @@ namespace Wcs.Plc.Protocol
       var bytes = Encoding.ASCII.GetBytes(data);
 
       UseData(bytes);
-
-      return Message;
     }
 
   }

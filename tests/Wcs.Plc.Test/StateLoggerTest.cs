@@ -15,7 +15,7 @@ namespace Wcs.Plc.Test
       var db = dbProvider.Resolve();
       var plcConnection = new PlcConnection();
       var logger = new StateLogger(manager, db, plcConnection);
-      var state = new StateInt() {
+      var state = new StateInt32() {
         Event = new Event(),
         IntervalManager = new IntervalManager(),
         Driver = new StateTestDriver() { Store = new StateTestDriverStore() }
@@ -28,7 +28,7 @@ namespace Wcs.Plc.Test
 
       state.Use(logger);
       state.Name = "test";
-      state.UseAddress("D1", 1);
+      state.UseAddress("D1");
       state.Set(100);
       state.Get();
       logger.HandleStateLogs();

@@ -146,20 +146,44 @@ namespace Wcs.Plc.Protocol
       Message[8] = (byte)((Message.Length - 9) / 256);
     }
 
-    protected void SetAddress(string address, int length)
+    protected void SetAddress(string address)
     {
       var (db, offset) = TransAddress(address);
 
       SetDataType(db);
-      SetDataLength(length);
       SetDateOffset(offset);
     }
 
     //
 
-    public void UseAddress(string address, int length)
+    public void UseBool()
     {
-      SetAddress(address, length);
+
+    }
+
+    public void UseUInt16()
+    {
+
+    }
+
+    public void UseInt32()
+    {
+
+    }
+
+    public void UseString(int length)
+    {
+
+    }
+
+    public void UseBytes(int length)
+    {
+
+    }
+
+    public void UseAddress(string address)
+    {
+      SetAddress(address);
       SetMessageLength();
       UseReadCommand();
     }

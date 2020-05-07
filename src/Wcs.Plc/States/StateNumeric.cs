@@ -3,45 +3,27 @@ using System.Threading.Tasks;
 
 namespace Wcs.Plc
 {
-  public class StateInt : State<int>, IStateInt
+  public abstract class StateNumeric<T> : State<T>
   {
     private Interval _interval;
 
-    ~StateInt()
+    ~StateNumeric()
     {
       if (_interval != null) {
         Unheartbeat();
       }
     }
 
-    protected override int CompareDataTo(int data, int value)
-    {
-      return data.CompareTo(value);
-    }
+    protected abstract void HandleHeartbeat(ref T times, ref T maxValue);
 
-    protected override int HandleGet()
+    public IState<T> Heartbeat(int time, T maxValue)
     {
-      return Driver.GetInt();
-    }
-
-    protected override void HandleSet(int data)
-    {
-      Driver.SetInt(data);
-    }
-
-    public IStateInt Heartbeat(int time = 1000, int maxTimes = 10000)
-    {
-      var times = 0;
+      T times = default;
 
       time = Math.Max(time, 1);
       _interval = new Interval();
       _interval.SetTime(time);
-      _interval.SetHandler(() => {
-        if (times < maxTimes) times++;
-        else times = 1;
-
-        Set(times);
-      });
+      _interval.SetHandler(() => HandleHeartbeat(ref times, ref maxValue));
       IntervalManager.Add(_interval);
 
       return this;

@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace Wcs.Plc
 {
   public class StateTestDriver : IStateDriver
@@ -8,22 +6,34 @@ namespace Wcs.Plc
 
     private string Key;
 
-    private int Length;
+    public void UseBool()
+    {
 
-    public void SetAddress(string key, int length)
+    }
+
+    public void UseUInt16()
+    {
+
+    }
+
+    public void UseInt32()
+    {
+
+    }
+
+    public void UseString(int length)
+    {
+
+    }
+
+    public void UseBytes(int length)
+    {
+
+    }
+
+    public void UseAddress(string key)
     {
       Key = key;
-      Length = length;
-    }
-
-    public void SetInt(int data)
-    {
-      Store.Set(Key, data);
-    }
-
-    public void SetString(string data)
-    {
-      Store.Set(Key, data);
     }
 
     public void SetBool(bool data)
@@ -31,7 +41,38 @@ namespace Wcs.Plc
       Store.Set(Key, data);
     }
 
-    public int GetInt()
+    public void SetUInt16(ushort data)
+    {
+      Store.Set(Key, data);
+    }
+
+    public void SetInt32(int data)
+    {
+      Store.Set(Key, data);
+    }
+
+
+    public void SetString(string data)
+    {
+      Store.Set(Key, data);
+    }
+
+    public void SetBytes(byte[] data)
+    {
+      Store.Set(Key, data);
+    }
+
+    public bool GetBool()
+    {
+      return Store.Get<bool>(Key);
+    }
+
+    public ushort GetUInt16()
+    {
+      return Store.Get<ushort>(Key);
+    }
+
+    public int GetInt32()
     {
       return Store.Get<int>(Key);
     }
@@ -41,9 +82,9 @@ namespace Wcs.Plc
       return Store.Get<string>(Key);
     }
 
-    public bool GetBool()
+    public byte[] GetBytes()
     {
-      return Store.Get<bool>(Key);
+      return Store.Get<byte[]>(Key);
     }
   }
 }

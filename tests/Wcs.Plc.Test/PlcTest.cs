@@ -39,6 +39,20 @@ namespace Wcs.Plc.Test
     }
 
     [Test]
+    public void TestAliasTypes()
+    {
+      var plc = new Plc();
+
+      plc.UseTest();
+
+      Assert.IsTrue(plc.Define("ushort").UShort("D1") is IStateUInt16);
+      Assert.IsTrue(plc.UShort("ushort") is IStateUInt16);
+
+      Assert.IsTrue(plc.Define("int").Int("D2") is IStateInt32);
+      Assert.IsTrue(plc.Int("int") is IStateInt32);
+    }
+
+    [Test]
     public void TestPlcHeartbeat()
     {
       var plc = new Plc();

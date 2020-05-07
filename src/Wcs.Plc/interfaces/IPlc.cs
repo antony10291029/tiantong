@@ -28,11 +28,23 @@ namespace Wcs.Plc
 
     IStateManager Define(string key);
 
+    //
+
     IStateBool Bool(string key);
 
-    IStateInt Int(string key);
+    IStateUInt16 UInt16(string key);
 
     IStateString String(string key);
+
+    IStateBytes Bytes(string key);
+
+    //
+
+    IStateUInt16 UShort(string key);
+
+    IStateInt32 Int(string key);
+
+    //
 
     void On<T>(string key, Func<T, Task> handler);
 

@@ -33,46 +33,68 @@ namespace Wcs.Plc
       return this;
     }
 
-    private T ResolveState<T>(string key, int length) where T : State, new()
+    private T ResolveState<T>(string key, int length = 0) where T : State, new()
     {
       var state = new T() {
         Event = _event,
         IntervalManager = _intervalManager,
-        Driver = _stateDriverProvider.Resolve()
       };
 
       state.Name = Name;
-      state.UseAddress(key, length);
+      state.Length = length;
+      state.UseDriver(_stateDriverProvider.Resolve());
+      state.UseAddress(key);
       States.Add(Name, state);
 
       return state;
     }
 
-    public IStateBool Bool(string key, int length = 1)
+    public IStateBool Bool(string key)
     {
-      var state = ResolveState<StateBool>(key, length);
+      var state = ResolveState<StateBool>(key);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateInt Int(string key, int length = 4)
+    public IStateUInt16 UInt16(string key)
     {
-      var state = ResolveState<StateInt>(key, length);
+      var state = ResolveState<StateUInt16>(key);
 
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateString String(string key, int length = 10)
+    public IStateInt32 Int32(string key)
+    {
+      var state = ResolveState<StateInt32>(key);
+
+      state.Use(_stateLogger);
+
+      return state;
+    }
+
+    public IStateString String(string key, int length)
     {
       var state = ResolveState<StateString>(key, length);
 
       state.Use(_stateLogger);
+      state.Length = length;
 
       return state;
     }
+
+    public IStateUInt16 UShort(string key)
+    {
+      return UInt16(key);
+    }
+
+    public IStateInt32 Int(string key)
+    {
+      return Int32(key);
+    }
+
   }
 }

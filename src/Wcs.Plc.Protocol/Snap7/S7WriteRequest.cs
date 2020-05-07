@@ -19,6 +19,31 @@ namespace Wcs.Plc.Protocol
       Message[16] = (byte)((length + 4) % 256);
     }
 
+    public void UseBool()
+    {
+
+    }
+
+    public void UseUShort()
+    {
+
+    }
+
+    public void UseString(int length)
+    {
+
+    }
+
+    public void UseBytes(int length)
+    {
+
+    }
+
+    public void UseAddress(string address)
+    {
+
+    }
+
     public new void UseAddress(string address, int length)
     {
       _length = length;
@@ -39,14 +64,17 @@ namespace Wcs.Plc.Protocol
       Array.Copy(data, 0, Message, 19 + 12 + 4, data.Length);
     }
 
-    public byte[] UseData(byte[] data)
+    public void UseData(byte[] data)
     {
       SetDataValue(data);
+    }
+    
+    public void UseData(ushort data)
+    {
 
-      return Message;
     }
 
-    public byte[] UseData(int data)
+    public void UseData(int data)
     {
       if (_length != 4) {
         throw new Exception("int length must be 4");
@@ -55,22 +83,18 @@ namespace Wcs.Plc.Protocol
       var bytes = BitConverter.GetBytes(data);
       Array.Reverse(bytes);
       UseData(bytes);
-
-      return Message;
     }
 
-    public byte[] UseData(bool data)
+    public void UseData(bool data)
     {
       if (_length != 1) {
         throw new Exception("bool data length must be 1");
       }
 
       UseData(BitConverter.GetBytes(data));
-
-      return Message;
     }
 
-    public byte[] UseData(string data)
+    public void UseData(string data)
     {
       var expectedLength = _length - 1;
 
@@ -85,8 +109,6 @@ namespace Wcs.Plc.Protocol
       var bytes = Encoding.ASCII.GetBytes(data);
 
       UseData(bytes);
-
-      return Message;
     }
 
   }

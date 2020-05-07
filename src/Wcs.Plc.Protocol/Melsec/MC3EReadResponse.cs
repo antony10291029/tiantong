@@ -31,6 +31,31 @@ namespace Wcs.Plc.Protocol
       get => ResultCode[0] != 0x00 || ResultCode[1] != 0x00;
     }
 
+    public void UseBool()
+    {
+
+    }
+
+    public void UseUInt16()
+    {
+
+    }
+
+    public void UseInt32()
+    {
+
+    }
+
+    public void UseString(int length)
+    {
+
+    }
+
+    public void UseBytes(int length)
+    {
+
+    }
+
     private void GetResultCode()
     {
       ResultCode = Message[9..11];
@@ -50,6 +75,11 @@ namespace Wcs.Plc.Protocol
     }
 
     //
+
+    public ushort GetUInt16()
+    {
+      return 0;
+    }
 
     public int GetInt32()
     {

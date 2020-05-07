@@ -188,14 +188,36 @@ namespace Wcs.Plc
       return (IStateBool) StateManager.States[name];
     }
 
-    public IStateInt Int(string name)
+    public IStateUInt16 UInt16(string name)
     {
-      return (IStateInt) StateManager.States[name];
+      return (IStateUInt16) StateManager.States[name];
+    }
+
+    public IStateInt32 Int32(string name)
+    {
+      return (IStateInt32) StateManager.States[name];
     }
 
     public IStateString String(string name)
     {
       return (IStateString) StateManager.States[name];
+    }
+
+    public IStateBytes Bytes(string name)
+    {
+      return (IStateBytes) StateManager.States[name];
+    }
+
+    //
+
+    public IStateUInt16 UShort(string name)
+    {
+      return UInt16(name);
+    }
+
+    public IStateInt32 Int(string name)
+    {
+      return Int32(name);
     }
 
     //

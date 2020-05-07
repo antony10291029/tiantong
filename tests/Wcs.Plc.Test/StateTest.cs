@@ -18,29 +18,9 @@ namespace Wcs.Plc.Test
       state.Event = new Event();
       state.IntervalManager = new IntervalManager();
       state.Name = "test";
-      state.UseAddress("D100", 1);
+      state.UseAddress("D100");
 
       return state;
-    }
-
-    [TestCase(0)]
-    public void TestStateInt(int value)
-    {
-      var state = ResolveState<StateInt>();
-      state.Set(value);
-      var result = state.Get();
-
-      Assert.AreEqual(value, result);
-    }
-
-    [TestCase("happy hacking")]
-    public void TestStateString(string value)
-    {
-      var state = ResolveState<StateString>();
-      state.Set(value);
-      var result = state.Get();
-
-      Assert.AreEqual(value, result);
     }
 
     [TestCase(true)]
@@ -53,12 +33,58 @@ namespace Wcs.Plc.Test
       Assert.AreEqual(value, result);
     }
 
+    [TestCase(0)]
+    [TestCase(10)]
+    [TestCase(1000)]
+    public void TestStateUInt16(int value)
+    {
+      var state = ResolveState<StateUInt16>();
+      state.Set((ushort) value);
+      var result = state.Get();
+
+      Assert.AreEqual(value, result);
+    }
+
+    [TestCase(0)]
+    [TestCase(10)]
+    [TestCase(1000)]
+    public void TestStateInt32(int value)
+    {
+      var state = ResolveState<StateInt32>();
+      state.Set(value);
+      var result = state.Get();
+
+      Assert.AreEqual(value, result);
+    }
+
+    [TestCase("hello word")]
+    [TestCase("happy hacking")]
+    public void TestStateString(string value)
+    {
+      var state = ResolveState<StateString>();
+      state.Set(value);
+      var result = state.Get();
+
+      Assert.AreEqual(value, result);
+    }
+
+    [TestCase(new byte[] { 0x00 })]
+    [TestCase(new byte[] { 0x00, 0x01, 0x02 })]
+    public void TestStateBytes(byte[] value)
+    {
+      var state = ResolveState<StateBytes>();
+      state.Set(value);
+      var result = state.Get();
+
+      Assert.AreEqual(value, result);
+    }
+
     [TestCase(1)]
     public void TestStateHook(int value)
     {
       var getHookData = 0;
       var setHookData = 0;
-      var state = ResolveState<StateInt>();
+      var state = ResolveState<StateInt32>();
 
       state.AddSetHook(data => setHookData = data);
       state.Set(value);
@@ -74,7 +100,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateCollectAndUncollect()
     {
-      var state = ResolveState<StateInt>();
+      var state = ResolveState<StateInt32>();
 
       state.Collect(0);
       state.AddGetHook(_ => state.UncollectAsync());
@@ -85,10 +111,10 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestStateHearteatUnheartbeat()
     {
-      var state = ResolveState<StateInt>();
+      var state = ResolveState<StateInt32>();
       var manager = state.IntervalManager;
 
-      state.Heartbeat(0);
+      state.Heartbeat(0, 10000);
       state.AddSetHook(value => state.UnheartbeatAsync());
       manager.Start().WaitAsync().AssertFinishIn();
     }
@@ -96,7 +122,7 @@ namespace Wcs.Plc.Test
     [Test]
     public void TestWatcher()
     {
-      var state = ResolveState<StateInt>();
+      var state = ResolveState<StateInt32>();
       var event_ = new Event();
 
       state.Event = event_;

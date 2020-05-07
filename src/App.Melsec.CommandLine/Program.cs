@@ -22,7 +22,7 @@ namespace App.CommandLine
       var request = new MC3EWriteRequest();
       var response = new MC3EWriteResponse();
 
-      request.UseAddress("M100", 1);
+      request.UseAddress("M100");
       request.UseData(100);
 
       Console.WriteLine(
@@ -38,7 +38,7 @@ namespace App.CommandLine
       var request = new MC3EReadRequest();
       var response = new MC3EReadResponse();
 
-      request.UseAddress("M100", 1);
+      request.UseAddress("M100");
 
       Console.WriteLine(BitConverter.ToString(request.Message));
 

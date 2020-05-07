@@ -22,14 +22,37 @@ namespace Wcs.Plc
 
     public abstract int Length { get; set; }
 
-    public void UseAddress(string key, int length)
+    public void UseDriver(IStateDriver driver)
+    {
+      Driver = driver;
+      HandleDriverResolved();
+    }
+
+    protected abstract void HandleDriverResolved();
+
+    public void UseAddress(string key)
     {
       Key = key;
-      Length = length;
-      Driver.SetAddress(key, length);
+      Driver.UseAddress(key);
     }
 
   }
+
+  //
+
+  public class StateHook<T> : IStateHook<T>
+  {
+    private Action _cancel;
+
+    public StateHook(Action cancel)
+    {
+      _cancel = cancel;
+    }
+
+    public void Cancel() => _cancel();
+  }
+
+  //
 
   public class StateConversationException : Exception
   {

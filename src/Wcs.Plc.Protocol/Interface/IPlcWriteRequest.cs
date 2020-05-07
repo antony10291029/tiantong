@@ -1,18 +1,16 @@
 namespace Wcs.Plc.Protocol
 {
-  public interface IPlcWriteRequest
+  public interface IPlcWriteRequest : IPlcReadRequest
   {
-    byte[] Message { get; }
+    void UseData(bool data);
 
-    void UseAddress(string key, int length);
+    void UseData(ushort data);
 
-    byte[] UseData(int data);
+    void UseData(int data);
 
-    byte[] UseData(bool data);
+    void UseData(string data);
 
-    byte[] UseData(byte[] data);
-
-    byte[] UseData(string data);
+    void UseData(byte[] data);
 
   }
 }
