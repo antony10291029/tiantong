@@ -9,7 +9,7 @@ import confirm from './providers/confirm'
 import directives from './providers/directives'
 import components from './components'
 
-Vue.config.productionTip = process.env.VUE_APP_API_URL_BASE
+Vue.config.productionTip = false;
 
 Vue.use(uid)
 Vue.use(directives)
