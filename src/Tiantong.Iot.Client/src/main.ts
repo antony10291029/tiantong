@@ -8,10 +8,10 @@ import router from './providers/vue-router'
 import components from './components/index'
 import directives from './providers/directives'
 
+Vue.use(directives)
 Vue.use(uid)
 Vue.use(notify)
 Vue.use(confirm)
-Vue.use(directives)
 Vue.use(components)
 
 Vue.config.productionTip = false
