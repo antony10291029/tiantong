@@ -26,7 +26,7 @@ namespace Wcs.Plc
 
     IPlcWorker UseMC3E(string host, int port);
 
-    IStateManager Define(string name);
+    IStateManager State(string name);
 
     //
 

@@ -6,6 +6,7 @@ using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
+
   public class PlcWorker : IPlcWorker
   {
     public IStatePlugin StateLogger;
@@ -161,7 +162,7 @@ namespace Wcs.Plc
       db.SaveChanges();
     }
 
-    public IStateManager Define(string name)
+    public IStateManager State(string name)
     {
       StateManager.Name = name;
 
