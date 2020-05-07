@@ -78,6 +78,7 @@ namespace Wcs.Plc
     {
       StateClientProvider = PlcConnection.Model switch {
         "test" => new StateTestClientProvider(),
+        "MC3E" => new MC3EClientProvider(PlcConnection.Host, PlcConnection.Port),
         "S7200Smart"=> new S7200SmartClientProvider(PlcConnection.Host, PlcConnection.Port),
         _ => throw new Exception("plc model is not supporting"),
       };
@@ -108,6 +109,13 @@ namespace Wcs.Plc
     public virtual IPlc UseS7200Smart(string host, int port = 102)
     {
       Model("S7200Smart").Host(host).Port(port).Build();
+
+      return this;
+    }
+
+    public virtual IPlc UseMC3E(string host, int port)
+    {
+      Model("MC3E").Host(host).Port(port).Build();
 
       return this;
     }

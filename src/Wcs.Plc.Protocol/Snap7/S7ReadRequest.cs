@@ -36,10 +36,6 @@ namespace Wcs.Plc.Protocol
       0x00,    // 28. 偏移位置 - 1
       0x00,    // 29. 偏移位置 - 2
       0x00,    // 30. 偏移位置 - 3
-      // 0x00, // 31. 固定
-      // 0x04, // 32. 按位写入
-      // 0x00, // 33. data 长度 - 1
-      // 0x00, // 34. data 长度 - 2
     };
 
     public byte[] Message { get => _msg; }

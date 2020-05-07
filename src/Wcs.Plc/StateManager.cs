@@ -59,7 +59,7 @@ namespace Wcs.Plc
 
     public IStateInt Int(string key, int length = 4)
     {
-      var state = ResolveState<StateInt>(key, 4);
+      var state = ResolveState<StateInt>(key, length);
 
       state.Use(_stateLogger);
 
