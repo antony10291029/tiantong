@@ -26,5 +26,6 @@ namespace Wcs.Plc.Entities
     public virtual int collect_interval { get; set; }
 
     public virtual bool open_log { get; set; }
+
   }
 }
