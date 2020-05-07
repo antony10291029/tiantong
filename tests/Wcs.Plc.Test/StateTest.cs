@@ -7,7 +7,7 @@ namespace Wcs.Plc.Test
   [TestFixture]
   public class StateTest
   {
-    public T ResolveState<T>() where T : StateBuilder, new()
+    public T ResolveState<T>() where T : State, new()
     {
       var state = new T();
       var driver = new StateTestDriver() {
@@ -113,7 +113,7 @@ namespace Wcs.Plc.Test
       var state = ResolveState<StateInt32>();
       var manager = state.IntervalManager;
 
-      state.Heartbeat(0, 10000);
+      state.Heartbeat(0);
       state.AddSetHook(value => state.HeartbeatInterval.Stop());
       state.HeartbeatInterval.Start().WaitAsync().AssertFinishIn();
     }

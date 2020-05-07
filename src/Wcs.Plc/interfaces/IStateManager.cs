@@ -4,19 +4,19 @@ namespace Wcs.Plc
 {
   public interface IStateManager
   {
-    IStateBuilder<bool> Bool(string name);
+    IState<bool> Bool(string name);
 
-    IStateBuilder<ushort> UInt16(string name);
+    IState<ushort> UInt16(string name);
 
-    IStateBuilder<int> Int32(string name);
+    IState<int> Int32(string name);
 
-    IStateBuilder<string> String(string name, int length);
+    IState<string> String(string name, int length);
 
     //
 
-    IStateBuilder<ushort> UShort(string name);
+    IState<ushort> UShort(string name);
 
-    IStateBuilder<int> Int(string name);
+    IState<int> Int(string name);
 
   }
 }

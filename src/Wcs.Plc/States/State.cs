@@ -6,7 +6,7 @@ namespace Wcs.Plc
 {
   //
 
-  public abstract class StateBuilder: IState
+  public abstract class State: IState
   {
     public string Name;
 
@@ -38,8 +38,9 @@ namespace Wcs.Plc
 
   }
 
-  public abstract class StateBuilder<T>: StateBuilder, IStateBuilder<T>
+  public abstract class State<T>: State, IState<T>
   {
+    protected T _heartbeatMaxValue;
 
     private List<Func<T, Task>> _gethooks = new List<Func<T, Task>>();
 
@@ -47,26 +48,33 @@ namespace Wcs.Plc
 
     public T CurrentValue;
 
-    public IStateBuilder<T> AddSetHook(Func<T, Task> hook)
+    public void Use(IStatePlugin plugin)
+    {
+      if (plugin != null) {
+        plugin.Install(this);
+      }
+    }
+
+    public IState<T> AddSetHook(Func<T, Task> hook)
     {
       _sethooks.Add(hook);
 
       return this;
     }
 
-    public IStateBuilder<T> AddGetHook(Func<T, Task> hook)
+    public IState<T> AddGetHook(Func<T, Task> hook)
     {
       _gethooks.Add(hook);
 
       return this;
     }
 
-    public IStateBuilder<T> AddSetHook(Action<T> hook)
+    public IState<T> AddSetHook(Action<T> hook)
     {
       return AddSetHook(data => Task.Run(() => hook(data)));
     }
 
-    public IStateBuilder<T> AddGetHook(Action<T> hook)
+    public IState<T> AddGetHook(Action<T> hook)
     {
       return AddGetHook(data => Task.Run(() => hook(data)));
     }
@@ -80,7 +88,7 @@ namespace Wcs.Plc
       return watcher;
     }
 
-    public IStateBuilder<T> Watch(Action<T> handler)
+    public IState<T> Watch(Action<T> handler)
     {
       CreateWatcher().When(_ => true).On(handler);
 
@@ -124,11 +132,13 @@ namespace Wcs.Plc
       throw new Exception("该操作暂时不支持");
     }
 
-    public IStateBuilder<T> Collect(int time = 1000)
+    public IState<T> Collect(int time = 1000)
     {
-      time = Math.Max(time, 1);
-      CollectInterval = new Interval(() => Get(), time);
-      IntervalManager.Add(CollectInterval);
+      if (CollectInterval == null) {
+        time = Math.Max(time, 1);
+        CollectInterval = new Interval(() => Get(), time);
+        IntervalManager.Add(CollectInterval);
+      }
 
       return this;
     }
@@ -159,23 +169,18 @@ namespace Wcs.Plc
 
     protected abstract void HandleSet(T data);
 
-    public virtual IStateBuilder<T> Heartbeat(int time, int maxValue)
+    public virtual IState<T> Heartbeat(int interval = 1000)
     {
       throw new Exception("该类型不支持心跳写入");
     }
 
-  }
-
-  public abstract class State<T>: StateBuilder<T>, IState<T>
-  {
-    //
-
-    public void Use(IStatePlugin plugin)
+    public IState<T> HeartbeatMaxValue(T maxValue)
     {
-      if (plugin != null) {
-        plugin.Install(this);
-      }
+      _heartbeatMaxValue = maxValue;
+
+      return this;
     }
 
   }
+
 }

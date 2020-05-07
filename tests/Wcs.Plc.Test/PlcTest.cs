@@ -55,7 +55,7 @@ namespace Wcs.Plc.Test
       var plc = new PlcWorker();
 
       plc.UseTest();
-      plc.Define("hb").Int("D1").Heartbeat(0).Collect(0)
+      plc.Define("hb").Int("D1").Heartbeat(1).Collect(0)
         .Watch(value => value > 1).On(_ =>  plc.Stop());
 
       plc.Start().WaitAsync().AssertFinishIn();

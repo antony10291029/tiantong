@@ -9,13 +9,13 @@ namespace Wcs.Plc
 
   }
 
-  public interface IStateBuilder<T>: IState
+  public interface IState<T>: IState
   {
-    IStateBuilder<T> AddGetHook(Action<T> hook);
+    IState<T> AddGetHook(Action<T> hook);
 
-    IStateBuilder<T> AddSetHook(Action<T> hook);
+    IState<T> AddSetHook(Action<T> hook);
 
-    IStateBuilder<T> Watch(Action<T> handler);
+    IState<T> Watch(Action<T> handler);
 
     IWatcher<T> Watch();
 
@@ -25,14 +25,12 @@ namespace Wcs.Plc
 
     IWatcher<T> Watch(string opt, T value);
 
-    IStateBuilder<T> Collect(int interval = 1000);
+    IState<T> Collect(int interval = 1000);
 
-    IStateBuilder<T> Heartbeat(int times = 100, int maxTimes = 10000);
+    IState<T> Heartbeat(int interval = 1000);
 
-  }
+    IState<T> HeartbeatMaxValue(T maxValue);
 
-  public interface IState<T>: IState
-  {
     void Set(T data);
 
     T Get();

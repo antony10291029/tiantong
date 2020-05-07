@@ -32,7 +32,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    private T ResolveState<T>(string address, int length = 0) where T : StateBuilder, new()
+    private T ResolveState<T, U>(string address, int length = 0) where T : State<U>, new()
     {
       var state = new T() {
         IntervalManager = _intervalManager,
@@ -43,53 +43,37 @@ namespace Wcs.Plc
       state.UseDriver(_stateDriverProvider.Resolve());
       state.UseAddress(address);
       States.Add(Name, state);
-
-      return state;
-    }
-
-    public IStateBuilder<bool> Bool(string address)
-    {
-      var state = ResolveState<StateBool>(address);
-
       state.Use(_stateLogger);
 
       return state;
     }
 
-    public IStateBuilder<ushort> UInt16(string address)
+    public IState<bool> Bool(string address)
     {
-      var state = ResolveState<StateUInt16>(address);
-
-      state.Use(_stateLogger);
-
-      return state;
+      return ResolveState<StateBool, bool>(address);
     }
 
-    public IStateBuilder<int> Int32(string address)
+    public IState<ushort> UInt16(string address)
     {
-      var state = ResolveState<StateInt32>(address);
-
-      state.Use(_stateLogger);
-
-      return state;
+      return ResolveState<StateUInt16, ushort>(address);
     }
 
-    public IStateBuilder<string> String(string address, int length)
+    public IState<int> Int32(string address)
     {
-      var state = ResolveState<StateString>(address, length);
-
-      state.Use(_stateLogger);
-      state.Length = length;
-
-      return state;
+      return ResolveState<StateInt32, int>(address);
     }
 
-    public IStateBuilder<ushort> UShort(string address)
+    public IState<string> String(string address, int length)
+    {
+      return ResolveState<StateString, string>(address, length);
+    }
+
+    public IState<ushort> UShort(string address)
     {
       return UInt16(address);
     }
 
-    public IStateBuilder<int> Int(string address)
+    public IState<int> Int(string address)
     {
       return Int32(address);
     }

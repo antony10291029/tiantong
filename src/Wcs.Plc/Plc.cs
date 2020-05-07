@@ -162,7 +162,7 @@ namespace Wcs.Plc
       db.SaveChanges();
     }
 
-    public IStateManager State(string name)
+    public IStateManager Define(string name)
     {
       StateManager.Name = name;
 
