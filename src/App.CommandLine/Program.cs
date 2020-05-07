@@ -10,7 +10,7 @@ namespace App.CommandLine
       var plc = new Plc();
       var random = new Renet.Random();
 
-      plc.Name("测试200smart").UseS7200Smart("192.168.20.10", 102);
+      plc.Name("测试200smart").UseS7200Smart("127.0.0.1", 102);
 
       plc.State("心跳").Int("D1.100").Heartbeat(1000).Collect(1000);
       plc.State("扫码器").String("D1.120", 10).Collect(500);
