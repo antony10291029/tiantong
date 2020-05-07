@@ -5,10 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
     <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
-    <ProjectReference Include="..\Tiantong.Iot.DB.Sqlite\Tiantong.Iot.DB.Sqlite.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot.DB.Sqlite\Tiantong.Iot.DB.Sqlite.csproj" />
+
   </ItemGroup>
 
 </Project>
