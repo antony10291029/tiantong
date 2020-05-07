@@ -70,6 +70,8 @@ namespace Renet.Tcp
         _stream = _client.GetStream();
         _stream.ReadTimeout = _stream.WriteTimeout = _ioTimeout;
         Connected();
+      } else {
+        throw new Exception("tcp connect timeout");
       }
     }
 

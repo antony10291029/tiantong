@@ -69,9 +69,11 @@ namespace Wcs.Plc.Test
       manager.Add(new Interval(() => throw new Exception("ex"), 0));
 
       try {
-        manager.Start().WaitAsync().AssertFinishIn(10);
+        manager.Start().WaitAsync().AssertFinishIn(110);
         Assert.Fail("except throw exception from interval");
-      } catch (Exception) {}
+      } catch (Exception ex) {
+        Assert.AreEqual(ex.Message, "ex");
+      }
     }
   }
 }

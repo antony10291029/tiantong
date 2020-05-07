@@ -27,7 +27,8 @@ namespace Wcs.Plc.Test
       try {
         interval.Start().WaitAsync().AssertFinishIn(10);
         Assert.Fail("interval should throw the exception");
-      } catch (Exception) {
+      } catch (Exception e) {
+        Assert.AreEqual(e.Message, "ex");
       }
     }
   }
