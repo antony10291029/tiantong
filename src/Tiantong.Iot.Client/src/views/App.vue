@@ -14,3 +14,5 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" src="@/assets/sass/_all.sass">
