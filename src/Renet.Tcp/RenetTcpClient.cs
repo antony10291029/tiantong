@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Renet.Tcp
@@ -35,29 +34,15 @@ namespace Renet.Tcp
       _client = new TcpClient();
     }
 
-    ~RenetTcpClient()
-    {
-      Dispose();
-    }
-
     public void Dispose()
     {
-      if (_client != null) {
-        _client.Dispose();
-      }
-      if (_stream != null) {
-        _stream.Dispose();
-      }
+      Close();
     }
 
     public void Close()
     {
-      if (_client != null) {
-        _client.Close();
-      }
-      if (_stream != null) {
-        _stream.Close();
-      }
+      _client?.Close();
+      _stream?.Close();
     }
 
     public byte[] Send(byte[] message)
@@ -83,30 +68,22 @@ namespace Renet.Tcp
         try {
           return Send(message);
         } catch (Exception e) {
-          HandleError(e);
-          Reconnect();
+          Console.WriteLine(e.Message);
+          Connect();
         }
       }
     }
 
     public void Connect()
     {
-      try {
-        Console.WriteLine("正在建立连接");
-        var tokenSource = new CancellationTokenSource();
-        var task = _client.ConnectAsync(Host, Port)
-          .ContinueWith(_ => {
-            _.GetAwaiter().GetResult();
-            _stream = _client.GetStream();
-            _stream.WriteTimeout = _stream.ReadTimeout = _ioTimeout;
-            tokenSource.Cancel();
-            Connected();
-          });
-        Task.Delay(_ioTimeout, tokenSource.Token).GetAwaiter().GetResult();
-      } catch (TaskCanceledException) {
-      } catch (Exception e) {
-
-        throw e;
+      if (_client.ConnectAsync(Host, Port).Wait(_ioTimeout)) {
+        lock (_sendingLock) {
+          _stream ??= _client.GetStream();
+          _stream.ReadTimeout = _stream.WriteTimeout = _ioTimeout;
+        }
+        Connected();
+      } else {
+        throw new Exception("TCP连接超时");
       }
     }
 
@@ -118,6 +95,7 @@ namespace Renet.Tcp
     private async Task ReconnectAsync()
     {
       for (var i = 0; ; i++) {
+        Console.WriteLine("重连中");
         try {
           Connect();
           break;
@@ -138,13 +116,6 @@ namespace Renet.Tcp
       }
 
       _reconnectTask.GetAwaiter().GetResult();
-    }
-
-    protected virtual bool HandleError(Exception exception)
-    {
-      Console.WriteLine(exception);
-
-      return true;
     }
   }
 }
