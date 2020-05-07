@@ -1,18 +1,39 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
   class Hooks<T> : Dictionary<int, Func<T, Task>> {};
 
-  public abstract class State
+  //
+
+  public class StateHook<T> : IStateHook<T>
   {
+    private Action _cancel;
+
+    public StateHook(Action cancel)
+    {
+      _cancel = cancel;
+    }
+
+    public void Cancel() => _cancel();
+  }
+
+  //
+
+  public abstract class StateBuilder: IState
+  {
+    public IntervalManager IntervalManager;
+
+    public Interval CollectInterval;
+
+    public Interval HeartbeatInterval;
+
     public string Name;
 
     public IStateDriver Driver;
-
-    public IntervalManager IntervalManager;
 
     public Task HookTasks;
 
@@ -36,53 +57,20 @@ namespace Wcs.Plc
 
   }
 
-  //
-
-  public class StateHook<T> : IStateHook<T>
+  public abstract class StateBuilder<T>: StateBuilder, IStateBuilder<T>
   {
-    private Action _cancel;
-
-    public StateHook(Action cancel)
-    {
-      _cancel = cancel;
-    }
-
-    public void Cancel() => _cancel();
-  }
-
-  //
-
-  public abstract class State<T> : State, IState<T>
-  {
-    public T CurrentValue;
-
-    public Interval CollectInterval;
 
     private Hooks<T> _gethooks = new Hooks<T>();
 
     private Hooks<T> _sethooks = new Hooks<T>();
 
-    private int _id = 0;
+    private int _hooksId = 0;
 
-    ~State()
-    {
-      if (CollectInterval != null) {
-        Uncollect();
-      }
-    }
-
-    //
-
-    public void Use(IStatePlugin plugin)
-    {
-      if (plugin != null) {
-        plugin.Install(this);
-      }
-    }
+    public T CurrentValue;
 
     public IStateHook<T> AddSetHook(Func<T, Task> hook)
     {
-      int id = _id++;
+      int id = _hooksId++;
       _sethooks.Add(id, hook);
 
       return new StateHook<T>(() => RemoveSetHook(id));
@@ -90,7 +78,7 @@ namespace Wcs.Plc
 
     public IStateHook<T> AddGetHook(Func<T, Task> hook)
     {
-      int id = _id++;
+      int id = _hooksId++;
       _gethooks.Add(id, hook);
 
       return new StateHook<T>(() => RemoveGetHook(id));
@@ -125,7 +113,7 @@ namespace Wcs.Plc
       return watcher;
     }
 
-    public IState<T> Watch(Action<T> handler)
+    public IStateBuilder<T> Watch(Action<T> handler)
     {
       CreateWatcher().When(_ => true).On(handler);
 
@@ -171,25 +159,18 @@ namespace Wcs.Plc
       });
     }
 
-    protected abstract int CompareDataTo(T data, T value);
+    protected virtual int CompareDataTo(T data, T value)
+    {
+      throw new Exception("该操作暂时不支持");
+    }
 
-    public IState<T> Collect(int time = 1000)
+    public IStateBuilder<T> Collect(int time = 1000)
     {
       time = Math.Max(time, 1);
       CollectInterval = new Interval(() => Get(), time);
       IntervalManager.Add(CollectInterval);
 
       return this;
-    }
-
-    public Task UncollectAsync()
-    {
-      return IntervalManager.RemoveAsync(CollectInterval);
-    }
-
-    public void Uncollect()
-    {
-      UncollectAsync().GetAwaiter().GetResult();
     }
 
     public void Set(T data)
@@ -217,5 +198,53 @@ namespace Wcs.Plc
     protected abstract T HandleGet();
 
     protected abstract void HandleSet(T data);
+
+
+    public virtual IStateBuilder<T> Heartbeat(int time, int maxValue)
+    {
+      throw new Exception("该类型不支持心跳写入");
+    }
+
+  }
+
+  public abstract class State<T>: StateBuilder<T>, IState<T>
+  {
+    ~State()
+    {
+      if (CollectInterval != null) {
+        Uncollect();
+      }
+    }
+
+    //
+
+    public void Use(IStatePlugin plugin)
+    {
+      if (plugin != null) {
+        plugin.Install(this);
+      }
+    }
+
+
+    public Task UncollectAsync()
+    {
+      return IntervalManager.RemoveAsync(CollectInterval);
+    }
+
+    public void Uncollect()
+    {
+      UncollectAsync().GetAwaiter().GetResult();
+    }
+
+    public Task UnheartbeatAsync()
+    {
+      return IntervalManager.RemoveAsync(HeartbeatInterval);
+    }
+
+    public void Unheartbeat()
+    {
+      UnheartbeatAsync().GetAwaiter().GetResult();
+    }
+
   }
 }

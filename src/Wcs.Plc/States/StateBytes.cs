@@ -2,7 +2,7 @@ using System;
 
 namespace Wcs.Plc
 {
-  public class StateBytes : State<byte[]>, IStateBytes
+  public class StateBytes : State<byte[]>
   {
     protected override void HandleDriverResolved()
     {

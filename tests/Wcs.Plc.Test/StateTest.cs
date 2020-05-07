@@ -7,7 +7,7 @@ namespace Wcs.Plc.Test
   [TestFixture]
   public class StateTest
   {
-    public T ResolveState<T>() where T : State, new()
+    public T ResolveState<T>() where T : StateBuilder, new()
     {
       var state = new T();
       var driver = new StateTestDriver() {

@@ -1,6 +1,6 @@
 namespace Wcs.Plc
 {
-  public class StateString : State<string>, IStateString
+  public class StateString : State<string>
   {
     protected override void HandleDriverResolved()
     {

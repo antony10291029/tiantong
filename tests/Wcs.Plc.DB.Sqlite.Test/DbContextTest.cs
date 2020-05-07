@@ -40,12 +40,10 @@ namespace Wcs.Plc.DB.Sqlite.Test
         Operation = "test",
       };
       var plcStateLog = new PlcStateLog {
-        PlcId = 1,
-        Operation = "test",
-        Name = "test",
-        Key = "D1001",
-        Length = 1,
-        Value = "100"
+        plc_id = 1,
+        state_id = 1,
+        operation = PlcStateOperation.Read,
+        value = "100"
       };
 
       db.PlcConnections.Add(plcConnection);
@@ -55,7 +53,7 @@ namespace Wcs.Plc.DB.Sqlite.Test
 
       Assert.AreEqual(1, db.PlcConnections.Where(item => item.Name == "lift").Count());
       Assert.AreEqual(1, db.PlcConnectionLogs.Where(item => item.Operation == "test").Count());
-      Assert.AreEqual(1, db.PlcStateLogs.Where(item => item.Operation == "test").Count());
+      Assert.AreEqual(1, db.PlcStateLogs.Where(item => item.operation == PlcStateOperation.Read).Count());
     }
 
   }

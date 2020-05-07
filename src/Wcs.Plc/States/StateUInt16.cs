@@ -1,6 +1,6 @@
 namespace Wcs.Plc
 {
-  public class StateUInt16 : StateNumeric<ushort>, IStateUInt16
+  public class StateUInt16 : StateNumeric<ushort>
   {
     protected override void HandleDriverResolved()
     {
@@ -22,7 +22,7 @@ namespace Wcs.Plc
       Driver.SetUInt16(data);
     }
 
-    protected override void HandleHeartbeat(ref ushort times, ref ushort maxValue)
+    protected override void HandleHeartbeat(ref int times, ref int maxValue)
     {
       if (times < maxValue) times++;
       else times = 1;

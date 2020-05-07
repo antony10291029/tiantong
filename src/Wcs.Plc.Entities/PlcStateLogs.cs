@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Wcs.Plc.Entities
 {
   [Table("plc_state_logs")]
-  public class PlcStateLog2
+  public class PlcStateLog
   {
     public virtual int id { get; set; }
 
@@ -12,7 +12,7 @@ namespace Wcs.Plc.Entities
 
     public virtual int state_id { get; set; }
 
-    public virtual bool read { get; set; }
+    public virtual PlcStateOperation operation { get; set; }
 
     public virtual string value { get; set; }
 

@@ -4,7 +4,7 @@ using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
-  using States = Dictionary<string, State>;
+  using States = Dictionary<string, IState>;
 
   public class StateManager : IStateManager
   {
@@ -32,7 +32,7 @@ namespace Wcs.Plc
       return this;
     }
 
-    private T ResolveState<T>(string address, int length = 0) where T : State, new()
+    private T ResolveState<T>(string address, int length = 0) where T : StateBuilder, new()
     {
       var state = new T() {
         IntervalManager = _intervalManager,
@@ -47,7 +47,7 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateBool Bool(string address)
+    public IStateBuilder<bool> Bool(string address)
     {
       var state = ResolveState<StateBool>(address);
 
@@ -56,7 +56,7 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateUInt16 UInt16(string address)
+    public IStateBuilder<ushort> UInt16(string address)
     {
       var state = ResolveState<StateUInt16>(address);
 
@@ -65,7 +65,7 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateInt32 Int32(string address)
+    public IStateBuilder<int> Int32(string address)
     {
       var state = ResolveState<StateInt32>(address);
 
@@ -74,7 +74,7 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateString String(string address, int length)
+    public IStateBuilder<string> String(string address, int length)
     {
       var state = ResolveState<StateString>(address, length);
 
@@ -84,12 +84,12 @@ namespace Wcs.Plc
       return state;
     }
 
-    public IStateUInt16 UShort(string address)
+    public IStateBuilder<ushort> UShort(string address)
     {
       return UInt16(address);
     }
 
-    public IStateInt32 Int(string address)
+    public IStateBuilder<int> Int(string address)
     {
       return Int32(address);
     }

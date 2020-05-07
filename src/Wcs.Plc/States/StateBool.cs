@@ -1,6 +1,6 @@
 namespace Wcs.Plc
 {
-  public class StateBool : State<bool>, IStateBool
+  public class StateBool : State<bool>
   {
     protected override void HandleDriverResolved()
     {

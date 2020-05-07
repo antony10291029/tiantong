@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Wcs.Plc.Entities;
 
 namespace Wcs.Plc
 {
@@ -8,19 +9,13 @@ namespace Wcs.Plc
 
   }
 
-  public interface IState<T> : IState
+  public interface IStateBuilder<T>: IState
   {
     IStateHook<T> AddGetHook(Action<T> hook);
 
     IStateHook<T> AddSetHook(Action<T> hook);
 
-    IState<T> Collect(int interval = 1000);
-
-    Task UncollectAsync();
-
-    void Uncollect();
-
-    IState<T> Watch(Action<T> handler);
+    IStateBuilder<T> Watch(Action<T> handler);
 
     IWatcher<T> Watch();
 
@@ -30,8 +25,26 @@ namespace Wcs.Plc
 
     IWatcher<T> Watch(string opt, T value);
 
+    IStateBuilder<T> Collect(int interval = 1000);
+
+    IStateBuilder<T> Heartbeat(int times = 100, int maxTimes = 10000);
+
+  }
+
+  public interface IState<T>: IState
+  {
     void Set(T data);
 
     T Get();
+
+    Task UncollectAsync();
+
+    void Uncollect();
+
+    Task UnheartbeatAsync();
+
+    void Unheartbeat();
+
   }
+
 }

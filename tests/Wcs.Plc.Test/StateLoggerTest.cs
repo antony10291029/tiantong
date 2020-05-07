@@ -32,10 +32,10 @@ namespace Wcs.Plc.Test
       state.Get();
       logger.HandleStateLogs();
 
-      count = db.PlcStateLogs.Where(item => item.Operation == "read").Count();
+      count = db.PlcStateLogs.Where(item => item.operation == PlcStateOperation.Read).Count();
       Assert.AreEqual(1, count);
 
-      count = db.PlcStateLogs.Where(item => item.Operation == "write").Count();
+      count = db.PlcStateLogs.Where(item => item.operation == PlcStateOperation.Write).Count();
       Assert.AreEqual(1, count);
     }
   }

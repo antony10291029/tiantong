@@ -1,6 +1,6 @@
 namespace Wcs.Plc
 {
-  public class StateInt32 : StateNumeric<int>, IStateInt32
+  public class StateInt32 : StateNumeric<int>
   {
     protected override void HandleDriverResolved()
     {

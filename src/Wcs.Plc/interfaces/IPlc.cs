@@ -30,19 +30,19 @@ namespace Wcs.Plc
 
     //
 
-    IStateBool Bool(string name);
+    IState<bool> Bool(string name);
 
-    IStateUInt16 UInt16(string name);
+    IState<ushort> UInt16(string name);
 
-    IStateString String(string name);
+    IState<string> String(string name);
 
-    IStateBytes Bytes(string name);
+    IState<byte[]> Bytes(string name);
 
     //
 
-    IStateUInt16 UShort(string name);
+    IState<ushort> UShort(string name);
 
-    IStateInt32 Int(string name);
+    IState<int> Int(string name);
 
     //
 

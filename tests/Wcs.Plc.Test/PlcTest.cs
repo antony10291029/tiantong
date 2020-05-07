@@ -28,8 +28,8 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.UseTest();
-      plc.Define("bool data").Bool("D1").Collect(0);
-      plc.Bool("bool data").Watch("==", true).On(_ => plc.Stop());
+      plc.Define("bool data").Bool("D1").Collect(0)
+        .Watch("==", true).On(_ => plc.Stop());
       plc.Bool("bool data").Set(true);
 
       plc.Start().WaitAsync().AssertFinishIn();
@@ -42,11 +42,11 @@ namespace Wcs.Plc.Test
 
       plc.UseTest();
 
-      Assert.IsTrue(plc.Define("ushort").UShort("D1") is IStateUInt16);
-      Assert.IsTrue(plc.UShort("ushort") is IStateUInt16);
+      Assert.IsTrue(plc.Define("ushort").UShort("D1") is IState<ushort>);
+      Assert.IsTrue(plc.UShort("ushort") is IState<ushort>);
 
-      Assert.IsTrue(plc.Define("int").Int("D2") is IStateInt32);
-      Assert.IsTrue(plc.Int("int") is IStateInt32);
+      Assert.IsTrue(plc.Define("int").Int("D2") is IState<int>);
+      Assert.IsTrue(plc.Int("int") is IState<int>);
     }
 
     [Test]
@@ -55,8 +55,8 @@ namespace Wcs.Plc.Test
       var plc = new Plc();
 
       plc.UseTest();
-      plc.Define("hb").Int("D1").Heartbeat(0).Collect(0);
-      plc.Int("hb").Watch(value => value > 1).On(_ =>  plc.Stop());
+      plc.Define("hb").Int("D1").Heartbeat(0).Collect(0)
+        .Watch(value => value > 1).On(_ =>  plc.Stop());
 
       plc.Start().WaitAsync().AssertFinishIn();
     }
