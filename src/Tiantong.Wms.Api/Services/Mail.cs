@@ -41,6 +41,7 @@ namespace Tiantong.Wms.Api
       msg.Subject = "密码找回";
       string html = $"您的邮箱验证码为: {verifyCode}";
       msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+      Send(msg);
     }
   }
 
