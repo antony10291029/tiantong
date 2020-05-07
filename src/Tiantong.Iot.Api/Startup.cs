@@ -28,6 +28,7 @@ namespace Tiantong.Iot.Api
       app.UseMiddleware<JsonBody>();
       app.UseProvider<ExceptionHandler>();
       app.UseRouting();
+      app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
       app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
   }
