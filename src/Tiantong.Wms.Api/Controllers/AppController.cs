@@ -21,8 +21,8 @@ namespace Tiantong.Wms.Api
     }
 
     [HttpPost]
-    [Route("/test")]
-    public object Test([FromBody] object data)
+    [Route("/data")]
+    public object Data([FromBody] object data)
     {
       return data;
     }

@@ -11,26 +11,24 @@ namespace Tiantong.Iot
 
     public override IState Heartbeat(int time = 1000, int maxValue = 10000)
     {
-      if (_heartbeatInterval != null) {
-        return this;
+      if (_heartbeatInterval is null) {
+        _heartbeatInterval = new Interval();
+        _heartbeatMaxValue = maxValue;
+        int times = 0;
+
+        time = Math.Max(time, 1);
+        _heartbeatInterval.SetTime(time);
+        _heartbeatInterval.SetHandler(() => {
+          if (times < _heartbeatMaxValue) {
+            times++;
+          } else {
+            times = 1;
+          }
+
+          HandleHeartbeat(ref times);
+        });
+        _intervalManager.Add(_heartbeatInterval);
       }
-
-      _heartbeatMaxValue = maxValue;
-      int times = 0;
-
-      time = Math.Max(time, 1);
-      _heartbeatInterval = new Interval();
-      _heartbeatInterval.SetTime(time);
-      _heartbeatInterval.SetHandler(() => {
-        if (times < _heartbeatMaxValue) {
-          times++;
-        } else {
-          times = 1;
-        }
-
-        HandleHeartbeat(ref times);
-      });
-      _intervalManager.Add(_heartbeatInterval);
 
       return this;
     }

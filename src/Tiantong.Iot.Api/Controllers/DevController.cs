@@ -90,7 +90,7 @@ namespace Tiantong.Iot.Api
             state_http_pushers = _random.Bool() ? new List<PlcStateHttpPusher>{} : new List<PlcStateHttpPusher> {
               new PlcStateHttpPusher {
                 pusher = new HttpPusher {
-                  url = "http://localhost:5100/test",
+                  url = "http://localhost:5000/data",
                   when_opt = "",
                   when_value = "",
                   value_key = "field",

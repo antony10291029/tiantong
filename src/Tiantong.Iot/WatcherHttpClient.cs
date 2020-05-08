@@ -50,7 +50,7 @@ namespace Tiantong.Iot
         var statusCode = response.StatusCode;
         var responseContent = await response.Content.ReadAsStringAsync();
         var log = new HttpPusherLog {
-          id = id,
+          pusher_id = id,
           request = data,
           response = responseContent,
           status_code = response.StatusCode.ToString()
@@ -62,7 +62,7 @@ namespace Tiantong.Iot
         Console.WriteLine($"success to send http watcher, uri: {uri}, request: {data}, response: {responseContent}, status: {statusCode}");
       } catch (Exception e) {
         var errorLog = new HttpPusherError {
-          id = id,
+          pusher_id = id,
           error = e.Message,
           detail = e.Source,
         };

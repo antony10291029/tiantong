@@ -56,9 +56,7 @@ namespace Tiantong.Iot
     public bool IsRunning()
     {
       foreach (var interval in Intervals.Values) {
-        if (interval.IsRunning()) {
-          return true;
-        }
+        return true;
       }
 
       return false;

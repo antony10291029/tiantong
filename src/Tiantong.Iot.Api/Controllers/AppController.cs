@@ -42,8 +42,9 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("test")]
-    public object Test()
+    public object TestRun()
     {
+      
       var plc = new Plc {
         id = 1,
         name = "test",
@@ -72,7 +73,7 @@ namespace Tiantong.Iot.Api
                 pusher = new HttpPusher {
                   when_opt = "",
                   when_value = "",
-                  url = "http://localhost:5000/",
+                  url = "http://localhost:5000/data",
                   value_key = "heartbeat",
                   data = "{\"plc\": 1}",
                   to_string = false,
@@ -117,7 +118,7 @@ namespace Tiantong.Iot.Api
         worker.String("扫码器").Set(_random.String(10));
       });
 
-      _plcManager.Add(worker);
+      _plcManager.Run(worker);
 
       return SuccessOperation("Plc 运行中");
     }

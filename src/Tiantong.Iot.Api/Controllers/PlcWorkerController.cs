@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
 
@@ -19,7 +18,6 @@ namespace Tiantong.Iot.Api
       _plcRepository = plcRepository;
     }
 
-
     public class RunParams
     {
       public int id { get; set; }
@@ -32,18 +30,23 @@ namespace Tiantong.Iot.Api
       var plc = _plcRepository.EnsureFind(param.id);
       var worker = PlcBuilder.Build(plc);
 
-      _plcManager.Add(worker);
-
-      return SuccessOperation("PLC 开始运行");
+      if (_plcManager.Run(worker)) {
+        return SuccessOperation("PLC 开始运行");
+      } else {
+        return FailureOperation("PLC 正在运行中");
+      }
     }
 
     [HttpPost]
     [Route("stop")]
     public object Stop([FromBody] RunParams param)
     {
-      _plcManager.Stop(param.id);
-
-      return SuccessOperation("PLC 停止运行");
+      if (_plcManager.Stop(param.id)) {
+        return SuccessOperation("PLC 停止运行");
+      } else {
+        return FailureOperation("PLC 未运行");
+      }
     }
+
   }
 }

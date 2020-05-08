@@ -35,27 +35,36 @@ namespace Tiantong.Iot.Api
   {
     private Dictionary<int, IPlcWorker> _plcs = new Dictionary<int, IPlcWorker>();
 
-    public void Start()
+    public IPlcWorker Get(int id)
     {
-      foreach (var plc in _plcs.Values) {
-        plc.Start();
+      return _plcs[id];
+    }
+
+    public bool Run(PlcWorker worker)
+    {
+      if (_plcs.ContainsKey(worker._id)) {
+        return false;
+      } else {
+        _plcs[worker._id] = worker;
+        worker.Start();
+
+        return true;
       }
     }
 
-    public void Add(PlcWorker worker)
+    public bool Stop(int id)
     {
-      var id = worker._id;
       if (_plcs.ContainsKey(id)) {
-        Stop(id);
+        _plcs[id].Stop().WaitAsync()
+          .ContinueWith(task => {
+            task.GetAwaiter().GetResult();
+            _plcs.Remove(id);
+          });
+
+        return true;
+      } else {
+        return false;
       }
-
-      _plcs[id] = worker;
-      worker.Start();
-    }
-
-    public void Stop(int id)
-    {
-      _plcs[id].Stop();
     }
 
     public PlcManager Stop()
