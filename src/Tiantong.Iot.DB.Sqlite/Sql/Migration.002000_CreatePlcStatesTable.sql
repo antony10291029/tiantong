@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS "plc_states" (
   "heartbeat_max_value" INTEGER NOT NULL,
   "is_collect" BOOLEAN NOT NULL,
   "collect_interval" INTEGER NOT NULL,
-  "open_log" BOOLEAN NOT NULL
+  "open_log" BOOLEAN NOT NULL,
+  UNIQUE("plc_id", "name")
 );

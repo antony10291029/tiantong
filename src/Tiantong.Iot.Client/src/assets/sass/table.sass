@@ -6,7 +6,12 @@
 .table
   &.is-bordered
     thead
-      background: #f9fafb
+      background: $background
+
+  &.is-hoverable
+    tr
+      &.is-active
+        background: $background
 
   tr,
   th,
@@ -14,7 +19,7 @@
   thead,
   tbody
     &.has-background
-      background: #f9fafb
+      background: $background
 
   &.is-centered
     th, td
@@ -34,12 +39,12 @@
 
     &.is-hoverable
       &:hover
-        background: #f9fafb
+        background: $background
 
     &.is-clickable
       cursor: pointer
       &:hover
-        background: #f9fafb
+        background: $background
 
     .is-checkbox
       width: 1px

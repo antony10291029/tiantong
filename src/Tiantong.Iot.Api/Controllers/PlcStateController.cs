@@ -20,19 +20,19 @@ namespace Tiantong.Iot.Api
     {
       _stateRepository.Add(state);
 
-      return SuccessOperation("PLC数据点已创建");
+      return SuccessOperation("PLC数据点已创建", state.id);
     }
 
-    public class DeleteParams
+    public class FindParams
     {
-      public int id { get; set; }
+      public int state_id { get; set; }
     }
 
     [HttpPost]
     [Route("delete")]
-    public object Delete([FromBody] DeleteParams param)
+    public object Delete([FromBody] FindParams param)
     {
-      _stateRepository.Delete(param.id);
+      _stateRepository.Delete(param.state_id);
 
       return SuccessOperation("PLC数据点已删除");
     }
@@ -44,6 +44,13 @@ namespace Tiantong.Iot.Api
       _stateRepository.Update(state);
 
       return SuccessOperation("PLC数据点已更新");
+    }
+
+    [HttpPost]
+    [Route("find")]
+    public object Find([FromBody] FindParams param)
+    {
+      return _stateRepository.Find(param.state_id);
     }
 
     public class AllParams

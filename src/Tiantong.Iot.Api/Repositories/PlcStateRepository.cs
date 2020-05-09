@@ -44,9 +44,23 @@ namespace Tiantong.Iot.Api
       _db.SaveChanges();
     }
 
+    public PlcState Find(int stateId)
+    {
+      var state = _db.PlcStates.FirstOrDefault(ps => ps.id == stateId);
+
+      if (state == null) {
+        throw new FailureOperation("PLC 数据点不存在");
+      }
+
+      return state;
+    }
+
     public PlcState[] All(int plcId)
     {
-      return _db.PlcStates.Where(s => s.plc_id == plcId).ToArray();
+      return _db.PlcStates
+        .Where(s => s.plc_id == plcId)
+        .OrderBy(s => s.id)
+        .ToArray();
     }
 
   }

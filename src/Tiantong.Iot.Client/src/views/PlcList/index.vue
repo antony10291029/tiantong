@@ -17,6 +17,7 @@
     </aside>
     <router-view
       :key="$route.params.plcId"
+      baseURL="/plcs"
       class="is-flex-auto"
       style="overflow: auto"
     />

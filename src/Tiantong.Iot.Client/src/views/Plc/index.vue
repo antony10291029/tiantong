@@ -1,7 +1,5 @@
 <template>
-  <AsyncLoader
-    :handler="getStates"
-  >
+  <div>
     <div class="tabs" style="margin-bottom: 0">
       <ul>
         <li class="is-active"><a>数据点</a></li>
@@ -13,9 +11,10 @@
 
     <router-view
       :plcId="plcId"
+      :baseURL="`${baseURL}/${plcId}`"
       style="padding: 1.25rem"
     />
-  </AsyncLoader>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,5 +28,7 @@ export default class extends Vue {
   @Prop({ required: true })
   plcId!: number
 
+  @Prop({ required: true })
+  baseURL!: string
 }
 </script>

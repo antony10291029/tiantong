@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,11 +9,13 @@ namespace Tiantong.Iot.Entities
     [Key]
     public virtual int id { get; set; }
 
+    public virtual string name { get; set; }
+
+    public virtual string url { get; set; }
+
     public virtual string when_opt { get; set; }
 
     public virtual string when_value { get; set; }
-
-    public virtual string url { get; set; }
 
     public virtual string value_key { get; set; }
 

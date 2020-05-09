@@ -39,16 +39,25 @@ namespace Tiantong.Iot.Api
       _db.SaveChanges();
     }
 
-    public void Update(HttpPusher pusher)
+    public void Update(int stateId, HttpPusher pusher)
     {
       var oldPusher = _db.HttpPushers.FirstOrDefault(s => s.id == pusher.id);
 
       if (oldPusher == null) {
-        throw new FailureOperation("HTTP 数据推送不存在");
+        throw new FailureOperation("HTTP推送不存在");
       }
 
       _db.Entry(oldPusher).CurrentValues.SetValues(pusher);
       _db.SaveChanges();
+    }
+
+    public HttpPusher[] All(int stateId)
+    {
+      return _db.PlcStateHttpPushers
+        .Include(state => state.pusher)
+        .Where(shp => shp.state_id == stateId)
+        .Select(shp => shp.pusher)
+        .ToArray();
     }
 
   }

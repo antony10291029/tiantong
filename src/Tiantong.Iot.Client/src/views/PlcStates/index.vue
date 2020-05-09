@@ -1,54 +1,86 @@
 <template>
   <AsyncLoader :handler="getStates">
-    <div>
-      <a class="button is-info is-small">
-        添加
-      </a>
+    <div class="is-flex">
+      <div style="min-width: 400px; max-width: 400px">
+        <table class="table is-bordered is-fullwidth is-nowrap is-hoverable">
+          <thead>
+            <th>
+              名称
+            </th>
+            <th>地址</th>
+            <th>类型</th>
+          </thead>
+          <tbody>
+            <tr
+              v-class:is-active="state.id === stateId"
+              v-for="state in states" :key="state.id"
+              @click="handleStateClick(state)"
+            >
+              <td>{{state.name}}</td>
+              <td>{{state.address}}</td>
+              <td>
+                {{state.type + (state.type === 'string' ? `(${state.length})` : '')}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="height: 0.75rem"></div>
+
+        <div>
+          <router-link
+            :to="`/plcs/${plcId}/states/create`"
+            class="button is-info is-small"
+          >
+            添加
+          </router-link>
+        </div>
+      </div>
+
+      <div style="min-width: 1.25rem; max-width: 1.25rem"></div>
+
+      <router-view
+        class="is-flex-auto"
+        :key="stateId"
+        :plcId="plcId"
+        :stateId="stateId"
+        :baseURL="baseURL"
+        @refresh="getStates"
+        @delete="handleStateDeleted"
+      />
     </div>
-
-    <div style="height: 1.25rem"></div>
-
-    <table class="table is-bordered is-fullwidth">
-      <thead>
-        <th>数据名称</th>
-        <th>备注</th>
-        <th>数据地址</th>
-        <th>数据类型</th>
-        <th>长度</th>
-        <th>心跳写入</th>
-        <th>开启日志</th>
-        <th>操作</th>
-      </thead>
-      <tbody>
-        <tr v-for="state in states" :key="state.id">
-          <td>{{state.name}}</td>
-          <td>{{state.comment}}</td>
-          <td>{{state.address}}</td>
-          <td>{{state.type}}</td>
-          <td>{{state.length}}</td>
-          <td></td>
-          <td></td>
-          <td>
-            <a class="is-size-7">删除</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </AsyncLoader>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import axios from '../../providers/axios'
+import axios from '@/providers/axios'
 
 @Component({
-  name: 'PlcStates'
+  name: 'PlcStates',
 })
 export default class extends Vue {
   @Prop({ required: true })
   plcId!: number
 
+  @Prop({ required: true })
+  baseURL!: string
+
   states: object[] = []
+
+  get stateId () {
+    return +this.$route.params.stateId
+  }
+
+  handleStateClick (state: any) {
+    if (!state) return
+    this.$router.push(`/plcs/${this.plcId}/states/${state.id}`)
+  }
+
+  handleStateDeleted () {
+    this.$router.push(this.baseURL)
+    this.getStates()
+  }
 
   async getStates () {
     let response = await axios.post('plcs/states/all', {
@@ -56,10 +88,9 @@ export default class extends Vue {
     })
 
     this.states = response.data
-  }
-
-  async created () {
-
+    if (!this.stateId) {
+      this.handleStateClick(this.states[0])
+    }
   }
 }
 </script>
