@@ -28,6 +28,8 @@ namespace Tiantong.Iot
 
     internal IStateDriverProvider StateDriverProvider { get; private set; }
 
+    public bool _isStopping = false;
+
     //
 
     public IPlcWorker Config(Action<IPlcWorker> configer)
@@ -235,13 +237,25 @@ namespace Tiantong.Iot
     public IPlcWorker Start()
     {
       StateDriverProvider.Boot();
-      IntervalManager.Start();
+      IntervalManager.Start().WaitAsync()
+        .ContinueWith(task => {
+          try {
+            task.GetAwaiter().GetResult();
+          } catch (Exception e) {
+            Console.WriteLine(e);
+            Task.Delay(1000).GetAwaiter().GetResult();
+            if (!_isStopping) {
+              Start();
+            }
+          }
+        });
 
       return this;
     }
 
     public IPlcWorker Stop()
     {
+      _isStopping = true;
       IntervalManager.Stop();
       DatabaseProvider.Resolve().SaveChanges();
 
@@ -265,14 +279,7 @@ namespace Tiantong.Iot
 
     public void Run()
     {
-      while (true) {
-        try {
-          RunAsync().GetAwaiter().GetResult();
-        } catch (Exception e) {
-          Console.WriteLine(e);
-          Task.Delay(1000).GetAwaiter().GetResult();
-        }
-      }
+      RunAsync().GetAwaiter().GetResult();
     }
 
   }

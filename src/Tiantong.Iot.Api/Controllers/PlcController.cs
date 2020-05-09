@@ -5,7 +5,7 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
-  [Route("/plc")]
+  [Route("/plcs")]
   public class PlcController: BaseController
   {
     private PlcRepository _plcRepository;

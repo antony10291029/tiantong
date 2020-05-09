@@ -53,7 +53,27 @@ namespace Tiantong.Iot.Api
       var plc = Get(id);
 
       if (plc == null) {
-        throw new FailureOperation("plc 不存在");
+        throw new FailureOperation("PLC 不存在");
+      }
+
+      return plc;
+    }
+
+    public Plc Find(int id)
+    {
+      return _db.Plcs
+        .Include(p => p.states)
+          .ThenInclude(s => s.state_http_pushers)
+            .ThenInclude(shp => shp.pusher)
+        .FirstOrDefault(p => p.id == id);
+    }
+
+    public Plc EnsureFind(int id)
+    {
+      var plc = Find(id);
+
+      if (plc == null) {
+        throw new FailureOperation("PLC 不存在");
       }
 
       return plc;

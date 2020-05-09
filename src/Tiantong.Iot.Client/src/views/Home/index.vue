@@ -8,6 +8,7 @@
 <script>
 import { Vue, Component } from 'vue-property-decorator'
 import Navbar from './Navbar/index.vue'
+import axios from '@/providers/axios'
 
 @Component({
   name: 'Home',
@@ -16,7 +17,10 @@ import Navbar from './Navbar/index.vue'
   }
 })
 export default class extends Vue {
-
+  async created () {
+    let response = await axios.post('/plcs/all')
+    console.log(response.data)
+  }
 }
 </script>
 

@@ -14,10 +14,13 @@ namespace Tiantong.Iot.Api
 
     private IRandom _random;
 
-    public AppController(Config config, IRandom random)
+    private PlcManager _plcManager;
+
+    public AppController(Config config, IRandom random, PlcManager plcManager)
     {
       _config = config;
       _random = random;
+      _plcManager = plcManager;
     }
 
     [HttpGet]
@@ -31,13 +34,20 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("data")]
+    public object Data([FromBody] object data)
+    {
+      return data;
+    }
+
+    [HttpPost]
     [Route("test")]
     public object Test()
     {
       var plc = new Plc {
         id = 1,
         name = "test",
-        model = PlcModel.S7200Smart,
+        model = PlcModel.Test,
         host = "192.168.20.10",
         port = 102,
         comment = "test plc comment",
@@ -62,7 +72,7 @@ namespace Tiantong.Iot.Api
                 pusher = new HttpPusher {
                   when_opt = "",
                   when_value = "",
-                  url = "http://localhost:5100/",
+                  url = "http://localhost:5000/",
                   value_key = "heartbeat",
                   data = "{\"plc\": 1}",
                   to_string = false,
@@ -90,7 +100,7 @@ namespace Tiantong.Iot.Api
                 pusher = new HttpPusher {
                   when_opt = "",
                   when_value = "",
-                  url = "http://localhost:5100/",
+                  url = "http://localhost:5000/data",
                   value_key = "scanner",
                   data = "{\"plc\": 1}",
                   to_string = false,
@@ -107,9 +117,18 @@ namespace Tiantong.Iot.Api
         worker.String("扫码器").Set(_random.String(10));
       });
 
-      Task.Run(() => worker.Run());
+      _plcManager.Add(worker);
 
       return SuccessOperation("Plc 运行中");
+    }
+
+    [HttpPost]
+    [Route("test/stop")]
+    public object TestStop()
+    {
+      _plcManager.Stop(1);
+
+      return SuccessOperation("PLC 已停止");
     }
 
   }

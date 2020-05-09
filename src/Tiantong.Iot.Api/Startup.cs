@@ -13,7 +13,9 @@ namespace Tiantong.Iot.Api
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+      services.AddHostedService<PlcManagerService>();
       services.AddSingleton<Config>();
+      services.AddSingleton<PlcManager>();
       services.AddSingleton<IRandom, Random>();
       services.AddDbContext<IotDbContext, IotSqliteDbcontext>();
       services.AddScoped<IMigrator, IotSqliteMigrator>();
