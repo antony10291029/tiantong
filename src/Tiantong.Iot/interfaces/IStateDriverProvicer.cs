@@ -5,5 +5,7 @@ namespace Tiantong.Iot
     IStateDriver Resolve();
 
     void Boot();
+
+    void Stop();
   }
 }

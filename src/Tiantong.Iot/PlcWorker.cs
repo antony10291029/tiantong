@@ -237,19 +237,7 @@ namespace Tiantong.Iot
     public IPlcWorker Start()
     {
       StateDriverProvider.Boot();
-      IntervalManager.Start().WaitAsync()
-        .ContinueWith(task => {
-          try {
-            task.GetAwaiter().GetResult();
-          } catch (Exception e) {
-            Console.WriteLine(e);
-            Task.Delay(1000).GetAwaiter().GetResult();
-            if (!_isStopping) {
-              Start();
-            }
-          }
-        });
-
+      IntervalManager.Start();
       return this;
     }
 
@@ -257,6 +245,7 @@ namespace Tiantong.Iot
     {
       _isStopping = true;
       IntervalManager.Stop();
+      StateDriverProvider.Stop();
       DatabaseProvider.Resolve().SaveChanges();
 
       return this;
@@ -279,7 +268,15 @@ namespace Tiantong.Iot
 
     public void Run()
     {
-      RunAsync().GetAwaiter().GetResult();
+      while (true) {
+        try {
+          RunAsync().GetAwaiter().GetResult();
+        } catch (Exception e) {
+          Console.WriteLine(e.Message);
+          StateDriverProvider.Stop();
+          Task.Delay(1000).GetAwaiter().GetResult();
+        }
+      }
     }
 
   }

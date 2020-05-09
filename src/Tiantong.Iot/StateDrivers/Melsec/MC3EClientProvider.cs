@@ -27,5 +27,10 @@ namespace Tiantong.Iot
     {
       _client.Connect();
     }
+
+    public void Stop()
+    {
+      _client.Close();
+    }
   }
 }

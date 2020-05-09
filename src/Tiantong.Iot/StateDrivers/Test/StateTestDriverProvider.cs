@@ -11,5 +11,10 @@ namespace Tiantong.Iot
     {
 
     }
+
+    public void Stop()
+    {
+
+    }
   }
 }

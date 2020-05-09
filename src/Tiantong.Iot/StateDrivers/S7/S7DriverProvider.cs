@@ -23,5 +23,10 @@ namespace Tiantong.Iot
     }
 
     public abstract void Boot();
+
+    public void Stop()
+    {
+      _client.Close();
+    }
   }
 }

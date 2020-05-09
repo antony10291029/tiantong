@@ -40,7 +40,9 @@ namespace Tiantong.Iot.Api
 
     public Plc[] All()
     {
-      return _db.Plcs.ToArray();
+      return _db.Plcs
+        .OrderBy(p => p.id)
+        .ToArray();
     }
 
     public Plc Get(int id)
