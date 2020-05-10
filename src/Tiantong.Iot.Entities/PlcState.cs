@@ -23,13 +23,13 @@ namespace Tiantong.Iot.Entities
 
     public virtual bool is_heartbeat { get; set; }
 
-    public virtual int heartbeat_interval { get; set; }
+    public virtual int heartbeat_interval { get; set; } = 1000;
 
-    public virtual int heartbeat_max_value { get; set; }
+    public virtual int heartbeat_max_value { get; set; } = 10000;
 
     public virtual bool is_collect { get; set; }
 
-    public virtual int collect_interval { get; set; }
+    public virtual int collect_interval { get; set; } = 10000;
 
     public virtual bool open_log { get; set; }
 
