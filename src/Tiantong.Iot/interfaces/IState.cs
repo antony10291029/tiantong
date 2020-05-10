@@ -4,6 +4,10 @@ namespace Tiantong.Iot
 {
   public interface IState
   {
+    DateTime CurrentValueChangedAt { get; }
+
+    string GetLatestValue(int timeGapMilliseconds = 1500);
+
     IState Collect(int interval = 1000);
 
     IState Heartbeat(int interval = 1000, int maxValue = 10000);

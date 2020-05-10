@@ -6,6 +6,8 @@ namespace Tiantong.Iot
 {
   public abstract class State: IState
   {
+    public DateTime CurrentValueChangedAt { get; set; } = DateTime.Now;
+
     public int _id;
 
     public string _name;
@@ -77,6 +79,8 @@ namespace Tiantong.Iot
 
     public abstract IWatcher When(string opt, string value);
 
+    public abstract string GetLatestValue(int timeGapMilliseconds);
+
   }
 
   public abstract class State<T>: State, IState<T>
@@ -85,7 +89,9 @@ namespace Tiantong.Iot
 
     private List<Func<T, Task>> _sethooks = new List<Func<T, Task>>();
 
-    public T CurrentValue;
+    private T _currentValue = default(T);
+
+    private DateTime _currentValueGetAt = DateTime.MinValue;
 
     public void AddSetHook(Func<T, Task> hook)
     {
@@ -114,14 +120,13 @@ namespace Tiantong.Iot
       return this;
     }
 
-    public override void Watch(Action handler)
+    public override string GetLatestValue(int timeGapMilliseconds = 1500)
     {
-      CreateWatcher().When(_ => true).On(handler);
-    }
-
-    public override void Watch(Action<string> handler)
-    {
-      CreateWatcher().When(_ => true).On(data => handler(data.ToString()));
+      if (_currentValueGetAt.AddMilliseconds(timeGapMilliseconds) < DateTime.Now) {
+        return Get().ToString();
+      } else {
+        return _currentValue.ToString();
+      }
     }
 
     //
@@ -136,6 +141,16 @@ namespace Tiantong.Iot
     }
 
     //
+
+    public override void Watch(Action handler)
+    {
+      CreateWatcher().When(_ => true).On(handler);
+    }
+
+    public override void Watch(Action<string> handler)
+    {
+      CreateWatcher().When(_ => true).On(data => handler(data.ToString()));
+    }
 
     public override IWatcher When(string opt, string value)
     {
@@ -166,7 +181,15 @@ namespace Tiantong.Iot
     public T Get()
     {
       var tasks = new List<Task>();
-      var data = CurrentValue = HandleGet();
+      var data = HandleGet();
+      var now = DateTime.Now;
+
+      if (_currentValue == null || _currentValue.Equals(data)) {
+        CurrentValueChangedAt = now;
+      }
+
+      _currentValue = data;
+      _currentValueGetAt = now;
 
       foreach (var hook in _gethooks) {
         hook(data);
