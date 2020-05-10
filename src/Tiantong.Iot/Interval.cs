@@ -10,7 +10,7 @@ namespace Tiantong.Iot
 
     private int _time = 1;
 
-    private Task _task = Task.Delay(0);
+    private Task _task = Task.CompletedTask;
 
     private Func<CancellationToken, Task> _handler;
 
@@ -35,13 +35,6 @@ namespace Tiantong.Iot
       SetTime(time);
       SetHandler(handler);
       ResolveDelayer();
-    }
-
-    ~Interval()
-    {
-      if (_task != null) {
-        Stop();
-      }
     }
 
     private void ResolveDelayer()

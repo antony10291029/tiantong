@@ -16,6 +16,7 @@ namespace Tiantong.Iot
     public IntervalManager()
     {
       var interval = new Interval();
+      Add(interval);
       interval.SetTime(100).SetHandler(() => {
         foreach (var interval in Intervals.Values) {
           var task = interval.WaitAsync();
@@ -23,13 +24,13 @@ namespace Tiantong.Iot
             try {
               task.GetAwaiter().GetResult();
             } catch (Exception e) {
+              Console.WriteLine(e);
               Stop();
               throw e;
             }
           }
         }
       });
-      Add(interval);
     }
 
     public void Add(Interval interval)
