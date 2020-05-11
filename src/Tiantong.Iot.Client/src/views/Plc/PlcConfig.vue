@@ -52,26 +52,30 @@
         <div class="control is-flex">
           <AsyncButton
             :handler="handleSave"
+            :disabled="!isChanged"
             class="button is-info is-small"
             style="margin-right: 0.5rem"
           >
             保存
           </AsyncButton>
 
-          <a
+          <AsyncButton
+            :handler="handleTest"
+            :disabled="isChanged"
             class="button is-success is-small"
             style="margin-right: 0.5rem"
           >
             连接测试
-          </a>
+          </AsyncButton>
 
           <span class="is-flex-auto"></span>
 
-          <a
+          <AsyncButton
+            :handler="handleDelete"
             class="button is-danger is-light is-small"
           >
             删除
-          </a>
+          </AsyncButton>
         </div>
       </div>
     </template>
@@ -80,7 +84,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'lodash/isEqual'
 import axios from '@/providers/axios'
+import { Plc } from '@/entities'
 
 @Component({
   name: 'PlcDashboard'
@@ -89,18 +96,45 @@ export default class extends Vue {
   @Prop({ required: true })
   plcId!: number
 
-  plc: any
+  plc = new Plc()
+
+  sourceData = new Plc()
+
+  get isChanged () {
+    return !isEqual(this.plc, this.sourceData);
+  }
 
   async getPlc () {
     let response = await axios.post('/plcs/find', {
       plc_id: this.plcId
     })
 
-    this.plc = response.data
+    this.sourceData = response.data
+    this.plc = cloneDeep(this.sourceData)
   }
 
   async handleSave () {
     await axios.post('/plcs/update', this.plc)
+    this.getPlc()
+  }
+
+  async handleTest () {
+    await axios.post('/plcs/workers/test', {
+      plc_id: this.plcId
+    })
+  }
+
+  handleDelete () {
+    this.$confirm({
+      title: '提示',
+      content: '删除后设备将无法恢复',
+      handler: async () => {
+        await axios.post('/plcs/delete', {
+          plc_id: this.plcId
+        })
+        this.$router.push('/plcs')
+      }
+    })
   }
 }
 </script>

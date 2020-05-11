@@ -51,6 +51,20 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("test")]
+    public object Test([FromBody] FindParams param)
+    {
+      var plc = _plcRepository.EnsureFind(param.plc_id);
+      var worker = PlcBuilder.Build(plc);
+      
+      if (worker.Test()) {
+        return SuccessOperation("PLC 连接测试成功");
+      } else {
+        return FailureOperation("PLC 连接测试失败");
+      }
+    }
+
+    [HttpPost]
     [Route("is-running")]
     public object IsRunning([FromBody] FindParams param)
     {

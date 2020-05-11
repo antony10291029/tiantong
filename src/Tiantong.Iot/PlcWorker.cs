@@ -258,16 +258,31 @@ namespace Tiantong.Iot
 
     //
 
-    private void HandleStart()
+    private IPlcWorker HandleStart()
     {
       StateDriverProvider.Boot();
       IntervalManager.Run();
+
+      return this;
     }
 
-    private void HandleStop()
+    private IPlcWorker HandleStop()
     {
       StateDriverProvider.Stop();
       IntervalManager.Stop();
+
+      return this;
+    }
+
+    public bool Test()
+    {
+      try {
+        HandleStart().Stop().WaitAsync();
+
+        return true;
+      } catch {
+        return false;
+      }
     }
 
     // issue:
