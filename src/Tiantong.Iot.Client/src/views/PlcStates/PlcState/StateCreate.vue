@@ -17,10 +17,18 @@
 
     <AsyncButton
       class="button is-info is-small"
+      style="margin-right: 0.5rem"
       :handler="handleSubmit"
     >
       提交
     </AsyncButton>
+
+    <a
+      @click="$router.go(-1)"
+      class="button is-info is-light is-small"
+    >
+      返回
+    </a>
   </div>
 </template>
 

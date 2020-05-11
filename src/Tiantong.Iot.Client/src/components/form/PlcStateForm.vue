@@ -79,7 +79,7 @@
         <label class="label">采集频率</label>
         <div class="control">
           <input
-            v-model="state.collect_interval"
+            v-model.number="state.collect_interval"
             type="text" class="input"
           >
         </div>
@@ -102,7 +102,7 @@
         <label class="label">心跳频率</label>
         <div class="control">
           <input
-            v-model="state.heartbeat_interval"
+            v-model.number="state.heartbeat_interval"
             type="text" class="input"
           >
         </div>
@@ -115,7 +115,7 @@
         <label class="label">心跳最大值</label>
         <div class="control">
           <input
-            v-model="state.heartbeat_max_value"
+            v-model.number="state.heartbeat_max_value"
             type="text" class="input"
           >
         </div>

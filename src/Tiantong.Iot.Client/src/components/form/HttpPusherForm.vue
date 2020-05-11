@@ -75,12 +75,13 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { HttpPusher } from '@/entities'
 
 @Component({
   name: 'PlcStateHttpPusher'
 })
 export default class extends Vue {
   @Prop({ required: true })
-  pusher: any
+  pusher!: HttpPusher
 }
 </script>

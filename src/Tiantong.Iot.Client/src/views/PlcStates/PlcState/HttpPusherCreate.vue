@@ -5,9 +5,16 @@
         <AsyncButton
           :handler="handleSubmit"
           class="button is-info is-small"
+          style="margin-right: 0.5rem"
         >
           提交
         </AsyncButton>
+        <a
+          @click="$emit('close')"
+          class="button is-info is-light is-small"
+        >
+          关闭
+        </a>
       </template>
     </HttpPusherForm>
   </div>
@@ -16,7 +23,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import HttpPusherForm from '@/components/form/HttpPusherForm.vue'
-import { HttpPusher } from '../../entities'
+import { HttpPusher } from '@/entities'
 import axios from '@/providers/axios'
 
 @Component({
