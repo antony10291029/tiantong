@@ -1,6 +1,6 @@
 import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
-import PlcDashboard from './Plc/Dashboard.vue'
+import PlcDashboard from './Plc/Dashboard/index.vue'
 import PlcList from './PlcList/index.vue'
 import PlcState from './PlcState/index.vue'
 import PlcConfig from './Plc/PlcConfig.vue'

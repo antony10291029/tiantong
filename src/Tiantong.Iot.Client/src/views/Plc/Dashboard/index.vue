@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 1.25rem">
-    <div class="is-flex">
+    <div class="is-flex is-vcentered">
       <AsyncButton
         :handler="getDataSource"
         class="button is-info is-light is-small"
@@ -15,22 +15,36 @@
       <PlcRunningButton
         :plcId="plcId"
         :isRunning="isRunning"
-        @change="isRunning = $event"
+        @change="handleRunningChange"
       />
+
+      <span style="width: 0.5rem"></span>
+
+      <Checkbox
+        v-if="isRunning"
+        v-model="isDataWatchOpen"
+      >实时数据</Checkbox>
     </div>
 
     <div style="height: 0.75rem"></div>
 
-    <div class="columns">
+    <div
+      v-if="isRunning"
+      class="columns"
+    >
       <div class="column">
         <PlcStates
           :plcId="plcId"
           :isRunning="isRunning"
+          :isDataWatchOpen="isDataWatchOpen"
         />
       </div>
 
       <div class="column">
-        <PlcLogs :plcId="plcId" :isRunning="isRunning" />
+        <PlcLogs
+          :plcId="plcId"
+          :isRunning="isRunning"
+        />
       </div>
     </div>
   </div>
@@ -57,12 +71,24 @@ export default class extends Vue {
 
   isRunning = false
 
+  isDataWatchOpen = false
+
   async getDataSource () {
     let response = await axios.post('/plcs/workers/is-running', {
       plc_id: this.plcId
     })
 
-    this.isRunning = response.data.is_running
+    this.handleRunningChange(response.data.is_running)
+  }
+
+  handleRunningChange (isRunning: boolean) {
+    if (isRunning === false) {
+      this.isDataWatchOpen = false
+    } else {
+      this.isDataWatchOpen = true
+    }
+
+    this.isRunning = isRunning
   }
 
   created () {

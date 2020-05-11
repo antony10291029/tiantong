@@ -19,7 +19,6 @@
             :plcId="plcId"
             :stateId="state.id"
             :type="state.type"
-            :isRunning="isRunning"
           />
         </tr>
       </tbody>
@@ -43,7 +42,9 @@ export default class extends Vue {
   plcId!: number
 
   @Prop({ required: true })
-  isRunning!: boolean
+  isDataWatchOpen!: boolean
+
+  interval = 0
 
   states: any[] = []
 
@@ -66,11 +67,15 @@ export default class extends Vue {
   }
 
   created () {
-    setInterval(() => {
-      if (this.isRunning) {
+    this.interval = setInterval(() => {
+      if (this.isDataWatchOpen) {
         this.getCurrentVales()
       }
     }, 1000)
+  }
+
+  beforeDestroy () {
+    clearInterval(this.interval)
   }
 }
 </script>

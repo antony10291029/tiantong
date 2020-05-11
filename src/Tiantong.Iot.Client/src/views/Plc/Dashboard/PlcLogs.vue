@@ -29,6 +29,8 @@ export default class extends Vue {
   @Prop({ required: true })
   isRunning!: boolean
 
+  interval = 0
+
   logs: any[] = []
 
   async getLogs () {
@@ -43,11 +45,15 @@ export default class extends Vue {
 
   created () {
     this.getLogs()
-    setInterval(() => {
+    this.interval = setInterval(() => {
       if (this.isRunning) {
         setTimeout(this.getLogs, 1000)
       }
     }, 1000)
+  }
+
+  beforeDestroy () {
+    clearInterval(this.interval)
   }
 
   @Watch('isRunning')

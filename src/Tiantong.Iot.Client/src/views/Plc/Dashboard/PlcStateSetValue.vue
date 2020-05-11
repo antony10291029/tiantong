@@ -1,9 +1,6 @@
 <template>
   <td v-if="!isShow" style="width: 200px;">
-    <a
-      v-if="isRunning"
-      @click="isShow = true"
-    >
+    <a @click="isShow = true">
       写入数据
     </a>
   </td>
@@ -50,9 +47,6 @@ export default class extends Vue {
 
   @Prop({ required: true })
   type!: string
-
-  @Prop({ required: true })
-  isRunning!: boolean
 
   isShow = false
 

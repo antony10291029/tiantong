@@ -261,7 +261,7 @@ namespace Tiantong.Iot
     private IPlcWorker HandleStart()
     {
       StateDriverProvider.Boot();
-      IntervalManager.Run();
+      IntervalManager.Start();
 
       return this;
     }
@@ -293,7 +293,7 @@ namespace Tiantong.Iot
       Task.Run(() => {
         while (!_isStopping) {
           try {
-            HandleStart();
+            HandleStart().Wait();
           } catch (Exception e) {
             Logger.Log(_id, $"运行故障: {e.Message}");
             Console.WriteLine(e.Message);
