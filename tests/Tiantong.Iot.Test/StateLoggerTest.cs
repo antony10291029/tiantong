@@ -25,7 +25,7 @@ namespace Tiantong.Iot.Test
       state.Set(100);
       state.Get();
       Task.Delay(10).GetAwaiter().GetResult();
-      logger.HandleStateLogs();
+      logger.HandleLog();
 
       var count = db.PlcStateLogs.Where(item => item.operation == "get").Count();
       Assert.AreEqual(1, count);

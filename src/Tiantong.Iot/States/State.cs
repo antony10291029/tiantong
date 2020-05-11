@@ -79,7 +79,7 @@ namespace Tiantong.Iot
 
     public abstract IWatcher When(string opt, string value);
 
-    public abstract string GetLatestValue(int timeGapMilliseconds);
+    public abstract string GetCurrentValue(int timeGapMilliseconds);
 
   }
 
@@ -120,12 +120,12 @@ namespace Tiantong.Iot
       return this;
     }
 
-    public override string GetLatestValue(int timeGapMilliseconds = 1500)
+    public override string GetCurrentValue(int timeGapMilliseconds = 1000)
     {
       if (_currentValueGetAt.AddMilliseconds(timeGapMilliseconds) < DateTime.Now) {
-        return Get().ToString();
+        return Get()?.ToString();
       } else {
-        return _currentValue.ToString();
+        return _currentValue?.ToString();
       }
     }
 
@@ -183,10 +183,6 @@ namespace Tiantong.Iot
       var tasks = new List<Task>();
       var data = HandleGet();
       var now = DateTime.Now;
-
-      if (_currentValue == null || _currentValue.Equals(data)) {
-        CurrentValueChangedAt = now;
-      }
 
       _currentValue = data;
       _currentValueGetAt = now;

@@ -12,11 +12,7 @@ namespace Tiantong.Iot.Entities
 
     public int plc_id { get; set; }
 
-    public string type { get; set; }
-
-    public string operation { get; set; }
-
-    public string detail { get; set; }
+    public string message { get; set; }
 
     public DateTime created_at { get; set; } = DateTime.Now;
   }

@@ -94,7 +94,7 @@ namespace Tiantong.Iot.Api
                   url = "http://localhost:5000/data",
                   when_opt = "",
                   when_value = "",
-                  value_key = "field",
+                  value_key = "value",
                   data = "{\"field\": 1}",
                   to_string = false,
                 }

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
@@ -18,16 +20,16 @@ namespace Tiantong.Iot.Api
       _plcRepository = plcRepository;
     }
 
-    public class RunParams
+    public class FindParams
     {
-      public int id { get; set; }
+      public int plc_id { get; set; }
     }
 
     [HttpPost]
     [Route("run")]
-    public object Run([FromBody] RunParams param)
+    public object Run([FromBody] FindParams param)
     {
-      var plc = _plcRepository.EnsureFind(param.id);
+      var plc = _plcRepository.EnsureFind(param.plc_id);
       var worker = PlcBuilder.Build(plc);
 
       if (_plcManager.Run(worker)) {
@@ -39,13 +41,72 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("stop")]
-    public object Stop([FromBody] RunParams param)
+    public object Stop([FromBody] FindParams param)
     {
-      if (_plcManager.Stop(param.id)) {
+      if (_plcManager.Stop(param.plc_id)) {
         return SuccessOperation("PLC 停止运行");
       } else {
         return FailureOperation("PLC 未运行");
       }
+    }
+
+    [HttpPost]
+    [Route("is-running")]
+    public object IsRunning([FromBody] FindParams param)
+    {
+      try {
+        _plcManager.Get(param.plc_id);
+
+        return new { is_running = true };
+      } catch {
+        return new { is_running = false };
+      }
+    }
+
+    [HttpPost]
+    [Route("current-values")]
+    public Dictionary<string, string> GetCurrentValue([FromBody] FindParams param)
+    {
+      var worker = _plcManager.Get(param.plc_id);
+
+      return worker.GetCurrentStateValues();
+    }
+
+    public abstract class SetValue<T>
+    {
+      public int plc_id { get; set; }
+
+      public int state_id { get; set; }
+
+      public T value { get; set; }
+    }
+
+    public class SetUShortValueParams: SetValue<ushort>
+    {
+
+    }
+
+    [HttpPost]
+    [Route("states/uint16/set")]
+    public object SetUShortValue([FromBody] SetUShortValueParams param)
+    {
+      _plcManager.Get(param.plc_id).UShort(param.state_id).Set(param.value);
+
+      return SuccessOperation("数据已写入");
+    }
+
+    public class SetStringValueParams: SetValue<string>
+    {
+
+    }
+
+    [HttpPost]
+    [Route("states/string/set")]
+    public object SetStringValue([FromBody] SetStringValueParams param)
+    {
+      _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);
+
+      return SuccessOperation("数据已写入");
     }
 
   }

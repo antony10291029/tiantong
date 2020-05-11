@@ -9,8 +9,6 @@ namespace Tiantong.Iot.Entities
 
     public DbSet<PlcLog> PlcLogs { get; set; }
 
-    public DbSet<PlcError> PlcErrors { get; set; }
-
     public DbSet<PlcState> PlcStates { get; set; }
 
     public DbSet<PlcStateLog> PlcStateLogs { get; set; }

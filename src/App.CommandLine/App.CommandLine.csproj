@@ -9,5 +9,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />
   </ItemGroup>
 </Project>

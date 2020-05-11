@@ -1,10 +1,15 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Tiantong.Iot
 {
   public interface IPlcWorker
   {
+    IPlcWorkerLogger Logger { get; }
+
+    Dictionary<string, string> GetCurrentStateValues();
+
     IPlcWorker Config(Action<IPlcWorker> configer);
 
     IPlcWorker Id(int id);

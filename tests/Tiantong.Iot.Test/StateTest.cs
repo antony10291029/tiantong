@@ -30,20 +30,6 @@ namespace Tiantong.Iot.Test
       Assert.AreEqual(value, result);
     }
 
-    [TestCase]
-    public void TestGetLatestValue()
-    {
-      var state = ResolveState<StateUInt16, ushort>();
-      var now = DateTime.Now;
-      state.Set(1000);
-      Assert.AreEqual(state.GetLatestValue(), "1000");
-      Assert.IsTrue(state.UpdatedAt > now);
-      Assert.IsTrue(state.UpdatedAt < DateTime.Now);
-      now = DateTime.Now;
-      state.Get();
-      Assert.IsTrue(state.UpdatedAt < now);
-    }
-
     [TestCase(0)]
     [TestCase(10)]
     [TestCase(1000)]

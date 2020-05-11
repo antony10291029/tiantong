@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Linq;
 using Tiantong.Iot.Entities;
@@ -13,12 +14,14 @@ namespace Tiantong.Iot.Test
     {
       var plc = new PlcWorker();
 
-      plc.Config(_ => {});
-      plc.Define("hb").Int("D1", state => state.Collect(0));
+      plc.Config();
+      plc.Define("hb").Int("D1", state => state.Collect(1));
       plc.Int("hb").Set(1);
 
       try {
-        plc.Start().WaitAsync().AssertFinishIn(1);
+        plc.Start();
+        Task.Delay(10).GetAwaiter().GetResult(); // issue
+        plc.WaitAsync().AssertFinishIn(10);
         Assert.Fail("except to throw exception when Plc.TryWait is timeout");
       } catch {}
     }

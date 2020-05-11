@@ -21,7 +21,7 @@ namespace Tiantong.Iot.Test
 
       listener.Close();
       // listener.Wait();
-      client.HandleLogs();
+      client._logger.HandleLog();
       Assert.AreEqual(2, db.HttpPusherLogs.Count());
     }
 
@@ -41,7 +41,7 @@ namespace Tiantong.Iot.Test
         client.PostAsync(0, url, "test").GetAwaiter().GetResult();
       } catch {}
 
-      client.HandleLogs();
+      client._logger.HandleLog();
       Assert.AreEqual(2, db.HttpPusherErrors.Count());
     }
   }

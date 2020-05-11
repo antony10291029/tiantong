@@ -6,7 +6,7 @@ namespace Tiantong.Iot
   {
     DateTime CurrentValueChangedAt { get; }
 
-    string GetLatestValue(int timeGapMilliseconds = 1500);
+    string GetCurrentValue(int timeGapMilliseconds = 1500);
 
     IState Collect(int interval = 1000);
 

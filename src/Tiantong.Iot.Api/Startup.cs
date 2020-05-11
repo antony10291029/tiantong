@@ -21,6 +21,7 @@ namespace Tiantong.Iot.Api
       services.AddScoped<IMigrator, IotSqliteMigrator>();
       services.AddScoped<HttpPusherRepository>();
       services.AddScoped<PlcRepository>();
+      services.AddScoped<PlcLogRepository>();
       services.AddScoped<PlcStateRepository>();
       services.AddScoped<PlcStateHttpPusherRepository>();
     }

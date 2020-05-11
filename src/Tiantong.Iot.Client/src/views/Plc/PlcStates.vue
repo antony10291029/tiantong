@@ -3,19 +3,24 @@
     class="is-flex-auto"
     :handler="getStates"
   >
-    <table class="table is-fullwidth is-bordered">
+    <table class="table is-centered is-fullwidth is-bordered">
       <thead>
         <th>数据名</th>
         <th>地址</th>
         <th>数据</th>
-        <th>时间</th>
+        <th>操作</th>
       </thead>
       <tbody>
         <tr v-for="state in states" :key="state.id">
           <td>{{state.name}}</td>
           <td>{{state.address}}</td>
-          <td></td>
-          <td></td>
+          <td>{{currentValues[state.id]}}</td>
+          <PlcStateSetValue
+            :plcId="plcId"
+            :stateId="state.id"
+            :type="state.type"
+            :isRunning="isRunning"
+          />
         </tr>
       </tbody>
     </table>
@@ -25,15 +30,24 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import axios from '@/providers/axios'
+import PlcStateSetValue from './PlcStateSetValue.vue'
 
 @Component({
-  name: 'PlcDashboardStates'
+  name: 'PlcDashboardStates',
+  components: {
+    PlcStateSetValue
+  }
 })
 export default class extends Vue {
   @Prop({ required: true })
   plcId!: number
 
+  @Prop({ required: true })
+  isRunning!: boolean
+
   states: any[] = []
+
+  currentValues: { [ key: string ]: string } = {}
 
   async getStates () {
     let response = await axios.post('plcs/states/all', {
@@ -41,6 +55,22 @@ export default class extends Vue {
     })
 
     this.states = response.data
+  }
+
+  async getCurrentVales () {
+    let response = await axios.post('/plcs/workers/current-values', {
+      plc_id: this.plcId
+    })
+
+    this.currentValues = response.data
+  }
+
+  created () {
+    setInterval(() => {
+      if (this.isRunning) {
+        this.getCurrentVales()
+      }
+    }, 1000)
   }
 }
 </script>

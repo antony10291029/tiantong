@@ -91,6 +91,7 @@ namespace Tiantong.Iot
         try {
           await Task.Delay(_time, _tokenSource.Token);
         } catch (TaskCanceledException) {
+          await _handler(_tokenSource.Token);
         } catch (Exception e) {
           Console.WriteLine(e);
           throw e;

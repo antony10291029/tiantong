@@ -17,24 +17,14 @@ namespace Tiantong.Iot
 
     private IotDbContext _db;
 
-    private List<HttpPusherLog> _logs = new List<HttpPusherLog>();
-
-    private List<HttpPusherError> _errorLogs = new List<HttpPusherError>();
-
-    private readonly object _logLock = new object();
-
-    private readonly object _errorLogLock = new object();
+    public HttpPusherLogger _logger;
 
     public WatcherHttpClient(IotDbContext db, IntervalManager intervalManager)
     {
       _db = db;
       _client.DefaultRequestHeaders
         .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-      var interval = new Interval();
-      interval.SetTime(500);
-      interval.SetHandler(HandleLogs);
-      intervalManager.Add(interval);
+      _logger = new HttpPusherLogger(db, intervalManager);
     }
 
     public void Timeout(int mileseconds)
@@ -49,49 +39,24 @@ namespace Tiantong.Iot
         var response = await _client.PostAsync(uri, content);
         var statusCode = response.StatusCode;
         var responseContent = await response.Content.ReadAsStringAsync();
-        var log = new HttpPusherLog {
+        _logger.Log(new HttpPusherLog {
           pusher_id = id,
           request = data,
           response = responseContent,
           status_code = response.StatusCode.ToString()
-        };
-        lock (_logLock) {
-          _logs.Add(log);
-        }
+        });
 
         Console.WriteLine($"success to send http watcher, uri: {uri}, request: {data}, response: {responseContent}, status: {statusCode}");
       } catch (Exception e) {
-        var errorLog = new HttpPusherError {
+        _logger.LogError(new HttpPusherError {
           pusher_id = id,
           error = e.Message,
           detail = e.Source,
-        };
-        lock (_errorLogLock) {
-          _errorLogs.Add(errorLog);
-        }
+        });
+
         Console.WriteLine($"fail to send http watcher, error: {e.Message}, source: {e.Source}");
         throw e;
       }
-    }
-
-    public void HandleLogs()
-    {
-      HttpPusherLog[] logs;
-      HttpPusherError[] errorLogs;
-
-      lock (_logLock) {
-        logs = _logs.ToArray();
-        _logs.Clear();
-      }
-
-      lock (_errorLogs) {
-        errorLogs = _errorLogs.ToArray();
-        _errorLogs.Clear();
-      }
-
-      _db.AddRange(logs);
-      _db.AddRange(errorLogs);
-      _db.SaveChanges();
     }
 
   }

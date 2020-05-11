@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using Tiantong.Iot.Entities;
@@ -16,6 +17,8 @@ namespace Tiantong.Iot
 
     public int _port;
 
+    public IPlcWorkerLogger Logger { get; private set; }
+
     internal IStatePlugin StateLogger { get; private set; }
 
     internal IWatcherProvider WatcherProvider { get; private set; }
@@ -32,9 +35,11 @@ namespace Tiantong.Iot
 
     //
 
-    public IPlcWorker Config(Action<IPlcWorker> configer)
+    public IPlcWorker Config(Action<IPlcWorker> configer = null)
     {
-      configer(this);
+      if (configer != null) {
+        configer(this);
+      }
 
       return Build();
     }
@@ -86,6 +91,11 @@ namespace Tiantong.Iot
       return new StateLogger(_id, IntervalManager, DatabaseProvider.Resolve());
     }
 
+    public virtual PlcWorkerLogger ResolvePlcWorkerLogger()
+    {
+      return new PlcWorkerLogger(DatabaseProvider.Resolve());
+    }
+
     public virtual DatabaseProvider ResolveDatabaseProvider()
     {
       return new DatabaseProvider();
@@ -124,6 +134,7 @@ namespace Tiantong.Iot
       DatabaseProvider = ResolveDatabaseProvider();
       StateDriverProvider = ResolveStateDriverProvider();
       WatcherProvider = ResolveWatcherProvider();
+      Logger = ResolvePlcWorkerLogger();
       StateLogger = ResolveStateLogger();
       StateManager = ResolveStateManager();
 
@@ -234,6 +245,19 @@ namespace Tiantong.Iot
 
     //
 
+    public Dictionary<string, string> GetCurrentStateValues()
+    {
+      var dict = new Dictionary<string, string>();
+
+      foreach (var pair in StateManager.StatesById) {
+        dict.Add(pair.Key.ToString(), pair.Value.GetCurrentValue());
+      }
+
+      return dict;
+    }
+
+    //
+
     private void HandleStart()
     {
       StateDriverProvider.Boot();
@@ -246,15 +270,20 @@ namespace Tiantong.Iot
       IntervalManager.Stop();
     }
 
+    // issue:
+    //   无法保证在返回 this 之前处理好 task
     public IPlcWorker Start()
     {
+      Logger.Log(_id, "设备开始运行");
       Task.Run(() => {
         while (!_isStopping) {
           try {
             HandleStart();
           } catch (Exception e) {
+            Logger.Log(_id, $"运行故障: {e.Message}");
             Console.WriteLine(e.Message);
             HandleStop();
+            Logger.Log(_id, "正在重启设备");
             Task.Delay(1000).GetAwaiter().GetResult();
           }
         }
@@ -265,10 +294,10 @@ namespace Tiantong.Iot
 
     public IPlcWorker Stop()
     {
+      Logger.Log(_id, "设备已停止运行");
       _isStopping = true;
       IntervalManager.Stop();
       StateDriverProvider.Stop();
-      DatabaseProvider.Resolve().SaveChanges();
 
       return this;
     }

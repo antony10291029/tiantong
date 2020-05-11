@@ -49,24 +49,7 @@ namespace Tiantong.Iot.DB.Sqlite.Test
       db.PlcLogs.Add(new PlcLog {
         id = 0,
         plc_id = 0,
-        type = "warning",
-        operation = "run",
-        detail = "detail",
-      });
-
-      db.SaveChanges();
-    }
-
-    [Test]
-    public void TestPlcError()
-    {
-      var db = GetDb();
-
-      db.PlcErrors.Add(new PlcError {
-        id = 0,
-        plc_id = 0,
-        error = "timeout",
-        detail = "timeout"
+        message = "message",
       });
 
       db.SaveChanges();
@@ -148,6 +131,7 @@ namespace Tiantong.Iot.DB.Sqlite.Test
 
       db.HttpPushers.Add(new HttpPusher {
         id = 0,
+        name = "name",
         when_opt = "!=",
         when_value = "value",
         url = "localhost",
