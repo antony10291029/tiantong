@@ -2,24 +2,37 @@
   <div>
     <div class="tabs" style="margin-bottom: 0">
       <ul>
-        <li class="is-active"><a>数据点</a></li>
-        <li><a>Music</a></li>
-        <li><a>Videos</a></li>
-        <li><a>Documents</a></li>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/dashboard`"
+        >
+          <a>运行状态</a>
+        </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/config`"
+        >
+          <a>设备信息</a>
+        </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/states`"
+        >
+          <a>数据点</a>
+        </router-link>
       </ul>
     </div>
 
     <router-view
       :plcId="plcId"
       :baseURL="`${baseURL}/${plcId}`"
-      style="padding: 1.25rem"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import axios from '../../providers/axios'
+import axios from '@/providers/axios'
 
 @Component({
   name: 'Plc'

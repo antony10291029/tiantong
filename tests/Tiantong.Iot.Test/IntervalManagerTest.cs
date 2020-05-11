@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Threading;
 using NUnit.Framework;
@@ -69,7 +70,9 @@ namespace Tiantong.Iot.Test
       manager.Add(new Interval(() => throw new Exception("ex"), 0));
 
       try {
-        manager.Start().WaitAsync().AssertFinishIn(110);
+        manager.Start();
+        Task.Delay(10).GetAwaiter().GetResult();
+        manager.WaitAsync().AssertFinishIn(110);
         Assert.Fail("except throw exception from interval");
       } catch (Exception ex) {
         Assert.AreEqual(ex.Message, "ex");

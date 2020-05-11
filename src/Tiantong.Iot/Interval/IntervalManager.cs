@@ -63,6 +63,8 @@ namespace Tiantong.Iot
       return false;
     }
 
+    // issue
+    //   start 结束时未能及时生成 task
     public IntervalManager Start()
     {
       foreach (var interval in Intervals.Values) {

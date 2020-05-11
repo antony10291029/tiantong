@@ -28,8 +28,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import axios from '@/providers/axios'
 import PlcStateForm from '@/components/form/PlcStateForm.vue'
+import axios from '@/providers/axios'
 
 @Component({
   name: 'StateUpdate',

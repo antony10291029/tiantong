@@ -98,6 +98,8 @@ namespace Tiantong.Iot
       }
     }
 
+    // issue
+    //   start 结束时未能及时生成 task
     public Interval Start()
     {
       _tokenSource = new CancellationTokenSource();

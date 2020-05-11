@@ -1,7 +1,9 @@
 import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
+import PlcDashboard from './Plc/Dashboard.vue'
 import PlcList from './PlcList/index.vue'
 import PlcState from './PlcState/index.vue'
+import PlcConfig from './Plc/PlcConfig.vue'
 import PlcStates from './PlcStates/index.vue'
 import PlcStateCreate from './PlcState/StateCreate.vue'
 import PlcStateDetail from './PlcState/StateDetail.vue'
@@ -23,10 +25,20 @@ export default [
           {
             path: ':plcId',
             name: 'Plc',
-            redirect: '/plcs/:plcId/states',
+            redirect: '/plcs/:plcId/dashboard',
             props: (route: any) => ({ plcId: +route.params.plcId }),
             component: Plc,
             children: [
+              {
+                path: 'dashboard',
+                name: 'PlcDashboard',
+                component: PlcDashboard
+              },
+              {
+                path: 'config',
+                name: 'PlcConfig',
+                component: PlcConfig
+              },
               {
                 path: 'states',
                 name: 'PlcStates',

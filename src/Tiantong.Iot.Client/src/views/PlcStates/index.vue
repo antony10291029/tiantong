@@ -1,5 +1,8 @@
 <template>
-  <AsyncLoader :handler="getStates">
+  <AsyncLoader
+    :handler="getStates"
+    style="padding: 1.25rem"
+  >
     <div class="is-flex">
       <div style="min-width: 400px; max-width: 400px">
         <table class="table is-bordered is-fullwidth is-nowrap is-hoverable">

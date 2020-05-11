@@ -15,12 +15,12 @@
 
     <div style="height: 0.75rem"></div>
 
-    <AsyncLoader
+    <AsyncButton
       class="button is-info is-small"
-      @click="handleSubmit"
+      :handler="handleSubmit"
     >
       提交
-    </AsyncLoader>
+    </AsyncButton>
   </div>
 </template>
 

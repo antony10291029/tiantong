@@ -76,6 +76,29 @@
         class="field"
         style="width: 320px"
       >
+        <label class="label">采集频率</label>
+        <div class="control">
+          <input
+            v-model="state.collect_interval"
+            type="text" class="input"
+          >
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label is-flex">
+          <Checkbox v-model="state.is_collect">
+            开启数据采集
+          </Checkbox>
+        </label>
+      </div>
+    </div>
+
+    <div style="padding: 1.25rem">
+      <div
+        class="field"
+        style="width: 320px"
+      >
         <label class="label">心跳频率</label>
         <div class="control">
           <input
@@ -102,29 +125,6 @@
         <label class="label is-flex">
           <Checkbox v-model="state.is_heartbeat">
             开启心跳
-          </Checkbox>
-        </label>
-      </div>
-    </div>
-
-    <div style="padding: 1.25rem">
-      <div
-        class="field"
-        style="width: 320px"
-      >
-        <label class="label">采集频率</label>
-        <div class="control">
-          <input
-            v-model="state.collect_interval"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label is-flex">
-          <Checkbox v-model="state.is_collect">
-            开启数据采集
           </Checkbox>
         </label>
       </div>
