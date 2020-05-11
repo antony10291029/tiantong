@@ -4,7 +4,7 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
-  public class StateLogger : IStatePlugin
+  public class StateLogger : Logger, IStatePlugin
   {
     private IotDbContext _db;
 
@@ -14,17 +14,13 @@ namespace Tiantong.Iot
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
-    public StateLogger(int plcId, IntervalManager manager, IotDbContext dbContext)
+    public StateLogger(int plcId, IntervalManager manager, IotDbContext dbContext): base(manager)
     {
       _plcId = plcId;
       _db = dbContext;
-
-      manager.Add(Interval);
-      Interval.SetTime(500);
-      Interval.SetHandler(HandleStateLogs);
     }
 
-    public void HandleStateLogs()
+    public override void HandleLog()
     {
       PlcStateLog[] logs;
 
