@@ -16,6 +16,10 @@ namespace Tiantong.Iot
 
     public int _length;
 
+    public bool _isReadLogOn = false;
+
+    public bool _isWriteLogOn = false;
+
     public IStateDriver _driver;
 
     public Interval _collectInterval;
@@ -61,6 +65,20 @@ namespace Tiantong.Iot
     public IState Length(int length)
     {
       _length = length;
+
+      return this;
+    }
+
+    public IState IsReadLogOn(bool flag)
+    {
+      _isReadLogOn = flag;
+
+      return this;
+    }
+
+    public IState IsWriteLogOn(bool flag)
+    {
+      _isWriteLogOn = flag;
 
       return this;
     }

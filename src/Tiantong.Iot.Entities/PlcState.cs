@@ -31,7 +31,9 @@ namespace Tiantong.Iot.Entities
 
     public virtual int collect_interval { get; set; } = 10000;
 
-    public virtual bool open_log { get; set; }
+    public virtual bool is_read_log_on { get; set; }
+
+    public virtual bool is_write_log_on { get; set; }
 
     [ForeignKey("state_id")]
     public virtual List<PlcStateHttpPusher> state_http_pushers { get; set; }

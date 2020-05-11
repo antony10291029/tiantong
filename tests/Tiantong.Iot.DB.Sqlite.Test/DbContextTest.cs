@@ -72,7 +72,8 @@ namespace Tiantong.Iot.DB.Sqlite.Test
         heartbeat_max_value = 1000,
         is_collect = true,
         collect_interval = 1000,
-        open_log = true
+        is_read_log_on = true,
+        is_write_log_on = true,
       });
 
       db.SaveChanges();

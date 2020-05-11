@@ -20,6 +20,10 @@ namespace Tiantong.Iot
 
     IState Length(int length);
 
+    IState IsReadLogOn(bool flag);
+
+    IState IsWriteLogOn(bool flag);
+
     IState Build();
 
     IState Use(IStatePlugin plugin);

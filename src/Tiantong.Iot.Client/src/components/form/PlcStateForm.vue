@@ -61,8 +61,15 @@
 
       <div class="field">
         <label class="label">
-          <Checkbox v-model="state.open_log">
-            读写日志
+          <Checkbox v-model="state.is_write_log_on">
+            写入日志
+          </Checkbox>
+        </label>
+      </div>
+      <div class="field">
+        <label class="label">
+          <Checkbox v-model="state.is_read_log_on">
+            读取日志
           </Checkbox>
         </label>
       </div>

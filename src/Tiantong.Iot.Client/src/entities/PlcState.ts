@@ -10,7 +10,8 @@ export class PlcState {
   heartbeat_max_value: number = 1000
   is_collect: boolean = false
   collect_interval: number = 1000
-  open_log: boolean = false
+  is_read_log_on: boolean = false
+  is_write_log_on: boolean = false
 }
 
 export enum PlcStateType {

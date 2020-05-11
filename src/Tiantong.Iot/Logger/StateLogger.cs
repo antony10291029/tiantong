@@ -34,31 +34,35 @@ namespace Tiantong.Iot
 
     public void Install<T>(State<T> state)
     {
-      state.AddGetHook(value => {
-        var log = new PlcStateLog {
-          plc_id = _plcId,
-          state_id = state._id,
-          operation = "get",
-          value = JsonSerializer.Serialize(value),
-        };
+      if (state._isReadLogOn) {
+        state.AddGetHook(value => {
+          var log = new PlcStateLog {
+            plc_id = _plcId,
+            state_id = state._id,
+            operation = "get",
+            value = JsonSerializer.Serialize(value),
+          };
 
-        lock (_stateLogs) {
-          _stateLogs.Add(log);
-        }
-      });
+          lock (_stateLogs) {
+            _stateLogs.Add(log);
+          }
+        });
+      }
 
-      state.AddSetHook(value => {
-        var log = new PlcStateLog {
-          plc_id = _plcId,
-          state_id = state._id,
-          operation = "set",
-          value = JsonSerializer.Serialize(value),
-        };
+      if (state._isWriteLogOn) {
+        state.AddSetHook(value => {
+          var log = new PlcStateLog {
+            plc_id = _plcId,
+            state_id = state._id,
+            operation = "set",
+            value = JsonSerializer.Serialize(value),
+          };
 
-        lock (_stateLogs) {
-          _stateLogs.Add(log);
-        }
-      });
+          lock (_stateLogs) {
+            _stateLogs.Add(log);
+          }
+        });
+      }
     }
   }
 }
