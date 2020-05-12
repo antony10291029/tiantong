@@ -23,6 +23,8 @@ namespace Tiantong.Iot.Api
       services.AddScoped<PlcRepository>();
       services.AddScoped<PlcLogRepository>();
       services.AddScoped<PlcStateRepository>();
+      services.AddScoped<PlcStateLogRepository>();
+      services.AddScoped<PlcStateErrorRepository>();
       services.AddScoped<PlcStateHttpPusherRepository>();
     }
 

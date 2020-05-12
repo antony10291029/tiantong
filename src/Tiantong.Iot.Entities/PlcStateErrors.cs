@@ -12,9 +12,7 @@ namespace Tiantong.Iot.Entities
 
     public virtual int state_id { get; set; }
 
-    public virtual string error { get; set; }
-
-    public virtual string detail { get; set; }
+    public virtual string message { get; set; }
 
     public virtual DateTime created_at { get; set; } = DateTime.Now;
   }

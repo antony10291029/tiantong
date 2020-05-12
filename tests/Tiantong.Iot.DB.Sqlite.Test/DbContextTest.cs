@@ -104,8 +104,7 @@ namespace Tiantong.Iot.DB.Sqlite.Test
         id = 0,
         plc_id = 0,
         state_id = 0,
-        error = "error",
-        detail = "detail",
+        message = "detail",
       });
 
       db.SaveChanges();

@@ -20,6 +20,12 @@
         >
           <a>数据点</a>
         </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/state-logs`"
+        >
+          <a>读写记录</a>
+        </router-link>
       </ul>
     </div>
 

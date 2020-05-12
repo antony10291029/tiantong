@@ -2,6 +2,7 @@ import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
 import PlcCreate from './Plc/PlcCreate.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
+import PlcStateLogs from './Plc/StateLogs/index.vue'
 import PlcList from './PlcList/index.vue'
 import PlcConfig from './Plc/PlcConfig.vue'
 import PlcStates from './PlcStates/index.vue'
@@ -46,6 +47,11 @@ export default [
                 component: PlcConfig
               },
               {
+                path: 'state-logs',
+                name: 'PlcStateLogs',
+                component: PlcStateLogs
+              },
+              {
                 path: 'states',
                 name: 'PlcStates',
                 component: PlcStates,
@@ -70,7 +76,7 @@ export default [
                         path: 'http-posters',
                         name: 'PlcStateHttpPushers',
                         component: PlcStateHttpPushers
-                      }
+                      },
                     ]
                   },
                 ]

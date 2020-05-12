@@ -23,7 +23,6 @@ namespace Tiantong.Iot
     public override void HandleLog()
     {
       PlcStateLog[] logs;
-
       lock (_stateLogs) {
         logs = _stateLogs.ToArray();
         _stateLogs.Clear();

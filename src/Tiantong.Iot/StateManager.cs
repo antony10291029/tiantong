@@ -57,7 +57,7 @@ namespace Tiantong.Iot
     }
 
 
-    private T ResolveState<T, U>(string address, int length = 0) where T : State<U>, new()
+    private void ResolveState<T, U>(Action<T> builder, string address, int length = 0) where T : State<U>, new()
     {
       var state = new T() {
         _intervalManager = _intervalManager,
@@ -65,41 +65,33 @@ namespace Tiantong.Iot
         _driver = _stateDriverProvider.Resolve(),
       };
 
+      builder(state);
+
       Add(
         state.Id(_id).Name(_name)
         .Address(address).Length(length)
-        .Use(_stateLogger)
+        .Use(_stateLogger).Build()
       );
-
-      return state;
     }
 
     public void Bool(string address, Action<IState<bool>> builder)
     {
-      var state = ResolveState<StateBool, bool>(address);
-      builder(state);
-      state.Build();
+      ResolveState<StateBool, bool>(builder, address);
     }
 
     public void UInt16(string address, Action<IState<ushort>> builder)
     {
-      var state = ResolveState<StateUInt16, ushort>(address);
-      builder(state);
-      state.Build();
+      ResolveState<StateUInt16, ushort>(builder, address);
     }
 
     public void Int32(string address, Action<IState<int>> builder)
     {
-      var state = ResolveState<StateInt32, int>(address);
-      builder(state);
-      state.Build();
+      ResolveState<StateInt32, int>(builder, address);
     }
 
     public void String(string address, int length, Action<IState<string>> builder)
     {
-      var state = ResolveState<StateString, string>(address, length);
-      builder(state);
-      state.Build();
+      ResolveState<StateString, string>(builder, address, length);
     }
 
     public void UShort(string address, Action<IState<ushort>> builder)
