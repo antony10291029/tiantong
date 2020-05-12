@@ -104,6 +104,8 @@ namespace Tiantong.Iot.DB.Sqlite.Test
         id = 0,
         plc_id = 0,
         state_id = 0,
+        operation = StateOperation.Read,
+        value = "1",
         message = "detail",
       });
 
@@ -167,8 +169,7 @@ namespace Tiantong.Iot.DB.Sqlite.Test
       db.HttpPusherErrors.Add(new HttpPusherError {
         id = 0,
         pusher_id = 0,
-        error = "error",
-        detail = "detail",
+        message = "error",
       });
 
       db.SaveChanges();

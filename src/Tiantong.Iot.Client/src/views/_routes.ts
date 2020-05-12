@@ -11,6 +11,8 @@ import PlcState from './PlcStates/PlcState/index.vue'
 import PlcStateCreate from './PlcStates/PlcState/StateCreate.vue'
 import PlcStateDetail from './PlcStates/PlcState/StateDetail.vue'
 import PlcStateHttpPushers from './PlcStates/PlcState/HttpPushers.vue'
+import HttpPusherLogs from './Plc/HttpPusherLogs/index.vue'
+import HttpPusherErrors from './Plc/HttpPusherErrors/index.vue'
 import NotFound from './_public/NotFound.vue'
 
 export default [
@@ -56,7 +58,17 @@ export default [
                 path: 'state-errors',
                 name: 'PlcStateErrors',
                 component: PlcStateErrors
-              }, 
+              },
+              {
+                path: 'http-pusher-logs',
+                name: 'PlcHttpPusherLogs',
+                component: HttpPusherLogs
+              },
+              {
+                path: 'http-pusher-errors',
+                name: 'PlcHttpPusherErrors',
+                component: HttpPusherErrors
+              },
               {
                 path: 'states',
                 name: 'PlcStates',

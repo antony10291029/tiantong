@@ -45,6 +45,35 @@ namespace Tiantong.Iot.Api
         .ToArray();
     }
 
+    public HttpPusher[] AllHttpPushers(int plcId)
+    {
+      System.Console.WriteLine(plcId);
+
+      return _db.PlcStates
+        .Include(s => s.state_http_pushers)
+          .ThenInclude(shp => shp.pusher)
+        .Where(s => s.plc_id == plcId)
+        .ToArray()
+        .SelectMany(s => s.http_pushers.Select(p => p))
+        .ToArray();
+    }
+
+    public Pagination<HttpPusherLog> PaginateHttpPusherLogs(int[] ids, int page, int pageSize)
+    {
+      return _db.HttpPusherLogs
+        .Where(hp => ids.Contains(hp.pusher_id))
+        .OrderByDescending(hp => hp.id)
+        .Paginate(page, pageSize);
+    }
+
+    public Pagination<HttpPusherError> PaginateHttpPusherErrors(int[] ids, int page, int pageSize)
+    {
+      return _db.HttpPusherErrors
+        .Where(hp => ids.Contains(hp.pusher_id))
+        .OrderByDescending(hp => hp.id)
+        .Paginate(page, pageSize);
+    }
+
     public Plc Get(int id)
     {
       return _db.Plcs.FirstOrDefault(p => p.id == id);

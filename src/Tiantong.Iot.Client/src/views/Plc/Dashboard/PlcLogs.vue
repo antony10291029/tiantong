@@ -40,8 +40,11 @@ export default class extends Vue {
   interval = 0
 
   logs = {
-    page: 0,
-    pageSize: 10,
+    meta: {
+      page: 0,
+      pageSize: 10,
+      total: 0
+    },
     data: [] as PlcLog[]
   }
 

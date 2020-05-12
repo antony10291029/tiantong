@@ -64,5 +64,41 @@ namespace Tiantong.Iot.Api
     {
       return _plcRepository.All();
     }
+
+
+    public class AllHttpPushersParams
+    {
+      public int plc_id { get; set; }
+    }
+
+    [HttpPost]
+    [Route("http-pushers/all")]
+    public HttpPusher[] AllHttpPushers([FromBody] AllHttpPushersParams param)
+    {
+      return _plcRepository.AllHttpPushers(param.plc_id);
+    }
+
+    public class PaginateHttpPusherParams
+    {
+      public int[] ids { get; set; }
+
+      public int page { get; set; }
+
+      public int page_size { get; set; }
+    }
+
+    [HttpPost]
+    [Route("http-pusher-logs/paginate")]
+    public Pagination<HttpPusherLog> PaginateHttpPusherLogs([FromBody] PaginateHttpPusherParams param)
+    {
+      return _plcRepository.PaginateHttpPusherLogs(param.ids, param.page, param.page_size);
+    }
+
+    [HttpPost]
+    [Route("http-pusher-errors/paginate")]
+    public Pagination<HttpPusherError> PaginateHttpPusherErrors([FromBody] PaginateHttpPusherParams param)
+    {
+      return _plcRepository.PaginateHttpPusherErrors(param.ids, param.page, param.page_size);
+    }
   }
 }

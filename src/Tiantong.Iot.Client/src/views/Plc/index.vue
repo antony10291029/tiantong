@@ -32,6 +32,18 @@
         >
           <a>读写异常</a>
         </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/http-pusher-logs`"
+        >
+          <a>HTTP 推送记录</a>
+        </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/http-pusher-errors`"
+        >
+          <a>HTTP 推送异常</a>
+        </router-link>
       </ul>
     </div>
 

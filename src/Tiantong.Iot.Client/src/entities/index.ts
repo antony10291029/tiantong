@@ -4,6 +4,7 @@ import { HttpPusher } from './HttpPusher'
 import { PlcStateLog } from './PlcStateLog'
 import { PlcStateError } from './PlcStateError'
 import { PlcLog } from './PlcLog'
+import { HttpPusherLog } from './HttpPusherLog'
 
 export {
   Plc,
@@ -14,4 +15,5 @@ export {
   PlcStateLog,
   PlcStateError,
   HttpPusher,
+  HttpPusherLog
 }
