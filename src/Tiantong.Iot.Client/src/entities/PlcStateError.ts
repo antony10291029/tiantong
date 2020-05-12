@@ -4,5 +4,6 @@ export class PlcStateError {
   state_id = 0
   operation = ''
   value = ''
+  message = ''
   created_at = ''
 }

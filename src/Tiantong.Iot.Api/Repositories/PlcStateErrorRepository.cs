@@ -16,6 +16,7 @@ namespace Tiantong.Iot.Api
     {
       return _db.PlcStateErrors
         .Where(error => error.plc_id == plcId)
+        .OrderByDescending(error => error.id)
         .Paginate(page, pageSize);
     }
   }

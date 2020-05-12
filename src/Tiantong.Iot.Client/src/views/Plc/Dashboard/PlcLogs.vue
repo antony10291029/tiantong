@@ -6,18 +6,26 @@
         <th>时间</th>
       </thead>
       <tbody>
-        <tr v-for="log in logs" :key="log.id">
+        <tr v-for="log in logs.data" :key="log.id">
           <td>{{log.message}}</td>
           <td>{{log.created_at.split('.')[0].split('T')[1]}}</td>
         </tr>
       </tbody>
     </table>
+
+    <div style="height: 1.25rem"></div>
+
+    <Pagination
+      v-bind="logs.meta"
+      @change="changePage"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import axios from '@/providers/axios'
+import { PlcLog } from '@/entities'
 
 @Component({
   name: 'PlcLogs'
@@ -31,16 +39,29 @@ export default class extends Vue {
 
   interval = 0
 
-  logs: any[] = []
+  logs = {
+    page: 0,
+    pageSize: 10,
+    data: [] as PlcLog[]
+  }
+
+  page = 1
+
+  pageSize = 15
 
   async getLogs () {
     let response = await axios.post('/plcs/logs/paginate', {
       plc_id: this.plcId,
-      page: 1,
-      pageSize: 20,
+      page: this.page,
+      pageSize: this.pageSize,
     })
 
-    this.logs = response.data.data
+    this.logs = response.data
+  }
+
+  async changePage (page: number) {
+    this.page = page
+    await this.getLogs()
   }
 
   created () {
@@ -58,9 +79,7 @@ export default class extends Vue {
 
   @Watch('isRunning')
   handleIsRunningChange (value: boolean) {
-    if (value === false) {
-      this.getLogs()
-    }
+    this.getLogs()
   }
 
 }

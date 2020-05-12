@@ -28,22 +28,20 @@
 
     <div style="height: 0.75rem"></div>
 
-    <div
-      v-if="isRunning"
-      class="columns"
-    >
-      <div class="column">
-        <PlcStates
-          :plcId="plcId"
-          :isRunning="isRunning"
-          :isDataWatchOpen="isDataWatchOpen"
-        />
-      </div>
-
+    <div class="columns">
       <div class="column">
         <PlcLogs
           :plcId="plcId"
           :isRunning="isRunning"
+        />
+      </div>
+
+      <div class="column">
+        <PlcStates
+          v-if="isRunning"
+          :plcId="plcId"
+          :isRunning="isRunning"
+          :isDataWatchOpen="isDataWatchOpen"
         />
       </div>
     </div>

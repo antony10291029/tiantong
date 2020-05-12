@@ -26,6 +26,12 @@
         >
           <a>读写记录</a>
         </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/state-errors`"
+        >
+          <a>读写异常</a>
+        </router-link>
       </ul>
     </div>
 
