@@ -27,6 +27,7 @@ namespace Tiantong.Iot
         logs = _stateLogs.ToArray();
         _stateLogs.Clear();
       }
+
       _db.PlcStateLogs.AddRange(logs);
       _db.SaveChanges();
     }
@@ -38,7 +39,7 @@ namespace Tiantong.Iot
           var log = new PlcStateLog {
             plc_id = _plcId,
             state_id = state._id,
-            operation = "get",
+            operation = StateOperation.Read,
             value = JsonSerializer.Serialize(value),
           };
 
@@ -53,7 +54,7 @@ namespace Tiantong.Iot
           var log = new PlcStateLog {
             plc_id = _plcId,
             state_id = state._id,
-            operation = "set",
+            operation = StateOperation.Write,
             value = JsonSerializer.Serialize(value),
           };
 

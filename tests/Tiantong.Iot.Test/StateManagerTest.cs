@@ -13,7 +13,8 @@ namespace Tiantong.Iot.Test
       var driverProvider = new StateTestDriverProvider();
       var watcherProvider = new TestWatcherProvider();
       var logger = new StateLogger(0, intervalManager, db);
-      var manager = new StateManager(intervalManager, driverProvider,logger, watcherProvider);
+      var errorLogger = new StateErrorLogger(db);
+      var manager = new StateManager(intervalManager, driverProvider,logger, watcherProvider, errorLogger);
 
       return manager;
     }

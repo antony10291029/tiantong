@@ -14,6 +14,8 @@ namespace Tiantong.Iot
 
     private IWatcherProvider _watcherProvider;
 
+    private StateErrorLogger _stateErrorLogger;
+
     public Dictionary<int, IState> StatesById = new Dictionary<int, IState>();
 
     public Dictionary<string, IState> StatesByName = new Dictionary<string, IState>();
@@ -26,12 +28,14 @@ namespace Tiantong.Iot
       IntervalManager manager,
       IStateDriverProvider provider,
       IStatePlugin stateLogger,
-      IWatcherProvider watcherProvider
+      IWatcherProvider watcherProvider,
+      StateErrorLogger stateErrorLogger
     ) {
       _stateLogger = stateLogger;
       _intervalManager = manager;
       _stateDriverProvider = provider;
       _watcherProvider = watcherProvider;
+      _stateErrorLogger = stateErrorLogger;
     }
 
     public IStateManager Name(string name)
@@ -70,7 +74,9 @@ namespace Tiantong.Iot
       Add(
         state.Id(_id).Name(_name)
         .Address(address).Length(length)
-        .Use(_stateLogger).Build()
+        .Use(_stateLogger)
+        .UseErrorLogger(_stateErrorLogger)
+        .Build()
       );
     }
 

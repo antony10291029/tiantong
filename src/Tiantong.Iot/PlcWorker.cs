@@ -21,6 +21,8 @@ namespace Tiantong.Iot
 
     internal IStatePlugin StateLogger { get; private set; }
 
+    internal StateErrorLogger StateErrorLogger { get; private set; }
+
     internal IWatcherProvider WatcherProvider { get; private set; }
 
     internal DatabaseProvider DatabaseProvider { get; private set; }
@@ -96,6 +98,11 @@ namespace Tiantong.Iot
       return new PlcWorkerLogger(DatabaseProvider.Resolve());
     }
 
+    public virtual StateErrorLogger ResolveStateErrorLogger()
+    {
+      return new StateErrorLogger(DatabaseProvider.Resolve());
+    }
+
     public virtual DatabaseProvider ResolveDatabaseProvider()
     {
       return new DatabaseProvider();
@@ -113,7 +120,7 @@ namespace Tiantong.Iot
 
     public virtual StateManager ResolveStateManager()
     {
-      return new StateManager(IntervalManager, StateDriverProvider, StateLogger, WatcherProvider);
+      return new StateManager(IntervalManager, StateDriverProvider, StateLogger, WatcherProvider, StateErrorLogger);
     }
 
     public IStateDriverProvider ResolveStateDriverProvider()
@@ -136,6 +143,7 @@ namespace Tiantong.Iot
       WatcherProvider = ResolveWatcherProvider();
       Logger = ResolvePlcWorkerLogger();
       StateLogger = ResolveStateLogger();
+      StateErrorLogger = ResolveStateErrorLogger();
       StateManager = ResolveStateManager();
 
       return this;

@@ -96,10 +96,4 @@ export default class extends Vue {
     await this.getLogs()
   }
 }
-
-class Pagination<T> {
-  page = 1
-  pageSize = 10
-  data: T[] = []
-}
 </script>

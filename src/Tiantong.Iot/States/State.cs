@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
@@ -9,6 +10,8 @@ namespace Tiantong.Iot
     public DateTime CurrentValueChangedAt { get; set; } = DateTime.Now;
 
     public int _id;
+
+    public int _plcId;
 
     public string _name;
 
@@ -30,6 +33,8 @@ namespace Tiantong.Iot
 
     public IWatcherProvider _watcherProvider;
 
+    protected StateErrorLogger _errorLogger;
+
     protected abstract void HandleDriverBuild();
 
     public abstract IState Collect(int interval = 1000);
@@ -41,9 +46,23 @@ namespace Tiantong.Iot
 
     public abstract IState Use(IStatePlugin plugin);
 
+    public IState UseErrorLogger(StateErrorLogger logger)
+    {
+      _errorLogger = logger;
+
+      return this;
+    }
+
     public IState Id(int id)
     {
       _id = id;
+
+      return this;
+    }
+
+    public IState PlcId(int plcId)
+    {
+      _plcId = plcId;
 
       return this;
     }
@@ -188,8 +207,12 @@ namespace Tiantong.Iot
 
     public void Set(T data)
     {
-      var tasks = new List<Task>();
-      HandleSet(data);
+      try {
+        HandleSet(data);
+      } catch (Exception e) {
+        _errorLogger.Log(_plcId, _id, StateOperation.Write, data.ToString(), e.Message);
+        throw e;
+      }
 
       foreach (var hook in _sethooks) {
         hook(data);
@@ -198,18 +221,20 @@ namespace Tiantong.Iot
 
     public T Get()
     {
-      var tasks = new List<Task>();
-      var data = HandleGet();
-      var now = DateTime.Now;
-
-      _currentValue = data;
-      _currentValueGetAt = now;
-
-      foreach (var hook in _gethooks) {
-        hook(data);
+      try {
+        _currentValue = HandleGet();
+      } catch (Exception e) {
+        _errorLogger.Log(_plcId, _id, StateOperation.Read, null, e.Message);
+        throw e;
       }
 
-      return data;
+      _currentValueGetAt = DateTime.Now;
+
+      foreach (var hook in _gethooks) {
+        hook(_currentValue);
+      }
+
+      return _currentValue;
     }
 
     protected abstract T HandleGet();

@@ -21,16 +21,17 @@ namespace Tiantong.Iot.Test
 
       dbProvider.Migrate();
 
-      state.Id(1).Address("D1").Build().Use(logger);
+      state.IsReadLogOn(true).IsWriteLogOn(true);
+      state.Id(1).Address("D1").Use(logger).Build();
       state.Set(100);
       state.Get();
       Task.Delay(10).GetAwaiter().GetResult();
       logger.HandleLog();
 
-      var count = db.PlcStateLogs.Where(item => item.operation == "get").Count();
+      var count = db.PlcStateLogs.Where(item => item.operation == StateOperation.Read).Count();
       Assert.AreEqual(1, count);
 
-      count = db.PlcStateLogs.Where(item => item.operation == "set").Count();
+      count = db.PlcStateLogs.Where(item => item.operation == StateOperation.Write).Count();
       Assert.AreEqual(1, count);
     }
   }

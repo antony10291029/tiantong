@@ -14,6 +14,8 @@ namespace Tiantong.Iot
 
     IState Id(int id);
 
+    IState PlcId(int plcId);
+
     IState Name(string name);
 
     IState Address(string name);
@@ -27,6 +29,8 @@ namespace Tiantong.Iot
     IState Build();
 
     IState Use(IStatePlugin plugin);
+
+    IState UseErrorLogger(StateErrorLogger logger);
 
     void Watch(Action handler);
 
