@@ -19,9 +19,7 @@ namespace Tiantong.Iot.Test
       plc.Int("hb").Set(1);
 
       try {
-        plc.Start();
-        Task.Delay(10).GetAwaiter().GetResult(); // issue
-        plc.WaitAsync().AssertFinishIn(10);
+        plc.Start().WaitAsync().AssertFinishIn(10);
         Assert.Fail("except to throw exception when Plc.TryWait is timeout");
       } catch {}
     }
