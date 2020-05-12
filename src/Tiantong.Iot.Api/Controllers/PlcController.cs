@@ -25,7 +25,7 @@ namespace Tiantong.Iot.Api
     {
       _plcRepository.Add(plc);
 
-      return SuccessOperation("PLC已创建");
+      return SuccessOperation("PLC已创建", plc.id);
     }
 
     public class FindParams

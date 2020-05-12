@@ -1,5 +1,6 @@
 import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
+import PlcCreate from './Plc/PlcCreate.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
 import PlcList from './PlcList/index.vue'
 import PlcConfig from './Plc/PlcConfig.vue'
@@ -22,6 +23,11 @@ export default [
         name: 'PlcList',
         component: PlcList,
         children: [
+          {
+            path: 'create',
+            name: 'PlcCreate',
+            component: PlcCreate
+          },
           {
             path: ':plcId',
             name: 'Plc',

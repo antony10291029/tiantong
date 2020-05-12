@@ -1,53 +1,9 @@
 <template>
-  <AsyncLoader
-    style="padding: 1.25rem"
+  <PlcForm
+    :plc="plc"
     :handler="getPlc"
-    #default="{ isPending }"
   >
-    <template v-if="!isPending">
-      <div class="field" style="width: 320px">
-        <label class="label">设备名称</label>
-        <div class="control">
-          <input
-            v-model="plc.name"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-      <div class="field" style="width: 320px">
-        <label class="label">设备型号</label>
-        <div class="control">
-          <input
-            v-model="plc.model"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-      <div class="field" style="width: 320px">
-        <label class="label">地址</label>
-        <div class="control">
-          <input
-            v-model="plc.host"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-      <div class="field" style="width: 320px">
-        <label class="label">端口</label>
-        <div class="control">
-          <input
-            v-model="plc.port"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-      <div class="field" style="width: 480px">
-        <label class="label">备注</label>
-        <div class="control">
-          <Textarea v-model="plc.comment" />
-        </div>
-      </div>
-
+    <template #footer>
       <div class="field" style="width: 480px">
         <div class="control is-flex">
           <AsyncButton
@@ -79,18 +35,22 @@
         </div>
       </div>
     </template>
-  </AsyncLoader>
+  </PlcForm>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import PlcForm from '@/components/form/PlcForm.vue'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
 import axios from '@/providers/axios'
 import { Plc } from '@/entities'
 
 @Component({
-  name: 'PlcDashboard'
+  name: 'PlcDashboard',
+  components: {
+    PlcForm
+  }
 })
 export default class extends Vue {
   @Prop({ required: true })

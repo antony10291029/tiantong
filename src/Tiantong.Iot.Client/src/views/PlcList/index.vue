@@ -13,6 +13,11 @@
             <span>{{plc.name}}</span>
           </router-link>
         </li>
+        <li>
+          <router-link :to="`/plcs/create`">
+            <span>添加设备</span>
+          </router-link>
+        </li>
       </ul>
     </aside>
     <router-view
