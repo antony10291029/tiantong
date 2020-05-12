@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
@@ -304,7 +304,6 @@ namespace Tiantong.Iot
             HandleStart().Wait();
           } catch (Exception e) {
             Logger.Log(_id, $"运行故障: {e.Message}");
-            Console.WriteLine(e.Message);
             HandleStop();
             Logger.Log(_id, "正在重启设备");
             Task.Delay(1000).GetAwaiter().GetResult();

@@ -43,15 +43,12 @@ namespace Tiantong.Iot
           response = responseContent,
           status_code = statusCode.ToString()
         });
-
-        Console.WriteLine($"success to send http watcher, uri: {uri}, request: {data}, response: {responseContent}, status: {statusCode}");
       } catch (Exception e) {
         _logger.LogError(new HttpPusherError {
           pusher_id = id,
           message = e.Message,
         });
 
-        Console.WriteLine($"fail to send http watcher, error: {e.Message}, source: {e.Source}");
         throw e;
       }
     }

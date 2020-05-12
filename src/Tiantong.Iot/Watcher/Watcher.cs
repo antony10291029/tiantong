@@ -43,11 +43,7 @@ namespace Tiantong.Iot
     public void Emit(T value)
     {
       if (_when(value)) {
-        try {
-          _handler(value);
-        } catch (Exception e) {
-          Console.WriteLine(e);
-        }
+        _handler(value);
       }
     }
 
@@ -109,6 +105,5 @@ namespace Tiantong.Iot
     {
       _cancel = cancel;
     }
-
   }
 }

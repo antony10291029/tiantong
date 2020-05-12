@@ -24,7 +24,6 @@ namespace Tiantong.Iot
             try {
               task.GetAwaiter().GetResult();
             } catch (Exception e) {
-              Console.WriteLine(e);
               Stop();
               throw e;
             }
