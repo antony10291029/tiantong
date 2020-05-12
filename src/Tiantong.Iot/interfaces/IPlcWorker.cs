@@ -78,8 +78,6 @@ namespace Tiantong.Iot
 
     void Wait();
 
-    Task RunAsync();
-
     void Run();
   }
 }

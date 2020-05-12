@@ -6,6 +6,8 @@ namespace Tiantong.Iot
   {
     private IotDbContext _db;
 
+    private readonly object _dbLock = new object();
+
     public PlcWorkerLogger(IotDbContext db)
     {
       _db = db;
@@ -18,8 +20,10 @@ namespace Tiantong.Iot
         message = message
       };
 
-      _db.Add(log);
-      _db.SaveChanges();
+      lock (_dbLock) {
+        _db.Add(log);
+        _db.SaveChanges();
+      }
     }
 
   }

@@ -27,9 +27,7 @@ namespace Tiantong.Iot
 
   public class Watcher<T> : Watcher, IWatcher<T>
   {
-    private IWatcherHttpClient _httpClient;
-
-    private Action _cancel;
+    protected IWatcherHttpClient _httpClient;
 
     private Action<T> _handler;
 
@@ -99,11 +97,6 @@ namespace Tiantong.Iot
 
         _httpClient.PostAsync(_id, url, JsonSerializer.Serialize(data), encoding);
       };
-    }
-
-    public void OnCancel(Action cancel)
-    {
-      _cancel = cancel;
     }
   }
 }

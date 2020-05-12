@@ -46,7 +46,7 @@ namespace Tiantong.Iot.Api
         return false;
       } else {
         _plcs[worker._id] = worker;
-        worker.Start();
+        worker.Run();
 
         return true;
       }

@@ -81,9 +81,11 @@ namespace Tiantong.Iot.Api
     [Route("current-values")]
     public Dictionary<string, string> GetCurrentValue([FromBody] FindParams param)
     {
-      var worker = _plcManager.Get(param.plc_id);
-
-      return worker.GetCurrentStateValues();
+      try {
+        return _plcManager.Get(param.plc_id).GetCurrentStateValues();
+      } catch {
+        throw new HttpException("数据不存在", 400);
+      }
     }
 
     public abstract class SetValue<T>

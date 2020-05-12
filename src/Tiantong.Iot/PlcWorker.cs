@@ -264,28 +264,10 @@ namespace Tiantong.Iot
       return dict;
     }
 
-    //
-
-    private IPlcWorker HandleStart()
-    {
-      StateDriverProvider.Boot();
-      IntervalManager.Start();
-
-      return this;
-    }
-
-    private IPlcWorker HandleStop()
-    {
-      StateDriverProvider.Stop();
-      IntervalManager.Stop();
-
-      return this;
-    }
-
     public bool Test()
     {
       try {
-        HandleStart().Stop().WaitAsync();
+        Start().Stop().WaitAsync();
 
         return true;
       } catch {
@@ -293,33 +275,28 @@ namespace Tiantong.Iot
       }
     }
 
+    private void HandleStop()
+    {
+      IntervalManager.Stop();
+      StateDriverProvider.Stop();
+    }
+
     // issue:
     //   无法保证在返回 this 之前处理好 task
     public IPlcWorker Start()
     {
-      Logger.Log(_id, "设备开始运行");
-      Task.Run(() => {
-        while (!_isStopping) {
-          try {
-            HandleStart().Wait();
-          } catch (Exception e) {
-            Logger.Log(_id, $"运行故障: {e.Message}");
-            HandleStop();
-            Logger.Log(_id, "正在重启设备");
-            Task.Delay(1000).GetAwaiter().GetResult();
-          }
-        }
-      });
+      StateDriverProvider.Boot();
+      IntervalManager.Start();
+      Logger.Log(_id, "开始设备通信");
 
       return this;
     }
 
     public IPlcWorker Stop()
     {
-      Logger.Log(_id, "设备已停止运行");
+      Logger.Log(_id, "停止设备通信");
       _isStopping = true;
-      IntervalManager.Stop();
-      StateDriverProvider.Stop();
+      HandleStop();
 
       return this;
     }
@@ -334,15 +311,20 @@ namespace Tiantong.Iot
       IntervalManager.Wait();
     }
 
-    public Task RunAsync()
-    {
-      return Start().WaitAsync();
-    }
-
     public void Run()
     {
-      RunAsync().GetAwaiter().GetResult();
+      Task.Run(() => {
+        while (!_isStopping) {
+          try {
+            Start().Wait();
+          } catch (Exception e) {
+            Logger.Log(_id, $"发生通信故障: {e.Message}");
+            HandleStop();
+            Logger.Log(_id, "正在重新启动通信");
+            Task.Delay(1000).GetAwaiter().GetResult();
+          }
+        }
+      });
     }
-
   }
 }
