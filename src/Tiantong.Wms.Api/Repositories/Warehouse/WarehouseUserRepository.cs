@@ -48,7 +48,12 @@ namespace Tiantong.Wms.Api
       var user = new User {
         email = email,
         name = name,
+        type = UserType.User,
+        password = "123456",
       };
+
+      _users.EncodePassword(user);
+
       var wu = new WarehouseUser {
         warehouse_id = warehouseId,
         department_id = departmentId,

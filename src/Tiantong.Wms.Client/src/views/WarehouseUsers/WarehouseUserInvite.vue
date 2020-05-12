@@ -54,7 +54,10 @@
           :handler="handleSubmit"
           class="button is-success"
         >确认</AsyncButton>
-        <a class="button">取消</a>
+        <a
+          class="button"
+          @click="$router.go(-1)"
+        >取消</a>
       </footer>
     </div>
   </div>
@@ -86,6 +89,7 @@ export default class extends Vue {
   params = {
     email: '',
     name: '',
+    warehouse_id: 0,
     department_id: 0
   }
 
@@ -105,7 +109,11 @@ export default class extends Vue {
   }
 
   async handleSubmit () {
-    await axios.post('/warehouses/users/create', this.params)
+    if (this.user == null) {
+      await axios.post('/warehouses/users/create', this.params)
+    } else {
+      await axios.post('/warehouses/users/invite', this.params)
+    }
     this.$emit('updated')
     this.handleClose()
   }
@@ -127,7 +135,7 @@ export default class extends Vue {
   }
 
   created () {
-    this.warehouseUser.warehouse_id = this.warehouseId
+    this.params.warehouse_id = this.warehouseId
   }
 }
 </script>
