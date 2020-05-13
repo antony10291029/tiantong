@@ -16,10 +16,12 @@
           <td>{{state.address}}</td>
           <td>{{currentValues[state.id]}}</td>
           <PlcStateSetValue
+            v-if="isRunning"
             :plcId="plcId"
             :stateId="state.id"
             :type="state.type"
           />
+          <td v-else></td>
         </tr>
       </tbody>
     </table>
@@ -40,6 +42,9 @@ import PlcStateSetValue from './PlcStateSetValue.vue'
 export default class extends Vue {
   @Prop({ required: true })
   plcId!: number
+
+  @Prop({ required: true })
+  isRunning!: boolean
 
   @Prop({ required: true })
   isDataWatchOpen!: boolean

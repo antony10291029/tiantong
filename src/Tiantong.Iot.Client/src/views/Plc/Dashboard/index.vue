@@ -30,18 +30,17 @@
 
     <div class="columns">
       <div class="column">
-        <PlcLogs
+        <PlcStates
           :plcId="plcId"
           :isRunning="isRunning"
+          :isDataWatchOpen="isDataWatchOpen"
         />
       </div>
 
       <div class="column">
-        <PlcStates
-          v-if="isRunning"
+        <PlcLogs
           :plcId="plcId"
           :isRunning="isRunning"
-          :isDataWatchOpen="isDataWatchOpen"
         />
       </div>
     </div>
