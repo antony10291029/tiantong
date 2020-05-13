@@ -1,5 +1,8 @@
 <template>
-  <div class="is-flex">
+  <AsyncLoader
+    class="is-flex"
+    :handler="getPlcs"
+  >
     <aside
       class="menu has-border-right is-unselectable"
       style="min-width: 220px; max-width: 220px; height: 100%"
@@ -25,8 +28,9 @@
       baseURL="/plcs"
       class="is-flex-auto"
       style="overflow: auto"
+      @refresh="getPlcs"
     />
-  </div>
+  </AsyncLoader>
 </template>
 
 <script lang="ts">
@@ -42,7 +46,7 @@ import axios from '@/providers/axios'
 export default class extends Vue {
   plcs: object[] = []
 
-  async created () {
+  async getPlcs () {
     let response = await axios.post('/plcs/all')
     this.plcs = response.data
   }

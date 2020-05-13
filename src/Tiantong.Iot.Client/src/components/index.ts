@@ -1,5 +1,6 @@
 import Input from './global/Input.vue'
 import Radio from './global/Radio.vue'
+import Table from './global/Table.vue'
 import Loader from './global/Loader.vue'
 import Checkbox from './global/Checkbox.vue'
 import Textarea from './global/Textarea.vue'
@@ -16,6 +17,7 @@ export default {
   install (Vue: any) {
     Vue.component('Input', Input)
     Vue.component('Radio', Radio)
+    Vue.component('Table', Table)
     Vue.component('Loader', Loader)
     Vue.component('Checkbox', Checkbox)
     Vue.component('Textarea', Textarea)

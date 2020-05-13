@@ -1,19 +1,25 @@
 <template>
   <div>
-    <table class="table is-bordered is-fullwidth">
-      <thead>
+    <Table
+      colspan="2"
+      class="table is-bordered is-fullwidth"
+    >
+      <thead slot="head">
         <th>日志</th>
         <th>时间</th>
       </thead>
-      <tbody>
+      <tbody
+        slot="body"
+        v-if="logs.data.length > 0"
+      >
         <tr v-for="log in logs.data" :key="log.id">
           <td>{{log.message}}</td>
           <td>{{log.created_at.split('.')[0].split('T')[1]}}</td>
         </tr>
       </tbody>
-    </table>
+    </Table>
 
-    <div style="height: 1.25rem"></div>
+    <div style="height: 0.75rem"></div>
 
     <Pagination
       v-bind="logs.meta"

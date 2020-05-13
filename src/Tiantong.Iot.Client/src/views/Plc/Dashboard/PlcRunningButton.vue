@@ -36,7 +36,7 @@ export default class extends Vue {
   isRunning!: boolean
 
   async handleRun () {
-    await axios.post('/plcs/workers/run', {
+    await axios.post('/plc-workers/run', {
       plc_id: this.plcId
     })
 
@@ -44,7 +44,7 @@ export default class extends Vue {
   }
 
   async handleStop () {
-    await axios.post('/plcs/workers/stop', {
+    await axios.post('/plc-workers/stop', {
       plc_id: this.plcId
     })
 

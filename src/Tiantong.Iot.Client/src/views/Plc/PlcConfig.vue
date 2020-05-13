@@ -75,11 +75,12 @@ export default class extends Vue {
 
   async handleSave () {
     await axios.post('/plcs/update', this.plc)
-    this.getPlc()
+    await this.getPlc()
+    this.$emit('refresh')
   }
 
   async handleTest () {
-    await axios.post('/plcs/workers/test', {
+    await axios.post('/plc-workers/test', {
       plc_id: this.plcId
     })
   }

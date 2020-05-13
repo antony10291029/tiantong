@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
-using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
-  [Route("/plcs/workers")]
+  [Route("/plc-workers")]
   public class PlcWorkerController: BaseController
   {
     private PlcManager _plcManager;
@@ -103,7 +102,7 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("states/uint16/set")]
+    [Route("states/uint16/set-by-id")]
     public object SetUShortValue([FromBody] SetUShortValueParams param)
     {
       _plcManager.Get(param.plc_id).UShort(param.state_id).Set(param.value);
@@ -117,7 +116,7 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("states/string/set")]
+    [Route("states/string/set-by-id")]
     public object SetStringValue([FromBody] SetStringValueParams param)
     {
       _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);

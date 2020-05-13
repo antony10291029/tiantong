@@ -1,6 +1,6 @@
 <template>
   <td v-if="!isShow" style="width: 200px;">
-    <a @click="isShow = true">
+    <a @click="handleOpen">
       写入数据
     </a>
   </td>
@@ -15,8 +15,10 @@
     >
       <div class="control">
         <input
+          ref="input"
           :value="value"
           @blur="setValue($event.target.value.trim())"
+          @keypress.enter="setValue($event.target.value.trim()) && handleSave()"
           type="text" class="input"
           style="height: 100%; border-radius: 0; width: 200px"
         >
@@ -54,17 +56,27 @@ export default class extends Vue {
 
   setValue (value: any) {
     if (this.type == 'string') {
-      this.value = value.toString()
-    } else if (this.type === 'uint16') {
-      this.value = parseInt(value)
-      if (this.value === NaN) {
-        this.value = 0
+      value = value.toString()
+    } else if (this.type) {
+      value = parseInt(value)
+      if (Number.isNaN(value)) {
+        value = 0
       }
     }
+
+    this.value = value
+  }
+
+  handleOpen () {
+    this.isShow = true
+    this.$nextTick(() => {
+      (this.$refs.input as any).focus()
+      this.value = ''
+    })
   }
 
   async handleSave () {
-    await axios.post(`/plcs/workers/states/${this.type}/set`, {
+    await axios.post(`/plc-workers/states/${this.type}/set-by-id`, {
       plc_id: this.plcId,
       state_id: this.stateId,
       value: this.value

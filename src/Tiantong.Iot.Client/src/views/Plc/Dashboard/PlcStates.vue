@@ -3,14 +3,20 @@
     class="is-flex-auto"
     :handler="getStates"
   >
-    <table class="table is-centered is-fullwidth is-bordered">
-      <thead>
+    <Table
+      colspan="4"
+      class="table is-centered is-fullwidth is-bordered"
+    >
+      <thead slot="head">
         <th>数据名</th>
         <th>地址</th>
         <th>数据</th>
         <th>操作</th>
       </thead>
-      <tbody>
+      <tbody
+        slot="body"
+        v-if="states.length"
+      >
         <tr v-for="state in states" :key="state.id">
           <td>{{state.name}}</td>
           <td>{{state.address}}</td>
@@ -24,14 +30,14 @@
           <td v-else></td>
         </tr>
       </tbody>
-    </table>
+    </Table>
   </AsyncLoader>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import axios from '@/providers/axios'
 import PlcStateSetValue from './PlcStateSetValue.vue'
+import axios from '@/providers/axios'
 
 @Component({
   name: 'PlcDashboardStates',
@@ -64,7 +70,7 @@ export default class extends Vue {
   }
 
   async getCurrentVales () {
-    let response = await axios.post('/plcs/workers/current-values', {
+    let response = await axios.post('/plc-workers/current-values', {
       plc_id: this.plcId
     })
 

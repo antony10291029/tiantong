@@ -42,6 +42,7 @@ export default class extends Vue {
     let response = await axios.post('/plcs/create', this.plc)
     let id = response.data.id
     this.$router.push(`${this.baseURL}/${id}/states`)
+    this.$emit('refresh')
   }
 }
 </script>

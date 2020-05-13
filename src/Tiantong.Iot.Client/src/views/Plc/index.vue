@@ -50,6 +50,7 @@
     <router-view
       :plcId="plcId"
       :baseURL="`${baseURL}/${plcId}`"
+      v-on="$listeners"
     />
   </div>
 </template>

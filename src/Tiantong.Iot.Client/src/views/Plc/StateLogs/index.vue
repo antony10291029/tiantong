@@ -10,8 +10,11 @@
       #default="{ isPending }"
     >
       <template v-if="!isPending">
-        <table class="table is-centered is-bordered is-fullwidth">
-          <thead>
+        <Table
+          colspan="6"
+          class="table is-centered is-bordered is-fullwidth"
+        >
+          <thead slot="head">
             <th>数据点</th>
             <th>地址</th>
             <th>类型</th>
@@ -19,7 +22,10 @@
             <th>数据</th>
             <th>时间</th>
           </thead>
-          <tbody>
+          <tbody
+            slot="body"
+            v-if="logs.data.length > 0"
+          >
             <tr v-for="log in logs.data" :key="log.id">
               <td>{{states[log.state_id].name}}</td>
               <td>{{states[log.state_id].address}}</td>
@@ -29,9 +35,12 @@
               <td>{{log.created_at.split('.')[0]}}</td>
             </tr>
           </tbody>
-        </table>
+          <tbody v-else>
+            <EmptyRow :colspan="6" />
+          </tbody>
+        </Table>
 
-        <div style="height: 1.25rem"></div>
+        <div style="height: 0.75rem"></div>
 
         <Pagination
           v-bind="logs.meta"

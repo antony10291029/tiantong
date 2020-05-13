@@ -10,14 +10,20 @@
       #default="{ isPending }"
     >
       <template v-if="!isPending">
-        <table class="table is-centered is-bordered is-fullwidth">
-          <thead>
+        <Table
+          colspan="4"
+          class="table is-centered is-bordered is-fullwidth"
+        >
+          <thead slot="head">
             <th>推送名</th>
             <th>URL</th>
             <th>详情</th>
             <th>时间</th>
           </thead>
-          <tbody>
+          <tbody
+            slot="body"
+            v-if="logs.data.length > 0"
+          >
             <tr v-for="log in logs.data" :key="log.id">
               <td>{{pushers[log.pusher_id].name}}</td>
               <td>{{pushers[log.pusher_id].url}}</td>
@@ -25,9 +31,12 @@
               <td>{{log.created_at.split('.')[0]}}</td>
             </tr>
           </tbody>
-        </table>
+          <tbody v-else>
+            <EmptyRow :colspan="6" />
+          </tbody>
+        </Table>
 
-        <div style="height: 1.25rem"></div>
+        <div style="height: 0.75rem"></div>
 
         <Pagination
           v-bind="logs.meta"

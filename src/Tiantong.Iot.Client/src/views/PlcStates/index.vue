@@ -5,15 +5,21 @@
   >
     <div class="is-flex">
       <div style="min-width: 400px; max-width: 400px">
-        <table class="table is-bordered is-fullwidth is-nowrap is-hoverable">
-          <thead>
+        <Table
+          colspan="3"
+          class="table is-bordered is-fullwidth is-nowrap is-hoverable"
+        >
+          <thead slot="head">
             <th>
               名称
             </th>
             <th>地址</th>
             <th>类型</th>
           </thead>
-          <tbody>
+          <tbody
+            slot="body"
+            v-if="states.length > 0"
+          >
             <tr
               v-class:is-active="state.id === stateId"
               v-for="state in states" :key="state.id"
@@ -26,7 +32,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </Table>
 
         <div style="height: 0.75rem"></div>
 

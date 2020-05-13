@@ -1,17 +1,6 @@
 <template>
   <div style="padding: 1.25rem">
     <div class="is-flex is-vcentered">
-      <AsyncButton
-        :handler="getDataSource"
-        class="button is-info is-light is-small"
-      >
-        <span class="iconfont">
-          <i class="iconfont icon-refresh"></i>
-        </span>
-      </AsyncButton>
-
-      <span style="width: 0.5rem"></span>
-
       <PlcRunningButton
         :plcId="plcId"
         :isRunning="isRunning"
@@ -23,7 +12,9 @@
       <Checkbox
         v-if="isRunning"
         v-model="isDataWatchOpen"
-      >实时数据</Checkbox>
+      >
+        实时监控
+      </Checkbox>
     </div>
 
     <div style="height: 0.75rem"></div>
@@ -71,7 +62,7 @@ export default class extends Vue {
   isDataWatchOpen = false
 
   async getDataSource () {
-    let response = await axios.post('/plcs/workers/is-running', {
+    let response = await axios.post('/plc-workers/is-running', {
       plc_id: this.plcId
     })
 
