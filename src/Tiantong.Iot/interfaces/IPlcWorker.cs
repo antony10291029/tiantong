@@ -6,6 +6,10 @@ namespace Tiantong.Iot
 {
   public interface IPlcWorker
   {
+    int _id { get; set; }
+
+    string _name { get; set; }
+
     IPlcWorkerLogger Logger { get; }
 
     Dictionary<string, string> GetCurrentStateValues();

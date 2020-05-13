@@ -7,15 +7,15 @@ namespace Tiantong.Iot
 {
   public class PlcWorker : IPlcWorker
   {
-    public int _id;
+    public int _id { get; set; }
 
-    public string _model = PlcModel.Test;
+    public string _model { get; set; } = PlcModel.Test;
 
-    public string _name;
+    public string _name { get; set; }
 
-    public string _host;
+    public string _host { get; set; }
 
-    public int _port;
+    public int _port { get; set; }
 
     public IPlcWorkerLogger Logger { get; private set; }
 

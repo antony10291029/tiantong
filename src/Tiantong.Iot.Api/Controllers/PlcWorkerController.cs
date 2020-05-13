@@ -87,7 +87,7 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    public abstract class SetValue<T>
+    public abstract class SetValueById<T>
     {
       public int plc_id { get; set; }
 
@@ -96,33 +96,69 @@ namespace Tiantong.Iot.Api
       public T value { get; set; }
     }
 
-    public class SetUShortValueParams: SetValue<ushort>
+    public class SetValueByName<T>
+    {
+      public string plc_name { get; set; }
+
+      public string state_name { get; set; }
+
+      public T value { get; set; }
+    }
+
+    public class SetUShortValueParams: SetValueById<ushort>
+    {
+
+    }
+
+    public class SetUInt16ByNameParams: SetValueByName<ushort>
     {
 
     }
 
     [HttpPost]
     [Route("states/uint16/set-by-id")]
-    public object SetUShortValue([FromBody] SetUShortValueParams param)
+    public object SetUInt16ById([FromBody] SetUShortValueParams param)
     {
       _plcManager.Get(param.plc_id).UShort(param.state_id).Set(param.value);
 
       return SuccessOperation("数据已写入");
     }
 
-    public class SetStringValueParams: SetValue<string>
+    [HttpPost]
+    [Route("states/uint16/set-by-name")]
+    public object SetUInt16ByName([FromBody] SetUInt16ByNameParams param)
+    {
+      _plcManager.Get(param.plc_name).UShort(param.state_name).Set(param.value);
+
+      return SuccessOperation("数据已写入");
+    }
+
+    public class SetStringByIdParams: SetValueById<string>
+    {
+
+    }
+
+    public class SetStringByNameParams: SetValueByName<string>
     {
 
     }
 
     [HttpPost]
     [Route("states/string/set-by-id")]
-    public object SetStringValue([FromBody] SetStringValueParams param)
+    public object SetStringById([FromBody] SetStringByIdParams param)
     {
       _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);
 
       return SuccessOperation("数据已写入");
     }
 
+    [HttpPost]
+    [Route("states/string/set-by-name")]
+    public object SetStringByName([FromBody] SetStringByIdParams param)
+    {
+      _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);
+
+      return SuccessOperation("数据已写入");
+    }
   }
 }
