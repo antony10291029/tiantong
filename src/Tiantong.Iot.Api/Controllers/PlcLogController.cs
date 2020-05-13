@@ -1,15 +1,22 @@
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
+using Tiantong.Iot.Entities;
+using Z.EntityFramework.Plus;
 
 namespace Tiantong.Iot.Api
 {
-  [Route("/plcs/logs")]
+  [Route("/plc-logs")]
   public class PlcLogController: BaseController
   {
+    private IotDbContext _db;
+
     private PlcLogRepository _logRepository;
 
-    public  PlcLogController(PlcLogRepository logRepository)
+    public  PlcLogController(PlcLogRepository logRepository, IotDbContext db)
     {
+      _db = db;
       _logRepository = logRepository;
     }
 
@@ -28,5 +35,26 @@ namespace Tiantong.Iot.Api
     {
       return _logRepository.Paginate(param.plc_id, param.page, param.pageSize);
     }
+
+    public class ClearParams
+    {
+      public int days { get; set; }
+    }
+
+    [HttpPost]
+    [Route("clear")]
+    public object Paginate([FromBody] ClearParams param)
+    {
+      var date = DateTime.Now.AddDays(0 - param.days);
+
+      _db.PlcLogs.Where(log => log.created_at < date).Delete();
+      _db.PlcStateLogs.Where(log => log.created_at < date).Delete();
+      _db.PlcStateErrors.Where(log => log.created_at < date).Delete();
+      _db.HttpPusherLogs.Where(log => log.created_at < date).Delete();
+      _db.HttpPusherErrors.Where(log => log.created_at < date).Delete();
+
+      return SuccessOperation("日志清理完毕");
+    }
+
   }
 }

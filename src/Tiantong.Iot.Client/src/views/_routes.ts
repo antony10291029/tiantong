@@ -1,6 +1,7 @@
 import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
 import PlcCreate from './Plc/PlcCreate.vue'
+import PlcMaintain from './PlcMaintain/index.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
 import PlcStateLogs from './Plc/StateLogs/index.vue'
 import PlcStateErrors from './Plc/StateErrors/index.vue'
@@ -31,6 +32,11 @@ export default [
             path: 'create',
             name: 'PlcCreate',
             component: PlcCreate
+          },
+          {
+            path: 'maintain',
+            name: 'PlcMaintain',
+            component: PlcMaintain
           },
           {
             path: ':plcId',

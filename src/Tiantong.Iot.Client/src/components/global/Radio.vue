@@ -2,7 +2,7 @@
   <span @click="handleClick">
     <span
       :class="spanClass"
-      style="cursor: pointer"
+      style="cursor: pointer; margin-left: -0.25rem"
       :style="spanStyle"
     >
       <i

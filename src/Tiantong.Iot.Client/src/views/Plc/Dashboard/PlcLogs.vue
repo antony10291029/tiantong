@@ -59,7 +59,7 @@ export default class extends Vue {
   pageSize = 15
 
   async getLogs () {
-    let response = await axios.post('/plcs/logs/paginate', {
+    let response = await axios.post('/plc-logs/paginate', {
       plc_id: this.plcId,
       page: this.page,
       pageSize: this.pageSize,

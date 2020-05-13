@@ -15,4 +15,8 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.49" />
+  </ItemGroup>
+
 </Project>

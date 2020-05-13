@@ -17,6 +17,11 @@
           </router-link>
         </li>
         <li>
+          <router-link to="/plcs/maintain">
+            <span>系统维护</span>
+          </router-link>
+        </li>
+        <li>
           <router-link :to="`/plcs/create`">
             <span>添加设备</span>
           </router-link>

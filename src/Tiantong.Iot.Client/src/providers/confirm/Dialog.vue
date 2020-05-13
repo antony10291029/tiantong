@@ -15,12 +15,12 @@
       </section>
       <footer class="modal-card-foot">
         <button
-          class="button is-success"
+          class="button is-success is-small"
           :class="isLoading && 'is-loading'"
           @click="handleConfirm"
         >确认</button>
         <button
-          class="button"
+          class="button is-small"
           @click="handleClose"
         >取消</button>
       </footer>
