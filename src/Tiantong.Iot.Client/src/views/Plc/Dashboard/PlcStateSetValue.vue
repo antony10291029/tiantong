@@ -1,7 +1,7 @@
 <template>
   <td v-if="!isShow" style="width: 200px;">
     <a @click="handleOpen">
-      写入数据
+      写入
     </a>
   </td>
   <td v-else style="padding: 0; width: 200px">
@@ -27,7 +27,9 @@
         <AsyncButton
           :handler="handleSave"
           class="button is-success"
-        >写入</AsyncButton>
+        >
+          写入
+        </AsyncButton>
       </div>
     </div>
   </td>

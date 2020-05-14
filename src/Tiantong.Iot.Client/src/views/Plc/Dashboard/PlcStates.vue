@@ -5,13 +5,14 @@
   >
     <Table
       colspan="4"
-      class="table is-centered is-fullwidth is-bordered"
+      class="table is-centered is-nowrap is-fullwidth is-bordered"
     >
       <thead slot="head">
         <th>数据名</th>
         <th>地址</th>
+        <th>类型</th>
         <th>数据</th>
-        <th>操作</th>
+        <th style="width: 1px">操作</th>
       </thead>
       <tbody
         slot="body"
@@ -20,12 +21,16 @@
         <tr v-for="state in states" :key="state.id">
           <td>{{state.name}}</td>
           <td>{{state.address}}</td>
+          <td>
+            {{state.type + (state.type === 'string' ? `(${state.length})` : '')}}
+          </td>
           <td>{{currentValues[state.id]}}</td>
           <PlcStateSetValue
             v-if="isRunning"
             :plcId="plcId"
             :stateId="state.id"
             :type="state.type"
+            style="width: 1px"
           />
           <td v-else></td>
         </tr>
