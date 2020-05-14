@@ -20,6 +20,9 @@ namespace Tiantong.Iot
           case StateType.UInt16:
             manager.UInt16(state.address, StateBuilder(state));
             break;
+          case StateType.Int32:
+            manager.Int32(state.address, StateBuilder(state));
+            break;
           case StateType.String:
             manager.String(state.address, state.length, StateBuilder(state));
             break;

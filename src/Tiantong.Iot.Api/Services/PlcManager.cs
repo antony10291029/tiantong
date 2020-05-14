@@ -66,7 +66,9 @@ namespace Tiantong.Iot.Api
 
         worker.Stop().WaitAsync()
           .ContinueWith(task => {
-            task.GetAwaiter().GetResult();
+            try {
+              task.GetAwaiter().GetResult();
+            } catch {}
             _plcById.Remove(worker._id);
             _plcByName.Remove(worker._name);
           });
