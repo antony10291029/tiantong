@@ -42,6 +42,19 @@ namespace Tiantong.Iot.DB.Sqlite.Test
     }
 
     [Test]
+    public void TestKeyValue()
+    {
+      var db = GetDb();
+
+      db.KeyValues.Add(new KeyValue {
+        key = "key",
+        value = "value"
+      });
+
+      db.SaveChanges();
+    }
+
+    [Test]
     public void TestPlcLog()
     {
       var db = GetDb();

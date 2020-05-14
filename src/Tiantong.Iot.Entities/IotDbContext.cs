@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
 namespace Tiantong.Iot.Entities
 {
   public class IotDbContext : DBCore.DbContext
   {
+    public DbSet<KeyValue> KeyValues { get; set; }
+
     public DbSet<Plc> Plcs { get; set; }
 
     public DbSet<PlcLog> PlcLogs { get; set; }

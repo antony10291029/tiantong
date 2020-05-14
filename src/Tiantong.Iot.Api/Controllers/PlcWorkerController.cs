@@ -87,7 +87,16 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    public abstract class SetValueById<T>
+    public class SetParams<T>
+    {
+      public string plc { get; set; }
+
+      public string state { get; set; }
+
+      public T value { get; set; }
+    }
+
+    public class SetByNameParams<T>
     {
       public int plc_id { get; set; }
 
@@ -96,28 +105,18 @@ namespace Tiantong.Iot.Api
       public T value { get; set; }
     }
 
-    public class SetValueByName<T>
+    [HttpPost]
+    [Route("states/uint16/set")]
+    public object SetUInt16([FromBody] SetParams<ushort> param)
     {
-      public string plc_name { get; set; }
+      _plcManager.Get(param.plc).UShort(param.state).Set(param.value);
 
-      public string state_name { get; set; }
-
-      public T value { get; set; }
-    }
-
-    public class SetUShortValueParams: SetValueById<ushort>
-    {
-
-    }
-
-    public class SetUInt16ByNameParams: SetValueByName<ushort>
-    {
-
+      return SuccessOperation("数据已写入");
     }
 
     [HttpPost]
     [Route("states/uint16/set-by-id")]
-    public object SetUInt16ById([FromBody] SetUShortValueParams param)
+    public object SetUInt16ById([FromBody] SetByNameParams<ushort> param)
     {
       _plcManager.Get(param.plc_id).UShort(param.state_id).Set(param.value);
 
@@ -125,36 +124,17 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("states/uint16/set-by-name")]
-    public object SetUInt16ByName([FromBody] SetUInt16ByNameParams param)
+    [Route("states/string/set")]
+    public object SetString([FromBody] SetParams<string> param)
     {
-      _plcManager.Get(param.plc_name).UShort(param.state_name).Set(param.value);
+      _plcManager.Get(param.plc).String(param.state).Set(param.value);
 
       return SuccessOperation("数据已写入");
-    }
-
-    public class SetStringByIdParams: SetValueById<string>
-    {
-
-    }
-
-    public class SetStringByNameParams: SetValueByName<string>
-    {
-
     }
 
     [HttpPost]
     [Route("states/string/set-by-id")]
-    public object SetStringById([FromBody] SetStringByIdParams param)
-    {
-      _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);
-
-      return SuccessOperation("数据已写入");
-    }
-
-    [HttpPost]
-    [Route("states/string/set-by-name")]
-    public object SetStringByName([FromBody] SetStringByIdParams param)
+    public object SetStringByName([FromBody] SetByNameParams<string> param)
     {
       _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);
 

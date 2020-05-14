@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "plc_state_errors" (
   "plc_id" INTEGER NOT NULL,
   "state_id" INTEGER NOT NULL,
   "operation" TEXT NOT NULL,
-  "value" TEXT NOT NULL,
+  "value" TEXT,
   "message" TEXT NOT NULL,
   "created_at" TEXT NOT NULL
 );

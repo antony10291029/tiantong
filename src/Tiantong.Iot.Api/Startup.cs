@@ -16,6 +16,7 @@ namespace Tiantong.Iot.Api
       services.AddHostedService<PlcManagerService>();
       services.AddSingleton<Config>();
       services.AddSingleton<PlcManager>();
+      services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
       services.AddDbContext<IotDbContext, IotSqliteDbcontext>();
       services.AddScoped<IMigrator, IotSqliteMigrator>();
@@ -26,6 +27,7 @@ namespace Tiantong.Iot.Api
       services.AddScoped<PlcStateLogRepository>();
       services.AddScoped<PlcStateErrorRepository>();
       services.AddScoped<PlcStateHttpPusherRepository>();
+      services.AddScoped<SystemRepository>();
     }
 
     public void Configure(IApplicationBuilder app)

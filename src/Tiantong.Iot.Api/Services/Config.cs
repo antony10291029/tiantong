@@ -13,6 +13,8 @@ namespace Tiantong.Iot.Api
 
     public readonly string AppName;
 
+    public readonly string AppKey;
+
     public readonly string AppVersion;
 
     public Config(IConfiguration config, IHostEnvironment env)
@@ -20,6 +22,7 @@ namespace Tiantong.Iot.Api
       Env = env.EnvironmentName;
       AppName = config.GetValue("app_name", "App");
       AppVersion = config.GetValue("app_version", "0.1.0");
+      AppKey = config.GetValue("app_key", "base64:t3gsHNPoDml4Y36IdR1CnIJ5LQTFqGQ46ectLWzqsXo=");
     }
   }
 
