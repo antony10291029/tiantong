@@ -158,7 +158,8 @@ namespace Tiantong.Iot.Protocol
 
     public void UseInt32()
     {
-      throw new Exception("暂时不支持 Int32 类型");
+      UseCommandReadInt16();
+      UseDataCount(2);
     }
 
     public void UseString(int length)

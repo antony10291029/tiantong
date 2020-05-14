@@ -27,6 +27,7 @@ namespace Tiantong.Iot.Protocol
     public new void UseInt32()
     {
       base.UseInt32();
+      UseDataCount(2);
     }
 
     public new void UseString(int length)
