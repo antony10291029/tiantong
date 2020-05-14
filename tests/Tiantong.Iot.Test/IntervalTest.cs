@@ -13,7 +13,7 @@ namespace Tiantong.Iot.Test
       var interval = new Interval();
 
       interval.SetTime(1).SetHandler(() => flag = true);
-      interval.Start().WaitAsync().Wait(10);
+      interval.Start();
       interval.Stop().Wait();
 
       Assert.IsTrue(flag);
@@ -25,7 +25,7 @@ namespace Tiantong.Iot.Test
       var interval = new Interval(() => throw new Exception("ex"), 1);
 
       try {
-        interval.Start().WaitAsync().AssertFinishIn(10);
+        interval.Start().WaitAsync().AssertFinishIn();
         Assert.Fail("interval should throw the exception");
       } catch (Exception e) {
         Assert.AreEqual(e.Message, "ex");

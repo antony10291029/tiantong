@@ -71,8 +71,7 @@ namespace Tiantong.Iot.Test
 
       try {
         manager.Start();
-        Task.Delay(10).GetAwaiter().GetResult();
-        manager.WaitAsync().AssertFinishIn(110);
+        manager.WaitAsync().AssertFinishIn();
         Assert.Fail("except throw exception from interval");
       } catch (Exception ex) {
         Assert.AreEqual(ex.Message, "ex");

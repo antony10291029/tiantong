@@ -68,9 +68,10 @@ namespace Tiantong.Iot.Api
           .ContinueWith(task => {
             try {
               task.GetAwaiter().GetResult();
-            } catch {}
-            _plcById.Remove(worker._id);
-            _plcByName.Remove(worker._name);
+            } finally {
+              _plcById.Remove(worker._id);
+              _plcByName.Remove(worker._name);
+            }
           });
 
         return true;
