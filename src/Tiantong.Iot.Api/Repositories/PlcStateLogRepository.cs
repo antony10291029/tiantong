@@ -14,8 +14,13 @@ namespace Tiantong.Iot.Api
 
     public Pagination<PlcStateLog> PaginateByPlcId(int plcId, int page, int pageSize)
     {
+      var stateIds = _db.PlcStates
+        .Where(s => s.plc_id == plcId)
+        .Select(s => s.id)
+        .ToArray();
+
       return _db.PlcStateLogs
-        .Where(log => log.plc_id == plcId)
+        .Where(log => log.plc_id == plcId && stateIds.Contains(log.state_id))
         .OrderByDescending(log => log.id)
         .Paginate(page, pageSize);
     }
