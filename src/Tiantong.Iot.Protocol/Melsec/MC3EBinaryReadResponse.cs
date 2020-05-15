@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Tiantong.Iot.Protocol
 {
-  public class MC3EReadResponse: IPlcReadResponse
+  public class MC3EBinaryReadResponse: IPlcReadResponse
   {
     private byte[] _message; 
 

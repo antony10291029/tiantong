@@ -3,11 +3,11 @@ using Tiantong.Iot.Protocol;
 
 namespace Tiantong.Iot
 {
-  public class MC3EDriverProvider : IStateDriverProvider
+  public class MC3EBinaryDriverProvider : IStateDriverProvider
   {
     protected RenetTcpClient _client;
 
-    public MC3EDriverProvider(string host, int port)
+    public MC3EBinaryDriverProvider(string host, int port)
     {
       _client = new RenetTcpClient(host, port);
     }
@@ -16,10 +16,10 @@ namespace Tiantong.Iot
     {
       return new StateTcpDriver(
         _client,
-        new MC3EReadRequest(),
-        new MC3EReadResponse(),
-        new MC3EWriteRequest(),
-        new MC3EWriteResponse()
+        new MC3EBinaryReadRequest(),
+        new MC3EBinaryReadResponse(),
+        new MC3EBinaryWriteRequest(),
+        new MC3EBinaryWriteResponse()
       );
     }
 

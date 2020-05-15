@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Tiantong.Iot.Protocol
 {
-  public class MC3EReadRequest: IPlcReadRequest
+  public class MC3EBinaryReadRequest: IPlcReadRequest
   {
     protected byte[] _msg = new byte[] {
       0x50,    // 0.  固定 - 帧头 - 1

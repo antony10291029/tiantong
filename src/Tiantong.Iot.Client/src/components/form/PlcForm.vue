@@ -19,12 +19,12 @@
       <div class="field" style="width: 320px">
         <label class="label">通信协议</label>
         <div
-          @click="plc.model = 'mc3e'"
+          @click="plc.model = 'mc3e-binary'"
           class="is-bordered is-flex is-vcentered"
           style="padding: 0.5rem; cursor: pointer"
         >
-          <Radio :value="plc.model === 'mc3e'">
-            MC-3E
+          <Radio :value="plc.model === 'mc3e-binary' || plc.model === 'mc3e'">
+            MC-3E-Binary
           </Radio>
         </div>
         <div

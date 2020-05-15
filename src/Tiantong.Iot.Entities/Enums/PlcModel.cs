@@ -6,6 +6,8 @@ namespace Tiantong.Iot.Entities
 
     public const string MC3E = "mc3e";
 
+    public const string MC3EBinary = "mc3e-binary";
+
     public const string S7200Smart = "s7200smart";
 
   }
