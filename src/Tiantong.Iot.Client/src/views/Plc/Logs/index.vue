@@ -7,25 +7,25 @@
       <ul>
         <router-link
           tag="li"
-          :to="`${baseURL}/state-logs`"
+          :to="`${baseURL}/logs/state-logs`"
         >
           <a>数据读写</a>
         </router-link>
         <router-link
           tag="li"
-          :to="`${baseURL}/state-errors`"
+          :to="`${baseURL}/logs/state-errors`"
         >
           <a>读写异常</a>
         </router-link>
         <router-link
           tag="li"
-          :to="`${baseURL}/http-pusher-logs`"
+          :to="`${baseURL}/logs/http-pusher-logs`"
         >
           <a>HTTP推送</a>
         </router-link>
         <router-link
           tag="li"
-          :to="`${baseURL}/http-pusher-errors`"
+          :to="`${baseURL}/logs/http-pusher-errors`"
         >
           <a>推送异常</a>
         </router-link>

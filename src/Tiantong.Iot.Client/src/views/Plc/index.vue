@@ -43,7 +43,7 @@
         </router-link>
         <router-link
           tag="li"
-          :to="`${baseURL}/${plcId}/state-logs`"
+          :to="`${baseURL}/${plcId}/logs`"
         >
           <a>
             <span

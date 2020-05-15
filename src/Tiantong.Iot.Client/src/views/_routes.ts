@@ -57,8 +57,9 @@ export default [
                 component: PlcConfig
               },
               {
-                path: '',
+                path: 'logs',
                 name: 'PlcLogs',
+                redirect: '/plcs/:plcId/logs/state-logs',
                 component: PlcLogs,
                 children: [
                   {
