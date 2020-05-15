@@ -40,6 +40,8 @@ namespace Tiantong.Iot
 
     IWatcher When(string opt, string value);
 
+    IStateHttpPusher HttpPusher();
+
   }
 
   public interface IState<T>: IState

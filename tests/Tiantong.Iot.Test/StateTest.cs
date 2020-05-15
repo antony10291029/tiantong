@@ -11,7 +11,7 @@ namespace Tiantong.Iot.Test
       var state = new T() {
         _intervalManager = new IntervalManager(),
         _driver = new StateTestDriverProvider().Resolve(),
-        _watcherProvider = new TestWatcherProvider(),
+        _httpPusherClient = new TestHttpPusherClient(),
       };
 
       state.Name("test").Address("D100").Build();

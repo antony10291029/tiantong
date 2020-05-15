@@ -14,9 +14,9 @@ namespace Tiantong.Iot.Test
       return new TestDatabaseProvider();
     }
 
-    public override IWatcherHttpClient ResolveWatcherHttpClient()
+    public override IHttpPusherClient ResolveHttpPusherClient()
     {
-      return new TestWatcherHttpClient();
+      return new TestHttpPusherClient();
     }
 
     /// StateLogger 将被单独测试

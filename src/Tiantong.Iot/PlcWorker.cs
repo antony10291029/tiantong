@@ -23,7 +23,7 @@ namespace Tiantong.Iot
 
     internal StateErrorLogger StateErrorLogger { get; private set; }
 
-    internal IWatcherProvider WatcherProvider { get; private set; }
+    internal IHttpPusherClient HttpPusherClient { get; private set; }
 
     internal DatabaseProvider DatabaseProvider { get; private set; }
 
@@ -108,19 +108,14 @@ namespace Tiantong.Iot
       return new DatabaseProvider();
     }
 
-    public virtual IWatcherProvider ResolveWatcherProvider()
+    public virtual IHttpPusherClient ResolveHttpPusherClient()
     {
-      return new WatcherProvider(ResolveWatcherHttpClient());
-    }
-
-    public virtual IWatcherHttpClient ResolveWatcherHttpClient()
-    {
-      return new WatcherHttpClient(DatabaseProvider.Resolve(), IntervalManager);
+      return new HttpPusherClient(DatabaseProvider.Resolve(), IntervalManager);
     }
 
     public virtual StateManager ResolveStateManager()
     {
-      return new StateManager(IntervalManager, StateDriverProvider, StateLogger, WatcherProvider, StateErrorLogger);
+      return new StateManager(IntervalManager, StateDriverProvider, StateLogger, HttpPusherClient, StateErrorLogger);
     }
 
     public IStateDriverProvider ResolveStateDriverProvider()
@@ -141,7 +136,7 @@ namespace Tiantong.Iot
       IntervalManager = new IntervalManager();
       DatabaseProvider = ResolveDatabaseProvider();
       StateDriverProvider = ResolveStateDriverProvider();
-      WatcherProvider = ResolveWatcherProvider();
+      HttpPusherClient = ResolveHttpPusherClient();
       Logger = ResolvePlcWorkerLogger();
       StateLogger = ResolveStateLogger();
       StateErrorLogger = ResolveStateErrorLogger();

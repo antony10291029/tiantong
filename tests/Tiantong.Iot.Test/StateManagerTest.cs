@@ -11,10 +11,10 @@ namespace Tiantong.Iot.Test
       var db = (new DatabaseProvider()).Resolve();
       var intervalManager = new IntervalManager();
       var driverProvider = new StateTestDriverProvider();
-      var watcherProvider = new TestWatcherProvider();
+      var httpPusherClient = new TestHttpPusherClient();
       var logger = new StateLogger(0, intervalManager, db);
       var errorLogger = new StateErrorLogger(db);
-      var manager = new StateManager(intervalManager, driverProvider,logger, watcherProvider, errorLogger);
+      var manager = new StateManager(intervalManager, driverProvider,logger, httpPusherClient, errorLogger);
 
       return manager;
     }

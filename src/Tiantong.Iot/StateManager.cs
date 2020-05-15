@@ -12,7 +12,7 @@ namespace Tiantong.Iot
 
     private IStateDriverProvider _stateDriverProvider;
 
-    private IWatcherProvider _watcherProvider;
+    private IHttpPusherClient _httpPusherClient;
 
     private StateErrorLogger _stateErrorLogger;
 
@@ -28,13 +28,13 @@ namespace Tiantong.Iot
       IntervalManager manager,
       IStateDriverProvider provider,
       IStatePlugin stateLogger,
-      IWatcherProvider watcherProvider,
+      IHttpPusherClient httpPusherClient,
       StateErrorLogger stateErrorLogger
     ) {
       _stateLogger = stateLogger;
       _intervalManager = manager;
       _stateDriverProvider = provider;
-      _watcherProvider = watcherProvider;
+      _httpPusherClient = httpPusherClient;
       _stateErrorLogger = stateErrorLogger;
     }
 
@@ -64,7 +64,7 @@ namespace Tiantong.Iot
     {
       var state = new T() {
         _intervalManager = _intervalManager,
-        _watcherProvider = _watcherProvider,
+        _httpPusherClient = _httpPusherClient,
         _driver = _stateDriverProvider.Resolve(),
       };
 

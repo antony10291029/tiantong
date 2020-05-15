@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System.Text;
 namespace Tiantong.Iot.Test
 {
-  public class TestWatcherHttpClient: IWatcherHttpClient
+  public class TestHttpPusherClient: IHttpPusherClient
   {
     public string Url;
 

@@ -12,8 +12,6 @@ namespace Tiantong.Iot
     void On(Action handler);
 
     IWatcher When(string opt, string value);
-
-    void HttpPost(string url, string valueKey, bool toString = false, string json = "{}", Encoding encoding = null);
   }
 
   public interface IWatcher<T>: IWatcher
@@ -24,5 +22,10 @@ namespace Tiantong.Iot
 
     void On(Action<T> handler);
 
+  }
+
+  public interface IStateHttpPusher: IWatcher
+  {
+    IStateHttpPusher Post(string url, string valueKey, bool toString = false, string json = "{}", Encoding encoding = null);
   }
 }

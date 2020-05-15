@@ -31,7 +31,7 @@ namespace Tiantong.Iot
 
     public IntervalManager _intervalManager;
 
-    public IWatcherProvider _watcherProvider;
+    public IHttpPusherClient _httpPusherClient;
 
     protected StateErrorLogger _errorLogger;
 
@@ -118,6 +118,8 @@ namespace Tiantong.Iot
 
     public abstract IWatcher When(string opt, string value);
 
+    public abstract IStateHttpPusher HttpPusher();
+
     public abstract string GetCurrentValue(int timeGapMilliseconds);
 
   }
@@ -172,7 +174,7 @@ namespace Tiantong.Iot
 
     private IWatcher<T> CreateWatcher()
     {
-      var watcher = _watcherProvider.Resolve<T>();
+      var watcher = new Watcher<T>();
 
       AddGetHook(value => watcher.Emit(value));
 
@@ -194,6 +196,15 @@ namespace Tiantong.Iot
     public override IWatcher When(string opt, string value)
     {
       return CreateWatcher().When(opt, value);
+    }
+
+    public override IStateHttpPusher HttpPusher()
+    {
+      var pusher = new StateHttpPusher<T>(_httpPusherClient);
+
+      AddGetHook(value => pusher.Emit(value));
+
+      return pusher;
     }
 
     public override IState Collect(int time = 1000)

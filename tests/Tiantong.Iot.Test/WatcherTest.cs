@@ -10,7 +10,7 @@ namespace Tiantong.Iot.Test
     public void TestHandleCancel()
     {
       var result = 0;
-      var watcher = new Watcher<int>(new TestWatcherHttpClient());
+      var watcher = new Watcher<int>();
       
       watcher.When(value => value != 0).On(value => result = value);
       watcher.Emit(1);
@@ -22,7 +22,7 @@ namespace Tiantong.Iot.Test
     public void TestCustomEvent()
     {
       var result = 0;
-      var watcher = new Watcher<WatcherUser>(new TestWatcherHttpClient());
+      var watcher = new Watcher<WatcherUser>();
       var user = new WatcherUser() { Id = 1, Name = "test" };
 
       watcher.When(item => item.Id == 10).On(item => result = item.Id);
@@ -39,7 +39,7 @@ namespace Tiantong.Iot.Test
     public void TestWhenOpt()
     {
       var flag = "";
-      var watcher = new Watcher<string>(new TestWatcherHttpClient());
+      var watcher = new Watcher<string>();
       watcher.On(value => flag = value);
 
       watcher.When("", "");
@@ -74,9 +74,9 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostNumber()
     {
-      var client = new TestWatcherHttpClient();
-      var watcher = new Watcher<int>(client);
-      watcher.When(_ => true).HttpPost("test", "key", false, "{\"field\": 1}");
+      var client = new TestHttpPusherClient();
+      var watcher = new StateHttpPusher<int>(client);
+      watcher.Post("test", "key", false, "{\"field\": 1}").When("", "");
       watcher.Emit(100);
 
       Assert.AreEqual(client.Url, "test");
@@ -87,9 +87,9 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostNumberToString()
     {
-      var client = new TestWatcherHttpClient();
-      var watcher = new Watcher<int>(client);
-      watcher.When(_ => true).HttpPost("test", "key", true);
+      var client = new TestHttpPusherClient();
+      var watcher = new StateHttpPusher<int>(client);
+      watcher.Post("test", "key", true).When("", "");
       watcher.Emit(100);
 
       Assert.AreEqual(client.Url, "test");
@@ -99,9 +99,9 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostString()
     {
-      var client = new TestWatcherHttpClient();
-      var watcher = new Watcher<string>(client);
-      watcher.When(_ => true).HttpPost("test", "string");
+      var client = new TestHttpPusherClient();
+      var watcher = new StateHttpPusher<string>(client);
+      watcher.Post("test", "string").When("", "");
       watcher.Emit("hello world");
 
       Assert.AreEqual(client.Url, "test");
@@ -111,9 +111,9 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestHttpPostStringToString()
     {
-      var client = new TestWatcherHttpClient();
-      var watcher = new Watcher<string>(client);
-      watcher.When(_ => true).HttpPost("test", "string", true);
+      var client = new TestHttpPusherClient();
+      var watcher = new StateHttpPusher<string>(client);
+      watcher.Post("test", "string", true).When("", "");
       watcher.Emit("hello world");
 
       Assert.AreEqual(client.Url, "test");

@@ -22,21 +22,13 @@ namespace Tiantong.Iot
 
     public abstract IWatcher When(string opt, string value);
 
-    public abstract void HttpPost(string url, string valueKey, bool toString, string json, Encoding encoding);
   }
 
   public class Watcher<T> : Watcher, IWatcher<T>
   {
-    protected IWatcherHttpClient _httpClient;
-
-    private Action<T> _handler;
+    protected Action<T> _handler;
 
     protected Func<T, bool> _when;
-
-    public Watcher(IWatcherHttpClient httpClient)
-    {
-      _httpClient = httpClient;
-    }
 
     public void Emit(T value)
     {
@@ -85,7 +77,18 @@ namespace Tiantong.Iot
       On(data => handler(data.ToString()));
     }
 
-    public override void HttpPost(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
+  }
+
+  public class StateHttpPusher<T>: Watcher<T>, IStateHttpPusher
+  {
+    private IHttpPusherClient _httpClient;
+
+    public StateHttpPusher(IHttpPusherClient httpClient)
+    {
+      _httpClient = httpClient;
+    }
+
+    public IStateHttpPusher Post(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
     {
       if (valueKey == "") {
         valueKey = "value";
@@ -100,6 +103,8 @@ namespace Tiantong.Iot
 
         _httpClient.PostAsync(_id, url, JsonSerializer.Serialize(data), encoding);
       };
+
+      return this;
     }
   }
 }

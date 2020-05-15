@@ -13,7 +13,7 @@ namespace Tiantong.Iot.Test
       var manager = new IntervalManager();
       var db = new TestDatabaseProvider().Resolve();
       var listener = new TestWatcherHttpListener();
-      var client = new WatcherHttpClient(db, manager);
+      var client = new HttpPusherClient(db, manager);
       var url = listener.Start();
 
       client.PostAsync(0, url, "test").GetAwaiter().GetResult();
@@ -30,7 +30,7 @@ namespace Tiantong.Iot.Test
     {
       var manager = new IntervalManager();
       var db = new TestDatabaseProvider().Resolve();
-      var client = new WatcherHttpClient(db, manager);
+      var client = new HttpPusherClient(db, manager);
       var url = $"http://localhost:{Port.Free()}/";
 
       client.Timeout(1);

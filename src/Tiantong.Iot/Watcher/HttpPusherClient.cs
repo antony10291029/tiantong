@@ -7,7 +7,7 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
-  public class WatcherHttpClient: IWatcherHttpClient
+  public class HttpPusherClient: IHttpPusherClient
   {
     private HttpClient _client = new HttpClient();
 
@@ -17,7 +17,7 @@ namespace Tiantong.Iot
 
     public HttpPusherLogger _logger;
 
-    public WatcherHttpClient(IotDbContext db, IntervalManager intervalManager)
+    public HttpPusherClient(IotDbContext db, IntervalManager intervalManager)
     {
       _db = db;
       _client.DefaultRequestHeaders
