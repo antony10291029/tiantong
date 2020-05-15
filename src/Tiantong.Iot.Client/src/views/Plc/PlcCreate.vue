@@ -3,7 +3,7 @@
     <div class="tabs" style="margin-bottom: 0">
       <ul>
         <li class="is-active">
-          <a>创建 PLC</a>
+          <a>添加 PLC</a>
         </li>
       </ul>
     </div>
