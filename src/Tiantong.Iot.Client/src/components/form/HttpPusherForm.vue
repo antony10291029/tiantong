@@ -24,26 +24,6 @@
     </div>
 
     <div class="field" style="width: 320px">
-      <label class="label">条件</label>
-      <div class="control">
-        <input
-          v-model="pusher.when_opt"
-          type="text" class="input"
-        >
-      </div>
-    </div>
-
-    <div class="field" style="width: 320px">
-      <label class="label">条件值</label>
-      <div class="control">
-        <input
-          v-model="pusher.when_value"
-          type="text" class="input"
-        >
-      </div>
-    </div>
-
-    <div class="field" style="width: 320px">
       <label class="label">字段名</label>
       <div class="control">
         <input
@@ -51,6 +31,51 @@
           type="text" class="input"
         >
       </div>
+    </div>
+
+    <div class="field">
+      <label class="label">推送条件</label>
+    </div>
+
+    <div
+      class="field has-addons"
+      style="width: 320px"
+    >
+      <div
+        v-if="pusher.when_opt === ''"
+        class="control is-expanded"
+      >
+        <div class="select is-fullwidth">
+          <select v-model="pusher.when_opt">
+            <option
+              v-for="option in whenOptions" :key="option.value"
+              :value="option.value"
+            >
+              {{option.text}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <template v-else>
+        <div class="control">
+          <div class="select">
+            <select v-model="pusher.when_opt">
+              <option
+                v-for="option in whenOptions" :key="option.value"
+                :value="option.value"
+              >
+                {{option.text}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="control is-expanded">
+          <input
+            v-model="pusher.when_value"
+            type="text" class="input"
+          >
+        </div>
+      </template>
     </div>
 
     <div class="field" style="width: 480px">
@@ -83,5 +108,15 @@ import { HttpPusher } from '@/entities'
 export default class extends Vue {
   @Prop({ required: true })
   pusher!: HttpPusher
+
+  whenOptions = [
+    { text: '无', value: '' },
+    { text: '等于', value: '==' },
+    { text: '不等于', value: '!=' },
+    { text: '大于', value: '>' },
+    { text: '大于等于', value: '>=' },
+    { text: '小于', value: '<' },
+    { text: '小于等于', value: '<=' },
+  ]
 }
 </script>
