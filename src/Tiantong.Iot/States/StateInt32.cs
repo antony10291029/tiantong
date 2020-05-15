@@ -2,6 +2,11 @@ namespace Tiantong.Iot
 {
   public class StateInt32 : StateNumeric<int>
   {
+    public override void SetString(string data)
+    {
+      HandleSet(short.Parse(data));
+    }
+
     public StateInt32()
     {
       _heartbeatMaxValue = 10000;

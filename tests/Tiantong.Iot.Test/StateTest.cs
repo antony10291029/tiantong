@@ -124,5 +124,42 @@ namespace Tiantong.Iot.Test
       state.Set(1);
       state._collectInterval.Start().WaitAsync().AssertFinishIn();
     }
+
+    [Test]
+    public void TestSetStringBool()
+    {
+      var state = ResolveState<StateBool, bool>();
+      state.SetString("true");
+      var value = state.Get();
+      Assert.AreEqual(value, true);
+    }
+
+    [Test]
+    public void TestSetStringUShort()
+    {
+      var state = ResolveState<StateUInt16, ushort>();
+      state.SetString("100");
+      var value = state.Get();
+      Assert.AreEqual(value, 100);
+    }
+
+    [Test]
+    public void TestSetStringInt32()
+    {
+      var state = ResolveState<StateInt32, int>();
+      state.SetString("10000");
+      var value = state.Get();
+      Assert.AreEqual(value, 10000);
+    }
+
+    [Test]
+    public void TestSetStringString()
+    {
+      var state = ResolveState<StateString, string>();
+      state.SetString("hello world");
+      var value = state.Get();
+      Assert.AreEqual(value, "hello world");
+    }
+
   }
 }

@@ -4,6 +4,11 @@ namespace Tiantong.Iot
 {
   public class StateBytes : State<byte[]>
   {
+    public override void SetString(string data)
+    {
+      throw new Exception("暂时不支持该类型");
+    }
+
     protected override void HandleDriverBuild()
     {
       _driver.UseBytes(_length);

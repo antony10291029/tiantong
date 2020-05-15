@@ -110,6 +110,8 @@ namespace Tiantong.Iot
       return this;
     }
 
+    public abstract void SetString(string data);
+
     public abstract void Watch(Action handler);
 
     public abstract void Watch(Action<string> handler);

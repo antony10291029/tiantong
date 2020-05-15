@@ -32,6 +32,8 @@ namespace Tiantong.Iot
 
     IState UseErrorLogger(StateErrorLogger logger);
 
+    void SetString(string value);
+
     void Watch(Action handler);
 
     void Watch(Action<string> handler);

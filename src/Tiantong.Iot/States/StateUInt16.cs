@@ -4,6 +4,11 @@ namespace Tiantong.Iot
 {
   public class StateUInt16 : StateNumeric<ushort>
   {
+    public override void SetString(string data)
+    {
+      HandleSet(ushort.Parse(data));
+    }
+
     protected override void HandleDriverBuild()
     {
       _driver.UseUInt16();
