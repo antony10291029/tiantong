@@ -115,6 +115,24 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("states/int32/set-by-id")]
+    public object SetInt32([FromBody] SetByNameParams<int> param)
+    {
+      _plcManager.Get(param.plc_id).Int32(param.state_id).Set(param.value);
+
+      return SuccessOperation("数据已写入");
+    }
+
+    [HttpPost]
+    [Route("states/uint16/set")]
+    public object SetInt32ById([FromBody] SetParams<int> param)
+    {
+      _plcManager.Get(param.plc).Int32(param.state).Set(param.value);
+
+      return SuccessOperation("数据已写入");
+    }
+
+    [HttpPost]
     [Route("states/uint16/set-by-id")]
     public object SetUInt16ById([FromBody] SetByNameParams<ushort> param)
     {

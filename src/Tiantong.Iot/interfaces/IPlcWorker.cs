@@ -42,6 +42,8 @@ namespace Tiantong.Iot
 
     IState<ushort> UInt16(string name);
 
+    IState<int> Int32(string name);
+
     IState<string> String(string name);
 
     IState<byte[]> Bytes(string name);
@@ -59,6 +61,8 @@ namespace Tiantong.Iot
     IState<bool> Bool(int id);
 
     IState<ushort> UInt16(int id);
+
+    IState<int> Int32(int id);
 
     IState<string> String(int id);
 
