@@ -2,7 +2,6 @@
   <AsyncLoader
     :handler="getPushers"
     #default="{ isPushersPending }"
-    style="padding: 1.25rem"
   >
     <AsyncLoader
       v-if="!isPushersPending"

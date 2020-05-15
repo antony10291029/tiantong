@@ -2,7 +2,6 @@
   <AsyncLoader
     :handler="getStates"
     #default="{ isStatesPending }"
-    style="padding: 1.25rem"
   >
     <AsyncLoader
       v-if="!isStatesPending"

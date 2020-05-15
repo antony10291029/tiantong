@@ -6,43 +6,54 @@
           tag="li"
           :to="`${baseURL}/${plcId}/dashboard`"
         >
-          <a>运行状态</a>
+          <a>
+            <span class="icon">
+              <i class="iconfont icon-dashboard"></i>
+            </span>
+            <span>状态</span>
+          </a>
         </router-link>
         <router-link
           tag="li"
           :to="`${baseURL}/${plcId}/config`"
         >
-          <a>设备信息</a>
+          <a>
+            <span
+              class="icon"
+              style="padding-top: 0.125rem"
+            >
+              <i class="iconfont icon-settings"></i>
+            </span>
+            <span>设备</span>
+          </a>
         </router-link>
         <router-link
           tag="li"
           :to="`${baseURL}/${plcId}/states`"
         >
-          <a>数据点</a>
+          <a>
+            <span
+              class="icon"
+              style="padding-top: 0.125rem"
+            >
+              <i class="iconfont icon-table"></i>
+            </span>
+            <span>数据点</span>
+          </a>
         </router-link>
         <router-link
           tag="li"
           :to="`${baseURL}/${plcId}/state-logs`"
         >
-          <a>读写记录</a>
-        </router-link>
-        <router-link
-          tag="li"
-          :to="`${baseURL}/${plcId}/state-errors`"
-        >
-          <a>读写异常</a>
-        </router-link>
-        <router-link
-          tag="li"
-          :to="`${baseURL}/${plcId}/http-pusher-logs`"
-        >
-          <a>HTTP 推送记录</a>
-        </router-link>
-        <router-link
-          tag="li"
-          :to="`${baseURL}/${plcId}/http-pusher-errors`"
-        >
-          <a>HTTP 推送异常</a>
+          <a>
+            <span
+              class="icon"
+              style="padding-top: 0.125rem"
+            >
+              <i class="iconfont icon-logs"></i>
+            </span>
+            <span>日志</span>
+          </a>
         </router-link>
       </ul>
     </div>

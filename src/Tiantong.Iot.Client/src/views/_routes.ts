@@ -1,5 +1,6 @@
 import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
+import PlcLogs from './Plc/Logs/index.vue'
 import PlcCreate from './Plc/PlcCreate.vue'
 import PlcMaintain from './PlcMaintain/index.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
@@ -56,24 +57,31 @@ export default [
                 component: PlcConfig
               },
               {
-                path: 'state-logs',
-                name: 'PlcStateLogs',
-                component: PlcStateLogs
-              },
-              {
-                path: 'state-errors',
-                name: 'PlcStateErrors',
-                component: PlcStateErrors
-              },
-              {
-                path: 'http-pusher-logs',
-                name: 'PlcHttpPusherLogs',
-                component: HttpPusherLogs
-              },
-              {
-                path: 'http-pusher-errors',
-                name: 'PlcHttpPusherErrors',
-                component: HttpPusherErrors
+                path: '',
+                name: 'PlcLogs',
+                component: PlcLogs,
+                children: [
+                  {
+                    path: 'state-logs',
+                    name: 'PlcStateLogs',
+                    component: PlcStateLogs
+                  },
+                  {
+                    path: 'state-errors',
+                    name: 'PlcStateErrors',
+                    component: PlcStateErrors
+                  },
+                  {
+                    path: 'http-pusher-logs',
+                    name: 'PlcHttpPusherLogs',
+                    component: HttpPusherLogs
+                  },
+                  {
+                    path: 'http-pusher-errors',
+                    name: 'PlcHttpPusherErrors',
+                    component: HttpPusherErrors
+                  },
+                ]
               },
               {
                 path: 'states',
