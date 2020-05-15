@@ -45,12 +45,6 @@
             Test
           </Radio>
         </div>
-        <!-- <div class="control">
-          <input
-            v-model="plc.model"
-            type="text" class="input"
-          >
-        </div> -->
       </div>
       <div class="field" style="width: 320px">
         <label class="label">地址</label>

@@ -33,20 +33,39 @@
         </div>
       </div>
 
-      <div
-        class="field"
-        style="width: 320px"
-      >
+      <div class="field" style="width: 320px">
         <label class="label">数据类型</label>
-        <div class="control">
-          <input
-            v-model="state.type"
-            type="text" class="input"
-          >
+        <div
+          @click="state.type = 'uint16'"
+          class="is-bordered is-flex is-vcentered"
+          style="padding: 0.5rem; cursor: pointer"
+        >
+          <Radio :value="state.type === 'uint16'">
+            uint16
+          </Radio>
+        </div>
+        <div
+          @click="state.type = 'int32'"
+          class="is-bordered is-flex is-vcentered"
+          style="padding: 0.5rem; border-top: none;  cursor: pointer"
+        >
+          <Radio :value="state.type === 'int32'">
+            int32
+          </Radio>
+        </div>
+        <div
+          @click="state.type = 'string'"
+          class="is-bordered is-flex is-vcentered"
+          style="padding: 0.5rem; border-top: none; cursor: pointer"
+        >
+          <Radio :value="state.type === 'string'">
+            string - ASCII
+          </Radio>
         </div>
       </div>
 
       <div
+        v-if="state.type === 'string'"
         class="field"
         style="width: 320px"
       >

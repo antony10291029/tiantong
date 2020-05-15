@@ -4,7 +4,7 @@ export class PlcState {
   name: string = ''
   type: string = PlcStateType.uint16
   address: string = ''
-  length: number = 0
+  length: number = 10
   is_heartbeat: boolean = false
   heartbeat_interval: number = 1000
   heartbeat_max_value: number = 1000

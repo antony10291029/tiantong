@@ -60,7 +60,6 @@ namespace Tiantong.Iot
       }
     }
 
-
     private void ResolveState<T, U>(Action<T> builder, string address, int length = 0) where T : State<U>, new()
     {
       var state = new T() {
