@@ -120,7 +120,10 @@
       </div>
     </div>
 
-    <div style="padding: 1.25rem">
+    <div
+      v-if="state.type !== 'string'"
+      style="padding: 1.25rem"
+    >
       <div
         class="field"
         style="width: 320px"
