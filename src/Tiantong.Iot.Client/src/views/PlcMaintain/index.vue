@@ -1,14 +1,14 @@
 <template>
   <div style="padding: 1.25rem">
     <div class="is-bordered">
-      <AdminEmail></AdminEmail>
+      <ClearLogs></ClearLogs>
     </div>
 
     <div
       class="is-bordered"
       style="border-top: none"
     >
-      <ClearLogs></ClearLogs>
+      <AdminEmail></AdminEmail>
     </div>
 
     <div

@@ -81,27 +81,38 @@
         解除绑定
       </AsyncButton>
       <template v-else>
-        <label class="label">验证码</label>
-        <div class="field has-addons" style="width: 360px">
+        <div class="field" style="width: 320px">
+          <label class="label">验证码</label>
           <div class="control">
             <input
               v-model="verifyCode"
               type="text" class="input"
             >
           </div>
+        </div>
+
+        <div class="field">
           <div class="control">
             <AsyncButton
               v-if="verifyCode !== ''"
               :handler="unsetAdminEmail"
-              class="button is-info is-light is-bordered"
+              class="button is-info is-light is-small is-bordered"
             >
               解除绑定
             </AsyncButton>
             <a
               v-else
-              class="button is-static"
+              class="button is-static is-small"
             >
               解除绑定
+            </a>
+
+            <a
+              @click="emailVerifyCodeId = 0"
+              style="margin-left: 0.5rem"
+              class="button is-info is-light is-small"
+            >
+              返回
             </a>
           </div>
         </div>
