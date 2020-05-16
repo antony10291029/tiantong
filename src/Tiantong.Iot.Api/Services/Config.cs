@@ -17,12 +17,27 @@ namespace Tiantong.Iot.Api
 
     public readonly string AppVersion;
 
+    public readonly string STMP_HOST;
+
+    public readonly int STMP_PORT;
+
+    public readonly string STMP_ADDRESS;
+
+    public readonly string STMP_PASSWORD;
+
+
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
       AppName = config.GetValue("app_name", "App");
       AppVersion = config.GetValue("app_version", "0.1.0");
       AppKey = config.GetValue("app_key", "base64:t3gsHNPoDml4Y36IdR1CnIJ5LQTFqGQ46ectLWzqsXo=");
+
+      STMP_HOST = config.GetValue("stmp:host", "smtpdm.aliyun.com");
+      STMP_PORT = config.GetValue("stmp:port", 25);
+      STMP_ADDRESS = config.GetValue("stmp:address", "");
+      STMP_PASSWORD = config.GetValue("stmp:password", "");
+
     }
   }
 

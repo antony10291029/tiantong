@@ -26,6 +26,19 @@ namespace Tiantong.Iot.DB.Sqlite.Test
     }
 
     [Test]
+    public void TestEmailVerifyCode()
+    {
+      var db = GetDb();
+
+      db.EmailVerifyCode.Add(new EmailVerifyCode() {
+        email = "test",
+        verify_code = "100000"
+      });
+
+      db.SaveChanges();
+    }
+
+    [Test]
     public void TestPlc()
     {
       var db = GetDb();

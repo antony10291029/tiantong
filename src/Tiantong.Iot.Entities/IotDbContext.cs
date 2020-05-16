@@ -6,6 +6,8 @@ namespace Tiantong.Iot.Entities
   {
     public DbSet<KeyValue> KeyValues { get; set; }
 
+    public DbSet<EmailVerifyCode> EmailVerifyCode { get; set; }
+
     public DbSet<Plc> Plcs { get; set; }
 
     public DbSet<PlcLog> PlcLogs { get; set; }

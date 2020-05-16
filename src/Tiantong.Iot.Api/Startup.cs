@@ -14,6 +14,7 @@ namespace Tiantong.Iot.Api
     {
       services.AddControllers();
       services.AddHostedService<PlcManagerService>();
+      services.AddSingleton<Mail>();
       services.AddSingleton<Config>();
       services.AddSingleton<PlcManager>();
       services.AddSingleton<IHash, Hash>();

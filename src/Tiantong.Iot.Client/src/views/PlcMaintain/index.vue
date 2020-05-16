@@ -1,6 +1,13 @@
 <template>
   <div style="padding: 1.25rem">
     <div class="is-bordered">
+      <AdminEmail></AdminEmail>
+    </div>
+
+    <div
+      class="is-bordered"
+      style="border-top: none"
+    >
       <ClearLogs></ClearLogs>
     </div>
 
@@ -16,13 +23,15 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import ClearLogs from './ClearLogs.vue'
+import AdminEmail from './AdminEmail.vue'
 import SetPassword from './SetPassword.vue'
 
 @Component({
   name: 'PlcMaintain',
   components: {
     ClearLogs,
-    SetPassword
+    AdminEmail,
+    SetPassword,
   }
 })
 export default class extends Vue {

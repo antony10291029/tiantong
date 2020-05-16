@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Tiantong.Iot.Entities;
 using Renet;
@@ -9,12 +10,15 @@ namespace Tiantong.Iot.Api
   {
     private IHash _hash;
 
+    private IRandom _random;
+
     private IotDbContext _db;
 
-    public SystemRepository(IotDbContext db, IHash hash)
+    public SystemRepository(IotDbContext db, IHash hash, IRandom random)
     {
       _db = db;
       _hash = hash;
+      _random = random;
     }
 
     public bool HasPassword()
@@ -66,5 +70,56 @@ namespace Tiantong.Iot.Api
       keyValue.value = password;
       _db.SaveChanges();
     }
+
+    public EmailVerifyCode CreateEmailVerifyCode(string email)
+    {
+      var ev = new EmailVerifyCode {
+        email = email,
+        verify_code = _random.Int(100000, 999999).ToString()
+      };
+
+      _db.EmailVerifyCode.Add(ev);
+
+      _db.SaveChanges();
+
+      return ev;
+    }
+
+    public void EnsureEmailVerifyCode(int id, string email, string code)
+    {
+      var verify = _db.EmailVerifyCode.FirstOrDefault(ev => ev.id == id && ev.email == email);
+
+      if (verify == null || verify.expired_at < DateTime.Now || verify.verify_code != code) {
+        throw new FailureOperation("邮箱验证码错误");
+      }
+    }
+
+    public void SetAdminEmail(string email)
+    {
+      var keyValue = new KeyValue {
+        key = "admin_email",
+        value = email
+      };
+
+      _db.KeyValues.Add(keyValue);
+      _db.SaveChanges();
+    }
+
+    public void UnsetAdminEmail()
+    {
+      var keyValue = _db.KeyValues.First(kv => kv.key == "admin_email");
+
+      _db.Remove(keyValue);
+      _db.SaveChanges();
+    }
+
+    public string GetAdminEmail()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_email");
+
+      return keyValue?.value;
+    }
+
   }
+
 }

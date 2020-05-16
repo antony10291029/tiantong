@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
 
@@ -5,10 +7,15 @@ namespace Tiantong.Iot.Api
 {
   public class SystemController: BaseController
   {
+    private Mail _mail;
+
     private SystemRepository _systemRepository;
 
-    public SystemController(SystemRepository systemRepository)
-    {
+    public SystemController(
+      Mail mail,
+      SystemRepository systemRepository
+    ) {
+      _mail = mail;
       _systemRepository = systemRepository;
     }
 
@@ -53,5 +60,62 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("密码重制成功");
     }
 
+    public class CreateEmailVerifyCodeParams
+    {
+      [EmailAddress(ErrorMessage = "邮箱地址无效")]
+      public string email { get; set; }
+    }
+
+    [HttpPost]
+    [Route("email-verify-code/create")]
+    public async Task<object> CreateEmailVerifyCode([FromBody] CreateEmailVerifyCodeParams param)
+    {
+      var ev = _systemRepository.CreateEmailVerifyCode(param.email);
+
+      try {
+        await _mail.SendVerifyCodeAsync(ev.email, ev.verify_code, "绑定管理员邮箱");
+      } catch {
+        return FailureOperation("邮件发送失败，请检查网络");
+      }
+
+      return SuccessOperation("邮箱验证码已发送，请在30分钟内处理", ev.id);
+    }
+
+    public class SetAdminEmailParams
+    {
+      public int email_verify_code_id { get; set; }
+
+      [EmailAddress(ErrorMessage = "邮箱地址无效")]
+      public string email { get; set; }
+
+      public string verify_code { get; set; }
+    }
+
+    [HttpPost]
+    [Route("admin-email/set")]
+    public object SetAdminEmail([FromBody] SetAdminEmailParams param)
+    {
+      _systemRepository.EnsureEmailVerifyCode(param.email_verify_code_id, param.email, param.verify_code);
+      _systemRepository.SetAdminEmail(param.email);
+
+      return SuccessOperation("管理员邮箱已绑定");
+    }
+
+    [HttpPost]
+    [Route("admin-email/unset")]
+    public object ResetAdminEmail([FromBody] SetAdminEmailParams param)
+    {
+      _systemRepository.EnsureEmailVerifyCode(param.email_verify_code_id, param.email, param.verify_code);
+      _systemRepository.UnsetAdminEmail();
+
+      return SuccessOperation("管理员邮箱已解绑");
+    }
+
+    [HttpPost]
+    [Route("admin-email/get")]
+    public string GetAdminEmail()
+    {
+      return _systemRepository.GetAdminEmail() ?? "";
+    }
   }
 }

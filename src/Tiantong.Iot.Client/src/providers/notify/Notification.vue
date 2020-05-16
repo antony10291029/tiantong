@@ -7,7 +7,7 @@
       <span style="width: 1rem"></span>
     </template>
     <span>{{text}}</span>
-    <span class="is-flex-auto"></span>
+    <span class="is-flex-auto" style="min-width: 1rem"></span>
     <span class="is-flex is-vcentered">
       <button @click="close" class="delete"></button>
     </span>

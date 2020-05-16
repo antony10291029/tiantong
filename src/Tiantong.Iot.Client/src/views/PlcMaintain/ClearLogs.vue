@@ -43,7 +43,7 @@
     <div class="is-flex is-vcentered">
       <AsyncButton
         :handler="handleDelete"
-        class="button is-danger is-light is-small"
+        class="button is-info is-light is-small"
       >
         开始清理
       </AsyncButton>
