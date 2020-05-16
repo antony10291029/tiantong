@@ -71,6 +71,14 @@ namespace Tiantong.Iot.Api
       _db.SaveChanges();
     }
 
+    public void UnsetAdminPassword()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "password");
+
+      _db.Remove(keyValue);
+      _db.SaveChanges();
+    }
+
     public EmailVerifyCode CreateEmailVerifyCode(string email)
     {
       var ev = new EmailVerifyCode {

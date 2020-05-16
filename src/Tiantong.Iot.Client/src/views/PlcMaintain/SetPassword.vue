@@ -8,7 +8,7 @@
     </p>
 
     <p class="content">
-      系统密码用于安全相的操作，设置后请妥善保管。
+      系统密码用于安全相关的操作，设置后请妥善保管。
     </p>
 
     <template v-if="!hasPassword">
@@ -42,49 +42,120 @@
       </AsyncButton>
     </template>
     <template v-else>
-      <div class="field" style="width: 320px">
-        <label class="label">
-          旧密码
-        </label>
-        <div class="control">
-          <input
-            v-model="resetParams.old_password"
-            type="password" class="input" style="width: 320px"
-          >
-        </div>
-      </div>
+      <template v-if="!isResetPasswordShow && !isForgetPasswordShow">
+        <a
+          @click="isResetPasswordShow = true"
+          style="margin-right: 0.5rem"
+          class="button is-info is-light is-small"
+        >
+          修改密码
+        </a>
 
-      <div class="field" style="width: 320px">
-        <label class="label">
-          新密码
-        </label>
-        <div class="control">
-          <input
-            v-model="resetParams.password"
-            type="password" class="input" style="width: 320px"
-          >
-        </div>
-      </div>
+        <a
+          @click="isForgetPasswordShow = true"
+          class="button is-info is-light is-small"
+        >
+          忘记密码
+        </a>
+      </template>
 
-      <div class="field" style="width: 320px">
-        <label class="label">
-          确认密码
-        </label>
-        <div class="control">
-          <input
-            type="password" class="input"
-            @keypress.enter="handleResetPassword"
-            v-model="resetParams.password_confirmation"
-          >
+      <template v-if="isResetPasswordShow">
+        <div class="field" style="width: 320px">
+          <label class="label">
+            旧密码
+          </label>
+          <div class="control">
+            <input
+              v-model="resetParams.old_password"
+              type="password" class="input" style="width: 320px"
+            >
+          </div>
         </div>
-      </div>
 
-      <AsyncButton
-        :handler="handleResetPassword"
-        class="button is-info is-light is-small"
-      >
-        确认修改
-      </AsyncButton>
+        <div class="field" style="width: 320px">
+          <label class="label">
+            新密码
+          </label>
+          <div class="control">
+            <input
+              v-model="resetParams.password"
+              type="password" class="input" style="width: 320px"
+            >
+          </div>
+        </div>
+
+        <div class="field" style="width: 320px">
+          <label class="label">
+            确认密码
+          </label>
+          <div class="control">
+            <input
+              type="password" class="input"
+              @keypress.enter="handleResetPassword"
+              v-model="resetParams.password_confirmation"
+            >
+          </div>
+        </div>
+
+        <AsyncButton
+          :handler="handleResetPassword"
+          class="button is-info is-light is-small"
+          style="margin-right: 0.5rem"
+        >
+          确认修改
+        </AsyncButton>
+
+        <a
+          @click="isResetPasswordShow = false"
+          class="button is-info is-light is-small"
+        >
+          返回
+        </a>
+      </template>
+
+      <template v-if="isForgetPasswordShow">
+        <template v-if="emailVerifyCodeId === 0">
+          <AsyncButton
+            :handler="sendEmailCode"
+            style="margin-right: 0.5rem"
+            class="button is-info is-light is-small"
+          >
+            发送验证码至邮箱
+          </AsyncButton>
+          <a
+            @click="isForgetPasswordShow = false"
+            class="button is-info is-light is-small"
+          >
+            返回
+          </a>
+        </template>
+        <template v-else>
+          <div class="field" style="width: 320px">
+            <label class="label">验证码</label>
+            <div class="control">
+              <input v-model="verifyCode" type="text" class="input">
+            </div>
+          </div>
+          <div>
+            <div class="control">
+              <AsyncButton
+                :handler="unsetAdminPassword"
+                style="margin-right: 0.5rem"
+                class="button is-info is-light is-small"
+              >
+                重置密码
+              </AsyncBUtton>
+              <a
+                @click="emailVerifyCodeId = 0"
+                style="margin-right: 0.5rem"
+                class="button is-info is-light is-small"
+              >
+                返回
+              </a>
+            </div>
+          </div>
+        </template>
+      </template>
     </template>
   </AsyncLoader>
 </template>
@@ -98,6 +169,16 @@ import axios from '@/providers/axios'
 })
 export default class extends Vue {
   hasPassword = false
+
+  isResetPasswordShow = false
+
+  isForgetPasswordShow = false
+
+  isResetPasswordByEmailShow = false
+
+  verifyCode = ''
+
+  emailVerifyCodeId = 0
 
   setParams = {
     password: '',
@@ -114,6 +195,11 @@ export default class extends Vue {
     let response = await axios.post('/system-password/has')
 
     this.hasPassword = response.data
+    this.emailVerifyCodeId = 0
+    this.verifyCode = ''
+    this.isResetPasswordShow = false
+    this.isForgetPasswordShow = false
+    this.isResetPasswordByEmailShow = false
   }
 
   async handleSetPassword () {
@@ -123,6 +209,19 @@ export default class extends Vue {
 
   async handleResetPassword () {
     await axios.post('/system-password/reset', this.resetParams)
+  }
+
+  async sendEmailCode () {
+    let response = await axios.post('/system-password/send-email-code')
+    this.emailVerifyCodeId = response.data.id
+  }
+
+  async unsetAdminPassword () {
+    await axios.post('/system-password/unset', {
+      email_verify_code_id: this.emailVerifyCodeId,
+      verify_code: this.verifyCode
+    })
+    await this.getHasPassword()
   }
 }
 </script>

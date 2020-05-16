@@ -67,6 +67,36 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("/system-password/send-email-code")]
+    public async Task<object> SystemPasswordSendEmail()
+    {
+      var email = _systemRepository.GetAdminEmail();
+      var ev = _systemRepository.CreateEmailVerifyCode(email);
+
+      await _mail.SendVerifyCodeAsync(email, ev.verify_code, "密码重置");
+
+      return SuccessOperation("验证码已发送，请在 30 分钟内处理", ev.id);
+    }
+
+    public class ResetSystemPasswordParams
+    {
+      public int email_verify_code_id { get; set; }
+
+      public string verify_code { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/system-password/unset")]
+    public object ResetSystemPassword([FromBody] ResetSystemPasswordParams param)
+    {
+      var email = _systemRepository.GetAdminEmail();
+      _systemRepository.EnsureEmailVerifyCode(param.email_verify_code_id, email, param.verify_code);
+      _systemRepository.UnsetAdminPassword();
+
+      return SuccessOperation("密码已解除");
+    }
+
+    [HttpPost]
     [Route("email-verify-code/create")]
     public async Task<object> CreateEmailVerifyCode([FromBody] CreateEmailVerifyCodeParams param)
     {
@@ -78,7 +108,7 @@ namespace Tiantong.Iot.Api
         return FailureOperation("邮件发送失败，请检查网络");
       }
 
-      return SuccessOperation("邮箱验证码已发送，请在30分钟内处理", ev.id);
+      return SuccessOperation("邮箱验证码已发送，请在 30 分钟内处理", ev.id);
     }
 
     public class SetAdminEmailParams
