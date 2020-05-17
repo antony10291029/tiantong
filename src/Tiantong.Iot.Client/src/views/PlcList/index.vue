@@ -9,10 +9,7 @@
     >
       <ul class="menu-list">
         <li v-for="plc in plcs" :key="plc.id">
-          <router-link
-            :to="`/plcs/${plc.id}`"
-            active-class="is-active"
-          >
+          <router-link :to="`/plcs/${plc.id}`">
             <span
               class="icon"
               style="margin-right: 0.25rem"
