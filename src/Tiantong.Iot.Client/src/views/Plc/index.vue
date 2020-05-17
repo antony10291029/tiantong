@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tabs" style="margin-bottom: 0">
+    <div class="tabs is-boxed" style="margin-bottom: 0">
       <ul>
         <router-link
           tag="li"

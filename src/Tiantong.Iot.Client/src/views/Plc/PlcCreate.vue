@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="tabs" style="margin-bottom: 0">
+    <div class="tabs is-boxed" style="margin-bottom: 0">
       <ul>
         <li class="is-active">
           <a>添加 PLC</a>
