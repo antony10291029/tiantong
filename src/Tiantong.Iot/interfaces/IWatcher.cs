@@ -26,6 +26,8 @@ namespace Tiantong.Iot
 
   public interface IStateHttpPusher: IWatcher
   {
+    IStateHttpPusher IsConcurrent(bool value);
+
     IStateHttpPusher Post(string url, string valueKey, bool toString = false, string json = "{}", Encoding encoding = null);
   }
 }

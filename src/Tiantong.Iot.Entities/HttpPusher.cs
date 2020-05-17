@@ -19,9 +19,12 @@ namespace Tiantong.Iot.Entities
 
     public virtual string value_key { get; set; }
 
+    public virtual bool is_value_to_string { get; set; }
+
     public virtual string data { get; set; }
 
-    public virtual bool to_string { get; set; }
+    public virtual bool is_concurrent { get; set; }
+
 
   }
 }

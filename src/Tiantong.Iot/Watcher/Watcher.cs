@@ -1,7 +1,4 @@
 using System;
-using System.Text;
-using System.Text.Json;
-using System.Collections.Generic;
 
 namespace Tiantong.Iot
 {
@@ -79,32 +76,4 @@ namespace Tiantong.Iot
 
   }
 
-  public class StateHttpPusher<T>: Watcher<T>, IStateHttpPusher
-  {
-    private IHttpPusherClient _httpClient;
-
-    public StateHttpPusher(IHttpPusherClient httpClient)
-    {
-      _httpClient = httpClient;
-    }
-
-    public IStateHttpPusher Post(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
-    {
-      if (valueKey == "") {
-        valueKey = "value";
-      }
-      var data = JsonSerializer.Deserialize<Dictionary<string, object>>(json ?? "{}");
-      _handler = value => {
-        if (toString) {
-          data[valueKey] = value.ToString();
-        } else {
-          data[valueKey] = value;
-        }
-
-        _httpClient.PostAsync(_id, url, JsonSerializer.Serialize(data), encoding);
-      };
-
-      return this;
-    }
-  }
 }

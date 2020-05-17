@@ -48,8 +48,10 @@ namespace Tiantong.Iot
 
         foreach (var pusher in state.http_pushers) {
           builder.HttpPusher()
-            .Post(pusher.url, pusher.value_key, pusher.to_string, pusher.data)
-            .When(pusher.when_opt, pusher.when_value).Id(pusher.id);
+            .IsConcurrent(pusher.is_concurrent)
+            .Post(pusher.url, pusher.value_key, pusher.is_value_to_string, pusher.data)
+            .When(pusher.when_opt, pusher.when_value)
+            .Id(pusher.id);
         }
       };
     }

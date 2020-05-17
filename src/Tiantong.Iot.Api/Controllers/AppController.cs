@@ -76,7 +76,7 @@ namespace Tiantong.Iot.Api
                   url = "http://localhost:5000/data",
                   value_key = "heartbeat",
                   data = "{\"plc\": 1}",
-                  to_string = false,
+                  is_value_to_string = false,
                 }
               }
             }
@@ -104,7 +104,7 @@ namespace Tiantong.Iot.Api
                   url = "http://localhost:5000/data",
                   value_key = "scanner",
                   data = "{\"plc\": 1}",
-                  to_string = false,
+                  is_value_to_string = false,
                 }
               }
             }

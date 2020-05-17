@@ -165,7 +165,8 @@ namespace Tiantong.Iot.DB.Sqlite.Test
         url = "localhost",
         data = "{\"id\": 1}",
         value_key = "value",
-        to_string = true,
+        is_concurrent = true,
+        is_value_to_string = true,
       });
 
       db.SaveChanges();

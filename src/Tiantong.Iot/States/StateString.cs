@@ -14,12 +14,12 @@ namespace Tiantong.Iot
 
     protected override string HandleGet()
     {
-      return _driver.GetString();
+      return _driver.GetString() ?? "";
     }
 
     protected override void HandleSet(string data)
     {
-      _driver.SetString(data);
+      _driver.SetString(data ?? "");
     }
   }
 }

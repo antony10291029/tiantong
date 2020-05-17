@@ -87,7 +87,16 @@
 
     <div class="class">
       <label class="label">
-        <Checkbox v-model="pusher.to_string">转为字符串</Checkbox>
+        <Checkbox v-model="pusher.is_value_to_string">转为字符串</Checkbox>
+      </label>
+      <div class="control">
+
+      </div>
+    </div>
+
+    <div class="class">
+      <label class="label">
+        <Checkbox v-model="pusher.is_concurrent">支持并发</Checkbox>
       </label>
       <div class="control">
 
