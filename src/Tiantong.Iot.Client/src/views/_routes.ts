@@ -2,7 +2,7 @@ import Home from './Home/index.vue'
 import Plc from './Plc/index.vue'
 import PlcLogs from './Plc/Logs/index.vue'
 import PlcCreate from './Plc/PlcCreate.vue'
-import PlcMaintain from './PlcMaintain/index.vue'
+import SystemMaintain from './SystemMaintain/index.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
 import PlcStateLogs from './Plc/StateLogs/index.vue'
 import PlcStateErrors from './Plc/StateErrors/index.vue'
@@ -16,6 +16,7 @@ import PlcStateHttpPushers from './PlcStates/PlcState/HttpPushers.vue'
 import HttpPusherLogs from './Plc/HttpPusherLogs/index.vue'
 import HttpPusherErrors from './Plc/HttpPusherErrors/index.vue'
 import NotFound from './_public/NotFound.vue'
+import UnlockSystem from './UnlockSystem.vue'
 
 export default [
   {
@@ -36,8 +37,8 @@ export default [
           },
           {
             path: 'maintain',
-            name: 'PlcMaintain',
-            component: PlcMaintain
+            name: 'SystemMaintain',
+            component: SystemMaintain
           },
           {
             path: ':plcId',
@@ -119,6 +120,11 @@ export default [
         ]
       },
     ]
+  },
+  {
+    path: '/unlock-system',
+    name: 'UnlockSystem',
+    component: UnlockSystem
   },
   {
     path: '*',

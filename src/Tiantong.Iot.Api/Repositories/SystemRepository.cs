@@ -23,7 +23,7 @@ namespace Tiantong.Iot.Api
 
     public bool HasPassword()
     {
-      return _db.KeyValues.FirstOrDefault(kv => kv.key == "password") != null;
+      return _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password") != null;
     }
 
     public void SetPassword(string password, string passwordConfirmation)
@@ -41,9 +41,17 @@ namespace Tiantong.Iot.Api
       }
 
       _db.Add(new KeyValue {
-        key = "password",
+        key = "admin_password",
         value = _hash.Make(password)
       });
+      _db.SaveChanges();
+    }
+
+    public void UnsetAdminPassword()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
+
+      _db.Remove(keyValue);
       _db.SaveChanges();
     }
 
@@ -61,22 +69,24 @@ namespace Tiantong.Iot.Api
         throw new FailureOperation("系统暂时无密码，请先设置");
       }
 
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "password");
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
 
       if (!_hash.Match(oldPassword, keyValue.value)) {
         throw new FailureOperation("修改失败，原始密码错误");
       }
 
-      keyValue.value = password;
+      keyValue.value = _hash.Make(password);
+
       _db.SaveChanges();
     }
 
-    public void UnsetAdminPassword()
+    public void EnsureAdminParams(string password)
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "password");
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
 
-      _db.Remove(keyValue);
-      _db.SaveChanges();
+      if (keyValue == null || !_hash.Match(password, keyValue.value)) {
+        throw new FailureOperation("密码确认失败");
+      }
     }
 
     public EmailVerifyCode CreateEmailVerifyCode(string email)
@@ -126,6 +136,52 @@ namespace Tiantong.Iot.Api
       var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_email");
 
       return keyValue?.value;
+    }
+
+    public void EnsureSystemUnlocked()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+
+      if (keyValue != null && keyValue.value == "true") {
+        throw new FailureOperation("系统设备锁定已打开，无法执行当前操作");
+      }
+    }
+
+    public void LockSystem()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+
+      if (keyValue == null) {
+        keyValue = new KeyValue {
+          key = "is_system_locked"
+        };
+        _db.Add(keyValue);
+      }
+
+      keyValue.value = "true";
+      _db.SaveChanges();
+    }
+
+    public void UnlockSystem()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+
+      if (keyValue == null) {
+        keyValue = new KeyValue {
+          key = "is_system_locked"
+        };
+        _db.Add(keyValue);
+      }
+
+      keyValue.value = "false";
+      _db.SaveChanges();
+    }
+
+    public bool GetIsSystemLocked()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+
+      return keyValue?.value == "true";
     }
 
   }

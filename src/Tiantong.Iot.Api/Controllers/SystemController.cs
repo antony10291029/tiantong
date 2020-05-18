@@ -71,6 +71,11 @@ namespace Tiantong.Iot.Api
     public async Task<object> SystemPasswordSendEmail()
     {
       var email = _systemRepository.GetAdminEmail();
+
+      if (email == null) {
+        return FailureOperation("请先绑定管理员邮箱");
+      }
+
       var ev = _systemRepository.CreateEmailVerifyCode(email);
 
       await _mail.SendVerifyCodeAsync(email, ev.verify_code, "密码重置");
@@ -147,5 +152,39 @@ namespace Tiantong.Iot.Api
     {
       return _systemRepository.GetAdminEmail() ?? "";
     }
+
+    public class SystemLockParams
+    {
+      public string password { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/system-lock/get")]
+    public bool GetIsSystemLocked()
+    {
+      return _systemRepository.GetIsSystemLocked();
+    }
+
+    [HttpPost]
+    [Route("/system-lock/lock")]
+    public object LockSystem([FromBody] SystemLockParams param)
+    {
+      _systemRepository.EnsureAdminParams(param.password);
+      _systemRepository.LockSystem();
+
+      return SuccessOperation("设备锁定已开启");
+    }
+
+    [HttpPost]
+    [Route("/system-lock/unlock")]
+    public object UnlockSystem([FromBody] SystemLockParams param)
+    {
+      _systemRepository.EnsureAdminParams(param.password);
+      _systemRepository.UnlockSystem();
+
+      return SuccessOperation("设备锁定已关闭");
+    }
+
   }
+
 }

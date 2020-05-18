@@ -1,7 +1,7 @@
 <template>
   <component
+    :class="!isPending || 'is-loading'"
     @click="handleClick"
-    v-loading=""
     :is="tag"
     :disabled="disabled"
   >

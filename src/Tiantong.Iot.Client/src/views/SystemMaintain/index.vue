@@ -8,6 +8,13 @@
       class="is-bordered"
       style="border-top: none"
     >
+      <SystemLock></SystemLock>
+    </div>
+
+    <div
+      class="is-bordered"
+      style="border-top: none"
+    >
       <AdminEmail></AdminEmail>
     </div>
 
@@ -24,6 +31,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import ClearLogs from './ClearLogs.vue'
 import AdminEmail from './AdminEmail.vue'
+import SystemLock from './SystemLock.vue'
 import SetPassword from './SetPassword.vue'
 
 @Component({
@@ -31,6 +39,7 @@ import SetPassword from './SetPassword.vue'
   components: {
     ClearLogs,
     AdminEmail,
+    SystemLock,
     SetPassword,
   }
 })

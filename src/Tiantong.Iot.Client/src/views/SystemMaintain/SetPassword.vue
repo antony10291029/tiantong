@@ -209,6 +209,7 @@ export default class extends Vue {
 
   async handleResetPassword () {
     await axios.post('/system-password/reset', this.resetParams)
+    await this.getHasPassword()
   }
 
   async sendEmailCode () {

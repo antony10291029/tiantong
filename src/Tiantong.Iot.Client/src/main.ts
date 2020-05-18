@@ -7,12 +7,14 @@ import confirm from './providers/confirm'
 import router from './providers/vue-router'
 import components from './components/index'
 import directives from './providers/directives'
+import confirmAdminPassword from './providers/confirm-admin-password'
 
 Vue.use(directives)
 Vue.use(uid)
 Vue.use(notify)
 Vue.use(confirm)
 Vue.use(components)
+Vue.use(confirmAdminPassword)
 
 Vue.config.productionTip = false
 

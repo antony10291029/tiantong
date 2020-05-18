@@ -1,4 +1,5 @@
 import clickoutside from './clickoutside'
+import vueRouter from '../vue-router'
 
 function active (el: any, binding: any) {
   binding.value
