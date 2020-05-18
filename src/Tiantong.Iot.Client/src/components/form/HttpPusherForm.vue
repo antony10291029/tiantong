@@ -96,7 +96,7 @@
 
     <div class="class">
       <label class="label">
-        <Checkbox v-model="pusher.is_concurrent">支持并发</Checkbox>
+        <Checkbox v-model="pusher.is_concurrent">并发推送</Checkbox>
       </label>
       <div class="control">
 
