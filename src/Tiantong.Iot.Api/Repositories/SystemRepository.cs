@@ -184,6 +184,29 @@ namespace Tiantong.Iot.Api
       return keyValue?.value == "true";
     }
 
+    public bool GetIsAutorun()
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_autorun");
+
+      return keyValue?.value == "true";
+    }
+
+    public void SetAutorun(bool value)
+    {
+      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_autorun");
+
+      if (keyValue == null) {
+        keyValue = new KeyValue {
+          key = "is_autorun",
+        };
+
+        _db.Add(keyValue);
+      }
+
+      keyValue.value = value ? "true" : "false";
+      _db.SaveChanges();
+    }
+
   }
 
 }

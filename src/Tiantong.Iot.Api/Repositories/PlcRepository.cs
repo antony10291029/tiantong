@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Tiantong.Iot.Entities;
@@ -41,6 +40,16 @@ namespace Tiantong.Iot.Api
     public Plc[] All()
     {
       return _db.Plcs
+        .OrderBy(p => p.id)
+        .ToArray();
+    }
+
+    public Plc[] AllWithRelationships()
+    {
+      return _db.Plcs
+        .Include(p => p.states)
+          .ThenInclude(s => s.state_http_pushers)
+            .ThenInclude(shp => shp.pusher)
         .OrderBy(p => p.id)
         .ToArray();
     }

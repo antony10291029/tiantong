@@ -15,6 +15,20 @@
       class="is-bordered"
       style="border-top: none"
     >
+      <Autorun></Autorun>
+    </div>
+
+    <div
+      class="is-bordered"
+      style="border-top: none"
+    >
+      <StopDevices></StopDevices>
+    </div>
+
+    <div
+      class="is-bordered"
+      style="border-top: none"
+    >
       <AdminEmail></AdminEmail>
     </div>
 
@@ -29,18 +43,22 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import Autorun from './Autorun.vue'
 import ClearLogs from './ClearLogs.vue'
 import AdminEmail from './AdminEmail.vue'
 import SystemLock from './SystemLock.vue'
 import SetPassword from './SetPassword.vue'
+import StopDevices from './StopDevices.vue'
 
 @Component({
   name: 'PlcMaintain',
   components: {
+    Autorun,
     ClearLogs,
     AdminEmail,
     SystemLock,
     SetPassword,
+    StopDevices
   }
 })
 export default class extends Vue {

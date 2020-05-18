@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,29 @@ namespace Tiantong.Iot.Api
       } else {
         return FailureOperation("PLC 未运行");
       }
+    }
+
+    [HttpPost]
+    [Route("start-all")]
+    public object StartAll()
+    {
+      var plcs = _plcRepository.AllWithRelationships();
+      var workers = plcs.Select(plc => PlcBuilder.Build(plc)).ToArray();
+
+      foreach (var worker in workers) {
+        _plcManager.Run(worker);
+      }
+
+      return SuccessOperation("所有设备已开始运行");
+    }
+
+    [HttpPost]
+    [Route("stop-all")]
+    public object StopAll()
+    {
+      _plcManager.Stop();
+
+      return SuccessOperation("所有设备已停止运行");
     }
 
     [HttpPost]

@@ -1,8 +1,11 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
@@ -36,6 +39,24 @@ namespace Tiantong.Iot.Api
     private Dictionary<int, IPlcWorker> _plcById = new Dictionary<int, IPlcWorker>();
 
     private Dictionary<string, IPlcWorker> _plcByName = new Dictionary<string, IPlcWorker>();
+
+    public PlcManager(IServiceScopeFactory scopeFactory)
+    {
+      using (var scope = scopeFactory.CreateScope()) {
+        var plcRepository = scope.ServiceProvider.GetService<PlcRepository>();
+        var systemRepository = scope.ServiceProvider.GetService<SystemRepository>();
+        var isAutorun = systemRepository.GetIsAutorun();
+
+        if (isAutorun) {
+          var plcs = plcRepository.AllWithRelationships();
+          var workers = plcs.Select(plc => PlcBuilder.Build(plc)).ToArray();
+
+          foreach (var worker in workers) {
+            Run(worker);
+          }
+        }
+      }
+    }
 
     public IPlcWorker Get(int id)
     {
@@ -83,7 +104,7 @@ namespace Tiantong.Iot.Api
     public PlcManager Stop()
     {
       foreach (var plc in _plcById.Values) {
-        plc.Stop();
+        Stop(plc._id);
       }
 
       return this;

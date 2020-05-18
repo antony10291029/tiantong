@@ -185,6 +185,27 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("设备锁定已关闭");
     }
 
+    [HttpPost]
+    [Route("/autorun/get")]
+    public object GetIsAutorun()
+    {
+      return _systemRepository.GetIsAutorun();
+    }
+
+    public class SetAutorunParams
+    {
+      public bool value { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/autorun/set")]
+    public object SetAutorun([FromBody] SetAutorunParams param)
+    {
+      _systemRepository.SetAutorun(param.value);
+
+      return SuccessOperation("自动运行设置已修改");
+    }
+
   }
 
 }
