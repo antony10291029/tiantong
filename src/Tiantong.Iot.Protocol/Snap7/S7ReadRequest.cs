@@ -156,11 +156,15 @@ namespace Tiantong.Iot.Protocol
 
     protected void SetAddress(string address)
     {
-      var (db, offset, block) = TransAddress(address);
+      try {
+        var (db, offset, block) = TransAddress(address);
 
-      SetParameterDbBlock(block);
-      SetParameterDataType(db);
-      SetParameterOffset(offset);
+        SetParameterDbBlock(block);
+        SetParameterDataType(db);
+        SetParameterOffset(offset);
+      } catch {
+        throw new Exception($"PLC地址格式错误: {address}");
+      }
     }
 
     private void UseDataCount(int count)

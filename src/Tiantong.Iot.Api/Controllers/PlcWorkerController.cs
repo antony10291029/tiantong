@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -29,7 +30,13 @@ namespace Tiantong.Iot.Api
     public object Run([FromBody] FindParams param)
     {
       var plc = _plcRepository.EnsureFind(param.plc_id);
-      var worker = PlcBuilder.Build(plc);
+      PlcWorker worker;
+
+      try {
+        worker = PlcBuilder.Build(plc);
+      } catch (Exception e) {
+        return FailureOperation(e.Message);
+      }
 
       if (_plcManager.Run(worker)) {
         return SuccessOperation("PLC 开始运行");

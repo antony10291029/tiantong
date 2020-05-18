@@ -137,10 +137,14 @@ namespace Tiantong.Iot.Protocol
 
     protected void SetAddress(string address)
     {
-      var (db, offset) = TransAddress(address);
+      try {
+        var (db, offset) = TransAddress(address);
 
-      SetDataType(db);
-      SetDateOffset(offset);
+        SetDataType(db);
+        SetDateOffset(offset);
+      } catch {
+        throw new Exception($"PLC地址格式错误: {address}");
+      }
     }
 
     //
