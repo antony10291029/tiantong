@@ -21,6 +21,11 @@ namespace Tiantong.Iot.Api
       _random = random;
     }
 
+    public bool IsMigrated()
+    {
+      return _db.HasTable("key_values");
+    }
+
     public bool HasPassword()
     {
       return _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password") != null;

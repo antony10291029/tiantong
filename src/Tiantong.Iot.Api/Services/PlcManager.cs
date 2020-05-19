@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Tiantong.Iot.Entities;
+using DBCore;
 
 namespace Tiantong.Iot.Api
 {
@@ -43,8 +43,13 @@ namespace Tiantong.Iot.Api
     public PlcManager(IServiceScopeFactory scopeFactory)
     {
       using (var scope = scopeFactory.CreateScope()) {
-        var plcRepository = scope.ServiceProvider.GetService<PlcRepository>();
         var systemRepository = scope.ServiceProvider.GetService<SystemRepository>();
+
+        if (!systemRepository.IsMigrated()) {
+          scope.ServiceProvider.GetService<IMigrator>().Migrate();
+        }
+
+        var plcRepository = scope.ServiceProvider.GetService<PlcRepository>();
         var isAutorun = systemRepository.GetIsAutorun();
 
         if (isAutorun) {
