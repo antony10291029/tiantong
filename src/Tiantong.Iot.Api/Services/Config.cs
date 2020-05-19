@@ -25,7 +25,6 @@ namespace Tiantong.Iot.Api
 
     public readonly string STMP_PASSWORD;
 
-
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
@@ -37,7 +36,6 @@ namespace Tiantong.Iot.Api
       STMP_PORT = config.GetValue("stmp:port", 25);
       STMP_ADDRESS = config.GetValue("stmp:address", "");
       STMP_PASSWORD = config.GetValue("stmp:password", "");
-
     }
   }
 
