@@ -15,6 +15,7 @@ namespace Tiantong.Iot.Protocol
         GetIsDataResponse();
         GetErrorCode();
         GetDataCode();
+        GetDataLength();
         GetData();
       }
     }
@@ -22,6 +23,8 @@ namespace Tiantong.Iot.Protocol
     public bool IsDataResponse;
 
     public byte[] ErrorCode;
+
+    public int DataLength;
 
     public byte DataCode;
 
@@ -64,6 +67,11 @@ namespace Tiantong.Iot.Protocol
     private void GetErrorCode()
     {
       ErrorCode = new [] { Message[17], Message[18] };
+      if (ErrorCode[0] != 0x00 || ErrorCode[1] != 0x00) {
+        var errorCode = BitConverter.ToString(ErrorCode);
+
+        throw new Exception($"错误类型、错误代码: {errorCode}");
+      }
     }
 
     private void GetDataCode()
@@ -71,9 +79,18 @@ namespace Tiantong.Iot.Protocol
       DataCode = Message[21];
     }
 
+    private void GetDataLength()
+    {
+      DataLength = BitConverter.ToUInt16(new byte[] { Message[16], Message[15] }) - 4;
+    }
+
     private void GetData()
     {
       Array.Copy(Message, 25, Data, 0, _length);
+      if (DataLength != _length) {
+        var byteString = BitConverter.ToString(Data);
+        throw new Exception($"数据校验失败，长度应为: {_length}，实际长度: {DataLength}, 二进制数据: {byteString}");
+      }
     }
 
     //
