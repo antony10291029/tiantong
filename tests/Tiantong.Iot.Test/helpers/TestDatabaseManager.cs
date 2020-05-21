@@ -3,11 +3,11 @@ using Tiantong.Iot.DB.Sqlite;
 
 namespace Tiantong.Iot.Test
 {
-  public class TestDatabaseProvider : DatabaseProvider
+  public class TestDatabaseManager : DatabaseManager
   {
     private IotDbContext _db;
 
-    public override IotDbContext Resolve()
+    public override IotDbContext Resolve(bool managed = true)
     {
       if (_db == null) {
         var db = new IotSqliteDbcontext();
@@ -21,5 +21,13 @@ namespace Tiantong.Iot.Test
 
       return _db;
     }
+
+    public override void Migrate()
+    {
+      var db = Resolve();
+      new IotSqliteMigrator(db).Migrate();
+    }
+
   }
+
 }
