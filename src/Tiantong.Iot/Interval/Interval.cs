@@ -87,19 +87,17 @@ namespace Tiantong.Iot
     private async Task HandleTask()
     {
       while (!_tokenSource.Token.IsCancellationRequested) {
-        await _handler(_tokenSource.Token);
         try {
+          await _handler(_tokenSource.Token);
           await Task.Delay(_time, _tokenSource.Token);
         } catch (TaskCanceledException) {
-          await _handler(_tokenSource.Token);
         } catch (Exception e) {
+          // 通过 Wait 捕捉 Task 异常
           throw e;
         }
       }
     }
 
-    // issue
-    //   start 结束时未能及时生成 task
     public Interval Start()
     {
       _tokenSource = new CancellationTokenSource();
@@ -110,7 +108,7 @@ namespace Tiantong.Iot
 
     public Interval Stop()
     {
-      _tokenSource.Cancel();
+      _tokenSource?.Cancel();
 
       return this;
     }

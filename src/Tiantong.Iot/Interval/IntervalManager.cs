@@ -53,17 +53,6 @@ namespace Tiantong.Iot
       RemoveAsync(interval).GetAwaiter().GetResult();
     }
 
-    public bool IsRunning()
-    {
-      foreach (var interval in Intervals.Values) {
-        return true;
-      }
-
-      return false;
-    }
-
-    // issue
-    //   start 结束时未能及时生成 task
     public IntervalManager Start()
     {
       foreach (var interval in Intervals.Values) {
@@ -76,9 +65,7 @@ namespace Tiantong.Iot
     public IntervalManager Stop()
     {
       foreach (var interval in Intervals.Values) {
-        if (interval.IsRunning()) {
-          interval.Stop();
-        }
+        interval.Stop();
       }
 
       return this;
