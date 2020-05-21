@@ -90,15 +90,12 @@ namespace Tiantong.Iot.Api
       if (_plcById.ContainsKey(id)) {
         var worker = _plcById[id];
 
-        worker.Stop().WaitAsync()
-          .ContinueWith(task => {
-            try {
-              task.GetAwaiter().GetResult();
-            } finally {
-              _plcById.Remove(worker._id);
-              _plcByName.Remove(worker._name);
-            }
-          });
+        try {
+          worker.Stop();
+        } finally {
+          _plcById.Remove(worker._id);
+          _plcByName.Remove(worker._name);
+        }
 
         return true;
       } else {

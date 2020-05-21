@@ -86,12 +86,14 @@ namespace Tiantong.Iot.Api
     {
       var plc = _plcRepository.EnsureFind(param.plc_id);
       var worker = PlcBuilder.Build(plc);
-      
-      if (worker.Test()) {
-        return SuccessOperation("PLC 连接测试成功");
-      } else {
-        return FailureOperation("PLC 连接测试失败");
+
+      try {
+        worker.Test();
+      } catch (Exception e) {
+        return FailureOperation($"通信失败: {e.Message}");
       }
+
+      return SuccessOperation("PLC 连接测试成功");
     }
 
     [HttpPost]

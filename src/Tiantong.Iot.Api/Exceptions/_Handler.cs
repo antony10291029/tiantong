@@ -16,7 +16,7 @@ namespace Tiantong.Iot.Api
     {
       var db = context.RequestServices.GetService<IotDbContext>();
       HandleDbContext(db);
- 
+
       if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, context);
       } else if (Env.IsDevelopment()) {

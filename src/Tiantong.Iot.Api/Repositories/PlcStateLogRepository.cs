@@ -21,7 +21,8 @@ namespace Tiantong.Iot.Api
 
       return _db.PlcStateLogs
         .Where(log => log.plc_id == plcId && stateIds.Contains(log.state_id))
-        .OrderByDescending(log => log.id)
+        .OrderByDescending(log => log.created_at)
+          .ThenBy(log => log.id)
         .Paginate(page, pageSize);
     }
   }

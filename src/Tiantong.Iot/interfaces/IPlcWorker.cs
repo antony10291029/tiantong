@@ -76,7 +76,7 @@ namespace Tiantong.Iot
 
     //
 
-    bool Test();
+    void Test();
 
     IPlcWorker Start();
 
