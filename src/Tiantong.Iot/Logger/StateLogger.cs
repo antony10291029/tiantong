@@ -4,20 +4,18 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
-  public class StateLogger : Logger, IStatePlugin
+  public class StateLogger : Logger, IStateLogger
   {
-    private IotDbContext _db;
-
     private int _plcId;
 
     public Interval Interval = new Interval();
 
     private List<PlcStateLog> _stateLogs = new List<PlcStateLog>();
 
-    public StateLogger(int plcId, IntervalManager manager, IotDbContext dbContext): base(manager)
+    public StateLogger(int plcId, IntervalManager manager)
     {
       _plcId = plcId;
-      _db = dbContext;
+      UseIntervalManager(manager);
     }
 
     public override void HandleLog()
@@ -28,8 +26,8 @@ namespace Tiantong.Iot
         _stateLogs.Clear();
       }
 
-      _db.PlcStateLogs.AddRange(logs);
-      _db.SaveChanges();
+      DbContext.PlcStateLogs.AddRange(logs);
+      DbContext.SaveChanges();
     }
 
     public void Install<T>(State<T> state)

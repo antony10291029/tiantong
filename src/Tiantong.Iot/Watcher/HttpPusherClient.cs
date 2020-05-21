@@ -13,16 +13,13 @@ namespace Tiantong.Iot
 
     private readonly object _sendLock = new object();
 
-    private IotDbContext _db;
-
     public HttpPusherLogger _logger;
 
-    public HttpPusherClient(IotDbContext db, IntervalManager intervalManager)
+    public HttpPusherClient(HttpPusherLogger logger)
     {
-      _db = db;
+      _logger = logger;
       _client.DefaultRequestHeaders
         .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-      _logger = new HttpPusherLogger(db, intervalManager);
     }
 
     public void Timeout(int mileseconds)
@@ -54,4 +51,5 @@ namespace Tiantong.Iot
     }
 
   }
+
 }

@@ -6,7 +6,7 @@ namespace Tiantong.Iot
 {
   public class StateManager : IStateManager
   {
-    private IStatePlugin _stateLogger;
+    private IStateLogger _stateLogger;
 
     private IntervalManager _intervalManager;
 
@@ -27,7 +27,7 @@ namespace Tiantong.Iot
     public StateManager(
       IntervalManager manager,
       IStateDriverProvider provider,
-      IStatePlugin stateLogger,
+      IStateLogger stateLogger,
       IHttpPusherClient httpPusherClient,
       StateErrorLogger stateErrorLogger
     ) {

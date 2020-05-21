@@ -3,7 +3,7 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
-  public interface IPlcWorkerLogger
+  public interface IPlcWorkerLogger: ILogger
   {
     void Log(int id, string message);
   }

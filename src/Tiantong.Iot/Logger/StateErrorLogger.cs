@@ -2,16 +2,9 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
-  public class StateErrorLogger
+  public class StateErrorLogger: Logger
   {
-    private IotDbContext _db;
-
     private readonly object _dbLock = new object();
-
-    public StateErrorLogger(IotDbContext db)
-    {
-      _db = db;
-    }
 
     public void Log(int plcId, int stateId, string operation, string value, string message)
     {
@@ -24,9 +17,11 @@ namespace Tiantong.Iot
       };
 
       lock(_dbLock) {
-        _db.PlcStateErrors.Add(log);
-        _db.SaveChanges();
+        DbContext.PlcStateErrors.Add(log);
+        DbContext.SaveChanges();
       }
     }
+
   }
+
 }

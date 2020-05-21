@@ -12,14 +12,15 @@ namespace Tiantong.Iot.Test
     public void TestLogger()
     {
       var manager = new IntervalManager();
-      var dbProvider = new TestDatabaseProvider();
-      var db = dbProvider.Resolve();
-      var logger = new StateLogger(0, manager, db);
+      var dbManager = new TestDatabaseManager();
+      var db = dbManager.Resolve();
+      var logger = new StateLogger(0, manager);
       var state = new StateInt32() {
         _driver = new StateTestDriverProvider().Resolve(),
       };
 
-      dbProvider.Migrate();
+      dbManager.Migrate();
+      logger.UseDbContext(db);
 
       state.IsReadLogOn(true).IsWriteLogOn(true);
       state.Id(1).Address("D1").Use(logger).Build();

@@ -30,7 +30,8 @@ namespace Renet.Tcp
 
     public void Dispose()
     {
-      Close();
+      _client?.Dispose();
+      _stream?.Dispose();
     }
 
     public void Close()

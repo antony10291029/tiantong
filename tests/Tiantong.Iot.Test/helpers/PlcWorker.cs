@@ -9,9 +9,14 @@ namespace Tiantong.Iot.Test
       Model(PlcModel.Test);
     }
 
-    public override DatabaseProvider ResolveDatabaseProvider()
+    public override IPlcWorkerLogger ResolvePlcWorkerLogger()
     {
-      return new TestDatabaseProvider();
+      return new TestPlcWorkerLogger();
+    }
+
+    public override DatabaseManager ResolveDatabaseManager()
+    {
+      return new TestDatabaseManager();
     }
 
     public override IHttpPusherClient ResolveHttpPusherClient()
@@ -21,7 +26,7 @@ namespace Tiantong.Iot.Test
 
     /// StateLogger 将被单独测试
 
-    public override IStatePlugin ResolveStateLogger()
+    public override IStateLogger ResolveStateLogger()
     {
       return null;
     }

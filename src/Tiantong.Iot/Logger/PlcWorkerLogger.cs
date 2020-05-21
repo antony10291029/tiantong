@@ -2,16 +2,9 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
-  public class PlcWorkerLogger: IPlcWorkerLogger
+  public class PlcWorkerLogger: Logger, IPlcWorkerLogger
   {
-    private IotDbContext _db;
-
     private readonly object _dbLock = new object();
-
-    public PlcWorkerLogger(IotDbContext db)
-    {
-      _db = db;
-    }
 
     public void Log(int plcId, string message)
     {
@@ -21,8 +14,8 @@ namespace Tiantong.Iot
       };
 
       lock (_dbLock) {
-        _db.Add(log);
-        _db.SaveChanges();
+        DbContext.Add(log);
+        DbContext.SaveChanges();
       }
     }
 
