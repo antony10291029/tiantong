@@ -19,21 +19,21 @@ namespace Tiantong.Iot
 
     public IPlcWorkerLogger Logger { get; private set; }
 
-    internal IStatePlugin StateLogger { get; private set; }
+    internal IStateLogger StateLogger { get; private set; }
 
     internal StateErrorLogger StateErrorLogger { get; private set; }
 
+    internal HttpPusherLogger HttpPusherLogger { get; private set; }
+
     internal IHttpPusherClient HttpPusherClient { get; private set; }
 
-    internal DatabaseProvider DatabaseProvider { get; private set; }
+    internal DatabaseManager DatabaseManager { get; private set; }
 
     internal StateManager StateManager { get; private set; }
 
     internal IntervalManager IntervalManager { get; private set; }
 
     internal IStateDriverProvider StateDriverProvider { get; private set; }
-
-    public bool _isStopping = false;
 
     //
 
@@ -88,29 +88,34 @@ namespace Tiantong.Iot
 
     //
 
-    public virtual IStatePlugin ResolveStateLogger()
+    public virtual IStateLogger ResolveStateLogger()
     {
-      return new StateLogger(_id, IntervalManager, DatabaseProvider.Resolve());
+      return new StateLogger(_id, IntervalManager);
     }
 
-    public virtual PlcWorkerLogger ResolvePlcWorkerLogger()
+    public virtual IPlcWorkerLogger ResolvePlcWorkerLogger()
     {
-      return new PlcWorkerLogger(DatabaseProvider.Resolve());
+      return new PlcWorkerLogger();
     }
 
     public virtual StateErrorLogger ResolveStateErrorLogger()
     {
-      return new StateErrorLogger(DatabaseProvider.Resolve());
+      return new StateErrorLogger();
     }
 
-    public virtual DatabaseProvider ResolveDatabaseProvider()
+    public virtual DatabaseManager ResolveDatabaseManager()
     {
-      return new DatabaseProvider();
+      return new DatabaseManager();
+    }
+
+    public virtual HttpPusherLogger ResolveHttpPusherLogger()
+    {
+      return new HttpPusherLogger(IntervalManager);
     }
 
     public virtual IHttpPusherClient ResolveHttpPusherClient()
     {
-      return new HttpPusherClient(DatabaseProvider.Resolve(), IntervalManager);
+      return new HttpPusherClient(HttpPusherLogger);
     }
 
     public virtual StateManager ResolveStateManager()
@@ -134,12 +139,15 @@ namespace Tiantong.Iot
     public IPlcWorker Build()
     {
       IntervalManager = new IntervalManager();
-      DatabaseProvider = ResolveDatabaseProvider();
+      DatabaseManager = ResolveDatabaseManager();
       StateDriverProvider = ResolveStateDriverProvider();
-      HttpPusherClient = ResolveHttpPusherClient();
+
       Logger = ResolvePlcWorkerLogger();
       StateLogger = ResolveStateLogger();
+      HttpPusherLogger = ResolveHttpPusherLogger();
       StateErrorLogger = ResolveStateErrorLogger();
+
+      HttpPusherClient = ResolveHttpPusherClient();
       StateManager = ResolveStateManager();
 
       return this;
@@ -260,10 +268,29 @@ namespace Tiantong.Iot
       return dict;
     }
 
+    private void HandleStart()
+    {
+      Logger?.UseDbContext(DatabaseManager.Resolve());
+      HttpPusherLogger?.UseDbContext(DatabaseManager.Resolve());
+      StateErrorLogger?.UseDbContext(DatabaseManager.Resolve());
+      StateLogger?.UseDbContext(DatabaseManager.Resolve());
+      StateDriverProvider.Boot();
+      IntervalManager.Start();
+    }
+
+    private void HandleStop()
+    {
+      IntervalManager.Stop();
+      StateDriverProvider.Stop();
+      DatabaseManager.DisposeDbPool();
+    }
+
     public bool Test()
     {
       try {
-        Start().Stop().WaitAsync();
+        HandleStart();
+        HandleStop();
+        Wait();
 
         return true;
       } catch {
@@ -271,18 +298,9 @@ namespace Tiantong.Iot
       }
     }
 
-    private void HandleStop()
-    {
-      IntervalManager.Stop();
-      StateDriverProvider.Stop();
-    }
-
-    // issue:
-    //   无法保证在返回 this 之前处理好 task
     public IPlcWorker Start()
     {
-      StateDriverProvider.Boot();
-      IntervalManager.Start();
+      HandleStart();
       Logger.Log(_id, "开始设备通信");
 
       return this;
@@ -291,7 +309,6 @@ namespace Tiantong.Iot
     public IPlcWorker Stop()
     {
       Logger.Log(_id, "停止设备通信");
-      _isStopping = true;
       HandleStop();
 
       return this;
@@ -307,20 +324,26 @@ namespace Tiantong.Iot
       IntervalManager.Wait();
     }
 
+    public async Task RunAsync()
+    {
+      while (true) {
+        try {
+          await Start().WaitAsync();
+          break;
+        } catch (Exception e) {
+          Logger.Log(_id, $"发生通信异常: {e.Message}");
+          HandleStop();
+          Logger.Log(_id, $"正在重启通信服务");
+          Task.Delay(500).GetAwaiter().GetResult();
+        }
+      }
+    }
+
     public void Run()
     {
-      Task.Run(() => {
-        while (!_isStopping) {
-          try {
-            Start().Wait();
-          } catch (Exception e) {
-            Logger.Log(_id, $"发生通信故障: {e.Message}");
-            HandleStop();
-            Logger.Log(_id, "正在重新启动通信");
-            Task.Delay(1000).GetAwaiter().GetResult();
-          }
-        }
-      });
+      RunAsync().GetAwaiter().GetResult();
     }
+
   }
+
 }

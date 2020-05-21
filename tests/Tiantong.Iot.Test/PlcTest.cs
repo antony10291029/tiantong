@@ -25,6 +25,18 @@ namespace Tiantong.Iot.Test
     }
 
     [Test]
+    public void TestRun()
+    {
+      var plc = new PlcWorker();
+
+      plc.Config();
+
+      _ = plc.RunAsync();
+      plc.Stop();
+      plc.WaitAsync().AssertFinishIn(100);
+    }
+
+    [Test]
     public void TestGetId()
     {
       var plc = new PlcWorker();
