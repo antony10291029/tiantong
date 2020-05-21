@@ -9,15 +9,14 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({
-  name: 'Input',
-  model: {
-    prop: 'value',
-    event: 'change'
-  }
+  name: 'Input'
 })
 export default class extends Vue {
   @Prop({ required: true })
   value: any
+
+  @Prop({ default: 'text' })
+  type!: string
 
   @Prop({ default: '' })
   default!: any
@@ -37,11 +36,25 @@ export default class extends Vue {
   }
 
   handleEvent (key: string, event: any) {
-    let value: string = event.target.value
+    let value: any = event.target.value
+
+    if (this.type === 'int' || this.type == 'integer') {
+      value = parseInt(value);
+    }
+
+    if (this.type === 'number' || this.type === 'float' || this.type === 'double') {
+      value = parseFloat(value);
+    }
+
+    if (Number.isNaN(value)) {
+      value = this.default === '' ? 0 : this.default
+    }
 
     if (value === '') {
       value = this.default
     }
+
+    console.log(value)
 
     this.$emit(key, value)
   }

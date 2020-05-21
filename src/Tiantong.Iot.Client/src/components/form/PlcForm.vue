@@ -58,10 +58,10 @@
       <div class="field" style="width: 320px">
         <label class="label">端口</label>
         <div class="control">
-          <input
+          <Input
             v-model="plc.port"
-            type="text" class="input"
-          >
+            type="number" class="input"
+          />
         </div>
       </div>
       <div class="field" style="width: 480px">
@@ -70,7 +70,7 @@
           <Textarea v-model="plc.comment" />
         </div>
       </div>
-      
+
       <slot name="footer" />
     </template>
   </AsyncLoader>
