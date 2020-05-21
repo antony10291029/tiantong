@@ -19,6 +19,11 @@ namespace Tiantong.Iot
       }
     }
 
+    public void Dispose()
+    {
+      DbContext.Dispose();
+    }
+
   }
 
 }

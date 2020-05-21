@@ -7,6 +7,11 @@ namespace Tiantong.Iot.Test
 
     }
 
+    public void Dispose()
+    {
+
+    }
+
   }
 
 }
