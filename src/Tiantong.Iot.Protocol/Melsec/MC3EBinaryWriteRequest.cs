@@ -13,11 +13,6 @@ namespace Tiantong.Iot.Protocol
       Array.Resize(ref _msg, 21 + _length);
     }
 
-    public new void UseBool()
-    {
-      base.UseBool();
-    }
-
     public new void UseUInt16()
     {
       base.UseUInt16();
@@ -34,11 +29,6 @@ namespace Tiantong.Iot.Protocol
     {
       base.UseString(length);
       UseDataCount((int) Math.Ceiling(length / 2.0));
-    }
-
-    public new void UseBytes(int length)
-    {
-      base.UseBytes(length);
     }
 
     public new void UseAddress(string address)

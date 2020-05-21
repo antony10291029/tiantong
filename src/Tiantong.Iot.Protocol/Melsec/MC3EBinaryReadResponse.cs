@@ -3,68 +3,68 @@ using System.Text;
 
 namespace Tiantong.Iot.Protocol
 {
-  public class MC3EBinaryReadResponse: IPlcReadResponse
+  public class MC3EBinaryReadResponse: BinaryMessage, IPlcReadResponse
   {
-    private byte[] _message; 
+    protected byte[] _message; 
 
-    public byte[] Message
+    public override byte[] Message
     {
       get => _message;
       set {
         _message = value;
         GetResultCode();
         GetErrorCode();
-        GetDataLength();
-        GetData();
       }
     }
 
-    private int _length;
+    private int _dataLength;
+
+    private int _messageDataLength;
 
     public byte[] ResultCode;
 
     public byte[] ErrorCode;
-
-    public int DataLength;
-
-    public byte[] Data;
 
     public bool IsError
     {
       get => ResultCode[0] != 0x00 || ResultCode[1] != 0x00;
     }
 
-    public void UseBool()
+    public void UseInt16()
     {
-      throw new Exception("暂时不支持 Bool 类型");
+      _dataLength = _messageDataLength = 2;
     }
 
     public void UseUInt16()
     {
-      _length = 2;
+      _dataLength = _messageDataLength = 2;
     }
 
     public void UseInt32()
     {
-      _length = 4;
+      _dataLength = _messageDataLength = 4;
+    }
+
+    public void UseUInt32()
+    {
+      _dataLength = _messageDataLength = 4;
     }
 
     public void UseString(int length)
     {
-      _length = length;
+      _dataLength = _messageDataLength = length;
+
+      if (_dataLength % 2 != 0) {
+        _messageDataLength = _dataLength + 1;
+      }
     }
 
-    public void UseBytes(int length)
-    {
-      throw new Exception("暂时不支持 Bytes 类型");
-    }
-
-    private void GetResultCode()
+    protected void GetResultCode()
     {
       ResultCode = Message[9..11];
     }
 
-    private void GetErrorCode()
+    protected void GetErrorCode()
     {
       if (IsError) {
         ErrorCode = Message[11..13];
@@ -74,49 +74,43 @@ namespace Tiantong.Iot.Protocol
       }
     }
 
-    private void GetDataLength()
-    {
-      DataLength = BitConverter.ToUInt16(Message[7..9]) - 4;
-    }
-
-    private void GetData()
-    {
-      if (DataLength == 0) {
-        return;
-      }
-
-      Data = Message[11..(11 + _length)];
-      if (DataLength != _length) {
-        var bitString = BitConverter.ToString(Data);
-        throw new Exception($"数据校对失败，长度应为：{_length}，实际长度：{DataLength}，二进制数据：{bitString}。");
-      }
-    }
-
     //
+
+    private byte[] GetData()
+    {
+      var length = BitConverter.ToUInt16(Message[7..9]) - 2;
+
+      if (length != _messageDataLength) {
+        var bitString = BitConverter.ToString(Message[11..(11 + length)]);
+        throw new Exception($"数据校对失败，长度应为：{_messageDataLength}，实际长度：{length}，二进制数据：{bitString}。");
+      }
+
+      return Message[11..(11 + _dataLength)];
+    }
 
     public ushort GetUInt16()
     {
-      return BitConverter.ToUInt16(Data);
+      return BitConverter.ToUInt16(GetData());
     }
 
     public int GetInt32()
     {
-      return BitConverter.ToInt32(Data);
+      return BitConverter.ToInt32(GetData());
+    }
+
+    public int GetUInt32()
+    {
+      return BitConverter.ToInt32(GetData());
     }
 
     public bool GetBool()
     {
-      return BitConverter.ToBoolean(Data);
+      return BitConverter.ToBoolean(GetData());
     }
 
     public string GetString()
     {
-      return Encoding.ASCII.GetString(Data);
-    }
-
-    public byte[] GetBytes()
-    {
-      return Data;
+      return Encoding.ASCII.GetString(GetData());
     }
 
   }

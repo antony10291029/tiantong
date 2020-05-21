@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Tiantong.Iot.Protocol
 {
-  public class MC3EBinaryReadRequest: IPlcReadRequest
+  public class MC3EBinaryReadRequest: BinaryMessage, IPlcReadRequest
   {
     protected byte[] _msg = new byte[] {
       0x50,    // 0.  固定 - 帧头 - 1
@@ -15,7 +15,7 @@ namespace Tiantong.Iot.Protocol
       0x03,    // 5.  固定 - 请求目标模块IO编号 - 2
       0x00,    // 6.  固定 - 请求目标模块站号
 
-      0x00,    // 7.  参数 - 数据长度 - 1
+      0x0C,    // 7.  参数 - 数据长度 - 1
       0x00,    // 8.  参数 - 数据长度 - 2
 
       0x00,    // 9.  参数 - 等待时间 (结束代码) - 1
@@ -36,7 +36,7 @@ namespace Tiantong.Iot.Protocol
 
     };
 
-    public byte[] Message { get => _msg; }
+    public override byte[] Message { get => _msg; }
 
     //
 
@@ -94,7 +94,7 @@ namespace Tiantong.Iot.Protocol
 
     //
 
-    protected void UseCommandReadInt16()
+    protected void UseCommandRead16Bit()
     {
       Message[11] = 0x01;
       Message[12] = 0x04;
@@ -138,9 +138,9 @@ namespace Tiantong.Iot.Protocol
     protected void SetAddress(string address)
     {
       try {
-        var (db, offset) = TransAddress(address);
+        var (type, offset) = TransAddress(address);
 
-        SetDataType(db);
+        SetDataType(type);
         SetDateOffset(offset);
       } catch {
         throw new Exception($"PLC地址格式错误: {address}");
@@ -149,32 +149,35 @@ namespace Tiantong.Iot.Protocol
 
     //
 
-    public void UseBool()
-    {
-      throw new Exception("暂时不支持 Bool 类型");
-    }
-
     public void UseUInt16()
     {
-      UseCommandReadInt16();
+      UseCommandRead16Bit();
       UseDataCount(1);
     }
 
     public void UseInt32()
     {
-      UseCommandReadInt16();
+      UseCommandRead16Bit();
+      UseDataCount(2);
+    }
+
+    public void UseUInt32()
+    {
+      UseCommandRead16Bit();
       UseDataCount(2);
     }
 
     public void UseString(int length)
     {
-      UseCommandReadInt16();
-      UseDataCount((int) Math.Ceiling(length / 2.0));
-    }
+      if (length == 0) {
+        throw new Exception("字符串长度至少为1");
+      }
+      if (length >= 255) {
+        throw new Exception("字符串长度不可超过255");
+      }
 
-    public void UseBytes(int length)
-    {
-      throw new Exception("暂时不支持 Bytes 类型");
+      UseCommandRead16Bit();
+      UseDataCount((int) Math.Ceiling(length / 2.0));
     }
 
     private void UseDataCount(int count)
@@ -186,7 +189,6 @@ namespace Tiantong.Iot.Protocol
     public void UseAddress(string address)
     {
       SetAddress(address);
-      SetMessageLength();
     }
 
   }
