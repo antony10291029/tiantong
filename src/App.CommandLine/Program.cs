@@ -27,7 +27,7 @@ namespace App.CommandLine
         });
       });
 
-      worker.Run();
+      worker.ManagedRun();
 
       // Task.Delay(1000000).GetAwaiter().GetResult();
     }

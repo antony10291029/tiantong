@@ -9,7 +9,7 @@ namespace DBCore.Sqlite.Test
     public void Test()
     {
       var db = new Database();
-      var mg = new Migrator();
+      var mg = new Migrator(db);
 
       mg.UseDbContext(db).Migrate();
 
@@ -19,6 +19,7 @@ namespace DBCore.Sqlite.Test
       Assert.IsTrue(db.HasTable("users"));
       Assert.IsTrue(db.HasTable("roles"));
       Assert.IsFalse(db.HasTable("foo"));
+      db.Dispose();
     }
 
   }

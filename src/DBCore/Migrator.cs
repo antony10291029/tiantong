@@ -8,7 +8,7 @@ namespace DBCore
 {
   using Migrations = SortedDictionary<string, IMigration>;
 
-  public abstract class Migrator : IMigrator, IDisposable
+  public abstract class Migrator : IMigrator
   {
     private string _migrationDirectory = "Migrations";
 
@@ -16,17 +16,13 @@ namespace DBCore
 
     private Assembly _assembly;
 
-    private DbContext _dbContext;
+    protected DbContext DbContext;
 
-    public Migrator()
+    public Migrator(DbContext db)
     {
+      DbContext = db;
       _assembly = GetAssembly();
       _migrationInstances = GetMigrationInstances();
-    }
-
-    public void Dispose()
-    {
-      _dbContext.Dispose();
     }
 
     protected abstract void Initialize();
@@ -99,22 +95,9 @@ namespace DBCore
       return this.GetType().Assembly;
     }
 
-    protected virtual DbContext GetDbContext()
-    {
-      if (_dbContext == null) {
-        var type = _assembly.GetTypes()
-          .Where(t => typeof(DbContext).IsAssignableFrom(t))
-          .First();
-
-        _dbContext = (DbContext) Activator.CreateInstance(type);
-      }
-
-      return _dbContext;
-    }
-
     public Migrator UseDbContext(DbContext dbContext)
     {
-      _dbContext = dbContext;
+      DbContext = dbContext;
 
       return this;
     }
@@ -133,23 +116,22 @@ namespace DBCore
 
       var count = 0;
       var batchId = 1;
-      var dbcontext = GetDbContext();
-      var data = dbcontext.Migrations.ToList();
+      var data = DbContext.Migrations.ToList();
 
       if (data.Count() > 0) {
         batchId = data.Max(mg => mg.BatchId) + 1;
       }
 
-      dbcontext.Database.BeginTransaction();
+      DbContext.Database.BeginTransaction();
 
       foreach (var mg in _migrationInstances) {
         if (data.Exists(item => item.FileName == mg.Key)) {
           continue;
         }
 
-        mg.Value.Up(dbcontext);
+        mg.Value.Up(DbContext);
 
-        dbcontext.Migrations.Add(new Migration() {
+        DbContext.Migrations.Add(new Migration() {
           FileName = mg.Key,
           BatchId = batchId,
           CreatedAt = DateTime.Now,
@@ -160,8 +142,8 @@ namespace DBCore
         count++;
       }
 
-      dbcontext.SaveChanges();
-      dbcontext.Database.CommitTransaction();
+      DbContext.SaveChanges();
+      DbContext.Database.CommitTransaction();
 
       Helper.Success("Database migrations completed successfully!\n");
 
@@ -173,8 +155,7 @@ namespace DBCore
       EnsureInitialized();
 
       var count = 0;
-      var dbcontext = GetDbContext();
-      var migrations = dbcontext.Migrations.ToList();
+      var migrations = DbContext.Migrations.ToList();
 
       if (migrations.Count() == 0) return count;
 
@@ -182,7 +163,7 @@ namespace DBCore
 
       migrations = migrations.Where(mg => mg.BatchId == batchId).Reverse().ToList();
 
-      dbcontext.Database.BeginTransaction();
+      DbContext.Database.BeginTransaction();
 
       foreach (var mg in migrations) {
         if (!_migrationInstances.ContainsKey(mg.FileName)) {
@@ -190,17 +171,17 @@ namespace DBCore
           continue;
         }
 
-        _migrationInstances[mg.FileName].Down(dbcontext);
+        _migrationInstances[mg.FileName].Down(DbContext);
         Helper.Warning("dropped: ");
         Helper.Message($"{mg.FileName}\n");
         count++;
       }
 
-      var items = dbcontext.Migrations.Where(mg => mg.BatchId == batchId).ToList();
+      var items = DbContext.Migrations.Where(mg => mg.BatchId == batchId).ToList();
 
-      dbcontext.Migrations.RemoveRange(items);
-      dbcontext.SaveChanges();
-      dbcontext.Database.CommitTransaction();
+      DbContext.Migrations.RemoveRange(items);
+      DbContext.SaveChanges();
+      DbContext.Database.CommitTransaction();
 
       return count;
     }
@@ -208,12 +189,9 @@ namespace DBCore
     public void Refresh()
     {
       EnsureInitialized();
+      DbContext.Database.BeginTransaction();
 
-      var dbcontext = GetDbContext();
-
-      dbcontext.Database.BeginTransaction();
-
-      var migrations = dbcontext.Migrations
+      var migrations = DbContext.Migrations
         .OrderByDescending(mg => mg.FileName)
         .ToList();
 
@@ -225,14 +203,14 @@ namespace DBCore
 
         var ins = _migrationInstances[mg.FileName];
 
-        ins.Down(dbcontext);
+        ins.Down(DbContext);
         Helper.Warning($"dropped: ");
         Helper.Message($"{mg.FileName}\n");
       }
 
-      dbcontext.Migrations.RemoveRange(dbcontext.Migrations);
-      dbcontext.SaveChanges();
-      dbcontext.Database.CommitTransaction();
+      DbContext.Migrations.RemoveRange(DbContext.Migrations);
+      DbContext.SaveChanges();
+      DbContext.Database.CommitTransaction();
 
       Migrate();
     }
