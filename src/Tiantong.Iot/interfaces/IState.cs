@@ -28,8 +28,6 @@ namespace Tiantong.Iot
 
     IState Build();
 
-    IState Use(IStatePlugin plugin);
-
     IState UseErrorLogger(StateErrorLogger logger);
 
     void SetString(string value);

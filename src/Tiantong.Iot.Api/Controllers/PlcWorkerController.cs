@@ -11,13 +11,17 @@ namespace Tiantong.Iot.Api
   {
     private PlcManager _plcManager;
 
+    private StateLogger _stateLogger;
+
     private PlcRepository _plcRepository;
 
     public PlcWorkerController(
       PlcManager plcManager,
+      StateLogger stateLogger,
       PlcRepository plcRepository
     ) {
       _plcManager = plcManager;
+      _stateLogger = stateLogger;
       _plcRepository = plcRepository;
     }
 

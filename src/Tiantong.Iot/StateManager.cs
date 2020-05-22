@@ -6,8 +6,6 @@ namespace Tiantong.Iot
 {
   public class StateManager : IStateManager
   {
-    private IStateLogger _stateLogger;
-
     private IntervalManager _intervalManager;
 
     private IStateDriverProvider _stateDriverProvider;
@@ -27,11 +25,9 @@ namespace Tiantong.Iot
     public StateManager(
       IntervalManager manager,
       IStateDriverProvider provider,
-      IStateLogger stateLogger,
       IHttpPusherClient httpPusherClient,
       StateErrorLogger stateErrorLogger
     ) {
-      _stateLogger = stateLogger;
       _intervalManager = manager;
       _stateDriverProvider = provider;
       _httpPusherClient = httpPusherClient;
@@ -73,7 +69,6 @@ namespace Tiantong.Iot
       Add(
         state.Id(_id).Name(_name)
         .Address(address).Length(length)
-        .Use(_stateLogger)
         .UseErrorLogger(_stateErrorLogger)
         .Build()
       );

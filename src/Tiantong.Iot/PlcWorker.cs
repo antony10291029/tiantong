@@ -20,8 +20,6 @@ namespace Tiantong.Iot
 
     public IPlcWorkerLogger Logger { get; private set; }
 
-    internal IStateLogger StateLogger { get; private set; }
-
     internal StateErrorLogger StateErrorLogger { get; private set; }
 
     internal HttpPusherLogger HttpPusherLogger { get; private set; }
@@ -91,11 +89,6 @@ namespace Tiantong.Iot
 
     //
 
-    public virtual IStateLogger ResolveStateLogger()
-    {
-      return new StateLogger(_id, IntervalManager);
-    }
-
     public virtual IPlcWorkerLogger ResolvePlcWorkerLogger()
     {
       return new PlcWorkerLogger();
@@ -123,7 +116,7 @@ namespace Tiantong.Iot
 
     public virtual StateManager ResolveStateManager()
     {
-      return new StateManager(IntervalManager, StateDriverProvider, StateLogger, HttpPusherClient, StateErrorLogger);
+      return new StateManager(IntervalManager, StateDriverProvider, HttpPusherClient, StateErrorLogger);
     }
 
     public IStateDriverProvider ResolveStateDriverProvider()
@@ -146,7 +139,6 @@ namespace Tiantong.Iot
       StateDriverProvider = ResolveStateDriverProvider();
 
       Logger = ResolvePlcWorkerLogger();
-      StateLogger = ResolveStateLogger();
       HttpPusherLogger = ResolveHttpPusherLogger();
       StateErrorLogger = ResolveStateErrorLogger();
 
@@ -276,7 +268,6 @@ namespace Tiantong.Iot
       Logger?.UseDbContext(DatabaseManager.Resolve(false));
       HttpPusherLogger?.UseDbContext(DatabaseManager.Resolve());
       StateErrorLogger?.UseDbContext(DatabaseManager.Resolve());
-      StateLogger?.UseDbContext(DatabaseManager.Resolve());
 
       StateDriverProvider.Boot();
       IntervalManager.Start();

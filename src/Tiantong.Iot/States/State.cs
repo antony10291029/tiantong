@@ -44,8 +44,6 @@ namespace Tiantong.Iot
       throw new Exception("该类型不支持心跳写入");
     }
 
-    public abstract IState Use(IStatePlugin plugin);
-
     public IState UseErrorLogger(StateErrorLogger logger)
     {
       _errorLogger = logger;
@@ -126,39 +124,26 @@ namespace Tiantong.Iot
 
   public abstract class State<T>: State, IState<T>
   {
-    private List<Func<T, Task>> _gethooks = new List<Func<T, Task>>();
+    private List<Action<T>> _gethooks = new List<Action<T>>();
 
-    private List<Func<T, Task>> _sethooks = new List<Func<T, Task>>();
+    private List<Action<T>> _sethooks = new List<Action<T>>();
 
     private T _currentValue = default(T);
 
+    private Task _getTask = Task.CompletedTask;
+
+    private Task _setTask = Task.CompletedTask;
+
     private DateTime _currentValueGetAt = DateTime.MinValue;
-
-    public void AddSetHook(Func<T, Task> hook)
-    {
-      _sethooks.Add(hook);
-    }
-
-    public void AddGetHook(Func<T, Task> hook)
-    {
-      _gethooks.Add(hook);
-    }
 
     public void AddSetHook(Action<T> hook)
     {
-      AddSetHook(data => Task.Run(() => hook(data)));
+      _sethooks.Add(data => hook(data));
     }
 
     public void AddGetHook(Action<T> hook)
     {
-      AddGetHook(data => Task.Run(() => hook(data)));
-    }
-
-    public override IState Use(IStatePlugin plugin)
-    {
-      plugin?.Install(this);
-
-      return this;
+      _gethooks.Add(data => hook(data));
     }
 
     public override string GetCurrentValue(int timeGapMilliseconds = 1000)
@@ -241,6 +226,7 @@ namespace Tiantong.Iot
         throw e;
       }
 
+      
       _currentValueGetAt = DateTime.Now;
 
       foreach (var hook in _gethooks) {

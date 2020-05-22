@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Tiantong.Iot.Test
@@ -9,14 +10,11 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestStart()
     {
-      bool flag = false;
       var interval = new Interval();
 
-      interval.SetTime(1).SetHandler(() => flag = true);
+      interval.SetTime(1).SetHandler(() => interval.Stop());
       interval.Start();
-      interval.Stop().Wait();
-
-      Assert.IsTrue(flag);
+      interval.WaitAsync().AssertFinishIn();
     }
 
     [Test]

@@ -24,11 +24,5 @@ namespace Tiantong.Iot.Test
       return new TestHttpPusherClient();
     }
 
-    /// StateLogger 将被单独测试
-
-    public override IStateLogger ResolveStateLogger()
-    {
-      return null;
-    }
   }
 }
