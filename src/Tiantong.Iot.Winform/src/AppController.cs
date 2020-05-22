@@ -9,6 +9,8 @@ namespace Tiantong.Iot.Winforms
 {
   public class AppController
   {
+    private Config _config;
+    
     private IHost _server;
 
     private string _runningPort;
@@ -23,6 +25,7 @@ namespace Tiantong.Iot.Winforms
 
     public AppController()
     {
+      _config = new Config();
       InitializeForms();
       Task.Run(StartServer);
       InitializeMenuStrip();
@@ -64,6 +67,10 @@ namespace Tiantong.Iot.Winforms
         };
 
         Process.Start(ps);
+      };
+      _rootForm._portTextBox.Text = _config.Port;
+      _rootForm._portTextBox.Leave += (sender, args) => {
+        _config.Port = _rootForm._portTextBox.Text;
       };
       _rootForm.Show();
     }

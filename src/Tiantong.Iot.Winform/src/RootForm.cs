@@ -105,7 +105,6 @@ namespace Tiantong.Iot.Winforms
     private void InitializePortTextBox()
     {
       _portTextBox = new TextBox();
-      _portTextBox.Text = "5000";
       _portTextBox.Size = new Size(80, 40);
       _portTextBox.Location = new Point(580, 40);
       _portTextBox.Visible = true;
