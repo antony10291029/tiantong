@@ -1,5 +1,5 @@
-using System.Linq;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -129,7 +129,7 @@ namespace Tiantong.Iot.Api
       public T value { get; set; }
     }
 
-    public class SetByNameParams<T>
+    public class SetByIdParams<T>
     {
       public int plc_id { get; set; }
 
@@ -148,16 +148,16 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("states/int32/set-by-id")]
-    public object SetInt32([FromBody] SetByNameParams<int> param)
+    [Route("states/uint16/set-by-id")]
+    public object SetUInt16ById([FromBody] SetByIdParams<ushort> param)
     {
-      _plcManager.Get(param.plc_id).Int32(param.state_id).Set(param.value);
+      _plcManager.Get(param.plc_id).UShort(param.state_id).Set(param.value);
 
       return SuccessOperation("数据已写入");
     }
 
     [HttpPost]
-    [Route("states/uint16/set")]
+    [Route("states/int32/set")]
     public object SetInt32ById([FromBody] SetParams<int> param)
     {
       _plcManager.Get(param.plc).Int32(param.state).Set(param.value);
@@ -166,10 +166,10 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("states/uint16/set-by-id")]
-    public object SetUInt16ById([FromBody] SetByNameParams<ushort> param)
+    [Route("states/int32/set-by-id")]
+    public object SetInt32([FromBody] SetByIdParams<int> param)
     {
-      _plcManager.Get(param.plc_id).UShort(param.state_id).Set(param.value);
+      _plcManager.Get(param.plc_id).Int32(param.state_id).Set(param.value);
 
       return SuccessOperation("数据已写入");
     }
@@ -185,11 +185,40 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("states/string/set-by-id")]
-    public object SetStringByName([FromBody] SetByNameParams<string> param)
+    public object SetStringByName([FromBody] SetByIdParams<string> param)
     {
       _plcManager.Get(param.plc_id).String(param.state_id).Set(param.value);
 
       return SuccessOperation("数据已写入");
     }
+
+    [HttpPost]
+    [Route("states/uint16/get")]
+    public object GetUInt16ByName([FromBody] SetParams<string> param)
+    {
+      return new {
+        value = _plcManager.Get(param.plc).UInt16(param.state).Get()
+      };
+    }
+
+    [HttpPost]
+    [Route("states/int32/get")]
+    public object GetInt32([FromBody] SetParams<string> param)
+    {
+      return new {
+        value = _plcManager.Get(param.plc).Int32(param.state).Get()
+      };
+    }
+
+    [HttpPost]
+    [Route("states/string/get")]
+    public object GetStrinbByName([FromBody] SetParams<string> param)
+    {
+      return new {
+        value = _plcManager.Get(param.plc).String(param.state).Get()
+      };
+    }
+
   }
+
 }
