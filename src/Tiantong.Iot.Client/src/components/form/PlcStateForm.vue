@@ -102,7 +102,7 @@
         class="field"
         style="width: 320px"
       >
-        <label class="label">采集频率</label>
+        <label class="label">采集间隔（毫秒）</label>
         <div class="control">
           <input
             v-model.number="state.collect_interval"
@@ -124,32 +124,6 @@
       v-if="state.type !== 'string'"
       style="padding: 1.25rem"
     >
-      <div
-        class="field"
-        style="width: 320px"
-      >
-        <label class="label">心跳频率</label>
-        <div class="control">
-          <input
-            v-model.number="state.heartbeat_interval"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-
-      <div
-        class="field"
-        style="width: 320px"
-      >
-        <label class="label">心跳最大值</label>
-        <div class="control">
-          <input
-            v-model.number="state.heartbeat_max_value"
-            type="text" class="input"
-          >
-        </div>
-      </div>
-
       <div class="field">
         <label class="label is-flex">
           <Checkbox v-model="state.is_heartbeat">
@@ -157,6 +131,35 @@
           </Checkbox>
         </label>
       </div>
+
+      <template v-if="state.is_heartbeat">
+        <div
+          class="field"
+          style="width: 320px"
+        >
+          <label class="label">心跳间隔（毫秒）</label>
+          <div class="control">
+            <input
+              v-model.number="state.heartbeat_interval"
+              type="text" class="input"
+            >
+          </div>
+        </div>
+
+        <div
+          class="field"
+          style="width: 320px"
+        >
+          <label class="label">心跳最大值</label>
+          <div class="control">
+            <input
+              v-model.number="state.heartbeat_max_value"
+              type="text" class="input"
+            >
+          </div>
+        </div>
+      </template>
+
     </div>
   </div>
 </template>

@@ -11,7 +11,7 @@
       <template v-if="!isPending">
         <Table
           colspan="6"
-          class="table is-centered is-bordered is-fullwidth"
+          class="table is-centered is-bordered is-fullwidth is-nowrap"
         >
           <thead slot="head">
             <th>推送名</th>
