@@ -17,7 +17,9 @@ namespace Renet.Web
       context.Response.OnStarting(state => {
         var _context = state as HttpContext;
 
-        _context.Response.ContentType = "application/json";
+        if (_context.Request.Method == HttpMethods.Post) {
+          _context.Response.ContentType = "application/json";
+        }
 
         return Task.CompletedTask;
       }, context);

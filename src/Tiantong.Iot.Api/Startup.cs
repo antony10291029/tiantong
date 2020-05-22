@@ -34,7 +34,7 @@ namespace Tiantong.Iot.Api
 
     public void Configure(IApplicationBuilder app)
     {
-      // app.UseMiddleware<JsonBody>();
+      app.UseMiddleware<JsonBody>();
       app.UseProvider<ExceptionHandler>();
       app.UseClient();
       app.UseRouting();
