@@ -31,7 +31,6 @@ namespace Tiantong.Iot
     public void Stop()
     {
       _client.Close();
-      _client.Dispose();
     }
   }
 }

@@ -36,7 +36,9 @@ namespace Tiantong.Iot
     public static Action<IState> StateBuilder(PlcState state)
     {
       return builder => {
-        builder.IsReadLogOn(state.is_read_log_on).IsWriteLogOn(state.is_write_log_on);
+        builder.PlcId(state.plc_id)
+          .IsReadLogOn(state.is_read_log_on)
+          .IsWriteLogOn(state.is_write_log_on);
 
         if (state.is_heartbeat) {
           builder.Heartbeat(state.heartbeat_interval, state.heartbeat_max_value);

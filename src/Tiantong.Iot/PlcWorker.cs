@@ -284,8 +284,14 @@ namespace Tiantong.Iot
 
     private void HandleStop()
     {
-      IntervalManager.Stop().Wait();
-      StateDriverProvider.Stop();
+      try {
+        IntervalManager.Stop().Wait();      
+      } catch {}
+
+      try {
+        StateDriverProvider.Stop();
+      } catch {}
+
       DatabaseManager.DisposeDbPool();
     }
 
@@ -321,21 +327,32 @@ namespace Tiantong.Iot
     {
       _stoppingToken = new CancellationTokenSource();
 
-      while (!_stoppingToken.Token.IsCancellationRequested) {
+      while (!_stoppingToken.IsCancellationRequested) {
         try {
-          Start();
-          Logger.Log(_id, $"通信程序开始运行");
-          await WaitAsync();
+          await Start().WaitAsync();
+
           break;
         } catch (Exception e) {
-          if (_stoppingToken.Token.IsCancellationRequested) {
-            break;
+          try {
+            Logger.Log(_id, $"发生通信异常：{e.Message}");
+            HandleStop();
+          } catch {}
+
+          while (!_stoppingToken.IsCancellationRequested) {
+            try {
+              Logger.Log(_id, $"正在尝试重启");
+              await Task.Delay(1000, _stoppingToken.Token);
+              Logger.Dispose();
+              HandleStart();
+              Logger.Log(_id, $"服务重启成功");
+              break;
+            } catch (Exception ex) {
+              Logger.Log(_id, $"服务重启失败，${ex.Message}");
+            } finally {
+              HandleStop();
+            }
           }
-          Logger.Log(_id, $"发生通信错误: {e.Message}");
-          Logger.Log(_id, $"正在重启通信服务");
-          HandleStop();
-          Logger.Dispose();
-          Task.Delay(1000, _stoppingToken.Token).GetAwaiter().GetResult();
+
         }
       }
 

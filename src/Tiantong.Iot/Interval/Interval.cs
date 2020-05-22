@@ -88,8 +88,8 @@ namespace Tiantong.Iot
     {
       while (!_tokenSource.Token.IsCancellationRequested) {
         try {
-          await _handler(_tokenSource.Token);
           await Task.Delay(_time, _tokenSource.Token);
+          await _handler(_tokenSource.Token);
         } catch (TaskCanceledException) {
         } catch (Exception e) {
           // 通过 Wait 捕捉 Task 异常
