@@ -9,7 +9,7 @@ namespace Tiantong.Iot
   {
     public DateTime CurrentValueChangedAt { get; set; } = DateTime.Now;
 
-    public int _id;
+    public int _id { get; set; }
 
     public int _plcId;
 

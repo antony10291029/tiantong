@@ -4,6 +4,8 @@ namespace Tiantong.Iot
 {
   public interface IState
   {
+    int _id { get; }
+
     DateTime CurrentValueChangedAt { get; }
 
     string GetCurrentValue(int timeGapMilliseconds = 1500);

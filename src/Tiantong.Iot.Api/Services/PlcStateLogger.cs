@@ -3,11 +3,11 @@ using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
-  public class StateLogger
+  public class PlcStateLogger
   {
     private IotDbContext _db;
 
-    public StateLogger(IotDbContext db)
+    public PlcStateLogger(IotDbContext db)
     {
       _db = db;
     }

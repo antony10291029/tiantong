@@ -172,6 +172,16 @@ namespace Tiantong.Iot
       return StateManager.Name(name).Id(id);
     }
 
+    public IState State(string name)
+    {
+      return StateManager.StatesByName[name];
+    }
+
+    public IState<T> State<T>(string name)
+    {
+      return StateManager.StatesByName[name] as IState<T>;
+    }
+
     //
 
     public IState<bool> Bool(string name)

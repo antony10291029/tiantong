@@ -38,6 +38,10 @@ namespace Tiantong.Iot
 
     //
 
+    IState State(string name);
+
+    IState<T> State<T>(string name);
+
     IState<bool> Bool(string name);
 
     IState<ushort> UInt16(string name);
