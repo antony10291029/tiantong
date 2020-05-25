@@ -1,15 +1,10 @@
 namespace Tiantong.Iot
 {
-  public class StateInt32 : StateNumeric<int>
+  public class StateInt32 : State<int>
   {
     public override void SetString(string data)
     {
       HandleSet(short.Parse(data));
-    }
-
-    public StateInt32()
-    {
-      _heartbeatMaxValue = 10000;
     }
 
     protected override void HandleDriverBuild()
@@ -27,10 +22,6 @@ namespace Tiantong.Iot
       _driver.SetInt32(data);
     }
 
-    protected override void HandleHeartbeat(ref int times)
-    {
-      Set(times);
-    }
-
   }
+
 }

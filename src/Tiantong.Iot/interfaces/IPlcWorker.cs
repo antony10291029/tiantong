@@ -36,7 +36,10 @@ namespace Tiantong.Iot
 
     IStateManager Define(string name, int id = 0);
 
+    IPlcWorker Heartbeat(string name, int interval = 1000, int maxValue = 10000);
+
     //
+
 
     IState State(string name);
 
@@ -95,4 +98,5 @@ namespace Tiantong.Iot
     void Run();
 
   }
+
 }

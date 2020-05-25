@@ -18,13 +18,13 @@ namespace Tiantong.Iot
         var manager = worker.Define(state.name, state.id);
         switch (state.type) {
           case StateType.UInt16:
-            manager.UInt16(state.address, StateBuilder(state));
+            manager.UInt16(state.address, StateBuilder(state, worker));
             break;
           case StateType.Int32:
-            manager.Int32(state.address, StateBuilder(state));
+            manager.Int32(state.address, StateBuilder(state, worker));
             break;
           case StateType.String:
-            manager.String(state.address, state.length, StateBuilder(state));
+            manager.String(state.address, state.length, StateBuilder(state, worker));
             break;
           default: throw new Exception($"不支持的 plc 数据类型: {state.type}");
         }
@@ -33,7 +33,7 @@ namespace Tiantong.Iot
       return worker;
     }
 
-    public static Action<IState> StateBuilder(PlcState state)
+    public static Action<IState> StateBuilder(PlcState state, PlcWorker worker)
     {
       return builder => {
         builder.PlcId(state.plc_id)
@@ -41,7 +41,7 @@ namespace Tiantong.Iot
           .IsWriteLogOn(state.is_write_log_on);
 
         if (state.is_heartbeat) {
-          builder.Heartbeat(state.heartbeat_interval, state.heartbeat_max_value);
+          worker.Heartbeat(state.name, state.heartbeat_interval, state.heartbeat_max_value);
         }
 
         if (state.is_collect) {

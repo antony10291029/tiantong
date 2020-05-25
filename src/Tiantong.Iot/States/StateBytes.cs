@@ -23,5 +23,7 @@ namespace Tiantong.Iot
     {
       _driver.SetBytes(data);
     }
+
   }
+
 }

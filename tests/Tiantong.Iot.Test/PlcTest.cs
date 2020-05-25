@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
-using System;
-using System.Linq;
-using Tiantong.Iot.Entities;
 using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 
 namespace Tiantong.Iot.Test
 {
@@ -83,9 +81,8 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.Config(_ => {});
-      plc.Define("hb").Int("D1", state => {
-        state.Heartbeat(1);
-      });
+      plc.Define("hb").Int("D1");
+      plc.Heartbeat("hb", 1, 10000);
 
       plc.Start();
       Task.Delay(10).GetAwaiter().GetResult();
@@ -93,4 +90,5 @@ namespace Tiantong.Iot.Test
     }
 
   }
+
 }

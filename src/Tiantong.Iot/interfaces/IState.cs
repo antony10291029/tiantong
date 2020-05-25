@@ -12,8 +12,6 @@ namespace Tiantong.Iot
 
     IState Collect(int interval = 1000);
 
-    IState Heartbeat(int interval = 1000, int maxValue = 10000);
-
     IState Id(int id);
 
     IState PlcId(int plcId);

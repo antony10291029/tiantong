@@ -105,16 +105,6 @@ namespace Tiantong.Iot.Test
     }
 
     [Test]
-    public void TestStateHearteatUnheartbeat()
-    {
-      var state = ResolveState<StateInt32, int>();
-
-      state.Heartbeat(0);
-      state.AddSetHook(value => state._heartbeatInterval.Stop());
-      state._heartbeatInterval.Start().WaitAsync().AssertFinishIn();
-    }
-
-    [Test]
     public void TestWatcher()
     {
       var state = ResolveState<StateInt32, int>();
@@ -162,4 +152,5 @@ namespace Tiantong.Iot.Test
     }
 
   }
+
 }

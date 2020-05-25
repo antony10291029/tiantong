@@ -64,7 +64,9 @@ namespace Tiantong.Iot
         _driver = _stateDriverProvider.Resolve(),
       };
 
-      builder(state);
+      if (builder != null) {
+        builder(state);
+      }
 
       Add(
         state.Id(_id).Name(_name)
@@ -74,35 +76,36 @@ namespace Tiantong.Iot
       );
     }
 
-    public void Bool(string address, Action<IState<bool>> builder)
+    public void Bool(string address, Action<IState<bool>> builder = null)
     {
       ResolveState<StateBool, bool>(builder, address);
     }
 
-    public void UInt16(string address, Action<IState<ushort>> builder)
+    public void UInt16(string address, Action<IState<ushort>> builder = null)
     {
       ResolveState<StateUInt16, ushort>(builder, address);
     }
 
-    public void Int32(string address, Action<IState<int>> builder)
+    public void Int32(string address, Action<IState<int>> builder = null)
     {
       ResolveState<StateInt32, int>(builder, address);
     }
 
-    public void String(string address, int length, Action<IState<string>> builder)
+    public void String(string address, int length, Action<IState<string>> builder = null)
     {
       ResolveState<StateString, string>(builder, address, length);
     }
 
-    public void UShort(string address, Action<IState<ushort>> builder)
+    public void UShort(string address, Action<IState<ushort>> builder = null)
     {
       UInt16(address, builder);
     }
 
-    public void Int(string address, Action<IState<int>> builder)
+    public void Int(string address, Action<IState<int>> builder = null)
     {
       Int32(address, builder);
     }
 
   }
+
 }

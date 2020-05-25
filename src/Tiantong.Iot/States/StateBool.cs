@@ -25,5 +25,7 @@ namespace Tiantong.Iot
     {
       _driver.SetBool(data);
     }
+
   }
+
 }

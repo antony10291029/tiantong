@@ -2,7 +2,7 @@ using System;
 
 namespace Tiantong.Iot
 {
-  public class StateUInt16 : StateNumeric<ushort>
+  public class StateUInt16 : State<ushort>
   {
     public override void SetString(string data)
     {
@@ -24,9 +24,6 @@ namespace Tiantong.Iot
       _driver.SetUInt16(data);
     }
 
-    protected override void HandleHeartbeat(ref int times)
-    {
-      Set((ushort) times);
-    }
   }
+
 }

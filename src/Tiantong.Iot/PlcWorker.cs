@@ -273,6 +273,25 @@ namespace Tiantong.Iot
       return dict;
     }
 
+    public IPlcWorker Heartbeat(string name, int interval = 1000, int maxValue = 10000)
+    {
+      var value = 1;
+
+      Action handler = () => {
+        if (value < maxValue) {
+          value = value + 1;
+        } else {
+          value = 1;
+        }
+
+        State(name).SetString(value.ToString());
+      };
+
+      IntervalManager.Add(new Interval(handler, interval));
+
+      return this;
+    }
+
     private void HandleStart()
     {
       Logger?.UseDbContext(DatabaseManager.Resolve(false));

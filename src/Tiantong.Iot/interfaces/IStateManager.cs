@@ -8,19 +8,20 @@ namespace Tiantong.Iot
 
     IStateManager Name(string name);
 
-    void Bool(string name, Action<IState<bool>> builder);
+    void Bool(string name, Action<IState<bool>> builder = null);
 
-    void UInt16(string name, Action<IState<ushort>> builder);
+    void UInt16(string name, Action<IState<ushort>> builder = null);
 
-    void Int32(string name, Action<IState<int>> builder);
+    void Int32(string name, Action<IState<int>> builder = null);
 
-    void String(string name, int length, Action<IState<string>> builder);
+    void String(string name, int length, Action<IState<string>> builder = null);
 
     //
 
-    void UShort(string name, Action<IState<ushort>> builder);
+    void UShort(string name, Action<IState<ushort>> builder = null);
 
-    void Int(string name, Action<IState<int>> builder);
+    void Int(string name, Action<IState<int>> builder = null);
 
   }
+
 }

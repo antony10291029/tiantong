@@ -27,8 +27,6 @@ namespace Tiantong.Iot
 
     public Interval _collectInterval;
 
-    public Interval _heartbeatInterval;
-
     public IntervalManager _intervalManager;
 
     public IHttpPusherClient _httpPusherClient;
@@ -38,11 +36,6 @@ namespace Tiantong.Iot
     protected abstract void HandleDriverBuild();
 
     public abstract IState Collect(int interval = 1000);
-
-    public virtual IState Heartbeat(int interval = 1000, int maxValue = 10000)
-    {
-      throw new Exception("该类型不支持心跳写入");
-    }
 
     public IState UseErrorLogger(StateErrorLogger logger)
     {
@@ -226,7 +219,6 @@ namespace Tiantong.Iot
         throw e;
       }
 
-      
       _currentValueGetAt = DateTime.Now;
 
       foreach (var hook in _gethooks) {
