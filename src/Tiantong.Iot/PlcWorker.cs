@@ -19,10 +19,6 @@ namespace Tiantong.Iot
 
     public int _port { get; set; }
 
-    public IPlcWorkerLogger Logger { get; private set; }
-
-    internal StateErrorLogger StateErrorLogger { get; private set; }
-
     internal HttpPusherLogger HttpPusherLogger { get; private set; }
 
     internal IHttpPusherClient HttpPusherClient { get; private set; }
@@ -90,16 +86,6 @@ namespace Tiantong.Iot
 
     //
 
-    public virtual IPlcWorkerLogger ResolvePlcWorkerLogger()
-    {
-      return new PlcWorkerLogger();
-    }
-
-    public virtual StateErrorLogger ResolveStateErrorLogger()
-    {
-      return new StateErrorLogger();
-    }
-
     public virtual DatabaseManager ResolveDatabaseManager()
     {
       return new DatabaseManager();
@@ -117,7 +103,12 @@ namespace Tiantong.Iot
 
     public virtual StateManager ResolveStateManager()
     {
-      return new StateManager(StateDriverProvider, StateErrorLogger);
+      return new StateManager(StateDriverProvider, OnStateError);
+    }
+
+    public virtual void OnStateError(PlcStateError error)
+    {
+      _databaseFactory.Log(error);
     }
 
     public IStateDriverProvider ResolveStateDriverProvider()
@@ -139,9 +130,7 @@ namespace Tiantong.Iot
       DatabaseManager = ResolveDatabaseManager();
       StateDriverProvider = ResolveStateDriverProvider();
 
-      Logger = ResolvePlcWorkerLogger();
       HttpPusherLogger = ResolveHttpPusherLogger();
-      StateErrorLogger = ResolveStateErrorLogger();
 
       HttpPusherClient = ResolveHttpPusherClient();
       StateManager = ResolveStateManager();
@@ -317,11 +306,17 @@ namespace Tiantong.Iot
       watcher.On(handler);
     }
 
+    private void Log(string message)
+    {
+      _databaseFactory.Log(new PlcLog {
+        plc_id = _id,
+        message = message
+      });
+    }
+
     private void HandleStart()
     {
-      Logger?.UseDbContext(DatabaseManager.Resolve(false));
       HttpPusherLogger?.UseDbContext(DatabaseManager.Resolve());
-      StateErrorLogger?.UseDbContext(DatabaseManager.Resolve());
 
       StateDriverProvider.Boot();
       IntervalManager.Start();
@@ -350,7 +345,7 @@ namespace Tiantong.Iot
     public IPlcWorker Start()
     {
       HandleStart();
-      Logger.Log(_id, "通信程序开始运行");
+      Log("通信程序开始运行");
 
       return this;
     }
@@ -361,9 +356,8 @@ namespace Tiantong.Iot
         _stoppingToken.Cancel();
       }
 
-      Logger.Log(_id, "通信程序已停止");
+      Log("通信程序已停止");
       HandleStop();
-      Logger.Dispose();
 
       return this;
     }
@@ -375,24 +369,22 @@ namespace Tiantong.Iot
       while (!_stoppingToken.IsCancellationRequested) {
         try {
           await Start().WaitAsync();
-
           break;
         } catch (Exception e) {
           try {
-            Logger.Log(_id, $"发生通信异常：{e.Message}");
+            Log($"发生通信异常：{e.Message}");
             HandleStop();
           } catch {}
 
           while (!_stoppingToken.IsCancellationRequested) {
             try {
-              Logger.Log(_id, $"正在尝试重启");
+              Log($"正在尝试重启");
               await Task.Delay(1000, _stoppingToken.Token);
-              Logger.Dispose();
               HandleStart();
-              Logger.Log(_id, $"服务重启成功");
+              Log($"服务重启成功");
               break;
             } catch (Exception ex) {
-              Logger.Log(_id, $"服务重启失败，${ex.Message}");
+              Log($"服务重启失败，${ex.Message}");
             } finally {
               HandleStop();
             }

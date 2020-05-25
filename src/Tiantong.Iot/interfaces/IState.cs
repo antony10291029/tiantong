@@ -1,4 +1,5 @@
 using System;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
 {
@@ -28,9 +29,11 @@ namespace Tiantong.Iot
 
     IState IsWriteLogOn(bool flag);
 
-    IState Build();
+    IState OnError(Action<PlcStateError> onError);
 
-    IState UseErrorLogger(StateErrorLogger logger);
+    IState UseDriver(IStateDriver driver);
+
+    IState Build();
 
     void SetString(string value);
 

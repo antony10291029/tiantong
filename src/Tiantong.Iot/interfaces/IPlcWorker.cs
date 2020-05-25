@@ -10,8 +10,6 @@ namespace Tiantong.Iot
 
     string _name { get; set; }
 
-    IPlcWorkerLogger Logger { get; }
-
     Dictionary<string, string> GetCurrentStateValues();
 
     IPlcWorker Config(Action<IPlcWorker> configer);

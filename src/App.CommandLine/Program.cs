@@ -17,7 +17,7 @@ namespace App.CommandLine
       var worker = new PlcWorker();
 
       worker.Config(configer => {
-        configer.Name("测试").Host("192.168.3.39").Port(8001).Model(PlcModel.Test);
+        configer.Name("测试").Host("192.168.3.39").Port(8001).Model(PlcModel.MC3E);
       });
 
       worker.Define("心跳").UInt16("D800");

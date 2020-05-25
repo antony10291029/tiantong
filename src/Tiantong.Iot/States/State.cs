@@ -8,30 +8,23 @@ namespace Tiantong.Iot
   {
     public DateTime CurrentValueChangedAt { get; set; } = DateTime.Now;
 
-    public int _id { get; set; }
+    protected int _id { get; set; }
 
-    public int _plcId;
+    protected int _plcId;
 
-    public string _name { get; set; }
+    protected string _name { get; set; }
 
-    public string _address;
+    protected string _address;
 
-    public int _length;
+    protected int _length;
 
-    public bool _isReadLogOn = false;
+    protected bool _isReadLogOn = false;
 
-    public bool _isWriteLogOn = false;
+    protected bool _isWriteLogOn = false;
+
+    protected Action<PlcStateError> _onError;
 
     public IStateDriver _driver;
-
-    protected StateErrorLogger _errorLogger;
-
-    public IState UseErrorLogger(StateErrorLogger logger)
-    {
-      _errorLogger = logger;
-
-      return this;
-    }
 
     public int Id() => _id;
 
@@ -86,6 +79,20 @@ namespace Tiantong.Iot
     public IState IsWriteLogOn(bool flag)
     {
       _isWriteLogOn = flag;
+
+      return this;
+    }
+
+    public IState UseDriver(IStateDriver driver)
+    {
+      _driver = driver;
+
+      return this;
+    }
+
+    public IState OnError(Action<PlcStateError> onError)
+    {
+      _onError = onError;
 
       return this;
     }
@@ -162,7 +169,14 @@ namespace Tiantong.Iot
       try {
         HandleSet(data);
       } catch (Exception e) {
-        _errorLogger.Log(_plcId, _id, StateOperation.Write, data.ToString(), e.Message);
+        _onError(new PlcStateError {
+          state_id = _id,
+          plc_id = _plcId,
+          operation = StateOperation.Write,
+          value = data.ToString(),
+          message = e.Message,
+        });
+
         throw e;
       }
 
@@ -176,7 +190,14 @@ namespace Tiantong.Iot
       try {
         _currentValue = HandleGet();
       } catch (Exception e) {
-        _errorLogger.Log(_plcId, _id, StateOperation.Read, null, e.Message);
+        _onError(new PlcStateError {
+          state_id = _id,
+          plc_id = _plcId,
+          operation = StateOperation.Write,
+          value = "",
+          message = e.Message,
+        });
+
         throw e;
       }
 

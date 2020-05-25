@@ -8,7 +8,7 @@ namespace Tiantong.Iot
   {
     private IStateDriverProvider _stateDriverProvider;
 
-    private StateErrorLogger _stateErrorLogger;
+    private Action<PlcStateError> _onStateError;
 
     public Dictionary<int, IState> StatesById = new Dictionary<int, IState>();
 
@@ -20,10 +20,10 @@ namespace Tiantong.Iot
 
     public StateManager(
       IStateDriverProvider provider,
-      StateErrorLogger stateErrorLogger
+      Action<PlcStateError> onStateError
     ) {
       _stateDriverProvider = provider;
-      _stateErrorLogger = stateErrorLogger;
+      _onStateError = onStateError;
     }
 
     public IStateManager Name(string name)
@@ -50,9 +50,8 @@ namespace Tiantong.Iot
 
     private void ResolveState<T, U>(Action<T> builder, string address, int length = 0) where T : State<U>, new()
     {
-      var state = new T() {
-        _driver = _stateDriverProvider.Resolve(),
-      };
+      var state = new T();
+      var driver = _stateDriverProvider.Resolve();
 
       Add(state);
 
@@ -62,7 +61,8 @@ namespace Tiantong.Iot
 
       state.Id(_id).Name(_name)
       .Address(address).Length(length)
-      .UseErrorLogger(_stateErrorLogger)
+      .UseDriver(driver)
+      .OnError(_onStateError)
       .Build();
     }
 

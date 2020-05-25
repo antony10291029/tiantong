@@ -14,7 +14,12 @@ namespace Tiantong.Iot
     {
       using (var db = Resolve()) {
         db.Add(log);
-        db.SaveChanges();
+        try {
+          db.SaveChanges();
+        } catch(System.Exception e) {
+          System.Console.WriteLine(e);
+          throw e;
+        }
       }
     }
 
