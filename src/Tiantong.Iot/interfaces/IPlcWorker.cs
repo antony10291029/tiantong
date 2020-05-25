@@ -38,8 +38,15 @@ namespace Tiantong.Iot
 
     IPlcWorker Heartbeat(string name, int interval = 1000, int maxValue = 10000);
 
-    //
+    IPlcWorker Collect<T>(string name, int interval = 1000);
 
+    IStateHttpPusher HttpPusher<T>(string name);
+
+    void Watch(string name, Action<string> handler);
+
+    void Watch<T>(string name, Action<T> handler);
+
+    //
 
     IState State(string name);
 

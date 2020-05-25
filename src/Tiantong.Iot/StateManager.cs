@@ -6,11 +6,7 @@ namespace Tiantong.Iot
 {
   public class StateManager : IStateManager
   {
-    private IntervalManager _intervalManager;
-
     private IStateDriverProvider _stateDriverProvider;
-
-    private IHttpPusherClient _httpPusherClient;
 
     private StateErrorLogger _stateErrorLogger;
 
@@ -23,14 +19,10 @@ namespace Tiantong.Iot
     private string _name { get; set; }
 
     public StateManager(
-      IntervalManager manager,
       IStateDriverProvider provider,
-      IHttpPusherClient httpPusherClient,
       StateErrorLogger stateErrorLogger
     ) {
-      _intervalManager = manager;
       _stateDriverProvider = provider;
-      _httpPusherClient = httpPusherClient;
       _stateErrorLogger = stateErrorLogger;
     }
 
@@ -59,21 +51,19 @@ namespace Tiantong.Iot
     private void ResolveState<T, U>(Action<T> builder, string address, int length = 0) where T : State<U>, new()
     {
       var state = new T() {
-        _intervalManager = _intervalManager,
-        _httpPusherClient = _httpPusherClient,
         _driver = _stateDriverProvider.Resolve(),
       };
+
+      Add(state);
 
       if (builder != null) {
         builder(state);
       }
 
-      Add(
-        state.Id(_id).Name(_name)
-        .Address(address).Length(length)
-        .UseErrorLogger(_stateErrorLogger)
-        .Build()
-      );
+      state.Id(_id).Name(_name)
+      .Address(address).Length(length)
+      .UseErrorLogger(_stateErrorLogger)
+      .Build();
     }
 
     public void Bool(string address, Action<IState<bool>> builder = null)

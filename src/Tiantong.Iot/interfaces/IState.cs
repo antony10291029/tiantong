@@ -8,10 +8,6 @@ namespace Tiantong.Iot
 
     DateTime CurrentValueChangedAt { get; }
 
-    string GetCurrentValue(int timeGapMilliseconds = 1500);
-
-    IState Collect(int interval = 1000);
-
     IState Id(int id);
 
     IState PlcId(int plcId);
@@ -32,14 +28,9 @@ namespace Tiantong.Iot
 
     void SetString(string value);
 
-    void Watch(Action handler);
+    string CollectString(int interval = 1000);
 
-    void Watch(Action<string> handler);
-
-    IWatcher When(string opt, string value);
-
-    IStateHttpPusher HttpPusher();
-
+    void AddGetHook(Action<string> hook);
   }
 
   public interface IState<T>: IState
@@ -48,9 +39,11 @@ namespace Tiantong.Iot
 
     void AddSetHook(Action<T> hook);
 
+    T Get();
+
     void Set(T data);
 
-    T Get();
+    T Collect(int cacheInterval);
 
   }
 

@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using Tiantong.Iot.Entities;
 
@@ -25,17 +24,7 @@ namespace Tiantong.Iot
 
     public IStateDriver _driver;
 
-    public Interval _collectInterval;
-
-    public IntervalManager _intervalManager;
-
-    public IHttpPusherClient _httpPusherClient;
-
     protected StateErrorLogger _errorLogger;
-
-    protected abstract void HandleDriverBuild();
-
-    public abstract IState Collect(int interval = 1000);
 
     public IState UseErrorLogger(StateErrorLogger logger)
     {
@@ -103,15 +92,11 @@ namespace Tiantong.Iot
 
     public abstract void SetString(string data);
 
-    public abstract void Watch(Action handler);
+    protected abstract void HandleDriverBuild();
 
-    public abstract void Watch(Action<string> handler);
+    public abstract string CollectString(int cacheInterval = 1000);
 
-    public abstract IWatcher When(string opt, string value);
-
-    public abstract IStateHttpPusher HttpPusher();
-
-    public abstract string GetCurrentValue(int timeGapMilliseconds);
+    public abstract void AddGetHook(Action<string> hook);
 
   }
 
@@ -123,9 +108,9 @@ namespace Tiantong.Iot
 
     private T _currentValue = default(T);
 
-    private Task _getTask = Task.CompletedTask;
+    // private Task<T> _getTask = null;
 
-    private Task _setTask = Task.CompletedTask;
+    // private Task<T> _setTask = null;
 
     private DateTime _currentValueGetAt = DateTime.MinValue;
 
@@ -139,62 +124,30 @@ namespace Tiantong.Iot
       _gethooks.Add(data => hook(data));
     }
 
-    public override string GetCurrentValue(int timeGapMilliseconds = 1000)
+    public override void AddGetHook(Action<string> hook)
     {
-      if (_currentValueGetAt.AddMilliseconds(timeGapMilliseconds) < DateTime.Now) {
-        return Get()?.ToString();
+      AddGetHook(value => hook(value.ToString()));
+    }
+
+    public override string CollectString(int cacheInterval = 1000)
+    {
+      if (_currentValueGetAt.AddMilliseconds(cacheInterval) <= DateTime.Now) {
+        return Get().ToString();
       } else {
-        return _currentValue?.ToString();
+        return _currentValue.ToString();
+      }
+    }
+
+    public T Collect(int cacheInterval = 1000)
+    {
+      if (_currentValueGetAt.AddMilliseconds(cacheInterval) < DateTime.Now) {
+        return Get();
+      } else {
+        return _currentValue;
       }
     }
 
     //
-
-    private IWatcher<T> CreateWatcher()
-    {
-      var watcher = new Watcher<T>();
-
-      AddGetHook(value => watcher.Emit(value));
-
-      return watcher;
-    }
-
-    //
-
-    public override void Watch(Action handler)
-    {
-      CreateWatcher().When(_ => true).On(handler);
-    }
-
-    public override void Watch(Action<string> handler)
-    {
-      CreateWatcher().When(_ => true).On(data => handler(data.ToString()));
-    }
-
-    public override IWatcher When(string opt, string value)
-    {
-      return CreateWatcher().When(opt, value);
-    }
-
-    public override IStateHttpPusher HttpPusher()
-    {
-      var pusher = new StateHttpPusher<T>(_httpPusherClient);
-
-      AddGetHook(value => pusher.Emit(value));
-
-      return pusher;
-    }
-
-    public override IState Collect(int time = 1000)
-    {
-      if (_collectInterval == null) {
-        time = Math.Max(time, 1);
-        _collectInterval = new Interval(() => Get(), time);
-        _intervalManager.Add(_collectInterval);
-      }
-
-      return this;
-    }
 
     public void Set(T data)
     {

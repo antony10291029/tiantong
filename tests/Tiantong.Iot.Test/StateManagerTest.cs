@@ -9,11 +9,9 @@ namespace Tiantong.Iot.Test
     private StateManager ResolveManager()
     {
       var db = (new DatabaseManager()).Resolve();
-      var intervalManager = new IntervalManager();
       var driverProvider = new StateTestDriverProvider();
-      var httpPusherClient = new TestHttpPusherClient();
       var errorLogger = new StateErrorLogger();
-      var manager = new StateManager(intervalManager, driverProvider, httpPusherClient, errorLogger);
+      var manager = new StateManager(driverProvider, errorLogger);
 
       errorLogger.UseDbContext(db);
 

@@ -25,7 +25,7 @@ namespace Tiantong.Iot
   {
     protected Action<T> _handler;
 
-    protected Func<T, bool> _when;
+    protected Func<T, bool> _when = _ => true;
 
     public void Emit(T value)
     {

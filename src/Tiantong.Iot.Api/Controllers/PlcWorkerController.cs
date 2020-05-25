@@ -33,11 +33,7 @@ namespace Tiantong.Iot.Api
       var plc = _plcRepository.EnsureFind(param.plc_id);
       PlcWorker worker;
 
-      try {
-        worker = PlcBuilder.Build(plc);
-      } catch (Exception e) {
-        return FailureOperation(e.Message);
-      }
+      worker = PlcBuilder.Build(plc);
 
       if (_plcManager.Run(worker)) {
         return SuccessOperation("PLC 开始运行");

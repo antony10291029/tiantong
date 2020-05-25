@@ -13,7 +13,8 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.Config();
-      plc.Define("hb").Int("D1", state => state.Collect(1));
+      plc.Define("hb").Int("D1");
+      plc.Collect<int>("D1", 1000);
       plc.Int("hb").Set(1);
 
       try {
@@ -53,13 +54,12 @@ namespace Tiantong.Iot.Test
       var plc = new PlcWorker();
 
       plc.Config(_ => {});
-      plc.Define("bool data").Bool("D1", state => {
-        state.Collect(0);
-        state.When("==", true.ToString()).On(() => Task.Run(plc.Stop));
-      });
-      plc.Bool("bool data").Set(true);
-
-      plc.Start().WaitAsync().AssertFinishIn();
+      plc.Define("data").Int("D1");
+      plc.Collect<int>("data", 1);
+      plc.Watch("data", _ => Task.Run(plc.Stop));
+      plc.Start();
+      plc.Int("data").Set(100);
+      plc.WaitAsync().AssertFinishIn(100);
     }
 
     [Test]

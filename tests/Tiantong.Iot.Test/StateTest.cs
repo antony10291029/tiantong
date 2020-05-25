@@ -9,9 +9,7 @@ namespace Tiantong.Iot.Test
     public T ResolveState<T, U>() where T : State<U>, new()
     {
       var state = new T() {
-        _intervalManager = new IntervalManager(),
         _driver = new StateTestDriverProvider().Resolve(),
-        _httpPusherClient = new TestHttpPusherClient(),
       };
 
       state.Name("test").Address("D100").Build();
@@ -91,28 +89,6 @@ namespace Tiantong.Iot.Test
       state.Get();
       Task.Delay(3).GetAwaiter().GetResult();
       Assert.AreEqual(value, getHookData);
-    }
-
-    [Test]
-    public void TestStateCollectAndUncollect()
-    {
-      var state = ResolveState<StateInt32, int>();
-
-      state.Collect(0);
-      state.AddGetHook(_ => state._collectInterval.Stop());
-      state.Set(100);
-      state._collectInterval.Start().WaitAsync().AssertFinishIn();
-    }
-
-    [Test]
-    public void TestWatcher()
-    {
-      var state = ResolveState<StateInt32, int>();
-
-      state.Watch(() => state._collectInterval.Stop());
-      state.Collect(0);
-      state.Set(1);
-      state._collectInterval.Start().WaitAsync().AssertFinishIn();
     }
 
     [Test]

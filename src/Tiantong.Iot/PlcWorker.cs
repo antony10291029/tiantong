@@ -116,7 +116,7 @@ namespace Tiantong.Iot
 
     public virtual StateManager ResolveStateManager()
     {
-      return new StateManager(IntervalManager, StateDriverProvider, HttpPusherClient, StateErrorLogger);
+      return new StateManager(StateDriverProvider, StateErrorLogger);
     }
 
     public IStateDriverProvider ResolveStateDriverProvider()
@@ -267,7 +267,7 @@ namespace Tiantong.Iot
       var dict = new Dictionary<string, string>();
 
       foreach (var pair in StateManager.StatesById) {
-        dict.Add(pair.Key.ToString(), pair.Value.GetCurrentValue());
+        dict.Add(pair.Key.ToString(), pair.Value.CollectString());
       }
 
       return dict;
@@ -292,6 +292,46 @@ namespace Tiantong.Iot
       return this;
     }
 
+    public IPlcWorker Collect<T>(string name, int interval = 1000)
+    {
+      Action handler = () => State<T>(name).Collect(interval);
+
+      IntervalManager.Add(new Interval(handler, interval));
+
+      return this;
+    }
+
+    public IStateHttpPusher HttpPusher<T>(string name)
+    {
+      var state = StateManager.StatesByName[name] as IState<T>;
+      var pusher = new StateHttpPusher<T>(HttpPusherClient);
+
+      state.AddGetHook(value => {
+        pusher.Emit(value);
+        Console.WriteLine(value);
+      });
+
+      return pusher;
+    }
+
+    public void Watch(string name, Action<string> handler)
+    {
+      var state = StateManager.StatesByName[name];
+      var watcher = new Watcher<string>();
+
+      state.AddGetHook(value => watcher.Emit(value));
+      watcher.On(handler);
+    }
+
+    public void Watch<T>(string name, Action<T> handler)
+    {
+      var state = StateManager.StatesByName[name] as IState<T>;
+      var watcher = new Watcher<T>();
+
+      state.AddGetHook(value => watcher.Emit(value));
+      watcher.On(handler);
+    }
+
     private void HandleStart()
     {
       Logger?.UseDbContext(DatabaseManager.Resolve(false));
@@ -305,7 +345,7 @@ namespace Tiantong.Iot
     private void HandleStop()
     {
       try {
-        IntervalManager.Stop().Wait();      
+        IntervalManager.Stop().Wait();
       } catch {}
 
       try {
