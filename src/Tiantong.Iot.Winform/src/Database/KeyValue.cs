@@ -1,4 +1,4 @@
-wusing System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiantong.Iot.Winforms
