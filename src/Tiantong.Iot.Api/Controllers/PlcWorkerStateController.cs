@@ -16,24 +16,14 @@ namespace Tiantong.Iot.Api
       _logger = logger;
     }
 
-    private void HandleSet<T>(string plcName, string stateName, T value)
+    private void HandleSet<T>(string plc, string state, T value)
     {
-      var plc = _manager.Get(plcName);
-      var state = plc.State<T>(stateName);
-
-      state.Set(value);
-      _logger.LogWrite(plc._id, state._id, value);
+      _manager.Get(plc).Set<T>(state, value);
     }
 
-    private T HandleGet<T>(string plcName, string stateName)
+    private T HandleGet<T>(string plc, string state)
     {
-      var plc = _manager.Get(plcName);
-      var state = plc.State<T>(stateName);
-      var value = state.Get();
-
-      _logger.LogRead(plc._id, state._id, value);
-
-      return value;
+      return _manager.Get(plc).Get<T>(state);
     }
 
     public class GetParams<T>

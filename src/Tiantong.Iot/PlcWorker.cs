@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace Tiantong.Iot
     internal IntervalManager IntervalManager { get; private set; }
 
     internal IStateDriverProvider StateDriverProvider { get; private set; }
+
+    internal DatabaseFactory _databaseFactory = new DatabaseFactory();
 
     private CancellationTokenSource _stoppingToken;
 
@@ -74,7 +77,7 @@ namespace Tiantong.Iot
       if (port != 0) {
         _port = port;
       }
-      
+
       return this;
     }
 
@@ -84,8 +87,6 @@ namespace Tiantong.Iot
 
       return this;
     }
-
-    //
 
     //
 
@@ -182,85 +183,69 @@ namespace Tiantong.Iot
       return StateManager.StatesByName[name] as IState<T>;
     }
 
-    //
-
-    public IState<bool> Bool(string name)
+    public IState State(int id)
     {
-      return (IState<bool>) StateManager.StatesByName[name];
+      return StateManager.StatesById[id];
     }
 
-    public IState<ushort> UInt16(string name)
+    public IState<T> State<T>(int id)
     {
-      return (IState<ushort>) StateManager.StatesByName[name];
-    }
-
-    public IState<int> Int32(string name)
-    {
-      return (IState<int>) StateManager.StatesByName[name];
-    }
-
-    public IState<string> String(string name)
-    {
-      return (IState<string>) StateManager.StatesByName[name];
-    }
-
-    public IState<byte[]> Bytes(string name)
-    {
-      return (IState<byte[]>) StateManager.StatesByName[name];
+      return StateManager.StatesById[id] as IState<T>;
     }
 
     //
 
-    public IState<ushort> UShort(string name)
-    {
-      return UInt16(name);
-    }
-
-    public IState<int> Int(string name)
-    {
-      return Int32(name);
-    }
-
     //
 
-    public IState<bool> Bool(int id)
+    private void Set<T>(IState<T> state, T value)
     {
-      return (IState<bool>) StateManager.StatesById[id];
+      state.Set(value);
+
+      if (state.IsWriteLogOn()) {
+        _databaseFactory.Log(new PlcStateLog {
+          plc_id = _id,
+          state_id = state.Id(),
+          operation = StateOperation.Write,
+          value = value.ToString(),
+        });
+      }
     }
 
-    public IState<ushort> UInt16(int id)
+    public T Get<T>(IState<T> state)
     {
-      return (IState<ushort>) StateManager.StatesById[id];
+      var value = state.Get();
+
+      if (state.IsReadLogOn()) {
+        _databaseFactory.Log(new PlcStateLog {
+          plc_id = _id,
+          state_id = state.Id(),
+          operation = StateOperation.Read,
+          value = value.ToString(),
+        });
+      }
+
+      return value;
     }
 
-    public IState<int> Int32(int id)
+    public void Set<T>(int id, T value)
     {
-      return (IState<int>) StateManager.StatesById[id];
+      Set(StateManager.StatesById[id] as IState<T>, value);
     }
 
-    public IState<string> String(int id)
+    public T Get<T>(int id)
     {
-      return (IState<string>) StateManager.StatesById[id];
+      return Get(StateManager.StatesById[id] as IState<T>);
     }
 
-    public IState<byte[]> Bytes(int id)
+    public void Set<T>(string name, T value)
     {
-      return (IState<byte[]>) StateManager.StatesById[id];
+      Set(StateManager.StatesByName[name] as IState<T>, value);
     }
 
-    //
-
-    public IState<ushort> UShort(int id)
+    public T Get<T>(string name)
     {
-      return UInt16(id);
+      return Get(StateManager.StatesByName[name] as IState<T>);
     }
-
-    public IState<int> Int(int id)
-    {
-      return Int32(id);
-    }
-
-    //
 
     public Dictionary<string, string> GetCurrentStateValues()
     {

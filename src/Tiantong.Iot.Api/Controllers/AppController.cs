@@ -115,7 +115,7 @@ namespace Tiantong.Iot.Api
       var worker = PlcBuilder.Build(plc);
 
       worker.Watch<ushort>("扫码器", _ => {
-        worker.String("扫码器").Set(_random.String(10));
+        worker.State<string>("扫码器").Set(_random.String(10));
       });
 
       _plcManager.Run(worker);

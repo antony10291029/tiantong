@@ -48,45 +48,21 @@ namespace Tiantong.Iot
 
     //
 
+    IState State(int id);
+
+    IState<T> State<T>(int id);
+
     IState State(string name);
 
     IState<T> State<T>(string name);
 
-    IState<bool> Bool(string name);
+    T Get<T>(int id);
 
-    IState<ushort> UInt16(string name);
+    void Set<T>(int id, T value);
 
-    IState<int> Int32(string name);
+    T Get<T>(string name);
 
-    IState<string> String(string name);
-
-    IState<byte[]> Bytes(string name);
-
-    //
-
-    IState<ushort> UShort(string name);
-
-    IState<int> Int(string name);
-
-    //
-
-    //
-
-    IState<bool> Bool(int id);
-
-    IState<ushort> UInt16(int id);
-
-    IState<int> Int32(int id);
-
-    IState<string> String(int id);
-
-    IState<byte[]> Bytes(int id);
-
-    //
-
-    IState<ushort> UShort(int id);
-
-    IState<int> Int(int id);
+    void Set<T>(string name, T value);
 
     //
 

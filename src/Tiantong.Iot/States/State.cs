@@ -12,7 +12,7 @@ namespace Tiantong.Iot
 
     public int _plcId;
 
-    public string _name;
+    public string _name { get; set; }
 
     public string _address;
 
@@ -32,6 +32,14 @@ namespace Tiantong.Iot
 
       return this;
     }
+
+    public int Id() => _id;
+
+    public string Name() => _name;
+
+    public bool IsReadLogOn() => _isReadLogOn;
+
+    public bool IsWriteLogOn() => _isWriteLogOn;
 
     public IState Id(int id)
     {

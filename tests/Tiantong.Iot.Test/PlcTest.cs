@@ -15,7 +15,7 @@ namespace Tiantong.Iot.Test
       plc.Config();
       plc.Define("hb").Int("D1");
       plc.Collect<int>("D1", 1000);
-      plc.Int("hb").Set(1);
+      plc.State<int>("hb").Set(1);
 
       try {
         plc.Start().WaitAsync().AssertFinishIn(10);
@@ -42,9 +42,9 @@ namespace Tiantong.Iot.Test
 
       plc.Config(_ => {});
       plc.Define("int", 100).Int("D1", _ => {});
-      plc.Int(100);
+      plc.State<int>(100);
       try {
-        plc.Int(101);
+        plc.State<int>(101);
       } catch (Exception) {}
     }
 
@@ -58,7 +58,7 @@ namespace Tiantong.Iot.Test
       plc.Collect<int>("data", 1);
       plc.Watch("data", _ => Task.Run(plc.Stop));
       plc.Start();
-      plc.Int("data").Set(100);
+      plc.State<int>("data").Set(100);
       plc.WaitAsync().AssertFinishIn(100);
     }
 
@@ -69,10 +69,10 @@ namespace Tiantong.Iot.Test
 
       plc.Config(_ => {});
       plc.Define("ushort").UShort("D1", _ => {});
-      Assert.IsTrue(plc.UShort("ushort") is IState<ushort>);
+      Assert.IsTrue(plc.State<ushort>("ushort") is IState<ushort>);
 
       plc.Define("int").Int("D2", _ => {});
-      Assert.IsTrue(plc.Int("int") is IState<int>);
+      Assert.IsTrue(plc.State<int>("int") is IState<int>);
     }
 
     [Test]
@@ -86,7 +86,7 @@ namespace Tiantong.Iot.Test
 
       plc.Start();
       Task.Delay(10).GetAwaiter().GetResult();
-      Assert.IsTrue(plc.Int("hb").Get() > 0);
+      Assert.IsTrue(plc.State<int>("hb").Get() > 0);
     }
 
   }
