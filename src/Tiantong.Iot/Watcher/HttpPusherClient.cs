@@ -11,8 +11,6 @@ namespace Tiantong.Iot
   {
     private HttpClient _client = new HttpClient();
 
-    private readonly object _sendLock = new object();
-
     public HttpPusherLogger _logger;
 
     public HttpPusherClient(HttpPusherLogger logger)
