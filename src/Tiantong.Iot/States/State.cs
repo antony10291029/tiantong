@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot
@@ -181,7 +182,7 @@ namespace Tiantong.Iot
       }
 
       foreach (var hook in _sethooks) {
-        hook(data);
+        Task.Run(() => hook(data));
       }
     }
 
@@ -204,7 +205,7 @@ namespace Tiantong.Iot
       _currentValueGetAt = DateTime.Now;
 
       foreach (var hook in _gethooks) {
-        hook(_currentValue);
+        Task.Run(() => hook(_currentValue));
       }
 
       return _currentValue;
