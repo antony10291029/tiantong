@@ -280,10 +280,7 @@ namespace Tiantong.Iot
       var state = StateManager.StatesByName[name] as IState<T>;
       var pusher = new StateHttpPusher<T>(HttpPusherClient);
 
-      state.AddGetHook(value => {
-        pusher.Emit(value);
-        Console.WriteLine(value);
-      });
+      state.AddGetHook(value => pusher.Emit(value));
 
       return pusher;
     }
