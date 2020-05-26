@@ -40,4 +40,5 @@ namespace Tiantong.Iot
     byte[] GetBytes();
 
   }
+
 }

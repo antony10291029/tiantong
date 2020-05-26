@@ -31,9 +31,7 @@ namespace Tiantong.Iot
 
     IState OnError(Action<PlcStateError> onError);
 
-    IState UseDriver(IStateDriver driver);
-
-    IState Build();
+    IState Build(IStateDriver driver);
 
     void SetString(string value);
 

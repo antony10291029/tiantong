@@ -14,12 +14,15 @@ namespace Tiantong.Iot.Api
 
     private IRandom _random;
 
+    private PlcBuilder _builder;
+
     private PlcManager _plcManager;
 
-    public AppController(Config config, IRandom random, PlcManager plcManager)
+    public AppController(Config config, IRandom random, PlcManager plcManager, PlcBuilder builder)
     {
       _config = config;
       _random = random;
+      _builder = builder;
       _plcManager = plcManager;
     }
 
@@ -112,11 +115,7 @@ namespace Tiantong.Iot.Api
         }
       };
 
-      var worker = PlcBuilder.Build(plc);
-
-      worker.Watch<ushort>("扫码器", _ => {
-        worker.State<string>("扫码器").Set(_random.String(10));
-      });
+      var worker = _builder.BuildWorker(plc);
 
       _plcManager.Run(worker);
 

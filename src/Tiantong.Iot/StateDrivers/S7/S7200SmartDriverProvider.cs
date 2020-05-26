@@ -6,7 +6,7 @@ namespace Tiantong.Iot
     {
     }
 
-    public override void Boot()
+    public override void Connect()
     {
       _client.Use200Smart().Connect();
     }

@@ -8,11 +8,10 @@ namespace Tiantong.Iot.Test
   {
     public T ResolveState<T, U>() where T : State<U>, new()
     {
-      var state = new T() {
-        _driver = new StateTestDriverProvider().Resolve(),
-      };
+      var state = new T();
+      var driver = new StateTestDriverProvider().Resolve();
 
-      state.Name("test").Address("D100").Build();
+      state.Name("test").Address("D100").Build(driver);
 
       return state;
     }

@@ -4,8 +4,10 @@ namespace Tiantong.Iot
   {
     IStateDriver Resolve();
 
-    void Boot();
+    void Connect();
 
-    void Stop();
+    void Close();
+
   }
+
 }

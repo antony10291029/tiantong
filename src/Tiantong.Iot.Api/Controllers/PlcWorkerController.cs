@@ -9,14 +9,18 @@ namespace Tiantong.Iot.Api
   [Route("/plc-workers")]
   public class PlcWorkerController: BaseController
   {
+    private PlcBuilder _builder;
+
     private PlcManager _plcManager;
 
     private PlcRepository _plcRepository;
 
     public PlcWorkerController(
+      PlcBuilder builder,
       PlcManager plcManager,
       PlcRepository plcRepository
     ) {
+      _builder = builder;
       _plcManager = plcManager;
       _plcRepository = plcRepository;
     }
@@ -33,7 +37,7 @@ namespace Tiantong.Iot.Api
       var plc = _plcRepository.EnsureFind(param.plc_id);
       PlcWorker worker;
 
-      worker = PlcBuilder.Build(plc);
+      worker = _builder.BuildWorker(plc);
 
       if (_plcManager.Run(worker)) {
         return SuccessOperation("PLC 开始运行");
@@ -58,7 +62,7 @@ namespace Tiantong.Iot.Api
     public object StartAll()
     {
       var plcs = _plcRepository.AllWithRelationships();
-      var workers = plcs.Select(plc => PlcBuilder.Build(plc)).ToArray();
+      var workers = plcs.Select(plc => _builder.BuildWorker(plc)).ToArray();
 
       foreach (var worker in workers) {
         _plcManager.Run(worker);
@@ -81,7 +85,7 @@ namespace Tiantong.Iot.Api
     public object Test([FromBody] FindParams param)
     {
       var plc = _plcRepository.EnsureFind(param.plc_id);
-      var worker = PlcBuilder.Build(plc);
+      var worker = _builder.BuildWorker(plc);
 
       try {
         worker.Test();

@@ -8,12 +8,9 @@ namespace Tiantong.Iot.Api
   {
     private PlcManager _manager;
 
-    private PlcStateLogger _logger;
-
-    public PlcWorkerStateController(PlcManager manager, PlcStateLogger logger)
+    public PlcWorkerStateController(PlcManager manager)
     {
       _manager = manager;
-      _logger = logger;
     }
 
     private void HandleSet<T>(string plc, string state, T value)

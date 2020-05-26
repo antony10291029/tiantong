@@ -1,7 +1,7 @@
 using Tiantong.Iot.Entities;
 using Tiantong.Iot.DB.Sqlite;
 
-namespace Tiantong.Iot
+namespace Tiantong.Iot.Api
 {
   public class DatabaseFactory
   {
@@ -14,12 +14,7 @@ namespace Tiantong.Iot
     {
       using (var db = Resolve()) {
         db.Add(log);
-        try {
-          db.SaveChanges();
-        } catch(System.Exception e) {
-          System.Console.WriteLine(e);
-          throw e;
-        }
+        db.SaveChanges();
       }
     }
 

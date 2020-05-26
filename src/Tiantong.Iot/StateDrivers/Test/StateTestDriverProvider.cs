@@ -7,14 +7,16 @@ namespace Tiantong.Iot
       return new StateTestDriver(new StateTestDriverStore());
     }
 
-    public void Boot()
+    public void Connect()
     {
 
     }
 
-    public void Stop()
+    public void Close()
     {
 
     }
+
   }
+
 }

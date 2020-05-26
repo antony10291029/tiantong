@@ -73,7 +73,7 @@ namespace Tiantong.Iot.Api
 
     private void InsertPlcData()
     {
-      _random.For(1, 10, i => {
+      _random.For(10, 20, i => {
         _db.Add(new Plc {
           name = $"测试设备 {i}",
           comment = $"测试设备 {i}",
@@ -84,8 +84,11 @@ namespace Tiantong.Iot.Api
             name = $"测试数据点 {j}",
             type = _random.Bool() ? StateType.String : StateType.UInt16,
             address = $"D{_random.Int(1000, 10000)}",
-            is_heartbeat = false,
-            is_collect = true,
+            length = 10,
+            is_heartbeat = _random.Bool(),
+            heartbeat_interval = 1000,
+            heartbeat_max_value = 10000,
+            is_collect = _random.Bool(),
             collect_interval = 1000,
             state_http_pushers = _random.Bool() ? new List<PlcStateHttpPusher>{} : new List<PlcStateHttpPusher> {
               new PlcStateHttpPusher {

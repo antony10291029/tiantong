@@ -36,14 +36,15 @@ namespace Tiantong.Iot.Api
 
   public class PlcManager
   {
-    private Dictionary<int, IPlcWorker> _plcById = new Dictionary<int, IPlcWorker>();
+    private Dictionary<int, PlcWorker> _plcById = new Dictionary<int, PlcWorker>();
 
-    private Dictionary<string, IPlcWorker> _plcByName = new Dictionary<string, IPlcWorker>();
+    private Dictionary<string, PlcWorker> _plcByName = new Dictionary<string, PlcWorker>();
 
     public PlcManager(IServiceScopeFactory scopeFactory)
     {
       using (var scope = scopeFactory.CreateScope()) {
         var systemRepository = scope.ServiceProvider.GetService<SystemRepository>();
+        var builder = scope.ServiceProvider.GetService<PlcBuilder>();
 
         if (!systemRepository.IsMigrated()) {
           scope.ServiceProvider.GetService<IMigrator>().Migrate();
@@ -54,7 +55,7 @@ namespace Tiantong.Iot.Api
 
         if (isAutorun) {
           var plcs = plcRepository.AllWithRelationships();
-          var workers = plcs.Select(plc => PlcBuilder.Build(plc)).ToArray();
+          var workers = plcs.Select(plc => builder.BuildWorker(plc)).ToArray();
 
           foreach (var worker in workers) {
             Run(worker);
@@ -63,22 +64,25 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    public IPlcWorker Get(int id)
+    public PlcWorker Get(int id)
     {
       return _plcById[id];
     }
 
-    public IPlcWorker Get(string name)
+    public PlcWorker Get(string name)
     {
       return _plcByName[name];
     }
 
     public bool Run(PlcWorker worker)
     {
-      if (_plcById.ContainsKey(worker._id)) {
+      var id = worker.Client().Options().Id();
+      var name = worker.Client().Options().Name();
+
+      if (_plcById.ContainsKey(id)) {
         return false;
       } else {
-        _plcById[worker._id] = _plcByName[worker._name] = worker;
+        _plcById[id] = _plcByName[name] = worker;
         Task.Run(worker.RunAsync);
 
         return true;
@@ -89,12 +93,13 @@ namespace Tiantong.Iot.Api
     {
       if (_plcById.ContainsKey(id)) {
         var worker = _plcById[id];
+        var name = worker.Client().Options().Name();
 
         try {
           worker.Stop();
         } finally {
-          _plcById.Remove(worker._id);
-          _plcByName.Remove(worker._name);
+          _plcById.Remove(id);
+          _plcByName.Remove(name);
         }
 
         return true;
@@ -106,7 +111,7 @@ namespace Tiantong.Iot.Api
     public PlcManager Stop()
     {
       foreach (var plc in _plcById.Values) {
-        Stop(plc._id);
+        Stop(plc.Client().Options().Id());
       }
 
       return this;
@@ -116,6 +121,7 @@ namespace Tiantong.Iot.Api
     {
       await Task.WhenAll(_plcById.Values.Select(plc => plc.WaitAsync()));
     }
+
   }
 
 }

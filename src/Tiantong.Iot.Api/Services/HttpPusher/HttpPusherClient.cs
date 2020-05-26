@@ -5,17 +5,17 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Tiantong.Iot.Entities;
 
-namespace Tiantong.Iot
+namespace Tiantong.Iot.Api
 {
-  public class HttpPusherClient: IHttpPusherClient
+  public class HttpPusherClient
   {
     private HttpClient _client = new HttpClient();
 
-    public HttpPusherLogger _logger;
+    public DatabaseFactory _database;
 
-    public HttpPusherClient(HttpPusherLogger logger)
+    public HttpPusherClient(DatabaseFactory database)
     {
-      _logger = logger;
+      _database = database;
       _client.DefaultRequestHeaders
         .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
@@ -32,14 +32,14 @@ namespace Tiantong.Iot
         var response = await _client.PostAsync(uri, content);
         var statusCode = ((int) response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.Log(new HttpPusherLog {
+        _database.Log(new HttpPusherLog {
           pusher_id = id,
           request = data,
           response = responseContent,
           status_code = statusCode.ToString()
         });
       } catch (Exception e) {
-        _logger.LogError(new HttpPusherError {
+        _database.Log(new HttpPusherError {
           pusher_id = id,
           message = e.Message,
         });

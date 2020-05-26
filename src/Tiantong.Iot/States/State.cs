@@ -23,7 +23,7 @@ namespace Tiantong.Iot
 
     protected bool _isWriteLogOn = false;
 
-    protected Action<PlcStateError> _onError;
+    protected Action<PlcStateError> _onError = _ => {};
 
     public IStateDriver _driver;
 
@@ -35,61 +35,26 @@ namespace Tiantong.Iot
 
     public bool IsWriteLogOn() => _isWriteLogOn;
 
-    public IState Id(int id)
+    private IState Builder(Action handler)
     {
-      _id = id;
+      handler();
 
       return this;
     }
 
-    public IState PlcId(int plcId)
-    {
-      _plcId = plcId;
+    public IState Id(int id) => Builder(() => _id = id);
 
-      return this;
-    }
+    public IState PlcId(int plcId) => Builder(() => _plcId = plcId);
 
-    public IState Name(string name)
-    {
-      _name = name;
+    public IState Name(string name) => Builder(() => _name = name);
 
-      return this;
-    }
+    public IState Address(string address) => Builder(() => _address = address);
 
-    public IState Address(string address)
-    {
-      _address = address;
+    public IState Length(int length) => Builder(() => _length = length);
 
-      return this;
-    }
+    public IState IsReadLogOn(bool value) => Builder(() => _isReadLogOn = value);
 
-    public IState Length(int length)
-    {
-      _length = length;
-
-      return this;
-    }
-
-    public IState IsReadLogOn(bool flag)
-    {
-      _isReadLogOn = flag;
-
-      return this;
-    }
-
-    public IState IsWriteLogOn(bool flag)
-    {
-      _isWriteLogOn = flag;
-
-      return this;
-    }
-
-    public IState UseDriver(IStateDriver driver)
-    {
-      _driver = driver;
-
-      return this;
-    }
+    public IState IsWriteLogOn(bool value) => Builder(() => _isWriteLogOn = value);
 
     public IState OnError(Action<PlcStateError> onError)
     {
@@ -98,8 +63,9 @@ namespace Tiantong.Iot
       return this;
     }
 
-    public IState Build()
+    public IState Build(IStateDriver driver)
     {
+      _driver = driver;
       HandleDriverBuild();
       _driver.UseAddress(_address);
 

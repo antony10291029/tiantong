@@ -49,7 +49,7 @@ namespace Renet.Tcp
       return buffer;
     }
 
-    public void Send(byte[] message, byte[] buffer)
+    private void Send(byte[] message, byte[] buffer)
     {
       lock (_sendingLock) {
         _stream.Write(message, 0, message.Length);

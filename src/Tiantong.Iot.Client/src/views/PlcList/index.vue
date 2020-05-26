@@ -5,7 +5,7 @@
   >
     <aside
       class="menu has-border-right is-unselectable"
-      style="min-width: 220px; max-width: 220px; height: 100%"
+      style="min-width: 220px; max-width: 220px; height: 100%; overflow-y: auto"
     >
       <ul class="menu-list">
         <li v-for="plc in plcs" :key="plc.id">

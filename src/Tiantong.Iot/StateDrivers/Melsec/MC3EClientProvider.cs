@@ -23,12 +23,12 @@ namespace Tiantong.Iot
       );
     }
 
-    public void Boot()
+    public void Connect()
     {
       _client.Connect();
     }
 
-    public void Stop()
+    public void Close()
     {
       _client.Close();
     }

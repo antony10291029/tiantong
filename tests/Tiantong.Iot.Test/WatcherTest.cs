@@ -71,54 +71,6 @@ namespace Tiantong.Iot.Test
       Assert.AreEqual("99", flag);
     }
 
-    [Test]
-    public void TestHttpPostNumber()
-    {
-      var client = new TestHttpPusherClient();
-      var watcher = new StateHttpPusher<int>(client);
-      watcher.Post("test", "key", false, "{\"field\": 1}").When("", "");
-      watcher.Emit(100);
-
-      Assert.AreEqual(client.Url, "test");
-      Assert.AreEqual(JsonDocument.Parse(client.Data).RootElement.GetProperty("key").GetInt32(), 100);
-      Assert.AreEqual(JsonDocument.Parse(client.Data).RootElement.GetProperty("field").GetInt32(), 1);
-    }
-
-    [Test]
-    public void TestHttpPostNumberToString()
-    {
-      var client = new TestHttpPusherClient();
-      var watcher = new StateHttpPusher<int>(client);
-      watcher.Post("test", "key", true).When("", "");
-      watcher.Emit(100);
-
-      Assert.AreEqual(client.Url, "test");
-      Assert.AreEqual(JsonDocument.Parse(client.Data).RootElement.GetProperty("key").GetString(), "100");
-    }
-
-    [Test]
-    public void TestHttpPostString()
-    {
-      var client = new TestHttpPusherClient();
-      var watcher = new StateHttpPusher<string>(client);
-      watcher.Post("test", "string").When("", "");
-      watcher.Emit("hello world");
-
-      Assert.AreEqual(client.Url, "test");
-      Assert.AreEqual(JsonDocument.Parse(client.Data).RootElement.GetProperty("string").GetString(), "hello world");
-    }
-
-    [Test]
-    public void TestHttpPostStringToString()
-    {
-      var client = new TestHttpPusherClient();
-      var watcher = new StateHttpPusher<string>(client);
-      watcher.Post("test", "string", true).When("", "");
-      watcher.Emit("hello world");
-
-      Assert.AreEqual(client.Url, "test");
-      Assert.AreEqual(JsonDocument.Parse(client.Data).RootElement.GetProperty("string").GetString(), "hello world");
-    }
-
   }
+
 }

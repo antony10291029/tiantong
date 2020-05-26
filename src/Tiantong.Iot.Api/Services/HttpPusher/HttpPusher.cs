@@ -2,30 +2,29 @@ using System.Text;
 using System.Text.Json;
 using System.Collections.Generic;
 
-namespace Tiantong.Iot
+namespace Tiantong.Iot.Api
 {
-
-  public class StateHttpPusher<T>: Watcher<T>, IStateHttpPusher
+  public class HttpPusher<T>: Watcher<T>
   {
-    private IHttpPusherClient _httpClient;
+    private HttpPusherClient _httpClient;
 
     private bool _isConcurrent = true;
 
     private bool _isWaiting = false;
 
-    public StateHttpPusher(IHttpPusherClient httpClient)
+    public HttpPusher(HttpPusherClient httpClient)
     {
       _httpClient = httpClient;
     }
 
-    public IStateHttpPusher IsConcurrent(bool value)
+    public HttpPusher<T> IsConcurrent(bool value)
     {
       _isConcurrent = value;
 
       return this;
     }
 
-    public IStateHttpPusher Post(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
+    public HttpPusher<T> Post(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
     {
       if (valueKey == "") {
         valueKey = "value";
@@ -55,5 +54,7 @@ namespace Tiantong.Iot
 
       return this;
     }
+
   }
+
 }
