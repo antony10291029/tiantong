@@ -101,6 +101,7 @@
       <div
         class="field"
         style="width: 320px"
+        v-if="state.is_collect"
       >
         <label class="label">采集间隔（毫秒）</label>
         <div class="control">
@@ -120,18 +121,7 @@
       </div>
     </div>
 
-    <div
-      v-if="state.type !== 'string'"
-      style="padding: 1.25rem"
-    >
-      <div class="field">
-        <label class="label is-flex">
-          <Checkbox v-model="state.is_heartbeat">
-            开启心跳
-          </Checkbox>
-        </label>
-      </div>
-
+    <div style="padding: 1.25rem">
       <template v-if="state.is_heartbeat">
         <div
           class="field"
@@ -160,6 +150,13 @@
         </div>
       </template>
 
+      <div class="field">
+        <label class="label is-flex">
+          <Checkbox v-model="state.is_heartbeat">
+            开启心跳
+          </Checkbox>
+        </label>
+      </div>
     </div>
   </div>
 </template>
