@@ -118,15 +118,6 @@ namespace Tiantong.Iot.Api
       _client.Close();
     }
 
-    public PlcWorker Start()
-    {
-      _client.Connect();
-      _intervalManager.Start();
-      Log("通信程序开始运行");
-
-      return this;
-    }
-
     public PlcWorker Stop()
     {
       if (_stoppingToken != null) {
@@ -134,7 +125,6 @@ namespace Tiantong.Iot.Api
       }
 
       _intervalManager.Stop().Wait();
-      _client.Close();
 
       Log("通信程序已停止");
 
@@ -145,7 +135,6 @@ namespace Tiantong.Iot.Api
     {
       Log($"通信错误: {e.Message}");
       _intervalManager.Stop().Wait();
-      _client.Close();
     }
 
     public async Task RunAsync()
@@ -167,7 +156,9 @@ namespace Tiantong.Iot.Api
           Log($"通信服务启动失败: {e.Message}");
         }
 
-        _client.Close();
+        try {
+          _client.Close();
+        } catch {}
 
         if (!_stoppingToken.IsCancellationRequested) {
           Log("通信服务正在重启...");

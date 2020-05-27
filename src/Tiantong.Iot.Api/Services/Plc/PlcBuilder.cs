@@ -37,7 +37,7 @@ namespace Tiantong.Iot.Api
           _ => throw new Exception($"暂不支持该数据类型: {st.type}")
         };
 
-        state.Id(st.id).Name(st.name)
+        state.Id(st.id).PlcId(st.plc_id).Name(st.name)
           .Address(st.address).Length(st.length)
           .IsReadLogOn(st.is_read_log_on).IsWriteLogOn(st.is_write_log_on);
       }
@@ -51,7 +51,6 @@ namespace Tiantong.Iot.Api
       var manager = new IntervalManager();
 
       foreach (var state in plc.states) {
-        client.State(state.name);
 
         switch (state.type) {
           case StateType.UInt16:
