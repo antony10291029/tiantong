@@ -112,28 +112,16 @@ namespace Tiantong.Iot.Api
       });
     }
 
-    private void HandleStart()
-    {
-      _client.Connect();
-      _intervalManager.Start();
-    }
-
-    private void HandleStop()
-    {
-      _intervalManager.Stop().Wait();
-      _client.Close();
-    }
-
     public void Test()
     {
-      HandleStart();
-      HandleStop();
-      Wait();
+      _client.Connect();
+      _client.Close();
     }
 
     public PlcWorker Start()
     {
-      HandleStart();
+      _client.Connect();
+      _intervalManager.Start();
       Log("通信程序开始运行");
 
       return this;
@@ -145,8 +133,10 @@ namespace Tiantong.Iot.Api
         _stoppingToken.Cancel();
       }
 
+      _intervalManager.Stop().Wait();
+      _client.Close();
+
       Log("通信程序已停止");
-      HandleStop();
 
       return this;
     }
@@ -154,7 +144,8 @@ namespace Tiantong.Iot.Api
     public void Reconnect(Exception e)
     {
       Log($"通信错误: {e.Message}");
-      HandleStop();
+      _intervalManager.Stop().Wait();
+      _client.Close();
     }
 
     public async Task RunAsync()
@@ -169,21 +160,20 @@ namespace Tiantong.Iot.Api
           try {
             await _intervalManager.Start().WaitAsync();
           } catch (Exception e) {
-            try {
-              _client.Close();
-            } catch {}
-            Log($"通信错误: {e.Message}");
+            Log($"发生通信错误: {e.Message}");
           }
 
         } catch (Exception e) {
           Log($"通信服务启动失败: {e.Message}");
         }
 
+        _client.Close();
+
         if (!_stoppingToken.IsCancellationRequested) {
           Log("通信服务正在重启...");
+          await Task.Delay(1000, _stoppingToken.Token);
         }
 
-        await Task.Delay(1000, _stoppingToken.Token);
       }
 
       _stoppingToken = null;
