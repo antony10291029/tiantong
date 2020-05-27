@@ -95,6 +95,15 @@ namespace Tiantong.Iot.Protocol
 
     //
 
+    public byte[] GetBytes(bool reverse = true)
+    {
+      if (reverse) {
+        Array.Reverse(Data);
+      }
+
+      return Data;
+    }
+
     public bool GetBool()
     {
       throw new Exception("暂时不支持 bool 类型");
@@ -102,23 +111,24 @@ namespace Tiantong.Iot.Protocol
 
     public ushort GetUInt16()
     {
-      return BitConverter.ToUInt16(Data);
+      return BitConverter.ToUInt16(GetBytes());
     }
 
     public int GetInt32()
     {
-      throw new Exception("暂时不支持 int32 类型");
+      return BitConverter.ToInt32(GetBytes());
     }
 
     public string GetString()
     {
-      return Encoding.ASCII.GetString(Data[1..]);
+      return Encoding.ASCII.GetString(GetBytes(false)[1..]);
     }
 
     public byte[] GetBytes()
     {
-      return Data;
+      return GetBytes(true);
     }
 
   }
+
 }

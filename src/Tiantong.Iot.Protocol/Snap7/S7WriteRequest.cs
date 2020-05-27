@@ -63,14 +63,18 @@ namespace Tiantong.Iot.Protocol
       Array.Copy(data, 0, Message, 19 + 12 + 4, _length);
     }
 
-    public void UseData(byte[] data)
+    public void UseData(byte[] data, bool reverse = true)
     {
+      if (reverse) {
+        Array.Reverse(data);
+      }
+
       SetDataValue(data);
     }
 
     public void UseData(ushort data)
     {
-      UseData(BitConverter.GetBytes(data));
+      UseData(BitConverter.GetBytes(data), true);
     }
 
     public void UseData(int data)
@@ -85,8 +89,14 @@ namespace Tiantong.Iot.Protocol
 
     public void UseData(string data)
     {
-      UseData(Encoding.ASCII.GetBytes((char)_length + data));
+      UseData(Encoding.ASCII.GetBytes((char)_length + data), false);
+    }
+
+    public void UseData(byte[] data)
+    {
+      UseData(data);
     }
 
   }
+
 }
