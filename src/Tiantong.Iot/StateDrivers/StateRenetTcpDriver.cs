@@ -1,4 +1,3 @@
-using System;
 using Renet.Tcp;
 using Tiantong.Iot.Protocol;
 

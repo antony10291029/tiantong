@@ -52,8 +52,12 @@ namespace Renet.Tcp
     private void Send(byte[] message, byte[] buffer)
     {
       lock (_sendingLock) {
-        _stream.Write(message, 0, message.Length);
-        _stream.Read(buffer, 0, buffer.Length);
+        if (_stream.CanWrite) {
+          _stream.Write(message, 0, message.Length);
+        }
+        if (_stream.CanRead) {
+          _stream.Read(buffer, 0, buffer.Length);
+        }
       }
     }
 

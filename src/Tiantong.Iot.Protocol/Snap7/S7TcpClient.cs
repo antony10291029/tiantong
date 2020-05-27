@@ -33,11 +33,10 @@ namespace Tiantong.Iot.Protocol
     public override void Connected()
     {
       try {
-        Console.WriteLine($"正在连接: 200Smart: IP: {Host}, Port: {Port}");
         Send(CheckHead1);
         Send(CheckHead2);
-      } catch {
-        Console.WriteLine($"连接失败: IP: {Host}, Port: {Port}");
+      } catch (Exception e) {
+        throw new Exception($"握手数据校对错误: {e.Message}");
       }
     }
   }
