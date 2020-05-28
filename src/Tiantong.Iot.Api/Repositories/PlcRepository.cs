@@ -7,46 +7,49 @@ namespace Tiantong.Iot.Api
 {
   public class PlcRepository
   {
-    public IotDbContext _db;
+    public LogContext _log;
 
-    public PlcRepository(IotDbContext db)
+    public SystemContext _system;
+
+    public PlcRepository(LogContext log, SystemContext system)
     {
-      _db = db;
+      _log = log;
+      _system = system;
     }
 
     public void Add(Plc plc)
     {
       plc.id = 0;
 
-      _db.Add(plc);
-      _db.SaveChanges();
+      _system.Add(plc);
+      _system.SaveChanges();
     }
 
     public void Delete(int id)
     {
       var plc = EnsureGet(id);
-      _db.Plcs.Remove(plc);
-      _db.SaveChanges();
+      _system.Plcs.Remove(plc);
+      _system.SaveChanges();
     }
 
     public void Update(Plc plc)
     {
       var oldPlc = EnsureGet(plc.id);
-      _db.Entry(oldPlc).CurrentValues.SetValues(plc);
-      _db.Entry(oldPlc).Property(p => p.created_at).IsModified = false;
-      _db.SaveChanges();
+      _system.Entry(oldPlc).CurrentValues.SetValues(plc);
+      _system.Entry(oldPlc).Property(p => p.created_at).IsModified = false;
+      _system.SaveChanges();
     }
 
     public Plc[] All()
     {
-      return _db.Plcs
+      return _system.Plcs
         .OrderBy(p => p.id)
         .ToArray();
     }
 
     public Plc[] AllWithRelationships()
     {
-      return _db.Plcs
+      return _system.Plcs
         .Include(p => p.states)
           .ThenInclude(s => s.state_http_pushers)
             .ThenInclude(shp => shp.pusher)
@@ -58,7 +61,7 @@ namespace Tiantong.Iot.Api
     {
       System.Console.WriteLine(plcId);
 
-      return _db.PlcStates
+      return _system.PlcStates
         .Include(s => s.state_http_pushers)
           .ThenInclude(shp => shp.pusher)
         .Where(s => s.plc_id == plcId)
@@ -69,7 +72,7 @@ namespace Tiantong.Iot.Api
 
     public Pagination<HttpPusherLog> PaginateHttpPusherLogs(int[] ids, int page, int pageSize)
     {
-      return _db.HttpPusherLogs
+      return _log.HttpPusherLogs
         .Where(hp => ids.Contains(hp.pusher_id))
         .OrderByDescending(hp => hp.id)
         .Paginate(page, pageSize);
@@ -77,7 +80,7 @@ namespace Tiantong.Iot.Api
 
     public Pagination<HttpPusherError> PaginateHttpPusherErrors(int[] ids, int page, int pageSize)
     {
-      return _db.HttpPusherErrors
+      return _log.HttpPusherErrors
         .Where(hp => ids.Contains(hp.pusher_id))
         .OrderByDescending(hp => hp.id)
         .Paginate(page, pageSize);
@@ -85,7 +88,7 @@ namespace Tiantong.Iot.Api
 
     public Plc Get(int id)
     {
-      return _db.Plcs.FirstOrDefault(p => p.id == id);
+      return _system.Plcs.FirstOrDefault(p => p.id == id);
     }
 
     public Plc EnsureGet(int id)
@@ -101,7 +104,7 @@ namespace Tiantong.Iot.Api
 
     public Plc Find(int id)
     {
-      return _db.Plcs
+      return _system.Plcs
         .Include(p => p.states)
           .ThenInclude(s => s.state_http_pushers)
             .ThenInclude(shp => shp.pusher)
@@ -118,5 +121,7 @@ namespace Tiantong.Iot.Api
 
       return plc;
     }
+
   }
+
 }

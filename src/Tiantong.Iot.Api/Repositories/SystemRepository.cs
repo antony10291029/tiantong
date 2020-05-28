@@ -12,23 +12,26 @@ namespace Tiantong.Iot.Api
 
     private IRandom _random;
 
-    private IotDbContext _db;
+    private LogContext _log;
 
-    public SystemRepository(IotDbContext db, IHash hash, IRandom random)
+    private SystemContext _system;
+
+    public SystemRepository(IHash hash, IRandom random, LogContext log, SystemContext system)
     {
-      _db = db;
+      _log = log;
       _hash = hash;
       _random = random;
+      _system = system;
     }
 
     public bool IsMigrated()
     {
-      return _db.HasTable("key_values");
+      return _system.HasTable("key_values");
     }
 
     public bool HasPassword()
     {
-      return _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password") != null;
+      return _system.KeyValues.FirstOrDefault(kv => kv.key == "admin_password") != null;
     }
 
     public void SetPassword(string password, string passwordConfirmation)
@@ -45,19 +48,19 @@ namespace Tiantong.Iot.Api
         throw new FailureOperation("密码已设置，不可重新设置");
       }
 
-      _db.Add(new KeyValue {
+      _system.Add(new KeyValue {
         key = "admin_password",
         value = _hash.Make(password)
       });
-      _db.SaveChanges();
+      _system.SaveChanges();
     }
 
     public void UnsetAdminPassword()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
 
-      _db.Remove(keyValue);
-      _db.SaveChanges();
+      _system.Remove(keyValue);
+      _system.SaveChanges();
     }
 
     public void ResetPassword(string oldPassword, string password, string passwordConfirmation)
@@ -74,7 +77,7 @@ namespace Tiantong.Iot.Api
         throw new FailureOperation("系统暂时无密码，请先设置");
       }
 
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
 
       if (!_hash.Match(oldPassword, keyValue.value)) {
         throw new FailureOperation("修改失败，原始密码错误");
@@ -82,12 +85,12 @@ namespace Tiantong.Iot.Api
 
       keyValue.value = _hash.Make(password);
 
-      _db.SaveChanges();
+      _system.SaveChanges();
     }
 
     public void EnsureAdminParams(string password)
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "admin_password");
 
       if (keyValue == null || !_hash.Match(password, keyValue.value)) {
         throw new FailureOperation("密码确认失败");
@@ -101,16 +104,16 @@ namespace Tiantong.Iot.Api
         verify_code = _random.Int(100000, 999999).ToString()
       };
 
-      _db.EmailVerifyCode.Add(ev);
+      _log.EmailVerifyCodes.Add(ev);
 
-      _db.SaveChanges();
+      _log.SaveChanges();
 
       return ev;
     }
 
     public void EnsureEmailVerifyCode(int id, string email, string code)
     {
-      var verify = _db.EmailVerifyCode.FirstOrDefault(ev => ev.id == id && ev.email == email);
+      var verify = _log.EmailVerifyCodes.FirstOrDefault(ev => ev.id == id && ev.email == email);
 
       if (verify == null || verify.expired_at < DateTime.Now || verify.verify_code != code) {
         throw new FailureOperation("邮箱验证码错误");
@@ -124,28 +127,28 @@ namespace Tiantong.Iot.Api
         value = email
       };
 
-      _db.KeyValues.Add(keyValue);
-      _db.SaveChanges();
+      _system.KeyValues.Add(keyValue);
+      _system.SaveChanges();
     }
 
     public void UnsetAdminEmail()
     {
-      var keyValue = _db.KeyValues.First(kv => kv.key == "admin_email");
+      var keyValue = _system.KeyValues.First(kv => kv.key == "admin_email");
 
-      _db.Remove(keyValue);
-      _db.SaveChanges();
+      _system.Remove(keyValue);
+      _system.SaveChanges();
     }
 
     public string GetAdminEmail()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "admin_email");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "admin_email");
 
       return keyValue?.value;
     }
 
     public void EnsureSystemUnlocked()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
 
       if (keyValue != null && keyValue.value == "true") {
         throw new FailureOperation("系统设备锁定已打开，无法执行当前操作");
@@ -154,62 +157,62 @@ namespace Tiantong.Iot.Api
 
     public void LockSystem()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
 
       if (keyValue == null) {
         keyValue = new KeyValue {
           key = "is_system_locked"
         };
-        _db.Add(keyValue);
+        _system.Add(keyValue);
       }
 
       keyValue.value = "true";
-      _db.SaveChanges();
+      _system.SaveChanges();
     }
 
     public void UnlockSystem()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
 
       if (keyValue == null) {
         keyValue = new KeyValue {
           key = "is_system_locked"
         };
-        _db.Add(keyValue);
+        _system.Add(keyValue);
       }
 
       keyValue.value = "false";
-      _db.SaveChanges();
+      _system.SaveChanges();
     }
 
     public bool GetIsSystemLocked()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "is_system_locked");
 
       return keyValue?.value == "true";
     }
 
     public bool GetIsAutorun()
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_autorun");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "is_autorun");
 
       return keyValue?.value == "true";
     }
 
     public void SetAutorun(bool value)
     {
-      var keyValue = _db.KeyValues.FirstOrDefault(kv => kv.key == "is_autorun");
+      var keyValue = _system.KeyValues.FirstOrDefault(kv => kv.key == "is_autorun");
 
       if (keyValue == null) {
         keyValue = new KeyValue {
           key = "is_autorun",
         };
 
-        _db.Add(keyValue);
+        _system.Add(keyValue);
       }
 
       keyValue.value = value ? "true" : "false";
-      _db.SaveChanges();
+      _system.SaveChanges();
     }
 
   }

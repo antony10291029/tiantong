@@ -14,8 +14,7 @@ namespace Tiantong.Iot.Api
   {
     protected override async Task Handle(Exception ex, HttpContext context)
     {
-      var db = context.RequestServices.GetService<IotDbContext>();
-      HandleDbContext(db);
+      HandleDbContext(context);
 
       if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, context);
@@ -26,9 +25,13 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    private void HandleDbContext(IotDbContext db)
+    private void HandleDbContext(HttpContext context)
     {
-      if (db.HasTransaction()) db.Rollback();
+      var log = context.RequestServices.GetService<LogContext>();
+      var system = context.RequestServices.GetService<SystemContext>();
+
+      if (log.HasTransaction()) log.Rollback();
+      if (system.HasTransaction()) system.Rollback();
     }
 
     private Action<dynamic> ResolveExceptionExpander(Exception ex) => response =>

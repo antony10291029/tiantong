@@ -5,24 +5,29 @@ namespace Tiantong.Iot.Api
 {
   public class PlcStateErrorRepository
   {
-    private IotDbContext _db;
+    private LogContext _log;
 
-    public PlcStateErrorRepository(IotDbContext db)
+    private SystemContext _system;
+
+    public PlcStateErrorRepository(LogContext log, SystemContext system)
     {
-      _db = db;
+      _log = log;
+      _system = system;
     }
 
     public Pagination<PlcStateError> PaginateByPlcId(int plcId, int page, int pageSize)
     {
-      var stateIds = _db.PlcStates
+      var stateIds = _system.PlcStates
         .Where(s => s.plc_id == plcId)
         .Select(s => s.id)
         .ToArray();
 
-      return _db.PlcStateErrors
+      return _log.PlcStateErrors
         .Where(error => error.plc_id == plcId && stateIds.Contains(error.state_id))
         .OrderByDescending(error => error.id)
         .Paginate(page, pageSize);
     }
+
   }
+
 }

@@ -5,19 +5,21 @@ namespace Tiantong.Iot.Api
 {
   public class PlcLogRepository
   {
-    private IotDbContext _db;
+    private LogContext _log;
 
-    public PlcLogRepository(IotDbContext db)
+    public PlcLogRepository(LogContext log)
     {
-      _db = db;
+      _log = log;
     }
 
     public Pagination<PlcLog> Paginate(int plcId, int page, int pageSize)
     {
-      return _db.PlcLogs
+      return _log.PlcLogs
         .Where(pl => pl.plc_id == plcId)
         .OrderByDescending(pl => pl.id)
         .Paginate(page, pageSize);
     }
+
   }
+
 }

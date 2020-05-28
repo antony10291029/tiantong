@@ -11,4 +11,5 @@ namespace Tiantong.Iot.Entities
     public const string S7200Smart = "s7200smart";
 
   }
+
 }

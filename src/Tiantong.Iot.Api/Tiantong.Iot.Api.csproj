@@ -6,19 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.4" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.49" />
+  </ItemGroup>
 
+  <ItemGroup>
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
+    <ProjectReference Include="..\DBCore.Sqlite\DBCore.Sqlite.csproj" />
     <ProjectReference Include="..\Renet\Renet.csproj" />
     <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
     <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />
-    <ProjectReference Include="..\Tiantong.Iot.DB.Sqlite\Tiantong.Iot.DB.Sqlite.csproj" />
-
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.4" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.49" />
+    <ProjectReference Include="..\Tiantong.Iot.Sqlite.Log\Tiantong.Iot.Sqlite.Log.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot.Sqlite.System\Tiantong.Iot.Sqlite.System.csproj" />
   </ItemGroup>
 
   <ItemGroup>

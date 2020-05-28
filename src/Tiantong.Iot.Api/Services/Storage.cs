@@ -6,7 +6,7 @@ namespace Tiantong.Iot.Api
 {
   public class KeyValues
   {
-    private IotDbContext _db;
+    private SystemContext _db;
 
     private Dictionary<string, string> _keyValues;
 
@@ -15,7 +15,7 @@ namespace Tiantong.Iot.Api
       get => GetValue("password");
     }
 
-    public KeyValues(IotDbContext db)
+    public KeyValues(SystemContext db)
     {
       _db = db;
     }
@@ -32,4 +32,5 @@ namespace Tiantong.Iot.Api
     }
 
   }
+
 }

@@ -40,15 +40,15 @@ namespace Tiantong.Iot.Api
 
     private Dictionary<string, PlcWorker> _plcByName = new Dictionary<string, PlcWorker>();
 
-    public PlcManager(IServiceScopeFactory scopeFactory)
+    public PlcManager(IServiceProvider services, IServiceScopeFactory scopeFactory)
     {
+      var domain = services.GetService<DomainContextFactory>();
+
+      domain.Migrate();
+
       using (var scope = scopeFactory.CreateScope()) {
         var systemRepository = scope.ServiceProvider.GetService<SystemRepository>();
         var builder = scope.ServiceProvider.GetService<PlcBuilder>();
-
-        if (!systemRepository.IsMigrated()) {
-          scope.ServiceProvider.GetService<IMigrator>().Migrate();
-        }
 
         var plcRepository = scope.ServiceProvider.GetService<PlcRepository>();
         var isAutorun = systemRepository.GetIsAutorun();

@@ -6,47 +6,50 @@ namespace Tiantong.Iot.Api
 {
   public class PlcStateRepository
   {
-    private IotDbContext _db;
+    private LogContext _log;
 
-    public PlcStateRepository(IotDbContext db)
+    private SystemContext _system;
+
+    public PlcStateRepository(LogContext log, SystemContext system)
     {
-      _db = db;
+      _log = log;
+      _system = system;
     }
 
     public void Add(PlcState state)
     {
-      _db.PlcStates.Add(state);
-      _db.SaveChanges();
+      _system.PlcStates.Add(state);
+      _system.SaveChanges();
     }
 
     public void Delete(int id)
     {
-      var state = _db.PlcStates.FirstOrDefault(s => s.id == id);
+      var state = _system.PlcStates.FirstOrDefault(s => s.id == id);
 
       if (state == null) {
         throw new FailureOperation("PLC 数据点不存在");
       }
 
-      _db.PlcStates.Remove(state);
-      _db.SaveChanges();
+      _system.PlcStates.Remove(state);
+      _system.SaveChanges();
     }
 
     public void Update(PlcState state)
     {
-      var oldState = _db.PlcStates.FirstOrDefault(s => s.id == state.id);
+      var oldState = _system.PlcStates.FirstOrDefault(s => s.id == state.id);
 
       if (oldState == null) {
         throw new FailureOperation("PlC 数据点不存在");
       }
 
-      _db.Entry(oldState).CurrentValues.SetValues(state);
-      _db.Entry(oldState).Property(oldstate => oldstate.plc_id).IsModified = false;
-      _db.SaveChanges();
+      _system.Entry(oldState).CurrentValues.SetValues(state);
+      _system.Entry(oldState).Property(oldstate => oldstate.plc_id).IsModified = false;
+      _system.SaveChanges();
     }
 
     public PlcState Find(int stateId)
     {
-      var state = _db.PlcStates.FirstOrDefault(ps => ps.id == stateId);
+      var state = _system.PlcStates.FirstOrDefault(ps => ps.id == stateId);
 
       if (state == null) {
         throw new FailureOperation("PLC 数据点不存在");
@@ -57,7 +60,7 @@ namespace Tiantong.Iot.Api
 
     public PlcState[] All(int plcId)
     {
-      return _db.PlcStates
+      return _system.PlcStates
         .Where(s => s.plc_id == plcId)
         .OrderBy(s => s.id)
         .ToArray();

@@ -11,11 +11,11 @@ namespace Tiantong.Iot.Api
   {
     private HttpClient _client = new HttpClient();
 
-    public DatabaseFactory _database;
+    public DomainContextFactory _domain;
 
-    public HttpPusherClient(DatabaseFactory database)
+    public HttpPusherClient(DomainContextFactory domain)
     {
-      _database = database;
+      _domain = domain;
       _client.DefaultRequestHeaders
         .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
@@ -32,14 +32,14 @@ namespace Tiantong.Iot.Api
         var response = await _client.PostAsync(uri, content);
         var statusCode = ((int) response.StatusCode);
         var responseContent = await response.Content.ReadAsStringAsync();
-        _database.Log(new HttpPusherLog {
+        _domain.Log(new HttpPusherLog {
           pusher_id = id,
           request = data,
           response = responseContent,
           status_code = statusCode.ToString()
         });
       } catch (Exception e) {
-        _database.Log(new HttpPusherError {
+        _domain.Log(new HttpPusherError {
           pusher_id = id,
           message = e.Message,
         });

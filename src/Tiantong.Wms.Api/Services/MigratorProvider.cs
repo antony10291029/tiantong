@@ -10,9 +10,10 @@ namespace Tiantong.Wms.Api
     public MigratorProvider(DbContext db)
     {
       var migrator = new PostgresMigrator(db);
-      migrator.UseDbContext(db);
 
       Migrator = migrator;
     }
+
   }
+
 }

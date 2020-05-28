@@ -11,5 +11,7 @@ namespace Tiantong.Iot.Entities
     public const string Warning = "warning";
 
     public const string Danger = "danger";
+
   }
+
 }

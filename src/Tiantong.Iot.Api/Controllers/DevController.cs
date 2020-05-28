@@ -11,27 +11,27 @@ namespace Tiantong.Iot.Api
   [Route("/dev")]
   public class DevController: BaseController
   {
-    private IMigrator _mg;
-
     private IRandom _random;
 
-    private IotDbContext _db;
+    private SystemContext _system;
+
+    private DomainContextFactory _domain;
 
     public DevController(
-      IMigrator mg,
       IRandom random,
-      IotDbContext db
+      SystemContext system,
+      DomainContextFactory domain
     ) {
-      _mg = mg;
-      _db = db;
       _random = random;
+      _system = system;
+      _domain = domain;
     }
 
     [HttpPost]
     [Route("migrate")]
     public object Migrate()
     {
-      _mg.Migrate();
+      _domain.Migrate();
 
       return SuccessOperation("数据库已迁移");
     }
@@ -40,7 +40,7 @@ namespace Tiantong.Iot.Api
     [Route("rollback")]
     public object Rollback()
     {
-      _mg.Rollback();
+      _domain.Rollback();
 
       return SuccessOperation("数据库已回档");
     }
@@ -49,7 +49,7 @@ namespace Tiantong.Iot.Api
     [Route("refresh")]
     public object Refresh()
     {
-      _mg.Refresh();
+      _domain.Refresh();
 
       return SuccessOperation("数据库已刷新");
     }
@@ -66,7 +66,7 @@ namespace Tiantong.Iot.Api
     [Route("reseed")]
     public object Reseed()
     {
-      _mg.Refresh();
+      _domain.Refresh();
       InsertPlcData();
       return SuccessOperation("数据已重新插入");
     }
@@ -74,7 +74,7 @@ namespace Tiantong.Iot.Api
     private void InsertPlcData()
     {
       _random.For(10, 20, i => {
-        _db.Add(new Plc {
+        _system.Add(new Plc {
           name = $"测试设备 {i}",
           comment = $"测试设备 {i}",
           host = "localhost",
@@ -107,7 +107,7 @@ namespace Tiantong.Iot.Api
         });
       });
 
-      _db.SaveChanges();
+      _system.SaveChanges();
     }
   }
 }

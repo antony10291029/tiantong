@@ -12,7 +12,7 @@ namespace Tiantong.Iot.Api
 
     private IntervalManager _intervalManager;
 
-    internal DatabaseFactory _databaseFactory;
+    internal DomainContextFactory _comain;
 
     private CancellationTokenSource _stoppingToken;
 
@@ -21,11 +21,11 @@ namespace Tiantong.Iot.Api
     public PlcWorker(
       PlcClient client,
       IntervalManager manager,
-      DatabaseFactory databaseFactory
+      DomainContextFactory domain
     ) {
       _client = client;
+      _comain = domain;
       _intervalManager = manager;
-      _databaseFactory = databaseFactory;
     }
 
     public PlcClient Client() => _client;
@@ -41,7 +41,7 @@ namespace Tiantong.Iot.Api
       }
 
       if (state.IsWriteLogOn()) {
-        _databaseFactory.Log(new PlcStateLog {
+        _comain.Log(new PlcStateLog {
           plc_id = _client.Options().Id(),
           state_id = state.Id(),
           operation = StateOperation.Write,
@@ -62,7 +62,7 @@ namespace Tiantong.Iot.Api
       }
 
       if (state.IsReadLogOn()) {
-        _databaseFactory.Log(new PlcStateLog {
+        _comain.Log(new PlcStateLog {
           plc_id = _client.Options().Id(),
           state_id = state.Id(),
           operation = StateOperation.Read,
@@ -106,7 +106,7 @@ namespace Tiantong.Iot.Api
 
     public virtual void Log(string message)
     {
-      _databaseFactory.Log(new PlcLog {
+      _comain.Log(new PlcLog {
         plc_id = _client.Options().Id(),
         message = message
       });

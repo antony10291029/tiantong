@@ -1,11 +1,12 @@
+using DBCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.DependencyInjection;
-using DBCore;
 using Renet;
 using Renet.Web;
 using Tiantong.Iot.Entities;
-using Tiantong.Iot.DB.Sqlite;
+using Tiantong.Iot.Sqlite.Log;
+using Tiantong.Iot.Sqlite.System;
 
 namespace Tiantong.Iot.Api
 {
@@ -20,11 +21,11 @@ namespace Tiantong.Iot.Api
       services.AddSingleton<PlcManager>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
-      services.AddSingleton<DatabaseFactory>();
       services.AddSingleton<HttpPusherClient>();
       services.AddSingleton<HttpPusherFactory>();
-      services.AddDbContext<IotDbContext, IotSqliteDbcontext>();
-      services.AddScoped<IMigrator, IotSqliteMigrator>();
+      services.AddSingleton<DomainContextFactory>();
+      services.AddScoped<LogContext, SqliteLogContext>();
+      services.AddScoped<SystemContext, SqliteSystemContext>();
       services.AddScoped<HttpPusherRepository>();
       services.AddScoped<PlcRepository>();
       services.AddScoped<PlcLogRepository>();

@@ -7,4 +7,5 @@ namespace Tiantong.Iot.Entities
     public const string Write = "write";
 
   }
+
 }

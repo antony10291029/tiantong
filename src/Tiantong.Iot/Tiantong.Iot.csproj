@@ -11,6 +11,5 @@
     <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Protocol\Tiantong.Iot.Protocol.csproj" />
-    <ProjectReference Include="..\Tiantong.Iot.DB.Sqlite\Tiantong.Iot.DB.Sqlite.csproj" />
   </ItemGroup>
 </Project>

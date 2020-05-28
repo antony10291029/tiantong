@@ -11,5 +11,7 @@ namespace Tiantong.Iot.Entities
     public const string String = "string";
 
     public const string Bytes = "bytes";
+
   }
+
 }

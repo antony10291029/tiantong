@@ -7,11 +7,14 @@ namespace Tiantong.Iot.Api
 {
   public class PlcStateHttpPusherRepository
   {
-    private IotDbContext _db;
+    private LogContext _log;
 
-    public PlcStateHttpPusherRepository(IotDbContext db)
+    private SystemContext _system;
+
+    public PlcStateHttpPusherRepository(LogContext log, SystemContext system)
     {
-      _db = db;
+      _log = log;
+      _system = system;
     }
 
     public void Add(int stateId, HttpPusher pusher)
@@ -21,13 +24,13 @@ namespace Tiantong.Iot.Api
         pusher = pusher,
       };
 
-      _db.Add(statePusher);
-      _db.SaveChanges();
+      _system.Add(statePusher);
+      _system.SaveChanges();
     }
 
     public void Delete(int stateId, int pusherId)
     {
-      var statePusher = _db.PlcStateHttpPushers
+      var statePusher = _system.PlcStateHttpPushers
         .Include(sp => sp.pusher)
         .FirstOrDefault(sp => sp.state_id == stateId && sp.pusher_id == pusherId);
 
@@ -35,25 +38,25 @@ namespace Tiantong.Iot.Api
         throw new FailureOperation("PLC 数据点不存在");
       }
 
-      _db.Remove(statePusher);
-      _db.SaveChanges();
+      _system.Remove(statePusher);
+      _system.SaveChanges();
     }
 
     public void Update(int stateId, HttpPusher pusher)
     {
-      var oldPusher = _db.HttpPushers.FirstOrDefault(s => s.id == pusher.id);
+      var oldPusher = _system.HttpPushers.FirstOrDefault(s => s.id == pusher.id);
 
       if (oldPusher == null) {
         throw new FailureOperation("HTTP推送不存在");
       }
 
-      _db.Entry(oldPusher).CurrentValues.SetValues(pusher);
-      _db.SaveChanges();
+      _system.Entry(oldPusher).CurrentValues.SetValues(pusher);
+      _system.SaveChanges();
     }
 
     public HttpPusher[] All(int stateId)
     {
-      return _db.PlcStateHttpPushers
+      return _system.PlcStateHttpPushers
         .Include(state => state.pusher)
         .Where(shp => shp.state_id == stateId)
         .Select(shp => shp.pusher)
@@ -61,4 +64,5 @@ namespace Tiantong.Iot.Api
     }
 
   }
+
 }

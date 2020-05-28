@@ -10,13 +10,19 @@ namespace Tiantong.Iot.Api
   [Route("/plc-logs")]
   public class PlcLogController: BaseController
   {
-    private IotDbContext _db;
+    private LogContext _log;
+
+    private SystemContext _system;
 
     private PlcLogRepository _logRepository;
 
-    public  PlcLogController(PlcLogRepository logRepository, IotDbContext db)
-    {
-      _db = db;
+    public  PlcLogController(
+      LogContext log,
+      SystemContext system,
+      PlcLogRepository logRepository
+    ) {
+      _log = log;
+      _system = system;
       _logRepository = logRepository;
     }
 
@@ -47,11 +53,11 @@ namespace Tiantong.Iot.Api
     {
       var date = DateTime.Now.AddDays(0 - param.days);
 
-      _db.PlcLogs.Where(log => log.created_at < date).Delete();
-      _db.PlcStateLogs.Where(log => log.created_at < date).Delete();
-      _db.PlcStateErrors.Where(log => log.created_at < date).Delete();
-      _db.HttpPusherLogs.Where(log => log.created_at < date).Delete();
-      _db.HttpPusherErrors.Where(log => log.created_at < date).Delete();
+      _log.PlcLogs.Where(log => log.created_at < date).Delete();
+      _log.PlcStateLogs.Where(log => log.created_at < date).Delete();
+      _log.PlcStateErrors.Where(log => log.created_at < date).Delete();
+      _log.HttpPusherLogs.Where(log => log.created_at < date).Delete();
+      _log.HttpPusherErrors.Where(log => log.created_at < date).Delete();
 
       return SuccessOperation("日志清理完毕");
     }

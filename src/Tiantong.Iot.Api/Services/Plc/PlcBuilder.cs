@@ -5,18 +5,18 @@ namespace Tiantong.Iot.Api
 {
   public class PlcBuilder
   {
-    private DatabaseFactory _databaseFactory;
+    private DomainContextFactory _domain;
 
     private HttpPusherClient _httpPusherClient;
 
     private HttpPusherFactory _httpPusherFactory;
 
     public PlcBuilder(
-      DatabaseFactory databaseFactory,
+      DomainContextFactory domain,
       HttpPusherClient httpPusherClient,
       HttpPusherFactory httpPusherFactory
     ) {
-      _databaseFactory = databaseFactory;
+      _domain = domain;
       _httpPusherClient = httpPusherClient;
       _httpPusherFactory = httpPusherFactory;
     }
@@ -67,12 +67,12 @@ namespace Tiantong.Iot.Api
         };
       }
 
-      return new PlcWorker(client, manager, _databaseFactory);
+      return new PlcWorker(client, manager, _domain);
     }
 
     private void OnStateError(PlcStateError error)
     {
-      _databaseFactory.Log(error);
+      _domain.Log(error);
     }
 
     private void ResolveState<T>(PlcClient client, IntervalManager manager, PlcState st)

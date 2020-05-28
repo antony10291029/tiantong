@@ -4,12 +4,13 @@ namespace Tiantong.Iot.Api
 {
   public class HttpPusherRepository
   {
-    private IotDbContext _db;
+    private SystemContext _system;
 
-    public HttpPusherRepository(IotDbContext db)
+    public HttpPusherRepository(SystemContext system)
     {
-      _db = db;
+      _system = system;
     }
 
   }
+
 }
