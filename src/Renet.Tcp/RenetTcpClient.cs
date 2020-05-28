@@ -14,7 +14,7 @@ namespace Renet.Tcp
 
     private TcpClient _client;
 
-    private int _ioTimeout = 1000;
+    private int _ioTimeout = 3000;
 
     private int BufferLength = 1024;
 
