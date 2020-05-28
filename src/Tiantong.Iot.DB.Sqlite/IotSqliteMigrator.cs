@@ -6,7 +6,9 @@ namespace Tiantong.Iot.DB.Sqlite
   { 
     public IotSqliteMigrator(IotDbContext db): base(db)
     {
-      UseDbContext(db);
+
     }
+
   }
+
 }

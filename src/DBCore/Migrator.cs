@@ -95,13 +95,6 @@ namespace DBCore
       return this.GetType().Assembly;
     }
 
-    public Migrator UseDbContext(DbContext dbContext)
-    {
-      DbContext = dbContext;
-
-      return this;
-    }
-
     public Migrator UseMigrationDirectory(string directory)
     {
       _migrationDirectory = directory;

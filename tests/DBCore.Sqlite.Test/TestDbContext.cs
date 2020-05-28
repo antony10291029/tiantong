@@ -11,7 +11,7 @@ namespace DBCore.Sqlite.Test
       var db = new Database();
       var mg = new Migrator(db);
 
-      mg.UseDbContext(db).Migrate();
+      mg.Migrate();
 
       Assert.IsTrue(db.HasTable<User>());
       Assert.IsFalse(db.HasTable<Role>());
