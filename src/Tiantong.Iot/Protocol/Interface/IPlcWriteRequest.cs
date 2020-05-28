@@ -13,4 +13,5 @@ namespace Tiantong.Iot.Protocol
     void UseData(byte[] data);
 
   }
+
 }

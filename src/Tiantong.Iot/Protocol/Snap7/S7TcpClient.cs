@@ -39,5 +39,7 @@ namespace Tiantong.Iot.Protocol
         throw new Exception($"握手数据校对错误: {e.Message}");
       }
     }
+
   }
+
 }

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/Tiantong.Iot.Entities/Tiantong.Iot.Entities.csproj" />
+    <ProjectReference Include="../../src/Tiantong.Iot/Tiantong.Iot.csproj" />
     <ProjectReference Include="../../src/Tiantong.Iot.Sqlite.Log/Tiantong.Iot.Sqlite.Log.csproj" />
     <ProjectReference Include="../../src/Tiantong.Iot.Sqlite.System/Tiantong.Iot.Sqlite.System.csproj" />
   </ItemGroup>

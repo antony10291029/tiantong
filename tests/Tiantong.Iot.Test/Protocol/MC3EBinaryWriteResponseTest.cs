@@ -38,6 +38,7 @@ namespace Tiantong.Iot.Protocol.Test
         Assert.Fail("expect throw write response result code and error code");
       } catch {}
     }
+
   }
 
 }

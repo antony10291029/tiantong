@@ -9,6 +9,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Renet.Tcp\Renet.Tcp.csproj" />
-    <ProjectReference Include="..\Tiantong.Iot.Protocol\Tiantong.Iot.Protocol.csproj" />
+    <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
   </ItemGroup>
 </Project>

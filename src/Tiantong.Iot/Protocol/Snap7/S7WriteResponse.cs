@@ -4,4 +4,5 @@ namespace Tiantong.Iot.Protocol
   {
     public byte[] Message { get; set; }
   }
+
 }

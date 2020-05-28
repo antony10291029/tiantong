@@ -25,4 +25,5 @@ namespace Tiantong.Iot.Protocol
     void UseAddress(string address);
 
   }
+
 }

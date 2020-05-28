@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
@@ -16,7 +15,6 @@
     <ProjectReference Include="..\Renet\Renet.csproj" />
     <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
     <ProjectReference Include="..\Tiantong.Iot\Tiantong.Iot.csproj" />
-    <ProjectReference Include="..\Tiantong.Iot.Entities\Tiantong.Iot.Entities.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Sqlite.Log\Tiantong.Iot.Sqlite.Log.csproj" />
     <ProjectReference Include="..\Tiantong.Iot.Sqlite.System\Tiantong.Iot.Sqlite.System.csproj" />
   </ItemGroup>

@@ -12,5 +12,7 @@ namespace Tiantong.Iot.Protocol
 
       Console.WriteLine(byteString);
     }
+
   }
+
 }

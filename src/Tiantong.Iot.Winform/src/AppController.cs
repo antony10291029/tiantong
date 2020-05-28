@@ -10,7 +10,7 @@ namespace Tiantong.Iot.Winforms
   public class AppController
   {
     private Config _config;
-    
+
     private IHost _server;
 
     private string _runningPort;

@@ -113,6 +113,7 @@ namespace Tiantong.Iot.Protocol.Test
       response.UseString(length);
       response.Message = message;
     }
+
   }
 
 }
