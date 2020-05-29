@@ -6,8 +6,8 @@
     >
       <div class="card-content is-flex-auto" style="padding: 4rem">
         <div class="field">
-          <p class="title is-4">
-            管理员密码
+          <p class="title is-5">
+            系统已锁定，请输入密码
           </p>
           <div class="field has-addons">
             <div class="control is-expanded">

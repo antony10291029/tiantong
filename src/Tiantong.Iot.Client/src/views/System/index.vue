@@ -7,13 +7,15 @@
       class="container is-flex-auto"
       style="overflow: auto; max-width: 768px; margin: 1.5rem auto 1.5rem auto"
     >
-      <div class="is-bordered">
+      <div
+        v-if="false"
+        class="is-bordered"
+      >
         <AdminEmail></AdminEmail>
       </div>
 
       <div
         class="is-bordered"
-        style="border-top: none"
       >
         <SystemLock></SystemLock>
       </div>

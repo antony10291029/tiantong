@@ -50,13 +50,13 @@
         >
           修改密码
         </a>
-
+<!-- 
         <a
           @click="isForgetPasswordShow = true"
           class="button is-info is-light is-small"
         >
           忘记密码
-        </a>
+        </a> -->
       </template>
 
       <template v-if="isResetPasswordShow">

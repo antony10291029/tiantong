@@ -5,7 +5,7 @@
   >
     <div class="field">
       <p class="title is-5">
-        系统锁定
+        锁定系统
       </p>
 
       <p class="content">
