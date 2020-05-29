@@ -8,7 +8,7 @@ import axios from '@/providers/axios'
 export default {
   name: 'App',
   created () {
-    axios.get("/").then(response => {
+    axios.post("/").then(response => {
       console.log(response.data);
     })
   }

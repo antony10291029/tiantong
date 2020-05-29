@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
+using System;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tiantong.Iot.Api
 {
@@ -109,8 +110,9 @@ namespace Tiantong.Iot.Api
 
       try {
         await _mail.SendVerifyCodeAsync(ev.email, ev.verify_code, "绑定管理员邮箱");
-      } catch {
-        return FailureOperation("邮件发送失败，请检查网络");
+      } catch (Exception e) {
+        Console.WriteLine(e);
+        return FailureOperation($"邮件发送失败: {e.Message}");
       }
 
       return SuccessOperation("邮箱验证码已发送，请在 30 分钟内处理", ev.id);

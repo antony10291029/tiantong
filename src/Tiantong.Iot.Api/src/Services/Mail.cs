@@ -15,7 +15,6 @@ namespace Tiantong.Iot.Api
 
     private string _stmpPassword;
 
-
     public Mail(Config config)
     {
       _stmpHost = config.STMP_HOST;
@@ -41,5 +40,7 @@ namespace Tiantong.Iot.Api
       msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
       await SendAsync(msg);
     }
+
   }
+
 }

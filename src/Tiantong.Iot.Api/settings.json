@@ -5,7 +5,7 @@
   "app_key": "base64:t3gsHNNsDml4Y36IdR1C9IJ5LQTFbGQy6ecnLWzqsXo=",
   "stmp": {
     "host": "smtpdm.aliyun.com",
-    "port": 25,
+    "port": 80,
     "address": "postman@mail.iot.als-yuchuan.com",
     "password": "TiantongWms9217"
   }

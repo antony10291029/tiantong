@@ -1,12 +1,13 @@
 import Home from './Home/index.vue'
+import PlcList from './PlcList/index.vue'
+import PlcsDashboard from './PlcList/PlcsDashboard.vue'
 import Plc from './Plc/index.vue'
 import PlcLogs from './Plc/Logs/index.vue'
 import PlcCreate from './Plc/PlcCreate.vue'
-import SystemMaintain from './SystemMaintain/index.vue'
+import System from './System/index.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
 import PlcStateLogs from './Plc/StateLogs/index.vue'
 import PlcStateErrors from './Plc/StateErrors/index.vue'
-import PlcList from './PlcList/index.vue'
 import PlcConfig from './Plc/PlcConfig.vue'
 import PlcStates from './PlcStates/index.vue'
 import PlcState from './PlcStates/PlcState/index.vue'
@@ -26,19 +27,24 @@ export default [
     component: Home,
     children: [
       {
+        path: '/system',
+        name: 'System',
+        component: System
+      },
+      {
         path: 'plcs',
         name: 'PlcList',
         component: PlcList,
         children: [
           {
+            path: '',
+            name: 'PlcsDashboard',
+            component: PlcsDashboard
+          },
+          {
             path: 'create',
             name: 'PlcCreate',
             component: PlcCreate
-          },
-          {
-            path: 'maintain',
-            name: 'SystemMaintain',
-            component: SystemMaintain
           },
           {
             path: ':plcId',

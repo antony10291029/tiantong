@@ -4,7 +4,7 @@
     :handler="getStates"
   >
     <Table
-      colspan="4"
+      colspan="5"
       class="table is-centered is-nowrap is-fullwidth is-bordered"
     >
       <thead slot="head">

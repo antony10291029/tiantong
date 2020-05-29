@@ -14,7 +14,7 @@
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <span class="iconfont icon-plc"></span>
+              <span class="iconfont icon-device"></span>
             </span>
             <span>{{plc.name}}</span>
           </router-link>
@@ -28,17 +28,6 @@
               <i class="iconfont icon-add"></i>
             </span>
             <span>添加设备</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/plcs/maintain">
-            <span
-              class="icon"
-              style="margin-right: 0.25rem"
-            >
-              <i class="iconfont icon-maintain"></i>
-            </span>
-            <span>系统维护</span>
           </router-link>
         </li>
       </ul>

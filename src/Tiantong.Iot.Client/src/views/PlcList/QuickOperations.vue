@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 1.25rem">
     <p class="title is-5">
-      快速操作
+      设备控制
     </p>
 
     <p class="content">
