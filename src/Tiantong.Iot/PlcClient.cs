@@ -90,9 +90,9 @@ namespace Tiantong.Iot
 
     public int Port() => _port;
 
-    public Action<PlcStateError> OnStateError() => _onStateError;
-
     public List<IState> States() => _states;
+
+    public Action<PlcStateError> OnStateError() => _onStateError;
 
     public PlcClientOptions Id(int id) => Builder(() => _id = id);
 
@@ -117,26 +117,18 @@ namespace Tiantong.Iot
 
     //
 
-    private IState<T> AddState<T>(IState<T> state)
+    public IState<T> State<T>()
     {
+      var state = typeof(T).Name switch {
+        "UInt16" => new StateUInt16() as IState<T>,
+        "Int32" => new StateInt32() as IState<T>,
+        "String" => new StateString() as IState<T>,
+        _ => throw new Exception($"不支持的数据类型: {typeof(T).Name}")
+      };
+
       _states.Add(state);
 
       return state;
-    }
-
-    public IState<ushort> UInt16()
-    {
-      return AddState(new StateUInt16());
-    }
-
-    public IState<int> Int()
-    {
-      return AddState(new StateInt32());
-    }
-
-    public IState<string> String()
-    {
-      return AddState(new StateString());
     }
 
   }
