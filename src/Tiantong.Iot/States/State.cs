@@ -31,6 +31,8 @@ namespace Tiantong.Iot
 
     public string Name() => _name;
 
+    public string Address() => _address;
+
     public bool IsReadLogOn() => _isReadLogOn;
 
     public bool IsWriteLogOn() => _isWriteLogOn;
@@ -71,6 +73,8 @@ namespace Tiantong.Iot
 
       return this;
     }
+
+    public abstract string GetString();
 
     public abstract void SetString(string data);
 
@@ -130,6 +134,11 @@ namespace Tiantong.Iot
     }
 
     //
+
+    public override string GetString()
+    {
+      return Get().ToString();
+    }
 
     public void Set(T data)
     {

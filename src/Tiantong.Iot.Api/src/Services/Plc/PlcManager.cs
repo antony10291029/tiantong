@@ -74,6 +74,16 @@ namespace Tiantong.Iot.Api
       return _plcByName[name];
     }
 
+    public bool Has(int id)
+    {
+      return _plcById.ContainsKey(id);
+    }
+
+    public bool Has(string name)
+    {
+      return _plcByName.ContainsKey(name);
+    }
+
     public bool Run(PlcWorker worker)
     {
       var id = worker.Client().Options().Id();

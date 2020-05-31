@@ -18,23 +18,43 @@
     </div>
 
     <div style="height: 0.75rem"></div>
+<!-- 
+    <div
+      class="tabs is-bordered"
+      style="border-bottom: none; margin-bottom: 0.75rem"
+    >
+      <ul>
+        <li
+          v-class:is-active="key === currentTab"
+          v-for="(text, key) in tabs" :key="key"
+          @click="currentTab = key"
+        >
+          <a>{{text}}</a>
+        </li>
+      </ul>
+    </div> -->
 
-    <div class="columns">
-      <div class="column">
-        <PlcStates
-          :plcId="plcId"
-          :isRunning="isRunning"
-          :isDataWatchOpen="isDataWatchOpen"
-        />
-      </div>
+    <template v-if="currentTab == 0">
+      <div class="columns">
+        <div class="column">
+          <PlcStates
+            :plcId="plcId"
+            :isRunning="isRunning"
+            :isDataWatchOpen="isDataWatchOpen"
+          />
+        </div>
 
-      <div class="column">
-        <PlcLogs
-          :plcId="plcId"
-          :isRunning="isRunning"
-        />
+        <div class="column">
+          <PlcLogs
+            :plcId="plcId"
+            :isRunning="isRunning"
+          />
+        </div>
       </div>
-    </div>
+    </template>
+    <template v-else-if="currentTab == 1">
+      <PlcDataDebug />
+    </template>
   </div>
 </template>
 
@@ -43,6 +63,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import PlcRunningButton from './PlcRunningButton.vue'
 import PlcLogs from './PlcLogs.vue'
 import PlcStates from './PlcStates.vue'
+import PlcDataDebug from './DataDebug.vue'
 import axios from '@/providers/axios'
 
 @Component({
@@ -50,6 +71,7 @@ import axios from '@/providers/axios'
   components: {
     PlcLogs,
     PlcStates,
+    PlcDataDebug,
     PlcRunningButton,
   }
 })
@@ -60,6 +82,12 @@ export default class extends Vue {
   isRunning = false
 
   isDataWatchOpen = false
+
+  currentTab = 0
+
+  tabs = [
+    '运行状态', '随机读写'
+  ]
 
   async getDataSource () {
     let response = await axios.post('/plc-workers/is-running', {

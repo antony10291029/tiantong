@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div class="tabs is-boxed" style="margin-bottom: 0">
+  <div
+    class="is-flex-auto is-flex is-flex-column"
+    style="overflow-y: auto"
+  >
+    <div class="tabs is-boxed" style="margin-bottom: 0; flex-shrink: 0">
       <ul>
         <router-link
           tag="li"
@@ -10,7 +13,21 @@
             <span class="icon">
               <i class="iconfont icon-dashboard"></i>
             </span>
-            <span>状态</span>
+            <span>控制台</span>
+          </a>
+        </router-link>
+        <router-link
+          tag="li"
+          :to="`${baseURL}/${plcId}/debug`"
+        >
+          <a>
+            <span
+              class="icon"
+              style="padding-top: 0.125rem"
+            >
+              <i class="iconfont icon-debug"></i>
+            </span>
+            <span>调试</span>
           </a>
         </router-link>
         <router-link
@@ -24,7 +41,7 @@
             >
               <i class="iconfont icon-settings"></i>
             </span>
-            <span>设备</span>
+            <span>配置</span>
           </a>
         </router-link>
         <router-link
@@ -59,6 +76,7 @@
     </div>
 
     <router-view
+      class="is-flex-auto"
       :plcId="plcId"
       :baseURL="`${baseURL}/${plcId}`"
       v-on="$listeners"

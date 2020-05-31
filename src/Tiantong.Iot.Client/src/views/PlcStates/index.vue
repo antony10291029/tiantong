@@ -1,7 +1,7 @@
 <template>
   <AsyncLoader
     :handler="getStates"
-    style="padding: 1.25rem"
+    style="padding: 1.25rem;"
   >
     <div class="is-flex">
       <div style="min-width: 400px; max-width: 400px">

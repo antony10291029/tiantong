@@ -5,6 +5,7 @@ import Plc from './Plc/index.vue'
 import PlcLogs from './Plc/Logs/index.vue'
 import PlcCreate from './Plc/PlcCreate.vue'
 import System from './System/index.vue'
+import PlcDebug from './Plc/Debug/index.vue'
 import PlcDashboard from './Plc/Dashboard/index.vue'
 import PlcStateLogs from './Plc/StateLogs/index.vue'
 import PlcStateErrors from './Plc/StateErrors/index.vue'
@@ -33,7 +34,6 @@ export default [
       },
       {
         path: 'plcs',
-        name: 'PlcList',
         component: PlcList,
         children: [
           {
@@ -57,6 +57,11 @@ export default [
                 path: 'dashboard',
                 name: 'PlcDashboard',
                 component: PlcDashboard
+              },
+              {
+                path: 'debug',
+                name: 'PlcDebug',
+                component: PlcDebug
               },
               {
                 path: 'config',

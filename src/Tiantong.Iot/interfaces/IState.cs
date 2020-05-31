@@ -11,6 +11,8 @@ namespace Tiantong.Iot
 
     string Name();
 
+    string Address();
+
     bool IsReadLogOn();
 
     bool IsWriteLogOn();
@@ -34,6 +36,8 @@ namespace Tiantong.Iot
     IState Build(IStateDriver driver);
 
     void SetString(string value);
+
+    string GetString();
 
     string CollectString(int interval = 1000);
 

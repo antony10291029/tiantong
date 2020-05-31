@@ -104,6 +104,16 @@ namespace Tiantong.Iot.Api
       return dict;
     }
 
+    public string GetString(IState state)
+    {
+      return _client.GetString(state);
+    }
+
+    public void SetString(IState state, string value)
+    {
+      _client.SetString(state, value);
+    }
+
     public virtual void Log(string message)
     {
       _comain.Log(new PlcLog {
@@ -129,6 +139,16 @@ namespace Tiantong.Iot.Api
       Log("通信程序已停止");
 
       return this;
+    }
+
+    public void Connect()
+    {
+      _client.Connect();
+    }
+
+    public void Close()
+    {
+      _client.Close();
     }
 
     public void Reconnect(Exception e)

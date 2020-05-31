@@ -120,51 +120,6 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    public class SetParams<T>
-    {
-      public string plc { get; set; }
-
-      public string state { get; set; }
-
-      public T value { get; set; }
-    }
-
-    public class SetByIdParams<T>
-    {
-      public int plc_id { get; set; }
-
-      public int state_id { get; set; }
-
-      public T value { get; set; }
-    }
-
-    [HttpPost]
-    [Route("states/uint16/set-by-id")]
-    public object SetUInt16ById([FromBody] SetByIdParams<ushort> param)
-    {
-      _plcManager.Get(param.plc_id).Set<ushort>(param.state_id, param.value);
-
-      return SuccessOperation("数据已写入");
-    }
-
-    [HttpPost]
-    [Route("states/int32/set-by-id")]
-    public object SetInt32([FromBody] SetByIdParams<int> param)
-    {
-      _plcManager.Get(param.plc_id).Set<int>(param.state_id, param.value);
-
-      return SuccessOperation("数据已写入");
-    }
-
-    [HttpPost]
-    [Route("states/string/set-by-id")]
-    public object SetStringByName([FromBody] SetByIdParams<string> param)
-    {
-      _plcManager.Get(param.plc_id).Set<string>(param.state_id, param.value);
-
-      return SuccessOperation("数据已写入");
-    }
-
   }
 
 }

@@ -43,6 +43,18 @@ namespace Tiantong.Iot
 
     public IState<T> State<T>(string name) => _statesByName[name] as IState<T>;
 
+    public void SetString(IState state, string value)
+    {
+      state.Build(_driverProvider.Resolve())
+        .SetString(value);
+    }
+
+    public string GetString(IState state)
+    {
+      return state.Build(_driverProvider.Resolve())
+        .GetString();
+    }
+
     public void Set<T>(int id, T value) => State<T>(id).Set(value);
 
     public T Get<T>(int id) => State<T>(id).Get();
