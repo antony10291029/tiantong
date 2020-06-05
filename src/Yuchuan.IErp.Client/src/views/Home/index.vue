@@ -36,4 +36,5 @@ export default class extends Vue {
   width: 100vw
   height: calc(100vh - 52px)
   display: flex
+  overflow: hidden
 </style>

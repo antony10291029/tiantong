@@ -26,7 +26,7 @@
       <div class="control">
         <AsyncButton
           :handler="handleSave"
-          class="button is-success"
+          class="button is-success"  
         >
           写入
         </AsyncButton>
@@ -57,15 +57,6 @@ export default class extends Vue {
   value: any = ''
 
   setValue (value: any) {
-    if (this.type == 'string') {
-      value = value.toString()
-    } else if (this.type) {
-      value = parseInt(value)
-      if (Number.isNaN(value)) {
-        value = 0
-      }
-    }
-
     this.value = value
   }
 

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <PublishDir>bin\publish</PublishDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DBCore\DBCore.csproj" />
+    <ProjectReference Include="..\DBCore.Postgres\DBCore.Postgres.csproj" />
+    <ProjectReference Include="..\Renet\Renet.csproj" />
+    <ProjectReference Include="..\Renet.Web\Renet.Web.csproj" />
+    <ProjectReference Include="..\Yuchuan.IErp.Database\Yuchuan.IErp.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="settings.json" />
+    <EmbeddedResource Include="settings.json" />
+  </ItemGroup>
+</Project>
