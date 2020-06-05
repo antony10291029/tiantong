@@ -1,8 +1,6 @@
-using DBCore;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.DependencyInjection;
-using Renet;
+using Renet.Utils;
 using Renet.Web;
 using Tiantong.Iot.Entities;
 using Tiantong.Iot.Sqlite.Log;
@@ -41,28 +39,10 @@ namespace Tiantong.Iot.Api
     {
       app.UseMiddleware<JsonBody>();
       app.UseProvider<ExceptionHandler>();
-      app.UseClient();
+      app.UseEmbeddedServer();
       app.UseRouting();
       app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
       app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
   }
-
-  public static class Extensions
-  {
-    public static IApplicationBuilder UseClient(this IApplicationBuilder app)
-    {
-      var fileProvider = new ManifestEmbeddedFileProvider(typeof(Program).Assembly, "/");
-
-      app.UseFileServer(new FileServerOptions {
-        RequestPath = "",
-        FileProvider = fileProvider,
-        EnableDirectoryBrowsing = true,
-      });
-
-      return app;
-    }
-
-  }
-
 }
