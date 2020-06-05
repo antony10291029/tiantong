@@ -91,6 +91,24 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("数据已写入");
     }
 
+    public class SetStringByIdParams
+    {
+      public int plc_id { get; set; }
+
+      public int state_id { get; set; }
+
+      public string value { get; set; }
+    }
+
+    [HttpPost]
+    [Route("set-string-by-id")]
+    public object SetStringById([FromBody] SetStringByIdParams param)
+    {
+      _manager.Get(param.plc_id).SetString(param.state_id, param.value);
+
+      return new SuccessOperation("数据已写入");
+    }
+
   }
 
 }

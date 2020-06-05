@@ -78,7 +78,7 @@ export default class extends Vue {
   }
 
   async handleSave () {
-    await axios.post(`/plc-workers/states/${this.type}/set-by-id`, {
+    await axios.post(`/plc-workers/states/set-string-by-id`, {
       plc_id: this.plcId,
       state_id: this.stateId,
       value: this.value

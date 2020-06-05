@@ -104,6 +104,11 @@ namespace Tiantong.Iot.Api
       return dict;
     }
 
+    public void SetString(int id, string value)
+    {
+      _client.State(id).SetString(value);
+    }
+
     public string GetString(IState state)
     {
       return _client.GetString(state);
