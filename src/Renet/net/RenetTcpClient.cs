@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
-namespace Renet.Tcp
+namespace Renet.Net
 {
   public class RenetTcpClient: IDisposable
   {

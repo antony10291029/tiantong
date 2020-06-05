@@ -1,5 +1,5 @@
+using Renet.Net;
 using System;
-using Renet.Tcp;
 
 namespace Tiantong.Iot.Protocol
 {
