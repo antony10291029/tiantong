@@ -1,8 +1,8 @@
+using DBCore.Postgres;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Renet;
+using Renet.Utils;
 using Renet.Web;
-using DBCore.Postgres;
 
 namespace Tiantong.Wms.Api
 {

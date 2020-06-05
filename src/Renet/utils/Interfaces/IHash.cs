@@ -1,4 +1,4 @@
-namespace Renet
+namespace Renet.Utils
 {
   public interface IHash
   {

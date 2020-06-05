@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Renet
+namespace Renet.Utils
 {
   public interface IRandom
   {
@@ -24,6 +24,5 @@ namespace Renet
     IEnumerable<int> Enumerate(int min, int max);
 
     DateTime DateTime(DateTime min, DateTime max);
-
   }
 }

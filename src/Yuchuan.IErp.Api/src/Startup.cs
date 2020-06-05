@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.DependencyInjection;
-using Renet;
+using Renet.Utils;
 using Renet.Web;
 
 namespace Yuchuan.IErp.Api
