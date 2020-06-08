@@ -4,7 +4,7 @@ export class Plc {
   id = 0
   name = ''
   model = PlcModel.mc3eBinary
-  host = '127.0.0.1'
+  host = '192.168.1.1'
   port = 8000
   comment = ''
   created_at = DateTime.now

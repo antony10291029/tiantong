@@ -8,6 +8,21 @@
       style="min-width: 220px; max-width: 220px; height: 100%; overflow-y: auto"
     >
       <ul class="menu-list">
+        <li>
+          <router-link
+            :to="`/plcs`"
+            active-class="none"
+            exact-active-class="is-active"
+          >
+            <span
+              class="icon"
+              style="margin-right: 0.25rem"
+            >
+              <i class="iconfont icon-manage"></i>
+            </span>
+            <span>服务管理</span>
+          </router-link>
+        </li>
         <li v-for="plc in plcs" :key="plc.id">
           <router-link :to="`/plcs/${plc.id}`">
             <span
