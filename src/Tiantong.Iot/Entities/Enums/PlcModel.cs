@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 namespace Tiantong.Iot.Entities
 {
   public static class PlcModel
@@ -8,5 +10,16 @@ namespace Tiantong.Iot.Entities
 
     public const string Test = "test";
 
+    public static IEnumerable<string> Values()
+    {
+      yield return MC3EBinary;
+      yield return S7200Smart;
+      yield return Test;
+    }
+
+    public static bool IsValid(string model)
+    {
+      return !Values().Any(value => value == model);
+    }
   }
 }

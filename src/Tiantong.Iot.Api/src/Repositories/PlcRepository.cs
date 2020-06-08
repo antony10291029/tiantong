@@ -21,6 +21,10 @@ namespace Tiantong.Iot.Api
     {
       plc.id = 0;
 
+      if (_system.Plcs.Any(p => p.name == plc.name)) {
+        throw new FailureOperation("设备名称已存在");
+      }
+
       _system.Add(plc);
       _system.SaveChanges();
     }

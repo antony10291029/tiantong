@@ -14,11 +14,6 @@ namespace Tiantong.Iot.Api
       _plcRepository = plcRepository;
     }
 
-    public class CreateParams: Plc
-    {
-
-    }
-
     [HttpPost]
     [Route("create")]
     public object Create([FromBody] Plc plc)
