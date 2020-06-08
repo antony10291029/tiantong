@@ -3,7 +3,7 @@ import DateTime from '@/utils/DateTime'
 export class Plc {
   id = 0
   name = ''
-  model = 'test'
+  model = PlcModel.mc3eBinary
   host = '127.0.0.1'
   port = 8000
   comment = ''
@@ -11,7 +11,7 @@ export class Plc {
 }
 
 export enum PlcModel {
+  mc3eBinary = 'mc3e-binary',
+  s7200Smart = 's7200smart',
   test = 'test',
-  mc3e = 'mc3e',
-  s7200Smart = 's7200smart'
 }

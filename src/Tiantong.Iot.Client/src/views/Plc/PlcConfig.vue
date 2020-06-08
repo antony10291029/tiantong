@@ -93,6 +93,7 @@ export default class extends Vue {
         await axios.post('/plcs/delete', {
           plc_id: this.plcId
         })
+        this.$emit('refresh')
         this.$router.push('/plcs')
       }
     })

@@ -19,51 +19,38 @@
       <div class="field" style="width: 320px">
         <label class="label">通信协议</label>
         <div
-          @click="plc.model = 'mc3e-binary'"
+          v-for="(model, key) in models" :key="key"
+          @click="plc.model = model.value"
           class="is-bordered is-flex is-vcentered"
           style="padding: 0.5rem; cursor: pointer"
+          :style="key !== 0 && 'border-top: none'"
         >
-          <Radio :value="plc.model === 'mc3e-binary' || plc.model === 'mc3e'">
-            MC-3E-Binary
-          </Radio>
-        </div>
-        <div
-          @click="plc.model = 's7200smart'"
-          class="is-bordered is-flex is-vcentered"
-          style="padding: 0.5rem; border-top: none; cursor: pointer"
-        >
-          <Radio :value="plc.model === 's7200smart'">
-            S7-200Smart
-          </Radio>
-        </div>
-        <div
-          @click="plc.model = 'test'"
-          class="is-bordered is-flex is-vcentered"
-          style="padding: 0.5rem; border-top: none; cursor: pointer"
-        >
-          <Radio :value="plc.model === 'test'">
-            Test
+          <Radio :value="plc.model === model.value">
+            {{model.text}}
           </Radio>
         </div>
       </div>
-      <div class="field" style="width: 320px">
-        <label class="label">地址</label>
-        <div class="control">
-          <input
-            v-model="plc.host"
-            type="text" class="input"
-          >
+
+      <template v-if="plc.model !== 'test'">
+        <div class="field" style="width: 320px">
+          <label class="label">IP 地址</label>
+          <div class="control">
+            <input
+              v-model="plc.host"
+              type="text" class="input"
+            >
+          </div>
         </div>
-      </div>
-      <div class="field" style="width: 320px">
-        <label class="label">端口</label>
-        <div class="control">
-          <Input
-            v-model="plc.port"
-            type="number" class="input"
-          />
+        <div class="field" style="width: 320px">
+          <label class="label">IP 端口</label>
+          <div class="control">
+            <Input
+              v-model="plc.port"
+              type="number" class="input"
+            />
+          </div>
         </div>
-      </div>
+      </template>
       <div class="field" style="width: 480px">
         <label class="label">备注</label>
         <div class="control">
@@ -78,7 +65,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Plc } from '@/entities'
+import { Plc, PlcModel } from '@/entities'
 
 @Component({
   name: 'PlcForm'
@@ -89,5 +76,20 @@ export default class extends Vue {
 
   @Prop({ default: () => () => {} })
   handler!: () => {}
+
+  models = [
+    {
+      value: PlcModel.mc3eBinary,
+      text: '三菱 MC - TCP（二进制）',
+    },
+    {
+      value: PlcModel.s7200Smart,
+      text: '西门子 200Smart',
+    },
+    {
+      value: PlcModel.test,
+      text: '测试协议',
+    }
+  ]
 }
 </script>
