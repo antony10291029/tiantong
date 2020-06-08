@@ -36,38 +36,21 @@
       <div class="field" style="width: 320px">
         <label class="label">数据类型</label>
         <div
-          @click="state.type = 'uint16'"
+          @click="state.type = dateType.value"
+          v-for="(dateType, key) in dateTypes" :key="key"
           class="is-bordered is-flex is-vcentered"
           style="padding: 0.5rem; cursor: pointer"
+          :style="key !== 0 && 'border-top: none'"
         >
-          <Radio :value="state.type === 'uint16'">
-            uint16
-          </Radio>
-        </div>
-        <div
-          @click="state.type = 'int32'"
-          class="is-bordered is-flex is-vcentered"
-          style="padding: 0.5rem; border-top: none;  cursor: pointer"
-        >
-          <Radio :value="state.type === 'int32'">
-            int32
-          </Radio>
-        </div>
-        <div
-          @click="state.type = 'string'"
-          class="is-bordered is-flex is-vcentered"
-          style="padding: 0.5rem; border-top: none; cursor: pointer"
-        >
-          <Radio :value="state.type === 'string'">
-            string - ASCII
+          <Radio :value="state.type === dateType.value">
+            {{dateType.text}}
           </Radio>
         </div>
       </div>
 
       <div
         v-if="state.type === 'string'"
-        class="field"
-        style="width: 320px"
+        class="field" style="width: 320px"
       >
         <label class="label">数据长度</label>
         <div class="control">
@@ -163,7 +146,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { PlcState } from '@/entities'
+import { PlcState, PlcStateType } from '@/entities'
 
 @Component({
   name: 'PlcStateForm'
@@ -174,5 +157,20 @@ export default class extends Vue {
 
   @Prop({ default: () => () => {} })
   handler!: () => {}
+
+  dateTypes = [
+    {
+      value: PlcStateType.uint16,
+      text: '整数（16 位无符号）'
+    },
+    {
+      value: PlcStateType.int32,
+      text: '整数（32 位）'
+    },
+    {
+      value: PlcStateType.asciiString,
+      text: '字符串（ASCII）'
+    }
+  ]
 }
 </script>
