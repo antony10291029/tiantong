@@ -1,10 +1,11 @@
+using Renet;
 using System;
-using System.Linq;
 using System.Dynamic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,6 +39,13 @@ namespace Renet.Web
     }
 
     protected abstract Task Handle(Exception ex, HttpContext context);
+
+    protected virtual async Task HandleKnownException(IKnownException ex, HttpContext context)
+    {
+      var httpException = new HttpException(ex.Message, 400);
+
+      await HandleHttpException(httpException, context);
+    }
 
     protected virtual async Task HandleHttpException(IHttpException ex, HttpContext context)
     {

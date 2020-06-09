@@ -1,7 +1,8 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Tiantong.Iot.Entities;
+using Renet;
 using Renet.Web;
+using System.Linq;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
@@ -22,7 +23,7 @@ namespace Tiantong.Iot.Api
       plc.id = 0;
 
       if (_system.Plcs.Any(p => p.name == plc.name)) {
-        throw new FailureOperation("设备名称已存在");
+        throw KnownException.Error("设备名称已存在");
       }
 
       _system.Add(plc);
@@ -38,6 +39,10 @@ namespace Tiantong.Iot.Api
 
     public void Update(Plc plc)
     {
+      if (_system.Plcs.Any(p => p.name == plc.name && p.id != plc.id)) {
+        throw KnownException.Error("设备名称不可重复");
+      }
+
       var oldPlc = EnsureGet(plc.id);
       _system.Entry(oldPlc).CurrentValues.SetValues(plc);
       _system.Entry(oldPlc).Property(p => p.created_at).IsModified = false;
@@ -125,7 +130,5 @@ namespace Tiantong.Iot.Api
 
       return plc;
     }
-
   }
-
 }
