@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Sql/*.sql" />
-    <EmbeddedResource Include="Migrations/*.cs" />
+    <EmbeddedResource Include="Log.Sql/*.sql" />
+    <EmbeddedResource Include="Log.Migrations/*.cs" />
+    <EmbeddedResource Include="System.Sql/*.sql" />
+    <EmbeddedResource Include="System.Migrations/*.cs" />
   </ItemGroup>
 </Project>

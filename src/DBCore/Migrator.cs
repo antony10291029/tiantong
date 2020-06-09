@@ -21,7 +21,7 @@ namespace DBCore
     public Migrator(DbContext db)
     {
       DbContext = db;
-      _assembly = GetAssembly();
+      _assembly = GetType().Assembly;
       _migrationInstances = GetMigrationInstances();
     }
 
@@ -41,23 +41,26 @@ namespace DBCore
     private Migrations GetMigrationInstances()
     {
       var dict = new Migrations();
+      var assemblyName = _assembly.GetName().Name;
       var names = _assembly.GetManifestResourceNames();
 
       foreach (var name in names) {
-        // Assembly.Directory.Filename.suffix
-        var splits = name.Split(".");
+        var filename = name.Substring(assemblyName.Length + 1);
+
+        if (!filename.StartsWith(_migrationDirectory)) {
+          continue;
+        }
+
+        filename = filename.Substring(_migrationDirectory.Length + 1);
+
+        if (!filename.EndsWith(".cs")) {
+          continue;
+        }
+
+        filename = filename.Substring(0, filename.Length - 3);
+
+        var splits = filename.Split("_");
         var length = splits.Length;
-
-        if (splits.Length <= 4) continue;
-
-        var suffix = splits[length - 1];
-        var filename = splits[length - 2];
-        var dir = splits[length - 3];
-
-        if (suffix != "cs" || dir != _migrationDirectory) continue;
-
-        splits = filename.Split("_");
-        length = splits.Length;
 
         if (length < 2) {
           Helper.Warning($"migration file \"{filename}\" will be ignored because the name is invalid.\n");
@@ -90,9 +93,9 @@ namespace DBCore
       return dict;
     }
 
-    protected virtual Assembly GetAssembly()
+    protected virtual void UseAssembly(Assembly assembly)
     {
-      return this.GetType().Assembly;
+      _assembly = assembly;
     }
 
     public Migrator UseMigrationDirectory(string directory)
@@ -207,6 +210,5 @@ namespace DBCore
 
       Migrate();
     }
-
   }
 }

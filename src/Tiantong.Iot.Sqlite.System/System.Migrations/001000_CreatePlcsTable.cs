@@ -6,7 +6,7 @@ namespace Tiantong.Iot.Sqlite.System
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.001000_CreatePlcsTable");
+      db.ExecuteFromSql("001000_CreatePlcsTable");
     }
 
     public void Down(DbContext db)

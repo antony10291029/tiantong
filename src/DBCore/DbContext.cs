@@ -9,9 +9,18 @@ namespace DBCore
 {
   public class DbContext : Microsoft.EntityFrameworkCore.DbContext
   {
+    private Assembly _assembly;
+
     public DbSet<Migration> Migrations { get; set; }
 
     private IDbContextTransaction _transaction;
+
+    private string _sqlDirectory = "Sql";
+
+    public DbContext()
+    {
+      _assembly = GetType().Assembly;
+    }
 
     public bool HasTable(string table)
     {
@@ -21,6 +30,21 @@ namespace DBCore
       } catch {
         return false;
       }
+    }
+
+    public string SqlDirectory()
+    {
+      return _sqlDirectory;
+    }
+
+    public void UseSqlDirectory(string dir)
+    {
+      _sqlDirectory = dir;
+    }
+
+    public void UseAssembly(Assembly assembly)
+    {
+      _assembly = assembly;
     }
 
     public bool HasTable<T>() where T : class
@@ -37,9 +61,9 @@ namespace DBCore
 
     public void ExecuteFromSql(string name)
     {
-      var assembly = Assembly.GetCallingAssembly();
-      var assemblyName = assembly.GetName().Name;
-      var stream = assembly.GetManifestResourceStream($"{assemblyName}.Sql.{name}.sql");
+      var assemblyName = _assembly.GetName().Name;
+      Console.WriteLine($"{assemblyName}.{_sqlDirectory}.{name}.sql");
+      var stream = _assembly.GetManifestResourceStream($"{assemblyName}.{_sqlDirectory}.{name}.sql");
 
       if (stream == null) {
         throw new Exception("Sql file not found");

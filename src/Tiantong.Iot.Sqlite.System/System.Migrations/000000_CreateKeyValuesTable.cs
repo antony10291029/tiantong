@@ -6,14 +6,12 @@ namespace Tiantong.Iot.Sqlite.System
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.000000_CreateKeyValuesTable");
+      db.ExecuteFromSql("000000_CreateKeyValuesTable");
     }
 
     public void Down(DbContext db)
     {
       db.ExecuteSql("drop table if exists key_values");
     }
-
   }
-
 }
