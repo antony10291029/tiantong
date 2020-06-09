@@ -9,6 +9,8 @@ namespace Tiantong.Iot
 
     int Id();
 
+    int Length();
+
     string Name();
 
     string Address();

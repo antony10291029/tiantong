@@ -56,12 +56,16 @@ namespace Tiantong.Iot.Api
         try {
           worker.Connect();
           worker.SetString(state, value);
+
+          if (state is IState<string>) {
+            value = value.Substring(0, state.Length());
+          }
         } finally {
           worker.Close();
         }
       }
 
-      return $"写入数据：{value} => {state.Address()}";
+      return $"写入数据：{state.Address()} <= {value}";
     }
 
     public class GetParams
@@ -145,7 +149,7 @@ namespace Tiantong.Iot.Api
     {
       var state = new StateString()
         .Address(param.address)
-        .Length(param.value.Length);
+        .Length(param.length);
 
       return new {
         message = ResolveSet(param.plc_id, state, param.value)

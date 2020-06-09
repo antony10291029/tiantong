@@ -29,6 +29,8 @@ namespace Tiantong.Iot
 
     public int Id() => _id;
 
+    public int Length() => _length;
+
     public string Name() => _name;
 
     public string Address() => _address;
