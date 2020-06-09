@@ -32,8 +32,9 @@ namespace Tiantong.Iot.Api
 
     public void Delete(int id)
     {
-      var plc = EnsureGet(id);
-      _system.Plcs.Remove(plc);
+      var plc = EnsureGetWithRelationships(id);
+
+      _system.Remove(plc);
       _system.SaveChanges();
     }
 
@@ -105,13 +106,13 @@ namespace Tiantong.Iot.Api
       var plc = Get(id);
 
       if (plc == null) {
-        throw new FailureOperation("PLC 不存在");
+        throw KnownException.Error("PLC 服务不存在");
       }
 
       return plc;
     }
 
-    public Plc Find(int id)
+    public Plc GetWithRelationships(int id)
     {
       return _system.Plcs
         .Include(p => p.states)
@@ -120,12 +121,12 @@ namespace Tiantong.Iot.Api
         .FirstOrDefault(p => p.id == id);
     }
 
-    public Plc EnsureFind(int id)
+    public Plc EnsureGetWithRelationships(int id)
     {
-      var plc = Find(id);
+      var plc = GetWithRelationships(id);
 
       if (plc == null) {
-        throw new FailureOperation("PLC 不存在");
+        throw KnownException.Error("PLC 不存在");
       }
 
       return plc;

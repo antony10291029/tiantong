@@ -15,6 +15,7 @@
             </th>
             <th>地址</th>
             <th>类型</th>
+            <th class="is-centered">功能</th>
           </thead>
           <tbody
             slot="body"
@@ -29,6 +30,21 @@
               <td>{{state.address}}</td>
               <td>
                 {{state.type + (state.type === 'string' ? `(${state.length})` : '')}}
+              </td>
+              <td class="is-centered">
+                <span
+                  class="icon"
+                  v-if="state.is_collect"
+                >
+                  <i class="iconfont icon-collect"></i>
+                </span>
+                <span
+                  class="icon"
+                  style="margin-left: 0.25rem"
+                  v-if="state.is_heartbeat"
+                >
+                  <i class="iconfont icon-heartbeat"></i>
+                </span>
               </td>
             </tr>
           </tbody>
@@ -82,7 +98,7 @@ export default class extends Vue {
   }
 
   handleStateClick (state: any) {
-    if (!state) return
+    if (!state || +this.$route.params.stateId === state.id) return
     this.$router.push(`/plcs/${this.plcId}/states/${state.id}`)
   }
 

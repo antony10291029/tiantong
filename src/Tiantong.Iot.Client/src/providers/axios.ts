@@ -19,9 +19,9 @@ function beforeResponse (response : AxiosResponse) {
 }
 
 function beforeError (error : AxiosError) {
-  let status = error.response?.status
+  let status = error.response?.status ?? 0
 
-  if (status === 422) {
+  if (status >= 400 && status < 500) {
     notify.danger(error.response?.data.message)
   } else if (error.response?.status === 500) {
     notify.danger('非常抱歉，出现未知错误')

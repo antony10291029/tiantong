@@ -1,3 +1,4 @@
+using Renet;
 using System;
 using System.Text;
 
@@ -34,7 +35,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseBool()
     {
-      throw new Exception("暂时不支持 Bool 类型");
+      throw KnownException.Error("暂时不支持 Bool 类型");
     }
 
     public void UseUInt16()
@@ -45,7 +46,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseInt32()
     {
-      throw new Exception("暂时不支持 Int32 类型");
+      throw KnownException.Error("暂时不支持 Int32 类型");
     }
 
     public void UseString(int length)
@@ -56,7 +57,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseBytes(int length)
     {
-      throw new Exception("暂时不支持 Bytes 类型");
+      throw KnownException.Error("暂时不支持 Bytes 类型");
     }
 
     private void GetIsDataResponse()
@@ -70,7 +71,7 @@ namespace Tiantong.Iot.Protocol
       if (ErrorCode[0] != 0x00 || ErrorCode[1] != 0x00) {
         var errorCode = BitConverter.ToString(ErrorCode);
 
-        throw new Exception($"错误类型、错误代码: {errorCode}");
+        throw KnownException.Error($"错误类型、错误代码: {errorCode}");
       }
     }
 
@@ -89,7 +90,7 @@ namespace Tiantong.Iot.Protocol
       Array.Copy(Message, 25, Data, 0, _length);
       if (DataLength != _length) {
         var byteString = BitConverter.ToString(Data);
-        throw new Exception($"数据校验失败，长度应为: {_length}，实际长度: {DataLength}, 二进制数据: {byteString}");
+        throw KnownException.Error($"数据校验失败，长度应为: {_length}，实际长度: {DataLength}, 二进制数据: {byteString}");
       }
     }
 
@@ -106,7 +107,7 @@ namespace Tiantong.Iot.Protocol
 
     public bool GetBool()
     {
-      throw new Exception("暂时不支持 bool 类型");
+      throw KnownException.Error("暂时不支持 bool 类型");
     }
 
     public ushort GetUInt16()
@@ -128,7 +129,5 @@ namespace Tiantong.Iot.Protocol
     {
       return GetBytes(true);
     }
-
   }
-
 }

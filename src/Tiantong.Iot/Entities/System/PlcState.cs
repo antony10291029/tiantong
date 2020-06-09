@@ -1,8 +1,9 @@
-using System;
-using System.Linq;
+using Renet;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using Tiantong.Iot.Protocol;
 
 namespace Tiantong.Iot.Entities
 {
@@ -14,22 +15,28 @@ namespace Tiantong.Iot.Entities
 
     public virtual int plc_id { get; set; }
 
+    [MaxLength(20, ErrorMessage = "设备名称长度不可超过20")]
     public virtual string name { get; set; }
 
+    [PlcStateType]
     public virtual string type { get; set; }
 
     public virtual string address { get; set; }
 
+    [Range(0, 200, ErrorMessage = "数据长度必须在 0 至 200 之间")]
     public virtual int length { get; set; }
 
     public virtual bool is_heartbeat { get; set; }
 
+    [Range(500, 3600000, ErrorMessage = "心跳间隔必须在 0.5 至 3600s 之间")]
     public virtual int heartbeat_interval { get; set; } = 1000;
 
+    [Range(100, 10000, ErrorMessage = "心跳范围必须在 100 至 10000 之间")]
     public virtual int heartbeat_max_value { get; set; } = 10000;
 
     public virtual bool is_collect { get; set; }
 
+    [Range(500, 3600000, ErrorMessage = "数据采集间隔必须在 0.5 至 3600s 之间")]
     public virtual int collect_interval { get; set; } = 10000;
 
     public virtual bool is_read_log_on { get; set; }
@@ -45,6 +52,19 @@ namespace Tiantong.Iot.Entities
       get => state_http_pushers?.Select(sp => sp.pusher).ToList();
     }
 
-  }
+    public static void EnsureAddress(string model, string address)
+    {
+      if (model == PlcModel.Test) {
+        return;
+      }
 
+      IPlcReadRequest request = model switch {
+        PlcModel.MC3EBinary => new MC3EBinaryReadRequest(),
+        PlcModel.S7200Smart => new S7ReadRequest(),
+        _ => throw KnownException.Error("PLC 型号错误"),
+      };
+
+      request.UseAddress(address);
+    }
+  }
 }

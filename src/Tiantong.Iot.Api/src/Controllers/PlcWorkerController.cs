@@ -34,7 +34,7 @@ namespace Tiantong.Iot.Api
     [Route("run")]
     public object Run([FromBody] FindParams param)
     {
-      var plc = _plcRepository.EnsureFind(param.plc_id);
+      var plc = _plcRepository.EnsureGetWithRelationships(param.plc_id);
       PlcWorker worker;
 
       worker = _builder.BuildWorker(plc);
@@ -84,7 +84,7 @@ namespace Tiantong.Iot.Api
     [Route("test")]
     public object Test([FromBody] FindParams param)
     {
-      var plc = _plcRepository.EnsureFind(param.plc_id);
+      var plc = _plcRepository.EnsureGetWithRelationships(param.plc_id);
       var worker = _builder.BuildWorker(plc);
 
       try {

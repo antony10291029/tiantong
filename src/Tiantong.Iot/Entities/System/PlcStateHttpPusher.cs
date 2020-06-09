@@ -15,7 +15,5 @@ namespace Tiantong.Iot.Entities
 
     [ForeignKey("pusher_id")]
     public virtual HttpPusher pusher { get; set; }
-
   }
-
 }

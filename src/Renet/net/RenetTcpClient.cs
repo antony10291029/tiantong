@@ -71,7 +71,7 @@ namespace Renet.Net
         _stream.ReadTimeout = _stream.WriteTimeout = _ioTimeout;
         Connected();
       } else {
-        throw new Exception("tcp connect timeout");
+        throw KnownException.Error("网络连接超时");
       }
     }
 
@@ -79,6 +79,5 @@ namespace Renet.Net
     {
 
     }
-
   }
 }

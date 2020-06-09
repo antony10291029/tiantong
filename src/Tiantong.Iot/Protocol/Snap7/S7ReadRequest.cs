@@ -1,3 +1,4 @@
+using Renet;
 using System;
 
 namespace Tiantong.Iot.Protocol
@@ -63,7 +64,7 @@ namespace Tiantong.Iot.Protocol
         case "V" : return 0x87;
         case "D" : return 0x84;
         case "DB" : return 0x84;
-        default : throw new Exception("data type is invalid");
+        default : throw KnownException.Error();
       }
     }
 
@@ -86,14 +87,14 @@ namespace Tiantong.Iot.Protocol
       try {
         return int.Parse(block);
       } catch {
-        throw new Exception("db block is invalid");
+        throw KnownException.Error();
       }
     }
 
     private (string, int, int) TransAddress(string addr)
     {
       if (addr.Length < 2) {
-        throw new Exception("address length is invalid");
+        throw KnownException.Error();
       }
 
       var type = "D";
@@ -107,7 +108,7 @@ namespace Tiantong.Iot.Protocol
         type = addr.Substring(0, 1);
         addr = addr.Substring(1);
       } else {
-        throw new Exception("address type not found");
+        throw KnownException.Error();
       }
 
       offset = addr;
@@ -163,7 +164,7 @@ namespace Tiantong.Iot.Protocol
         SetParameterDataType(db);
         SetParameterOffset(offset);
       } catch {
-        throw new Exception($"PLC地址格式错误: {address}");
+        throw KnownException.Error($"PLC地址格式错误: {address}");
       }
     }
 
@@ -175,7 +176,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseBool()
     {
-      throw new Exception("暂时不支持 Bool 类型");
+      throw KnownException.Error("暂时不支持 Bool 类型");
     }
 
     public void UseUInt16()
@@ -186,7 +187,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseInt32()
     {
-      throw new Exception("暂时不支持 Int32 类型");
+      throw KnownException.Error("暂时不支持 Int32 类型");
     }
 
     public void UseString(int length)
@@ -197,7 +198,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseBytes(int length)
     {
-      throw new Exception("暂时不支持 Bytes 类型");
+      throw KnownException.Error("暂时不支持 Bytes 类型");
     }
 
     public void UseAddress(string address)
@@ -205,7 +206,5 @@ namespace Tiantong.Iot.Protocol
       SetAddress(address);
       SetMessageLength();
     }
-
   }
-
 }

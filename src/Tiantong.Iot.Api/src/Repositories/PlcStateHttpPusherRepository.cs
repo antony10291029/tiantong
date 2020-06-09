@@ -1,7 +1,8 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Tiantong.Iot.Entities;
+using Renet;
 using Renet.Web;
+using System.Linq;
+using Tiantong.Iot.Entities;
 
 namespace Tiantong.Iot.Api
 {
@@ -35,7 +36,7 @@ namespace Tiantong.Iot.Api
         .FirstOrDefault(sp => sp.state_id == stateId && sp.pusher_id == pusherId);
 
       if (statePusher == null) {
-        throw new FailureOperation("PLC 数据点不存在");
+        throw KnownException.Error("PLC 数据点不存在");
       }
 
       _system.Remove(statePusher);
@@ -47,7 +48,7 @@ namespace Tiantong.Iot.Api
       var oldPusher = _system.HttpPushers.FirstOrDefault(s => s.id == pusher.id);
 
       if (oldPusher == null) {
-        throw new FailureOperation("HTTP推送不存在");
+        throw KnownException.Error("HTTP推送不存在");
       }
 
       _system.Entry(oldPusher).CurrentValues.SetValues(pusher);
@@ -62,7 +63,5 @@ namespace Tiantong.Iot.Api
         .Select(shp => shp.pusher)
         .ToArray();
     }
-
   }
-
 }

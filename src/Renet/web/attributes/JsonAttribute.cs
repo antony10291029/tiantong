@@ -1,20 +1,24 @@
+using System.Text.Json;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
 
 namespace Renet.Web.Attributes
 {
-  public class IPAddressAttribute: ValidationAttribute
+  public class JsonObjectAttribute: ValidationAttribute
   {
-    public IPAddressAttribute()
+    public JsonObjectAttribute()
     {
-      ErrorMessage = "IP 地址格式错误";
+      ErrorMessage = "JSON 数据格式错误";
     }
 
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-      if (IPAddress.TryParse(value.ToString(), out _)) {
+      try {
+        var dom = JsonDocument.Parse(value.ToString());
+        var obj = dom.RootElement.EnumerateObject();
+
         return ValidationResult.Success;
-      } else {
+      } catch {
         return new ValidationResult(ErrorMessage);
       }
     }

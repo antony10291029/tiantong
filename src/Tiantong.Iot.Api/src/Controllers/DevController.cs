@@ -81,7 +81,7 @@ namespace Tiantong.Iot.Api
           model = PlcModel.Test,
           states = _random.Enumerate(1, 10).Select(j => new PlcState {
             name = $"测试数据点 {j}",
-            type = _random.Bool() ? StateType.String : StateType.UInt16,
+            type = _random.Bool() ? PlcStateType.String : PlcStateType.UInt16,
             address = $"D{_random.Int(1000, 10000)}",
             length = 10,
             is_heartbeat = _random.Bool(),

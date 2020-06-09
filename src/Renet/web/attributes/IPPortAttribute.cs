@@ -1,22 +1,14 @@
+using System;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
 
-namespace Renet.Web.Attribute
+namespace Renet.Web.Attributes
 {
-  public class IPPortAttribute: ValidationAttribute
+  public class IPPortAttribute: RangeAttribute
   {
-    public IPPortAttribute()
+    public IPPortAttribute(): base(1, 65535)
     {
       ErrorMessage = "端口范围必须在 1 至 65535";
-    }
-
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    {
-      if (IPAddress.TryParse(value.ToString(), out _)) {
-        return ValidationResult.Success;
-      } else {
-        return new ValidationResult(ErrorMessage);
-      }
     }
   }
 }

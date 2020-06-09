@@ -1,4 +1,4 @@
-using Renet.Web.Attribute;
+using Renet.Web.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

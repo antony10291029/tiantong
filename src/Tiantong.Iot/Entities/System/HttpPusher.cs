@@ -1,3 +1,4 @@
+using Renet.Web.Attributes;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@ namespace Tiantong.Iot.Entities
 
     public virtual string name { get; set; }
 
+    [Url(ErrorMessage = "URL 格式错误")]
     public virtual string url { get; set; }
 
     public virtual string when_opt { get; set; }
@@ -21,10 +23,9 @@ namespace Tiantong.Iot.Entities
 
     public virtual bool is_value_to_string { get; set; }
 
+    [JsonObject]
     public virtual string data { get; set; }
 
     public virtual bool is_concurrent { get; set; }
-
   }
-
 }

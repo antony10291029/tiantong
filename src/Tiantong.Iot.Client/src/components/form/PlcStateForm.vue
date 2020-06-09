@@ -35,27 +35,21 @@
 
       <div class="field" style="width: 320px">
         <label class="label">数据类型</label>
-        <div
-          @click="state.type = dateType.value"
-          v-for="(dateType, key) in dateTypes" :key="key"
-          class="is-bordered is-flex is-vcentered"
-          style="padding: 0.5rem; cursor: pointer"
-          :style="key !== 0 && 'border-top: none'"
-        >
-          <Radio :value="state.type === dateType.value">
-            {{dateType.text}}
-          </Radio>
-        </div>
+
+        <PlcStateTypes
+          v-model="state.type"
+          :length="state.length"
+        />
       </div>
 
       <div
         v-if="state.type === 'string'"
         class="field" style="width: 320px"
       >
-        <label class="label">数据长度</label>
+        <label class="label">字符串长度</label>
         <div class="control">
           <input
-            v-model.number="state.length"
+            v-model.lazy.number="state.length"
             type="number" class="input"
           >
         </div>
@@ -147,9 +141,13 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { PlcState, PlcStateType } from '@/entities'
+import PlcStateTypes from '@/components/PlcStateTypes.vue'
 
 @Component({
-  name: 'PlcStateForm'
+  name: 'PlcStateForm',
+  components: {
+    PlcStateTypes,
+  }
 })
 export default class extends Vue {
   @Prop({ required: true })
@@ -158,19 +156,5 @@ export default class extends Vue {
   @Prop({ default: () => () => {} })
   handler!: () => {}
 
-  dateTypes = [
-    {
-      value: PlcStateType.uint16,
-      text: '整数（16 位无符号）'
-    },
-    {
-      value: PlcStateType.int32,
-      text: '整数（32 位）'
-    },
-    {
-      value: PlcStateType.asciiString,
-      text: '字符串（ASCII）'
-    }
-  ]
 }
 </script>

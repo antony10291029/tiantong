@@ -31,7 +31,7 @@ namespace Tiantong.Iot.Api
       if (_manager.Has(plcId)) {
         value = _manager.Get(plcId).GetString(state);
       } else {
-        var plc = _plcRepository.EnsureFind(plcId);
+        var plc = _plcRepository.EnsureGetWithRelationships(plcId);
         var worker = _plcBuilder.BuildWorker(plc);
 
         try {
@@ -50,7 +50,7 @@ namespace Tiantong.Iot.Api
       if (_manager.Has(plcId)) {
          _manager.Get(plcId).SetString(state, value);
       } else {
-        var plc = _plcRepository.EnsureFind(plcId);
+        var plc = _plcRepository.EnsureGetWithRelationships(plcId);
         var worker = _plcBuilder.BuildWorker(plc);
 
         try {

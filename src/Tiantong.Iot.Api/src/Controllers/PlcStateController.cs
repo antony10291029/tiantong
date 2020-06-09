@@ -64,6 +64,5 @@ namespace Tiantong.Iot.Api
     {
       return _stateRepository.All(param.plc_id);
     }
-
   }
 }

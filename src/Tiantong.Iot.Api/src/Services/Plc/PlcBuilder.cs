@@ -31,9 +31,9 @@ namespace Tiantong.Iot.Api
 
       foreach (var st in plc.states) {
         IState state = st.type switch {
-          StateType.UInt16 => options.State<ushort>(),
-          StateType.Int32 => options.State<int>(),
-          StateType.String => options.State<string>(),
+          PlcStateType.UInt16 => options.State<ushort>(),
+          PlcStateType.Int32 => options.State<int>(),
+          PlcStateType.String => options.State<string>(),
           _ => throw new Exception($"暂不支持该数据类型: {st.type}")
         };
 
@@ -52,13 +52,13 @@ namespace Tiantong.Iot.Api
 
       foreach (var state in plc.states) {
         switch (state.type) {
-          case StateType.UInt16:
+          case PlcStateType.UInt16:
             ResolveState<ushort>(client, manager, state);
             break;
-          case StateType.Int32:
+          case PlcStateType.Int32:
             ResolveState<int>(client, manager, state);
             break;
-          case StateType.String:
+          case PlcStateType.String:
             ResolveState<string>(client, manager, state);
             break;
           default:
@@ -125,7 +125,5 @@ namespace Tiantong.Iot.Api
 
       return pusher;
     }
-
   }
-
 }

@@ -58,7 +58,7 @@ namespace Tiantong.Iot.Api
           new PlcState {
             id = 1,
             plc_id = 1,
-            type = StateType.UInt16,
+            type = PlcStateType.UInt16,
             length = 1,
             name = "心跳",
             address = "D1.100",
@@ -86,7 +86,7 @@ namespace Tiantong.Iot.Api
           new PlcState {
             id = 2,
             plc_id = 1,
-            type = StateType.String,
+            type = PlcStateType.String,
             length = 10,
             name = "扫码器",
             address = "D1.120",
@@ -129,6 +129,5 @@ namespace Tiantong.Iot.Api
 
       return SuccessOperation("PLC 已停止");
     }
-
   }
 }

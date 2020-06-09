@@ -60,7 +60,6 @@ namespace Tiantong.Iot.Api
       return _plcRepository.All();
     }
 
-
     public class AllHttpPushersParams
     {
       public int plc_id { get; set; }
