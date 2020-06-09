@@ -4,7 +4,7 @@ namespace Tiantong.Iot
   {
     public override void SetString(string data)
     {
-      HandleSet(short.Parse(data));
+      HandleSet(int.Parse(data));
     }
 
     protected override void HandleDriverBuild()
