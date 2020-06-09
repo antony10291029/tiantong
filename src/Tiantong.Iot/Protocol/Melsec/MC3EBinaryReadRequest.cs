@@ -1,3 +1,4 @@
+using Renet;
 using System;
 using System.Globalization;
 
@@ -40,33 +41,10 @@ namespace Tiantong.Iot.Protocol
 
     //
 
-    private int TransAddressOffset(string offset)
-    {
-      var result = 0;
-      var arr = offset.Split(".");
-
-      result += int.Parse(arr[0]) * 8;
-
-      if (arr.Length == 2) {
-        result += int.Parse(arr[1]);
-      }
-
-      return result;
-    }
-
-    private int TransDbBlock(string block)
-    {
-      try {
-        return int.Parse(block);
-      } catch {
-        throw new Exception("db block is invalid");
-      }
-    }
-
     private (string, int) TransAddress(string addr)
     {
       if (addr.Length < 2) {
-        throw new Exception("address length is invalid");
+        throw KnownException.Error();
       }
 
       var type = "D";
@@ -79,7 +57,7 @@ namespace Tiantong.Iot.Protocol
         type = addr.Substring(0, 1);
         addr = addr.Substring(1);
       } else {
-        throw new Exception("address type not found");
+        throw KnownException.Error();
       }
 
       type = type.TrimEnd('*');
@@ -118,7 +96,7 @@ namespace Tiantong.Iot.Protocol
         "B" => 0xA0,
         "D" => 0xA8,
         "W" => 0xB4,
-        _ => throw new Exception("data type is invalid")
+        _ => throw KnownException.Error()
       };
     }
 
@@ -143,7 +121,7 @@ namespace Tiantong.Iot.Protocol
         SetDataType(type);
         SetDateOffset(offset);
       } catch {
-        throw new Exception($"PLC地址格式错误: {address}");
+        throw KnownException.Error($"PLC地址格式错误: {address}");
       }
     }
 
@@ -170,10 +148,10 @@ namespace Tiantong.Iot.Protocol
     public void UseString(int length)
     {
       if (length == 0) {
-        throw new Exception("字符串长度至少为1");
+        throw KnownException.Error("字符串长度至少为1");
       }
       if (length >= 255) {
-        throw new Exception("字符串长度不可超过255");
+        throw KnownException.Error("字符串长度不可超过255");
       }
 
       UseCommandRead16Bit();
@@ -190,7 +168,5 @@ namespace Tiantong.Iot.Protocol
     {
       SetAddress(address);
     }
-
   }
-
 }

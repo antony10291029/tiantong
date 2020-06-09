@@ -2,9 +2,9 @@ namespace Tiantong.Iot
 {
   public class StateInt32 : State<int>
   {
-    public override void SetString(string data)
+    protected override int FromString(string data)
     {
-      HandleSet(int.Parse(data));
+      return int.Parse(data);
     }
 
     protected override void HandleDriverBuild()
@@ -21,7 +21,5 @@ namespace Tiantong.Iot
     {
       _driver.SetInt32(data);
     }
-
   }
-
 }

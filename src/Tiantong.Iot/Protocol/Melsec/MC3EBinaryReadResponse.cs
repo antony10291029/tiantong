@@ -1,3 +1,4 @@
+using Renet;
 using System;
 using System.Text;
 
@@ -70,7 +71,7 @@ namespace Tiantong.Iot.Protocol
         ErrorCode = Message[11..13];
         var errorCode = Encoding.ASCII.GetString(ErrorCode);
         var resultCode = Encoding.ASCII.GetString(ResultCode);
-        throw new Exception($"结束代码: ${resultCode}, 异常代码: ${errorCode}");
+        throw KnownException.Error($"PLC 通信错误：结束代码: ${resultCode}、异常代码: ${errorCode}");
       }
     }
 
@@ -82,7 +83,7 @@ namespace Tiantong.Iot.Protocol
 
       if (length != _messageDataLength) {
         var bitString = BitConverter.ToString(Message[11..(11 + length)]);
-        throw new Exception($"数据校对失败，长度应为：{_messageDataLength}，实际长度：{length}，二进制数据：{bitString}。");
+        throw KnownException.Error($"数据校对失败，长度应为：{_messageDataLength}，实际长度：{length}，二进制数据：{bitString}。");
       }
 
       return Message[11..(11 + _dataLength)];
@@ -112,7 +113,5 @@ namespace Tiantong.Iot.Protocol
     {
       return Encoding.ASCII.GetString(GetData());
     }
-
   }
-
 }

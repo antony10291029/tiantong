@@ -66,7 +66,5 @@ namespace Tiantong.Iot.Protocol
     {
       UseData(Encoding.ASCII.GetBytes(data));
     }
-
   }
-
 }

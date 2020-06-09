@@ -4,7 +4,7 @@ namespace Tiantong.Iot
 {
   public class StateBytes : State<byte[]>
   {
-    public override void SetString(string data)
+    protected override byte[] FromString(string data)
     {
       throw new Exception("暂时不支持该类型");
     }
@@ -23,7 +23,5 @@ namespace Tiantong.Iot
     {
       _driver.SetBytes(data);
     }
-
   }
-
 }

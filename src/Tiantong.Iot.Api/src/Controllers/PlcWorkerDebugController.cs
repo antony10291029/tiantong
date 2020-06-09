@@ -58,7 +58,7 @@ namespace Tiantong.Iot.Api
           worker.SetString(state, value);
 
           if (state is IState<string>) {
-            value = value.Substring(0, state.Length());
+            value = value.Substring(0, Math.Min(value.Length, state.Length()));
           }
         } finally {
           worker.Close();
@@ -155,7 +155,5 @@ namespace Tiantong.Iot.Api
         message = ResolveSet(param.plc_id, state, param.value)
       };
     }
-
   }
-
 }

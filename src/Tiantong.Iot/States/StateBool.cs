@@ -4,11 +4,9 @@ namespace Tiantong.Iot
 {
   public class StateBool : State<bool>
   {
-    public override void SetString(string data)
+    protected override bool FromString(string data)
     {
-      var value = JsonSerializer.Deserialize<bool>(data);
-
-      HandleSet(value);
+      return JsonSerializer.Deserialize<bool>(data);
     }
 
     protected override void HandleDriverBuild()
@@ -25,7 +23,5 @@ namespace Tiantong.Iot
     {
       _driver.SetBool(data);
     }
-
   }
-
 }

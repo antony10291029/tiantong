@@ -32,26 +32,15 @@
           <label class="label">
             数据类型
           </label>
-        </div>
-
-        <div class="field has-addons">
-          <div
-            class="control"
-            v-for="type in types" :key="type.value"
-          >
-            <a
-              class="button is-small"
-              @click="params.type = type.value"
-              v-class:is-focused="params.type === type.value"
-            >
-              {{type.text}}
-            </a>
-          </div>
+          <PlcStateTypes
+            v-model="params.type"
+            :length="params.length"
+          />
         </div>
 
         <div
           class="field"
-          v-if="params.operation === 'get' && params.type == 'string'"
+          v-if="params.type == 'string'"
         >
           <label class="label">字符串长度</label>
           <div class="control">
@@ -80,7 +69,7 @@
           <div class="control">
             <input
               type="text" class="input"
-              v-model="params.value"
+              v-model.lazy="params.value"
             >
           </div>
         </div>
@@ -113,9 +102,13 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import axios from '@/providers/axios'
 import DateTime from '@/utils/DateTime'
+import PlcStateTypes from '@/components/PlcStateTypes.vue'
 
 @Component({
-  name: 'PlcDebug'
+  name: 'PlcDebug',
+  components: {
+    PlcStateTypes
+  }
 })
 export default class extends Vue {
   @Prop({ required: true })

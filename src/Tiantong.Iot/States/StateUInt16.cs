@@ -1,12 +1,12 @@
-using System;
+using Renet;
 
 namespace Tiantong.Iot
 {
   public class StateUInt16 : State<ushort>
   {
-    public override void SetString(string data)
+    protected override ushort FromString(string data)
     {
-      HandleSet(ushort.Parse(data));
+      return ushort.Parse(data);
     }
 
     protected override void HandleDriverBuild()
@@ -23,7 +23,5 @@ namespace Tiantong.Iot
     {
       _driver.SetUInt16(data);
     }
-
   }
-
 }

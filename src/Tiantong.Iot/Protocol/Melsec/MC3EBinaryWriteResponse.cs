@@ -26,7 +26,5 @@ namespace Tiantong.Iot.Protocol
         throw new Exception($"写入结果校对失败，编码: {byteString}");
       }
     }
-
   }
-
 }

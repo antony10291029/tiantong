@@ -2,9 +2,9 @@ namespace Tiantong.Iot
 {
   public class StateString : State<string>
   {
-    public override void SetString(string data)
+    protected override string FromString(string data)
     {
-      HandleSet(data);
+      return data;
     }
 
     protected override void HandleDriverBuild()
@@ -21,7 +21,5 @@ namespace Tiantong.Iot
     {
       _driver.SetString(data ?? "");
     }
-
   }
-
 }

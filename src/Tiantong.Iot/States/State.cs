@@ -142,6 +142,11 @@ namespace Tiantong.Iot
       return Get().ToString();
     }
 
+    public override void SetString(string data)
+    {
+      Set(FromString(data));
+    }
+
     public void Set(T data)
     {
       try {
@@ -188,10 +193,10 @@ namespace Tiantong.Iot
       return _currentValue;
     }
 
+    protected abstract T FromString(string data);
+
     protected abstract T HandleGet();
 
     protected abstract void HandleSet(T data);
-
   }
-
 }
