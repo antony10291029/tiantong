@@ -43,9 +43,13 @@ export default class extends Vue {
         text: '整数（32 位）'
       },
       {
-        value: PlcStateType.asciiString,
+        value: PlcStateType.bool,
+        text: `布尔（1 位）`
+      },
+      {
+        value: PlcStateType.string,
         text: `字符串（${this.length * 2} 位 - ASCII）`
-      }
+      },
     ]
   }
 }

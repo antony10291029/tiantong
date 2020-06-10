@@ -36,12 +36,39 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("bool/get")]
+    public object GetBool([FromBody] GetParams<bool> param)
+    {
+      return new {
+        value = HandleGet<bool>(param.plc, param.state)
+      };
+    }
+
+    [HttpPost]
+    [Route("bool/set")]
+    public object SetBool([FromBody] SetParams<bool> param)
+    {
+      HandleSet<bool>(param.plc, param.state, param.value);
+
+      return SuccessOperation("数据已写入");
+    }
+
+    [HttpPost]
     [Route("uint16/get")]
     public object GetUInt16([FromBody] GetParams<ushort> param)
     {
       return new {
         value = HandleGet<ushort>(param.plc, param.state)
       };
+    }
+
+    [HttpPost]
+    [Route("uint16/set")]
+    public object SetUInt16([FromBody] SetParams<ushort> param)
+    {
+      HandleSet<ushort>(param.plc, param.state, param.value);
+
+      return SuccessOperation("数据已写入");
     }
 
     [HttpPost]
@@ -54,32 +81,21 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("string/get")]
-    public object GetString([FromBody] GetParams<string> param)
-    {
-      return new {
-        value = HandleGet<string>(param.plc, param.state)
-      };
-    }
-
-    //
-
-    [HttpPost]
-    [Route("uint16/set")]
-    public object SetUInt16([FromBody] SetParams<ushort> param)
-    {
-      HandleSet<ushort>(param.plc, param.state, param.value);
-
-      return SuccessOperation("数据已写入");
-    }
-
-    [HttpPost]
     [Route("uint32/set")]
     public object SetInt32([FromBody] SetParams<int> param)
     {
       HandleSet<int>(param.plc, param.state, param.value);
 
       return SuccessOperation("数据已写入");
+    }
+
+    [HttpPost]
+    [Route("string/get")]
+    public object GetString([FromBody] GetParams<string> param)
+    {
+      return new {
+        value = HandleGet<string>(param.plc, param.state)
+      };
     }
 
     [HttpPost]

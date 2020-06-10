@@ -37,13 +37,14 @@
         <label class="label">数据类型</label>
 
         <PlcStateTypes
-          v-model="state.type"
+          :type="state.type"
           :length="state.length"
+          @select="handleTypeSelect"
         />
       </div>
 
       <div
-        v-if="state.type === 'string'"
+        v-if="isString"
         class="field" style="width: 320px"
       >
         <label class="label">字符串长度</label>
@@ -98,7 +99,10 @@
       </div>
     </div>
 
-    <div style="padding: 1.25rem">
+    <div
+      v-if="!isBool"
+      style="padding: 1.25rem"
+    >
       <template v-if="state.is_heartbeat">
         <div
           class="field"
@@ -156,5 +160,19 @@ export default class extends Vue {
   @Prop({ default: () => () => {} })
   handler!: () => {}
 
+  get isBool () {
+    return this.state.type === PlcStateType.bool
+  }
+
+  get isString () {
+    return this.state.type === PlcStateType.string
+  }
+
+  handleTypeSelect (type: string) {
+    this.state.type = type
+    if (this.isBool) {
+      this.state.is_heartbeat = false;
+    }
+  }
 }
 </script>

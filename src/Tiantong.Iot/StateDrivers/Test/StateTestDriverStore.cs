@@ -16,11 +16,13 @@ namespace Tiantong.Iot
 
     public T Get<T>(string key)
     {
-      if (!_store.ContainsKey(key)) {
+      try {
+        return JsonSerializer.Deserialize<T>(_store[key]);
+      } catch {
         _store[key] = JsonSerializer.Serialize(default(T));
-      }
 
-      return JsonSerializer.Deserialize<T>(_store[key]);
+        return default(T);
+      }
     }
   }
 }

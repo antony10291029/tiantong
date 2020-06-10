@@ -5,6 +5,8 @@ namespace Tiantong.Iot.Entities
 {
   public static class PlcStateType
   {
+    public const string Bool = "bool";
+
     public const string UInt16 = "uint16";
 
     public const string Int32 = "int32";
@@ -13,6 +15,7 @@ namespace Tiantong.Iot.Entities
 
     public static IEnumerable<string> Values()
     {
+      yield return Bool;
       yield return Int32;
       yield return String;
       yield return UInt16;

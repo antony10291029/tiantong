@@ -18,7 +18,7 @@
           ref="input"
           :value="value"
           @blur="setValue($event.target.value.trim())"
-          @keypress.enter="setValue($event.target.value.trim()) && handleSave()"
+          @keypress.enter="setValue($event.target.value.trim()), handleSave()"
           type="text" class="input"
           style="height: 100%; border-radius: 0; width: 200px"
         >

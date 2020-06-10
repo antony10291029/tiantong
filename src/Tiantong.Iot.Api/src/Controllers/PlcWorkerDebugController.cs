@@ -82,36 +82,35 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("bool/get")]
+    public object GetBool([FromBody] GetParams param)
+    {
+      var state = new StateBool()
+        .Address(param.address);
+
+      return new {
+        message = ResolveGet(param.plc_id, state)
+      };
+    }
+
+    [HttpPost]
+    [Route("bool/set")]
+    public object SetBool([FromBody] SetParams param)
+    {
+      var state = new StateBool()
+        .Address(param.address);
+
+      return new {
+        message = ResolveSet(param.plc_id, state, param.value)
+      };
+    }
+
+    [HttpPost]
     [Route("uint16/get")]
     public object GetUInt16([FromBody] GetParams param)
     {
       var state = new StateUInt16()
         .Address(param.address);
-
-      return new {
-        message = ResolveGet(param.plc_id, state)
-      };
-    }
-
-    [HttpPost]
-    [Route("int32/get")]
-    public object GetInt32([FromBody] GetParams param)
-    {
-      var state = new StateInt32()
-        .Address(param.address);
-
-      return new {
-        message = ResolveGet(param.plc_id, state)
-      };
-    }
-
-    [HttpPost]
-    [Route("string/get")]
-    public object GetString([FromBody] GetParams param)
-    {
-      var state = new StateString()
-        .Address(param.address)
-        .Length(param.length);
 
       return new {
         message = ResolveGet(param.plc_id, state)
@@ -131,6 +130,18 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
+    [Route("int32/get")]
+    public object GetInt32([FromBody] GetParams param)
+    {
+      var state = new StateInt32()
+        .Address(param.address);
+
+      return new {
+        message = ResolveGet(param.plc_id, state)
+      };
+    }
+
+    [HttpPost]
     [Route("int32/set")]
     public object SetInt32([FromBody] SetParams param)
     {
@@ -139,6 +150,19 @@ namespace Tiantong.Iot.Api
 
       return new {
         message = ResolveSet(param.plc_id, state, param.value)
+      };
+    }
+
+    [HttpPost]
+    [Route("string/get")]
+    public object GetString([FromBody] GetParams param)
+    {
+      var state = new StateString()
+        .Address(param.address)
+        .Length(param.length);
+
+      return new {
+        message = ResolveGet(param.plc_id, state)
       };
     }
 

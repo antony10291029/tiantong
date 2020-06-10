@@ -15,7 +15,8 @@ export class PlcState {
 }
 
 export enum PlcStateType {
+  bool = 'bool',
   uint16 = 'uint16',
   int32 = 'int32',
-  asciiString = 'string'
+  string = 'string'
 }

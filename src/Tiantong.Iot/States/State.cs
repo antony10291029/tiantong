@@ -114,15 +114,15 @@ namespace Tiantong.Iot
 
     public override void AddGetHook(Action<string> hook)
     {
-      AddGetHook(value => hook(value.ToString()));
+      AddGetHook(value => hook(ToString(value)));
     }
 
     public override string CollectString(int cacheInterval = 1000)
     {
       if (_currentValueGetAt.AddMilliseconds(cacheInterval) <= DateTime.Now) {
-        return Get().ToString();
+        return ToString(Get());
       } else {
-        return _currentValue.ToString();
+        return ToString(_currentValue);
       }
     }
 
@@ -139,7 +139,7 @@ namespace Tiantong.Iot
 
     public override string GetString()
     {
-      return Get().ToString();
+      return ToString(Get());
     }
 
     public override void SetString(string data)
@@ -156,7 +156,7 @@ namespace Tiantong.Iot
           state_id = _id,
           plc_id = _plcId,
           operation = StateOperation.Write,
-          value = data.ToString(),
+          value = ToString(data),
           message = e.Message,
         });
 
@@ -193,7 +193,9 @@ namespace Tiantong.Iot
       return _currentValue;
     }
 
-    protected abstract T FromString(string data);
+    protected virtual string ToString(T value) => value.ToString();
+
+    protected abstract T FromString(string value);
 
     protected abstract T HandleGet();
 

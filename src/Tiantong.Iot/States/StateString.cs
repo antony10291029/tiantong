@@ -7,6 +7,11 @@ namespace Tiantong.Iot
       return data;
     }
 
+    protected override string ToString(string value)
+    {
+      return value ?? "";
+    }
+
     protected override void HandleDriverBuild()
     {
       _driver.UseString(_length);

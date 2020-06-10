@@ -31,6 +31,7 @@ namespace Tiantong.Iot.Api
 
       foreach (var st in plc.states) {
         IState state = st.type switch {
+          PlcStateType.Bool => options.State<bool>(),
           PlcStateType.UInt16 => options.State<ushort>(),
           PlcStateType.Int32 => options.State<int>(),
           PlcStateType.String => options.State<string>(),
@@ -52,6 +53,9 @@ namespace Tiantong.Iot.Api
 
       foreach (var state in plc.states) {
         switch (state.type) {
+          case PlcStateType.Bool:
+            ResolveState<bool>(client, manager, state);
+            break;
           case PlcStateType.UInt16:
             ResolveState<ushort>(client, manager, state);
             break;

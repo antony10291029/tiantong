@@ -107,7 +107,6 @@ namespace Tiantong.Iot
     public void Connect() => _driverProvider.Connect();
 
     public void Close() => _driverProvider.Close();
-
   }
 
   public class PlcClientOptions
@@ -172,6 +171,7 @@ namespace Tiantong.Iot
     public IState<T> State<T>()
     {
       var state = typeof(T).Name switch {
+        "Boolean" => new StateBool() as IState<T>,
         "UInt16" => new StateUInt16() as IState<T>,
         "Int32" => new StateInt32() as IState<T>,
         "String" => new StateString() as IState<T>,
@@ -182,7 +182,5 @@ namespace Tiantong.Iot
 
       return state;
     }
-
   }
-
 }
