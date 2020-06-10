@@ -22,7 +22,7 @@
           <td>{{state.name}}</td>
           <td>{{state.address}}</td>
           <td>
-            {{state.type + (state.type === 'string' ? `(${state.length})` : '')}}
+            {{state.type + (state.type === 'string' ? `(${state.length * 2})` : '')}}
           </td>
           <td>{{currentValues[state.id]}}</td>
           <PlcStateSetValue
