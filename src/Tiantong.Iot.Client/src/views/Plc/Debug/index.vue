@@ -124,7 +124,7 @@ export default class extends Vue {
     operation: 'get',
     type: 'uint16',
     address: 'D100',
-    length: 10,
+    length: 8,
     value: '',
   }
 
