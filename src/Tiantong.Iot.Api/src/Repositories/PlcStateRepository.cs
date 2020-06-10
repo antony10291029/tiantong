@@ -58,7 +58,11 @@ namespace Tiantong.Iot.Api
         throw KnownException.Error("PlC 数据点不存在");
       }
 
-      if (_system.PlcStates.Any(s => s.id != state.id && s.name == state.name)) {
+      if (_system.PlcStates.Any(s =>
+        s.name == state.name &&
+        s.id != state.id &&
+        s.plc_id == state.plc_id
+      )) {
         throw KnownException.Error("数据点名称已存在");
       }
 
