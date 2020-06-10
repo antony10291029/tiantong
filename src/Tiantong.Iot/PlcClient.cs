@@ -1,3 +1,4 @@
+using Renet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +36,53 @@ namespace Tiantong.Iot
 
     public Dictionary<string, IState> StatesByName() => _statesByName;
 
-    public IState State(int id) => _statesById[id];
+    public IState State(int id)
+    {
+      if (!_statesById.ContainsKey(id)) {
+        throw KnownException.Error("数据点不存在");
+      }
 
-    public IState State(string name) => _statesByName[name];
+      return _statesById[id];
+    }
 
-    public IState<T> State<T>(int id) => _statesById[id] as IState<T>;
+    public IState State(string name)
+    {
+      if (!_statesByName.ContainsKey(name)) {
+        throw KnownException.Error("数据点不存在");
+      }
 
-    public IState<T> State<T>(string name) => _statesByName[name] as IState<T>;
+      return _statesByName[name];
+    }
+
+    public IState<T> State<T>(int id)
+    {
+      if (!_statesById.ContainsKey(id)) {
+        throw KnownException.Error("数据点不存在");
+      }
+
+      var state = _statesById[id];
+
+      if (!(state is IState<T>)) {
+        throw KnownException.Error($"数据点类型错误");
+      }
+
+      return state as IState<T>;
+    }
+
+    public IState<T> State<T>(string name)
+    {
+      if (!_statesByName.ContainsKey(name)) {
+        throw KnownException.Error($"数据点不存在");
+      }
+
+      var state = _statesByName[name];
+
+      if (!(state is IState<T>)) {
+        throw KnownException.Error($"数据点类型错误");
+      }
+
+      return state as IState<T>;
+    }
 
     public void SetString(IState state, string value)
     {

@@ -106,9 +106,7 @@ namespace Tiantong.Iot.Api
     {
       _manager.Get(param.plc_id).SetString(param.state_id, param.value);
 
-      return new SuccessOperation("数据已写入");
+      return SuccessOperation("数据已写入");
     }
-
   }
-
 }

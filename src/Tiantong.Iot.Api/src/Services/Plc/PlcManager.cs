@@ -1,11 +1,11 @@
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Renet;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using DBCore;
 
 namespace Tiantong.Iot.Api
 {
@@ -66,22 +66,25 @@ namespace Tiantong.Iot.Api
 
     public PlcWorker Get(int id)
     {
+      if (!_plcById.ContainsKey(id)) {
+        throw KnownException.Error("PLC 服务未启动");
+      }
+
       return _plcById[id];
     }
 
     public PlcWorker Get(string name)
     {
+      if (!_plcByName.ContainsKey(name)) {
+        throw KnownException.Error("PLC 服务未启动");
+      }
+
       return _plcByName[name];
     }
 
     public bool Has(int id)
     {
       return _plcById.ContainsKey(id);
-    }
-
-    public bool Has(string name)
-    {
-      return _plcByName.ContainsKey(name);
     }
 
     public bool Run(PlcWorker worker)
@@ -131,7 +134,5 @@ namespace Tiantong.Iot.Api
     {
       await Task.WhenAll(_plcById.Values.Select(plc => plc.WaitAsync()));
     }
-
   }
-
 }

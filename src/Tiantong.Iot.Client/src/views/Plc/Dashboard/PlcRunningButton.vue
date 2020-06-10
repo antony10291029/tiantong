@@ -4,7 +4,7 @@
     :handler="handleRun"
     class="button is-small is-info is-light"
   >
-    <span>运行</span>
+    <span>启动</span>
     <span class="icon is-small">
       <i class="iconfont icon-play"></i>
     </span>

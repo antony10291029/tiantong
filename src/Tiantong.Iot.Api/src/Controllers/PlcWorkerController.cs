@@ -119,7 +119,5 @@ namespace Tiantong.Iot.Api
         throw new HttpException("数据不存在", 400);
       }
     }
-
   }
-
 }
