@@ -7,8 +7,9 @@ namespace Tiantong.Iot.Protocol
   {
     private int _length;
 
-    private void UseDataCount(int count)
+    protected new void UseDataCount(int count)
     {
+      base.UseDataCount(count);
       _length = count;
       Array.Resize(ref _msg, 31 + 4 + count);
 
@@ -27,18 +28,19 @@ namespace Tiantong.Iot.Protocol
 
     public new void UseUInt16()
     {
-      base.UseUInt16();
+      UseWriteCommand();
       UseDataCount(2);
     }
 
     public new void UseInt32()
     {
-      base.UseInt32();
+      UseWriteCommand();
+      UseDataCount(4);
     }
 
     public new void UseString(int length)
     {
-      base.UseString(length);
+      UseWriteCommand();
       UseDataCount(length + 1);
     }
 
@@ -49,7 +51,6 @@ namespace Tiantong.Iot.Protocol
 
     public new void UseAddress(string address)
     {
-      UseWriteCommand();
       SetAddress(address);
       SetMessageLength();
     }
@@ -79,7 +80,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseData(int data)
     {
-      UseData(BitConverter.GetBytes(data));
+      UseData(BitConverter.GetBytes(data), true);
     }
 
     public void UseData(bool data)
@@ -94,9 +95,7 @@ namespace Tiantong.Iot.Protocol
 
     public void UseData(byte[] data)
     {
-      UseData(data);
+      UseData(data, false);
     }
-
   }
-
 }

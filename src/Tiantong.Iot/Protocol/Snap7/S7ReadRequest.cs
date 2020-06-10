@@ -168,7 +168,7 @@ namespace Tiantong.Iot.Protocol
       }
     }
 
-    private void UseDataCount(int count)
+    protected void UseDataCount(int count)
     {
       Message[23] = (byte)(count / 256);             // 4.  数据点数量 - 1
       Message[24] = (byte)(count % 256);             // 5.  数据点数量 - 2
@@ -187,7 +187,8 @@ namespace Tiantong.Iot.Protocol
 
     public void UseInt32()
     {
-      throw KnownException.Error("暂时不支持 Int32 类型");
+      UseReadCommand();
+      UseDataCount(4);
     }
 
     public void UseString(int length)

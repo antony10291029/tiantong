@@ -46,7 +46,8 @@ namespace Tiantong.Iot.Protocol
 
     public void UseInt32()
     {
-      throw KnownException.Error("暂时不支持 Int32 类型");
+      _length = 4;
+      Data = new byte[4];
     }
 
     public void UseString(int length)

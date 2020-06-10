@@ -12,7 +12,7 @@ namespace Tiantong.Iot.Api
 
     private IntervalManager _intervalManager;
 
-    internal DomainContextFactory _comain;
+    internal DomainContextFactory _domain;
 
     private CancellationTokenSource _stoppingToken;
 
@@ -24,7 +24,7 @@ namespace Tiantong.Iot.Api
       DomainContextFactory domain
     ) {
       _client = client;
-      _comain = domain;
+      _domain = domain;
       _intervalManager = manager;
     }
 
@@ -41,11 +41,11 @@ namespace Tiantong.Iot.Api
       }
 
       if (state.IsWriteLogOn()) {
-        _comain.Log(new PlcStateLog {
+        _domain.Log(new PlcStateLog {
           plc_id = _client.Options().Id(),
           state_id = state.Id(),
           operation = StateOperation.Write,
-          value = value.ToString(),
+          value = value?.ToString() ?? "",
         });
       }
     }
@@ -62,11 +62,11 @@ namespace Tiantong.Iot.Api
       }
 
       if (state.IsReadLogOn()) {
-        _comain.Log(new PlcStateLog {
+        _domain.Log(new PlcStateLog {
           plc_id = _client.Options().Id(),
           state_id = state.Id(),
           operation = StateOperation.Read,
-          value = value.ToString(),
+          value = value.ToString() ?? "",
         });
       }
 
@@ -121,7 +121,7 @@ namespace Tiantong.Iot.Api
 
     public virtual void Log(string message)
     {
-      _comain.Log(new PlcLog {
+      _domain.Log(new PlcLog {
         plc_id = _client.Options().Id(),
         message = message
       });
@@ -141,7 +141,7 @@ namespace Tiantong.Iot.Api
 
       _intervalManager.Stop().Wait();
 
-      Log("通信程序已停止");
+      Log("通信服务已停止");
 
       return this;
     }
@@ -189,7 +189,6 @@ namespace Tiantong.Iot.Api
           Log("通信服务正在重启...");
           await Task.Delay(1000, _stoppingToken.Token);
         }
-
       }
 
       _stoppingToken = null;
@@ -209,7 +208,5 @@ namespace Tiantong.Iot.Api
     {
       RunAsync().GetAwaiter().GetResult();
     }
-
   }
-
 }
