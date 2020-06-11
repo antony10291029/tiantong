@@ -6,7 +6,7 @@
     <div class="is-flex">
       <div style="min-width: 400px; max-width: 400px">
         <Table
-          colspan="3"
+          colspan="4"
           class="table is-bordered is-fullwidth is-nowrap is-hoverable"
         >
           <thead slot="head">
