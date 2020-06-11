@@ -1,7 +1,7 @@
 <template>
   <div
     class="is-bordered"
-    style="border-top: none"
+    style="border-top: none; border-bottom: none"
   >
     <div
       class="has-border-bottom"
@@ -101,7 +101,8 @@
 
     <div
       v-if="!isBool"
-      style="padding: 1.25rem"
+      class="has-border-bottom"
+      style="padding: 1.25rem;"
     >
       <template v-if="state.is_heartbeat">
         <div
