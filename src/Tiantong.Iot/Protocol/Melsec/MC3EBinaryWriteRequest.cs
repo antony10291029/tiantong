@@ -7,33 +7,40 @@ namespace Tiantong.Iot.Protocol
   {
     private int _length;
 
-    private void UseDataCount(int count)
+    protected new void UseDataCount(int count)
     {
+      base.UseDataCount(count);
       _length = count * 2;
       Array.Resize(ref _msg, 21 + _length);
     }
 
+    public new void UseBool()
+    {
+      UseCommandWriteBit();
+      UseDataCount(1);
+    }
+
     public new void UseUInt16()
     {
-      base.UseUInt16();
+      UseCommandWriteBit16();
       UseDataCount(1);
     }
 
     public new void UseInt32()
     {
-      base.UseInt32();
+      UseCommandWriteBit16();
       UseDataCount(2);
     }
 
     public new void UseString(int length)
     {
-      base.UseString(length);
+      UseCommandWriteBit16();
       UseDataCount((int) Math.Ceiling(length / 2.0));
     }
 
     public new void UseAddress(string address)
     {
-      UseCommandWriteInt16();
+      UseCommandWriteBit16();
       SetAddress(address);
       SetMessageLength();
     }
@@ -47,17 +54,17 @@ namespace Tiantong.Iot.Protocol
       Array.Copy(data, 0, Message, 21, _length);
     }
 
+    public void UseData(bool data)
+    {
+      UseData(BitConverter.GetBytes(data));
+    }
+
     public void UseData(ushort data)
     {
       UseData(BitConverter.GetBytes(data));
     }
 
     public void UseData(int data)
-    {
-      UseData(BitConverter.GetBytes(data));
-    }
-
-    public void UseData(bool data)
     {
       UseData(BitConverter.GetBytes(data));
     }

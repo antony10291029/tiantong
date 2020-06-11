@@ -72,6 +72,22 @@ namespace Tiantong.Iot.Protocol
 
     //
 
+    protected void UseCommandReadBit()
+    {
+      Message[11] = 0x01;
+      Message[12] = 0x04;
+      Message[13] = 0x01;
+      Message[14] = 0x00;
+    }
+
+    protected void UseCommandWriteBit()
+    {
+      Message[11] = 0x00;
+      Message[12] = 0x04;
+      Message[13] = 0x01;
+      Message[14] = 0x00;
+    }
+
     protected void UseCommandRead16Bit()
     {
       Message[11] = 0x01;
@@ -80,7 +96,7 @@ namespace Tiantong.Iot.Protocol
       Message[14] = 0x00;
     }
 
-    protected void UseCommandWriteInt16()
+    protected void UseCommandWriteBit16()
     {
       Message[11] = 0x01;
       Message[12] = 0x14;
@@ -96,8 +112,16 @@ namespace Tiantong.Iot.Protocol
         "B" => 0xA0,
         "D" => 0xA8,
         "W" => 0xB4,
-        _ => throw KnownException.Error()
+        _ => throw KnownException.Error("不支持该类型的软元件读写")
       };
+
+      if (Message[13] == 0x01) {
+        switch (type) {
+          case "D":
+          case "W":
+            throw KnownException.Error("该类型的数据必须使用位软元件地址");
+        }
+      }
     }
 
     private void SetDateOffset(int offset)
@@ -120,12 +144,18 @@ namespace Tiantong.Iot.Protocol
 
         SetDataType(type);
         SetDateOffset(offset);
-      } catch {
-        throw KnownException.Error($"PLC地址格式错误: {address}");
+      } catch (Exception e) {
+        throw KnownException.Error($"{e.Message}: {address}");
       }
     }
 
     //
+
+    public void UseBool()
+    {
+      UseCommandReadBit();
+      UseDataCount(1);
+    }
 
     public void UseUInt16()
     {
@@ -158,7 +188,7 @@ namespace Tiantong.Iot.Protocol
       UseDataCount((int) Math.Ceiling(length / 2.0));
     }
 
-    private void UseDataCount(int count)
+    protected void UseDataCount(int count)
     {
       Message[19] = (byte)(count % 256);
       Message[20] = (byte)(count / 256);

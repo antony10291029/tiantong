@@ -31,6 +31,11 @@ namespace Tiantong.Iot.Protocol
       get => ResultCode[0] != 0x00 || ResultCode[1] != 0x00;
     }
 
+    public void UseBool()
+    {
+      _dataLength = _messageDataLength = 1;
+    }
+
     public void UseInt16()
     {
       _dataLength = _messageDataLength = 2;
@@ -89,6 +94,11 @@ namespace Tiantong.Iot.Protocol
       return Message[11..(11 + _dataLength)];
     }
 
+    public bool GetBool()
+    {
+      return BitConverter.ToBoolean(GetData());
+    }
+
     public ushort GetUInt16()
     {
       return BitConverter.ToUInt16(GetData());
@@ -102,11 +112,6 @@ namespace Tiantong.Iot.Protocol
     public int GetUInt32()
     {
       return BitConverter.ToInt32(GetData());
-    }
-
-    public bool GetBool()
-    {
-      return BitConverter.ToBoolean(GetData());
     }
 
     public string GetString()
