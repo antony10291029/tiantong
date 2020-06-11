@@ -22,6 +22,10 @@ namespace Tiantong.Iot.Winforms
 
     public TextBox _portTextBox;
 
+    public Label _autorunLabel;
+
+    public CheckBox _autorunCheckbox;
+
     public RootForm()
     {
       InitializeOpenClientButton();
@@ -31,6 +35,8 @@ namespace Tiantong.Iot.Winforms
       InitializeLogTextBox();
       InitializePortLabel();
       InitializePortTextBox();
+      InitializeAutorunLabel();
+      InitializeAutorunCheckbox();
       InitializeComponent();
     }
 
@@ -109,6 +115,25 @@ namespace Tiantong.Iot.Winforms
       _portTextBox.Location = new Point(580, 40);
       _portTextBox.Visible = true;
       Controls.Add(_portTextBox);
+    }
+
+    private void InitializeAutorunLabel()
+    {
+      _autorunLabel = new Label();
+      _autorunLabel.Text = "开机自动运行";
+      _autorunLabel.Size = new Size(100, 52);
+      _autorunLabel.Location = new Point(492, 92);
+      _autorunLabel.Visible = true;
+      Controls.Add(_autorunLabel);
+    }
+
+    private void InitializeAutorunCheckbox()
+    {
+      _autorunCheckbox = new CheckBox();
+      _autorunCheckbox.Location = new Point(644, 83);
+      _autorunCheckbox.Size = new Size(40, 40);
+      _autorunCheckbox.Visible = true;
+      Controls.Add(_autorunCheckbox);
     }
 
     private void InitializeComponent()

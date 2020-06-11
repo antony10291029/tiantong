@@ -1,9 +1,10 @@
+using Microsoft.Extensions.Hosting;
+using Microsoft.Win32;
 using System;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 
 namespace Tiantong.Iot.Winforms
 {
@@ -72,6 +73,7 @@ namespace Tiantong.Iot.Winforms
       _rootForm._portTextBox.Leave += (sender, args) => {
         _config.Port = _rootForm._portTextBox.Text;
       };
+      _rootForm._autorunCheckbox.CheckedChanged += HandleAutorunCheckboxChanged;
       _rootForm.Show();
     }
 
@@ -107,6 +109,31 @@ namespace Tiantong.Iot.Winforms
       };
     }
 
+    private void HandleAutorunCheckboxChanged(object sender, EventArgs e)
+    {
+      if (_rootForm._autorunCheckbox.Checked) //设置开机自启动  
+      {
+        MessageBox.Show ("设置开机自启动，需要修改注册表","提示");
+
+        string path = Application.ExecutablePath;
+        RegistryKey rk = Registry.LocalMachine;
+        RegistryKey rk2 = rk.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+        rk2.SetValue("TiantongIOT", path);
+        rk2.Close();
+        rk.Close();
+      }
+      else //取消开机自启动  
+      {
+        MessageBox.Show ("取消开机自启动，需要修改注册表","提示");  
+        string path = Application.ExecutablePath;
+        RegistryKey rk = Registry.LocalMachine;
+        RegistryKey rk2 = rk.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+        rk2.DeleteValue("TiantongIOT", false);
+        rk2.Close();
+        rk.Close();
+      }
+    }
+  
     private void DisposeNotifyIcon()
     {
       _notifyIcon.Dispose();
@@ -148,7 +175,5 @@ namespace Tiantong.Iot.Winforms
         Application.Exit();
       }
     }
-
   }
-
 }
