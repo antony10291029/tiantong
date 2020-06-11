@@ -1,5 +1,4 @@
 using Renet;
-using System;
 
 namespace Tiantong.Iot.Protocol
 {
@@ -28,7 +27,7 @@ namespace Tiantong.Iot.Protocol
       0x12,    // 19. 指定有效值类型 Specify a valid value type
       0x0A,    // 20. 接下来本次地址访问长度 -> The next time the address access length
       0x10,    // 21. 语法标记，ANY -> Syntax tag, any
-      0x02,    // 22. 按字 (word) 为单位
+      0x02,    // 22. 按位 (word) 为单位
       0x00,    // 23. 数据点数量 - 1
       0x00,    // 24. 数据点数量 - 2
       0x00,    // 25. DB 块长度 - 1
@@ -131,6 +130,11 @@ namespace Tiantong.Iot.Protocol
 
     //
 
+    public void SetVariableType(byte type)
+    {
+      Message[22] = type;
+    }
+
     public void SetMessageLength()
     {
       Message[2] = (byte)(Message.Length / 256);
@@ -176,7 +180,9 @@ namespace Tiantong.Iot.Protocol
 
     public void UseBool()
     {
-      throw KnownException.Error("暂时不支持 Bool 类型");
+      UseReadCommand();
+      SetVariableType(0x01);
+      UseDataCount(1);
     }
 
     public void UseUInt16()

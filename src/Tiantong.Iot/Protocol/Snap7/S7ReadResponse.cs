@@ -35,7 +35,8 @@ namespace Tiantong.Iot.Protocol
 
     public void UseBool()
     {
-      throw KnownException.Error("暂时不支持 Bool 类型");
+      _length = 1;
+      Data = new byte[1];
     }
 
     public void UseUInt16()
@@ -108,7 +109,7 @@ namespace Tiantong.Iot.Protocol
 
     public bool GetBool()
     {
-      throw KnownException.Error("暂时不支持 bool 类型");
+      return BitConverter.ToBoolean(GetBytes());
     }
 
     public ushort GetUInt16()

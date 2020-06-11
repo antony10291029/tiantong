@@ -7,14 +7,14 @@ namespace Tiantong.Iot.Protocol
   {
     private int _length;
 
-    protected new void UseDataCount(int count)
+    protected void UseDataCount(int count, byte type = 0x04)
     {
       base.UseDataCount(count);
       _length = count;
       Array.Resize(ref _msg, 31 + 4 + count);
 
       Message[31] = 0x00;
-      Message[32] = 0x04;
+      Message[32] = type;
       Message[33] = (byte)(count * 8 / 256);
       Message[34] = (byte)(count * 8 % 256);
       Message[15] = (byte)((count + 4) / 256);
@@ -23,7 +23,10 @@ namespace Tiantong.Iot.Protocol
 
     public new void UseBool()
     {
-      base.UseBool();
+      UseWriteCommand();
+      UseDataCount(1, 0x03);
+      SetVariableType(0x01);
+      Message[34] = 0x01;
     }
 
     public new void UseUInt16()
