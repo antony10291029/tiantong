@@ -3,6 +3,8 @@
 .DS_Store
 bin/
 obj/
+publish/
+release/
 log.txt
 sqlite.db*
 *.db*

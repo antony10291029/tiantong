@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-using System.Xml.Linq;
-using System.Net;
 using System;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
 using AspNetCore.Proxy;
 using AspNetCore.Proxy.Options;
 using Microsoft.AspNetCore.Builder;
@@ -14,9 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
-namespace Renet.Web.Kestrel
+namespace Yuchuan.IErp.Proxy.Chanjet
 {
   public class Program
   {
