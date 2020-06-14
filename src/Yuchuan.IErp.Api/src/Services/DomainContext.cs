@@ -11,8 +11,7 @@ namespace Yuchuan.IErp.Api
 
     public DomainContext(DbBuilder builder): base(builder)
     {
-
+      UseAssembly(typeof(PostgresContext).Assembly);
     }
-
   }
 }

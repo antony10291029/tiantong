@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace DBCore.Postgres
 {
   public class Migrator : DBCore.Migrator
@@ -6,15 +8,17 @@ namespace DBCore.Postgres
     {
 
     }
-    
+
     protected override void Initialize()
     {
+      var dir = DbContext.SqlDirectory();
+      DbContext.UseSqlDirectory("Sql");
+      DbContext.UseAssembly(typeof(Migrator).Assembly);
+      UseAssembly(Assembly.GetExecutingAssembly());
       DbContext.ExecuteFromSql("CreateMigrationsTable");
-    }
-
-    protected override bool IsInitialized()
-    {
-      return false;
+      UseAssembly(GetType().Assembly);
+      DbContext.UseAssembly(GetType().Assembly);
+      DbContext.UseSqlDirectory(dir);
     }
   }
 }

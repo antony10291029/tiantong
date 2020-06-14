@@ -27,7 +27,10 @@ namespace DBCore
 
     protected abstract void Initialize();
 
-    protected abstract bool IsInitialized();
+    protected virtual bool IsInitialized()
+    {
+      return DbContext.HasTable("_migrations");
+    }
 
     private void EnsureInitialized()
     {

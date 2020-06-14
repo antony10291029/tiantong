@@ -6,7 +6,7 @@ namespace Yuchuan.IErp.Database
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("Migration.001000_CreateSubjectCategoriesTable");
+      db.ExecuteFromSql("001000_CreateSubjectCategoriesTable");
     }
 
     public void Down(DbContext db)

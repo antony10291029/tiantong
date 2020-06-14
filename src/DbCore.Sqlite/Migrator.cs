@@ -20,10 +20,5 @@ namespace DBCore.Sqlite
       DbContext.UseAssembly(GetType().Assembly);
       DbContext.UseSqlDirectory(dir);
     }
-
-    protected override bool IsInitialized()
-    {
-      return false;
-    }
   }
 }
