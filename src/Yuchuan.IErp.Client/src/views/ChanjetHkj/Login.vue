@@ -77,12 +77,12 @@ export default class extends Vue {
   redirect!: string
 
   params = {
-    account: '18698861870',
-    password: 'aeoikj1234',
+    account: '',
+    password: '',
   }
 
   async handleSubmit () {
-    cookie.remove('CIC')
+    await chanjet.logout()
 
     const code = (await chanjet.getChanjetCode())
     const userData = await chanjet.getUserData(code, this.params.account, this.params.password)

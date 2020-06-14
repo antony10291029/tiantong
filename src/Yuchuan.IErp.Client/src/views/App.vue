@@ -5,6 +5,9 @@
 <script>
 export default {
   name: 'App',
+  created () {
+    console.log(document.cookie)
+  }
 }
 </script>
 

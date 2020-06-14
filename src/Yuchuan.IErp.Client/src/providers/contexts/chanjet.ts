@@ -31,6 +31,7 @@ export default {
   getToken,
   getVmCode,
   loginVm,
+  logout,
   checkVmStatus,
   getBooks,
   getProjects,
@@ -120,6 +121,12 @@ async function getToken (code: string) {
 async function loginVm (code: string) {
   const params = { code }
   await proxy.get('/vm/login', { params })
+}
+
+async function logout () {
+  try {
+    await proxy.post('/logout')
+  } catch {}
 }
 
 async function getBooks (orgCode: string, bookCode: string) {
