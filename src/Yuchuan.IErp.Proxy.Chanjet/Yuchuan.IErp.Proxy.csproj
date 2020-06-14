@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Yuchuan.IErp.Proxy</AssemblyName>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <UseAppHost>false</UseAppHost>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,8 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="settings.json" />
-    <EmbeddedResource Include="settings.json" />
-    <EmbeddedResource Include="..\Tiantong.Iot.Client\dist\**\*" />
+    <ProjectReference Include="../Renet.Web/Renet.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="../Tiantong.Iot.Client/dist/**/*" />
   </ItemGroup>
 </Project>
