@@ -10,5 +10,23 @@ namespace Yuchuan.IErp.Api
     {
 
     }
+
+    [HttpPost]
+    [Route("/hc")]
+    public object HealthCheck()
+    {
+      return new {
+        message = "health check"
+      };
+    }
+
+    [HttpPost]
+    [Route("/logout")]
+    public object Logout()
+    {
+      return new {
+        message = "logout"
+      };
+    }
   }
 }
