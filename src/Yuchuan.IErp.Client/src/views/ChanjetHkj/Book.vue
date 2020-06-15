@@ -3,7 +3,7 @@
     <aside class="menu-container">
       <div
         class="menu is-unselectable"
-        style="min-width: 280px; max-width: 280px"
+        style="min-width: 260px; max-width: 260px"
       >
         <ul class="menu-list">
           <li v-for="book in books" :key="book.bookCode">
@@ -34,7 +34,7 @@
       class="is-flex-auto is-flex-column"
       style="overflow: auto"
     >
-      <div class="tabs" style="margin-bottom: 0;">
+      <div v-if="false" class="tabs" style="margin-bottom: 0;">
         <ul>
           <li class="is-active">
             <a>

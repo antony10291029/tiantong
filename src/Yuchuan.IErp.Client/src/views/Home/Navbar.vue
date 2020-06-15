@@ -6,9 +6,7 @@
       </a>
     </div>
 
-    <div
-      class="navbar-menu"
-    >
+    <div class="navbar-menu">
       <router-link
         class="navbar-item is-flex is-centered"
         to="/chanjet-hkj"
@@ -19,7 +17,7 @@
         >
           <i class="iconfont icon-charts"></i>
         </span>
-        <span>好会计</span>
+        <span>财务报表</span>
       </router-link>
     </div>
   </nav>

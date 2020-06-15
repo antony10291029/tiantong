@@ -43,12 +43,13 @@
           <div style="height: 0.5rem"></div>
 
           <div class="has-text-centered">
-            <AsyncButton
-              :handler="handleSubmit"
+            <button
+              @click="handleSubmit"
+              v-class:is-loading="isPending"
               class="button is-vcentered is-info is-outlined"
             >
               登录
-            </AsyncButton>
+            </button>
           </div>
         </section>
       </div>
@@ -81,7 +82,9 @@ export default class extends Vue {
     password: '',
   }
 
-  async handleSubmit () {
+  isPending = false
+
+  async login () {
     await chanjet.logout()
 
     const code = (await chanjet.getChanjetCode())
@@ -102,6 +105,15 @@ export default class extends Vue {
     localStorage.chanjet.bookCode.set(bookCode)
 
     this.$router.push(`/chanjet-hkj/${orgCode}/${bookCode}`)
+  }
+
+  async handleSubmit () {
+    try {
+      this.isPending = true
+      await this.login()
+    } finally {
+      this.isPending = false
+    }
   }
 }
 </script>
