@@ -1,36 +1,39 @@
 <template>
-  <div style="min-height: 280px; padding: 1.25rem; overflow: hidden">
-    <div ref="chart" style="width: 100%; height: 480px; margin-bottom: 0"></div>
-    <table
-      v-if="group"
-      class="table is-bordered is-centered is-fullwidth is-nowrap"
-      style="margin-top: -4rem"
-    >
-      <thead>
-        <th style="width: 1px">#</th>
-        <th style="width: 1px">日期</th>
-        <th>科目</th>
-        <th>借方</th>
-        <th>摘要</th>
-      </thead>
-      <tbody>
-        <tr v-for="(detail, key) in group.items" :key="detail.id">
-          <td>{{key + 1}}</td>
-          <td>
-            {{detail.period}}
-          </td>
-          <td>
-            {{detail.glAccountLongName}}
-          </td>
-          <td>
-            {{detail.basePostedDr}}
-          </td>
-          <td style="text-align: left">
-            {{detail.comments}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="column">
+    <div class="box">
+      <div ref="chart" style="width: 100%; height: 480px; margin-bottom: 0"></div>
+      <table
+        v-if="group"
+        class="table is-bordered is-centered is-fullwidth is-nowrap"
+        style="margin-top: -4rem"
+      >
+        <thead>
+          <th style="width: 1px">#</th>
+          <th style="width: 1px">日期</th>
+          <th>科目</th>
+          <th>借方</th>
+          <th>摘要</th>
+        </thead>
+        <tbody>
+          <tr v-for="(detail, key) in group.items" :key="detail.id">
+            <td>{{key + 1}}</td>
+            <td>
+              {{detail.period}}
+            </td>
+            <td>
+              {{detail.glAccountLongName}}
+            </td>
+            <td>
+              {{detail.basePostedDr}}
+            </td>
+            <td style="text-align: left">
+              {{detail.comments}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
   </div>
 </template>
 

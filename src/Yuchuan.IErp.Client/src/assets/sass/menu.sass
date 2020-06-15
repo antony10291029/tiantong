@@ -1,18 +1,28 @@
 @import '~bulma/sass/components/menu'
 
 .menu-container
+  z-index: 999
   height: 100%
-  border-right: 1px solid $border 
+  padding: 1.25rem 1.25rem 1.25rem 0
+  background-color: $white
+  box-shadow: $menu-shadow
 
-.menu-list li ul
-  margin-top: 0.5rem
-  margin-bottom: 0.5rem
-  margin-right: 0
+  .menu
+    .menu-list li ul
+      margin-top: 0.5rem
+      margin-bottom: 0.5rem
+      margin-right: 0
 
-.menu-list
-  a
-    border: 1px solid transparent
-  a.is-active
-    color: $link
-    border-radius: 0
-    background-color: #ccefff
+    .menu-list
+      a
+        margin-bottom: 0.5rem
+        border: 1px solid transparent
+        border-top-left-radius: 0
+        border-bottom-left-radius: 0
+        border-top-right-radius: 1.25rem
+        border-bottom-right-radius: 1.25rem
+        .icon
+          margin-right: 0.25rem
+      a.is-active
+        color: $link
+        background-color: #ccefff

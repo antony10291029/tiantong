@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar has-border-bottom">
+  <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item is-size-4 is-unselectable has-text-link">
         天瞳 ERP
@@ -8,7 +8,6 @@
 
     <div
       class="navbar-menu"
-      style="margin-left: 1rem"
     >
       <router-link
         class="navbar-item is-flex is-centered"

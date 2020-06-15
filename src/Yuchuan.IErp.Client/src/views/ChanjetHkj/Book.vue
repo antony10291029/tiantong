@@ -1,41 +1,40 @@
 <template>
   <AsyncLoader :handler="getData">
-    <aside
-      class="menu has-border-right is-unselectable"
-      style="min-width: 220px; max-width: 220px; height: 100%; overflow-y: auto"
-    >
-      <ul class="menu-list">
-        <li v-for="book in books" :key="book.bookCode">
-          <router-link :to="`/chanjet-hkj/${orgCode}/${book.bookCode}`">
-            <span class="icon">
-              <i class="iconfont icon-account-book"></i>
-            </span>
-            <span>
-              {{book.name}}
-            </span>
-          </router-link>
-        </li>
-        <li>
-          <a @click="handleLogout">
-            <span class="icon">
-              <i class="iconfont icon-logout"></i>
-            </span>
-            <span>
-              退出登陆
-            </span>
-          </a>
-        </li>
-      </ul>
+    <aside class="menu-container">
+      <div
+        class="menu is-unselectable"
+        style="min-width: 280px; max-width: 280px"
+      >
+        <ul class="menu-list">
+          <li v-for="book in books" :key="book.bookCode">
+            <router-link :to="`/chanjet-hkj/${orgCode}/${book.bookCode}`">
+              <span class="icon">
+                <i class="iconfont icon-account-book"></i>
+              </span>
+              <span>
+                {{book.name}}
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <a @click="handleLogout">
+              <span class="icon">
+                <i class="iconfont icon-logout"></i>
+              </span>
+              <span>
+                退出登陆
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </aside>
 
     <div
-      class="is-flex-auto"
+      class="is-flex-auto is-flex-column"
       style="overflow: auto"
     >
-      <div
-        class="tabs is-boxed"
-        style="margin-bottom: 0; flex-shrink: 0"
-      >
+      <div class="tabs" style="margin-bottom: 0;">
         <ul>
           <li class="is-active">
             <a>
@@ -44,17 +43,17 @@
           </li>
         </ul>
       </div>
-      <div style="overflow: auto; padding: 1.25rem">
-        <div
-          class="columns"
-          style="overflow: auto"
-        >
+      <div
+        class="is-flex-auto"
+        style="padding: 1.5rem; overflow: auto"
+      >
+        <div class="columns is-variable is-3">
           <div
             class="column is-narrow"
             style="width: 320px; min-width: 320px"
           >
             <nav class="panel">
-              <p class="panel-heading is-size-6">
+              <p class="panel-heading">
                 工程
               </p>
               <router-link
