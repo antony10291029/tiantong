@@ -153,12 +153,12 @@ async function getProjects (orgCode: string, bookCode: string) {
 async function getProjectDetails (orgCode: string, bookCode: string, code: string) {
   const queryParam = JSON.stringify({
     pageCount: 1,
-    pageSize: 10000,
+    pageSize: 100000,
     subsidiaryTag: 0,
     isGlSubAccount: true,
     queryType: 'exact',
-    startPeriod: '201902',
-    endPeriod: '202006',
+    startPeriod: '201412',
+    endPeriod: '205012',
     startAssistant: {
       no: code,
       type: '006'
