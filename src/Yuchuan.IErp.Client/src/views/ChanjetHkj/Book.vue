@@ -104,7 +104,7 @@ export default class extends Vue {
 
   projects = [] as any[]
 
-  categories = [] as any[]
+  // categories = [] as any[]
 
   get baseURL () {
     return `/chanjet-hkj/${this.orgCode}/${this.bookCode}`
@@ -126,18 +126,18 @@ export default class extends Vue {
     return btoa(encodeURIComponent(text))
   }
 
-  async getCategories () {
-    const response = await domainContext.post('/subject-categories/search', {
-      book_code: this.bookCode
-    })
+  // async getCategories () {
+  //   const response = await domainContext.post('/subject-categories/search', {
+  //     book_code: this.bookCode
+  //   })
 
-    return response.data
-  }
+  //   return response.data
+  // }
 
   async getData () {
     this.books = await chanjetContext.getBooks(this.orgCode, this.bookCode)
     this.projects = await chanjetContext.getProjects(this.orgCode, this.bookCode)
-    this.categories = await this.getCategories()
+    // this.categories = await this.getCategories()
   }
 }
 </script>
