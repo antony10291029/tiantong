@@ -15,6 +15,7 @@ namespace Yuchuan.IErp.Api
     {
       return Host.CreateDefaultBuilder(args)
         .ConfigureWebHostDefaults(builder => {
+          builder.UseIISIntegration();
           builder.UseStartup<Startup>();
         });
     }

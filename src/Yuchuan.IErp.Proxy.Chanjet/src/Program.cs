@@ -25,8 +25,9 @@ namespace Yuchuan.IErp.Proxy.Chanjet
     public static IHostBuilder CreateHostBuilder(string[] args = null)
     {
       return Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder => {
-          webBuilder.UseStartup<Startup>();
+        .ConfigureWebHostDefaults(builder => {
+          builder.UseIISIntegration();
+          builder.UseStartup<Startup>();
         });
     }
   }
