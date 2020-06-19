@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DBCore\DBCore.csproj" />
-    <ProjectReference Include="..\Renet\Renet.csproj" />
+    <ProjectReference Include="../../DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../Renet/Renet.csproj" />
   </ItemGroup>
 </Project>

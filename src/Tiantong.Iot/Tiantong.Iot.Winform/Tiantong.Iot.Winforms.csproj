@@ -16,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DBCore\DBCore.csproj" />
-    <ProjectReference Include="..\DBCore.Sqlite\DBCore.Sqlite.csproj" />
-    <ProjectReference Include="..\Tiantong.Iot.Api\Tiantong.Iot.Api.csproj" />
+    <ProjectReference Include="../../DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../DBCore.Sqlite/DBCore.Sqlite.csproj" />
+    <ProjectReference Include="../Tiantong.Iot.Api/Tiantong.Iot.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

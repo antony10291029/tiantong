@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PublishDir>bin/publish</PublishDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../DBCore.Postgres/DBCore.Postgres.csproj" />
+    <ProjectReference Include="../../Renet/Renet.csproj" />
+    <ProjectReference Include="../../Renet.Web/Renet.Web.csproj" />
+    <ProjectReference Include="../Yuchuan.IErp.Database/Yuchuan.IErp.Database.csproj" />
+  </ItemGroup>
+</Project>
