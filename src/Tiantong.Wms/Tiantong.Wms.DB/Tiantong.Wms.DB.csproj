@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DBCore\DBCore.csproj" />
-    <ProjectReference Include="..\DbCore.Postgres\DBCore.Postgres.csproj" />
+    <ProjectReference Include="../../DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../DbCore.Postgres/DBCore.Postgres.csproj" />
   </ItemGroup>
 
   <ItemGroup>

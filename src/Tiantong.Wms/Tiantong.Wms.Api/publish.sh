@@ -2,8 +2,6 @@
 
 set -e
 
-dotnet publish -o ./bin/wms-api -r linux-musl-x64 --self-contained false
+rm -r /release || true
 
-scp -r -P 2201 ./bin/wms-api root@139.198.191.120:/app
-
-ssh root@139.198.191.120 -p 2201
+dotnet publish -o ./release -r win10-x64 --self-contained false

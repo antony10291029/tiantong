@@ -48,7 +48,7 @@ namespace Tiantong.Wms.Api
 
     public DbContext(PostgresBuilder builder): base(builder)
     {
-
+      UseAssembly(typeof(PostgresContext).Assembly);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
