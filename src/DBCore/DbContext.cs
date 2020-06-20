@@ -62,11 +62,11 @@ namespace DBCore
     public void ExecuteFromSql(string name)
     {
       var assemblyName = _assembly.GetName().Name;
-      Console.WriteLine($"{assemblyName}.{_sqlDirectory}.{name}.sql");
-      var stream = _assembly.GetManifestResourceStream($"{assemblyName}.{_sqlDirectory}.{name}.sql");
+      var fileName = $"{assemblyName}.{_sqlDirectory}.{name}.sql";
+      var stream = _assembly.GetManifestResourceStream(fileName);
 
       if (stream == null) {
-        throw new Exception("Sql file not found");
+        throw new Exception($"Sql file not found: {fileName}");
       }
 
       var sreader = new StreamReader(stream);
