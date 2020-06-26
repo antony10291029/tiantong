@@ -2,7 +2,7 @@
   <nav class="navbar has-border-bottom">
     <div class="navbar-brand">
       <span class="navbar-item is-size-4 is-unselectable has-text-link is-hoverable">
-        天瞳WMS
+        天瞳 WMS
       </span>
 
       <a

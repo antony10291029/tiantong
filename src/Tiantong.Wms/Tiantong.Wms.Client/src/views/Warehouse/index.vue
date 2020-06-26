@@ -96,8 +96,8 @@ interface Menu {
 }
 
 const menus: Menu[] = [
-  { icon: 'inbound', text: '录料单', route: 'purchase-requisition-orders' },
-  { icon: 'picking', text: '领料单', route: 'requisition-orders' },
+  { icon: 'inbound', text: '入库单', route: 'purchase-requisition-orders' },
+  { icon: 'picking', text: '出库单', route: 'requisition-orders' },
   // { icon: 'return', text: '返料单', route: 'returns' },
   // { icon: 'inventory', text: '盘点', route: 'inventory' },
   { icon: 'item', text: '库存', route: 'goods' },
