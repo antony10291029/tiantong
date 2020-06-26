@@ -42,7 +42,7 @@ namespace Renet.Web
 
     protected virtual async Task HandleKnownException(IKnownException ex, HttpContext context)
     {
-      var httpException = new HttpException(ex.Message, 400);
+      var httpException = new HttpException(ex.Message, ex.ErrorCode);
 
       await HandleHttpException(httpException, context);
     }

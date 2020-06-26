@@ -10,6 +10,7 @@ namespace Tiantong.Account.Api
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+      services.AddSingleton<Mail>();
       services.AddSingleton<Config>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();

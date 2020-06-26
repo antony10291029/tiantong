@@ -1,6 +1,5 @@
 using DBCore;
 using Microsoft.AspNetCore.Mvc;
-using Renet;
 using Renet.Web;
 
 namespace Tiantong.Account.Api

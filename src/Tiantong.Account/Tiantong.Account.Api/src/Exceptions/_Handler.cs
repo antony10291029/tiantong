@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Renet;
 using Renet.Web;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,9 @@ namespace Tiantong.Account.Api
     {
       HandleDbContext(context);
 
-      if (ex is IHttpException) {
+      if (ex is IKnownException) {
+        await HandleKnownException((IKnownException) ex, context);
+      } else if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, context);
       } else if (Env.IsDevelopment()) {
         await ShowDevelopmentException(ex, context, ResolveExceptionExpander(ex));
