@@ -11,6 +11,7 @@ namespace Yuchuan.IErp.Database
 
     public void Down(DbContext db)
     {
+      db.ExecuteSql("drop table if exists subject_sub_categories");
       db.ExecuteSql("drop table if exists subject_categories");
     }
   }

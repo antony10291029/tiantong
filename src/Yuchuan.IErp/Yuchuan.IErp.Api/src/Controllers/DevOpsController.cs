@@ -24,6 +24,15 @@ namespace Yuchuan.IErp.Api
     }
 
     [HttpPost]
+    [Route("/dev/rollback")]
+    public object Rollback()
+    {
+      _migrator.Rollback();
+
+      return SuccessOperation("数据已回滚");
+    }
+
+    [HttpPost]
     [Route("/dev/refresh")]
     public object Refresh()
     {
