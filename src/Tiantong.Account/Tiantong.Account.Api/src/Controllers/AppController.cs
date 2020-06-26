@@ -12,6 +12,7 @@ namespace Tiantong.Account.Api
       _config = config;
     }
 
+    [HttpGet]
     [HttpPost]
     [Route("/")]
     public ActionResult<object> Home()
