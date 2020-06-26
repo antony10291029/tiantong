@@ -62,7 +62,7 @@ namespace Tiantong.Account.Api
         error_count = 0,
         key = key,
         code = code,
-        expired_at = DateTime.Now
+        expired_at = DateTime.Now.AddSeconds(param.duration)
       };
       _account.Add(emailVerification);
       _account.SaveChanges();
@@ -97,12 +97,12 @@ namespace Tiantong.Account.Api
 
       if (ev == null) {
         throw KnownException.Error("验证信息不存在", 404);
-      } if (ev.expired_at > DateTime.Now) {
+      } if (ev.expired_at < DateTime.Now) {
         _account.Remove(ev);
         _account.SaveChanges();
 
         throw KnownException.Error("认证已超时", 403);
-      } else if (ev.error_count == 5) {
+      } else if (ev.error_count == 4) {
         _account.Remove(ev);
         _account.SaveChanges();
 

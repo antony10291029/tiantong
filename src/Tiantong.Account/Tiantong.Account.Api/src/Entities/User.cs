@@ -10,7 +10,7 @@ namespace Tiantong.Account.Api
     [Key]
     public int id { get; set; }
 
-    public string type { get; set; }
+    public string type { get; set; } = "user";
 
     public string name { get; set; }
 
@@ -18,10 +18,10 @@ namespace Tiantong.Account.Api
 
     public string password { get; set; }
 
-    public string avatar_url { get; set; }
+    public string avatar_url { get; set; } = "";
 
-    public bool is_enabled { get; set; }
+    public bool is_enabled { get; set; } = true;
 
-    public DateTime created_at { get; set; }
+    public DateTime created_at { get; set; } = DateTime.Now;
   }
 }
