@@ -3,7 +3,7 @@ using System.Net.Mime;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace Tiantong.Account.Api
+namespace Tiantong.Account.Utils
 {
   public class Mail
   {
@@ -15,12 +15,12 @@ namespace Tiantong.Account.Api
 
     private string _stmpPassword;
 
-    public Mail(Config config)
+    public Mail()
     {
-      _stmpHost = config.STMP_HOST;
-      _stmpPort = config.STMP_PORT;
-      _stmpAddress = config.STMP_ADDRESS;
-      _stmpPassword = config.STMP_PASSWORD;
+      _stmpHost = "smtpdm.aliyun.com";
+      _stmpPort = 80;
+      _stmpAddress = "admin@post.als-yuchuan.com";
+      _stmpPassword = "TiantongAeoikj9217";
     }
 
     private async Task SendAsync(MailMessage msg)
@@ -30,10 +30,10 @@ namespace Tiantong.Account.Api
       await client.SendMailAsync(msg);
     }
 
-    public async Task SendAsync(string email, string subject, string html)
+    public async Task SendAsync(string email, string subject, string html, MailAddress from = null)
     {
       var msg = new MailMessage();
-      msg.From = new MailAddress(_stmpAddress);
+      msg.From ??= new MailAddress(_stmpAddress, "天瞳账户");
       msg.To.Add(new MailAddress(email));
       msg.Subject = subject;
       msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));

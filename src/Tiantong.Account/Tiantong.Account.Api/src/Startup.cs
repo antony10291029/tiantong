@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Renet.Utils;
 using Renet.Web;
+using Tiantong.Account.Utils;
 
 namespace Tiantong.Account.Api
 {

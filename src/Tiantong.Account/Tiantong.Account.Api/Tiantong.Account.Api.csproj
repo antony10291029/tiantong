@@ -15,6 +15,7 @@
     <ProjectReference Include="../../DBCore.Postgres/DBCore.Postgres.csproj" />
     <ProjectReference Include="../../Renet/Renet.csproj" />
     <ProjectReference Include="../../Renet.Web/Renet.Web.csproj" />
+    <ProjectReference Include="../Tiantong.Account.Utils/Tiantong.Account.Utils.csproj" />
     <ProjectReference Include="../Tiantong.Account.Database/Tiantong.Account.Database.csproj" />
   </ItemGroup>
 </Project>
