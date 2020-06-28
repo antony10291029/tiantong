@@ -29,7 +29,7 @@ namespace Tiantong.Account.Utils
         duration
       });
       var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
-      var response = await _client.PostAsync("/email-verification/send", content);
+      var response = await _client.PostAsync("/email-verifications/send", content);
       var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
       if (response.StatusCode == HttpStatusCode.OK) {
@@ -51,7 +51,7 @@ namespace Tiantong.Account.Utils
       });
 
       var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
-      var response = await _client.PostAsync("/email-verification/verify", content);
+      var response = await _client.PostAsync("/email-verifications/verify", content);
       var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
       if (response.StatusCode != HttpStatusCode.OK) {

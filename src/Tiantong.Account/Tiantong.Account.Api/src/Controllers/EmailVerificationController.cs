@@ -11,7 +11,7 @@ using Tiantong.Account.Utils;
 
 namespace Tiantong.Account.Api
 {
-  [Route("/email-verification")]
+  [Route("/email-verifications")]
   public class EmailVerificationController: BaseController
   {
     private AccountContext _account;
