@@ -1,6 +1,6 @@
-using System;
-using JWT.Builder;
 using JWT.Algorithms;
+using JWT.Builder;
+using System;
 using System.Text.Json;
 
 namespace Renet.Web
@@ -41,13 +41,13 @@ namespace Renet.Web
     public (int, DateTime, DateTime) Decode(string token)
     {
       if (token == "" || token == null) {
-        throw new AuthException("Authorization field is empty");
+        throw KnownException.Error("token 不能为空", 401);
       }
       if (token.Length <= 7) {
-        throw new AuthException("Authorization fiels length must bigger than 7");
+        throw KnownException.Error("token 长度错误", 401);
       }
       if (token.Substring(0, 7) != "Bearer ") {
-        throw new AuthException("Authorization token must start with `Bearer `");
+        throw KnownException.Error("token 必须由 `Bearer ` 开头", 401);
       }
       token = token.Substring(7);
 
@@ -56,22 +56,29 @@ namespace Renet.Web
           .WithAlgorithm(new HMACSHA256Algorithm())
           .WithSecret(_secret)
           .Decode(token);
-
         var json = JsonDocument.Parse(data);
-        var id = json.RootElement.GetProperty("id").GetInt32();
-        var exp = json.RootElement.GetProperty("exp").GetDateTime();
-        var rfa = json.RootElement.GetProperty("rfa").GetDateTime();
 
-        if (exp < DateTime.Now) {
-          throw new AuthTokenExpiredException("Auth token is expired");
-        }
-
-        return (id, exp, rfa);
-      } catch (AuthTokenExpiredException e) {
+        return (
+          json.RootElement.GetProperty("id").GetInt32(),
+          json.RootElement.GetProperty("exp").GetDateTime(),
+          json.RootElement.GetProperty("rfa").GetDateTime()
+        );
+      } catch (KnownException e) {
         throw e;
       } catch {
-        throw new AuthException("unable to decode Authorization token");
+        throw KnownException.Error("token 解析失败", 401);
       }
+    }
+
+    public (int, DateTime, DateTime) Parse(string token)
+    {
+      var (id, exp, rfa) = Decode(token);
+
+      if (exp < DateTime.Now) {
+        throw KnownException.Error("token 已过期", 403);
+      }
+
+      return (id, exp, rfa);
     }
   }
 }

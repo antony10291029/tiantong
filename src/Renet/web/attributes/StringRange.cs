@@ -16,9 +16,13 @@ namespace Renet.Web.Attributes
 
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
+      if (value is null) {
+        return new ValidationResult(ErrorMessage);
+      }
+
       var length = value.ToString().Length;
 
-      if (length > _min && length < _max) {
+      if (length >= _min && length <= _max) {
         return ValidationResult.Success;
       } else {
         return new ValidationResult(ErrorMessage);

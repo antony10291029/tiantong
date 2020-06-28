@@ -10,8 +10,6 @@ namespace Tiantong.Account.Api
     [Key]
     public int id { get; set; }
 
-    public string type { get; set; } = "user";
-
     public string name { get; set; }
 
     public string email { get; set; }

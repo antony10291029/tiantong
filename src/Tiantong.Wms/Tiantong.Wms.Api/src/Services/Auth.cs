@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using Renet;
 using Renet.Web;
 
 namespace Tiantong.Wms.Api
@@ -79,7 +79,7 @@ namespace Tiantong.Wms.Api
       var token = _httpAccessor.HttpContext.Request.Headers["Authorization"].ToString();
 
       try {
-        var (id, _, _) = Decode(token);
+        var (id, _, _) = Parse(token);
         var user = _db.Users.Where(item => item.id == id).FirstOrDefault();
 
         if (user == null) {
@@ -87,10 +87,8 @@ namespace Tiantong.Wms.Api
         }
 
         return user;
-      } catch (AuthException) {
-        throw new FailureOperation("身份验证失败，请重新登陆");
-      } catch (AuthTokenExpiredException) {
-        throw new FailureOperation("登陆已超时，请重新登陆");
+      } catch (KnownException ex) {
+        throw ex;
       }
     }
   }

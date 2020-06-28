@@ -11,13 +11,19 @@ namespace Tiantong.Account.Api
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
-      services.AddSingleton<Mail>();
+
       services.AddSingleton<Config>();
+      services.AddSingleton<DbBuilder>();
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
-      services.AddSingleton<DbBuilder>();
+      services.AddSingleton<JWT>();
+      services.AddSingleton<Mail>();
+
+      services.AddHttpClient<EmailVerificationService>();
+
       services.AddScoped<AccountContext>();
       services.AddScoped<MigratorProvider>();
+
     }
 
     public void Configure(IApplicationBuilder app)

@@ -1,4 +1,4 @@
-create table if not exists verify_emails (
+create table if not exists users (
   id serial not null primary key,
   name varchar(255) not null,
   email varchar(255) not null,

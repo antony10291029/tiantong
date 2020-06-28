@@ -35,11 +35,11 @@ namespace Renet.Web.Test
       token = $"Bearer " + token;
 
       try {
-        (id, _, _) = auth.Decode(token);
+        (id, _, _) = auth.Parse(token);
         if (expiredAt < DateTime.Now) {
           Assert.Fail("expect throw exception when auth token is expired");
         }
-      } catch (AuthTokenExpiredException) {
+      } catch (KnownException) {
         if (expiredAt > DateTime.Now) {
           Assert.Fail("unexpected exception because token is valid");
         }
