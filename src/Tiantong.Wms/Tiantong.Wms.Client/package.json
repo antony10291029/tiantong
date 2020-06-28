@@ -36,7 +36,6 @@
     "typescript": "~3.7.5",
     "vue-dragscroll": "^2.0.1",
     "vue-loading-template": "^1.3.2",
-    "vue-particles": "^1.0.9",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [

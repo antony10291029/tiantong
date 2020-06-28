@@ -1,24 +1,28 @@
 <template>
   <div
     id="login-particles"
+    ref="login-particles"
     class="login-background has-background-info column"
   >
-    <vue-particles style="height: 100vh"></vue-particles>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import Particles from 'vue-particles'
-
-var isInitialized = false
-
-if (!isInitialized) {
-  Vue.use(Particles)
-}
+import config from './config.json'
+import './particle'
 
 export default {
-  name: 'LoginBackground'
+  name: 'LoginBackground',
+
+  dom: null,
+
+  mounted () {
+    this.dom = window.particlesJS('login-particles', config)
+  },
+  beforeDestroy () {
+    this.dom.pJS.fn.vendors.destroypJS()
+  }
 }
 </script>
 

@@ -70,7 +70,7 @@
 import axios from '@/providers/axios'
 import token from '@/providers/token'
 import { handleLogin } from './Login'
-import LoginBackground from './common/LoginBackground.vue'
+import LoginBackground from './common/LoginBackground/index.vue'
 import AsyncButton from '@/components/AsyncButton.vue'
 
 export default {

@@ -71,7 +71,7 @@ import axios from '@/providers/axios'
 import token from '@/providers/token'
 import router from '@/providers/router'
 import { notify } from '@/providers/notify'
-import LoginBackground from './common/LoginBackground.vue'
+import LoginBackground from './common/LoginBackground/index.vue'
 
 export async function handleLogin (params) {
   const response = await axios.post('/auth/email', params)
