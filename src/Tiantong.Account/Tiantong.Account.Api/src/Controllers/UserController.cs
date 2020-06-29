@@ -54,11 +54,11 @@ namespace Tiantong.Account.Api
     [Route("/register/email")]
     public async Task<ActionResult<object>> RegisterByEmail([FromBody] RegisterByEmailParams param)
     {
-      await _emailVerification.VerifyAsync(param.email, param.verification_key, param.verification_code);
-
       if (_account.Users.Any(u => u.email == param.email)) {
         throw KnownException.Error("邮箱已被注册", 409);
       }
+
+      await _emailVerification.VerifyAsync(param.email, param.verification_key, param.verification_code);
 
       var user = new User {
         name = param.name,
@@ -69,8 +69,9 @@ namespace Tiantong.Account.Api
       _account.Add(user);
       _account.SaveChanges();
 
+      // 注册后自动登陆，不使用 text
       return new {
-        message = "注册完成"
+        text = "注册完成"
       };
     }
 
@@ -101,6 +102,7 @@ namespace Tiantong.Account.Api
       }
 
       user.password = _hash.Make(param.password);
+      _account.SaveChanges();
 
       return new {
         message = "密码已修改"
@@ -123,7 +125,7 @@ namespace Tiantong.Account.Api
       var user = _account.Users.FirstOrDefault(u => u.email == param.email);
 
       if (user is null || !_hash.Match(param.password, user.password)) {
-        throw KnownException.Error("邮箱或密码错误");
+        throw KnownException.Error("邮箱或密码错误", 401);
       }
 
       var (token, exp, rfa) = _jwt.Encode(user.id);
