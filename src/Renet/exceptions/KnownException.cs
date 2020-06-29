@@ -19,7 +19,7 @@ namespace Renet
 
     public readonly static KnownException Unknown = new KnownException ("未知错误");
 
-    public static KnownException Error(string message = null, int code = 0, object[] data = null)
+    public static KnownException Error(string message = null, int code = 400, object[] data = null)
     {
       return new KnownException (message) {
         ErrorCode = code,
