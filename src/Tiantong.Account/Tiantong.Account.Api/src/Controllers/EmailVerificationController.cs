@@ -79,10 +79,10 @@ namespace Tiantong.Account.Api
       [EmailAddress(ErrorMessage = "邮箱地址格式错误")]
       public string address { get; set; }
 
-      [Required(ErrorMessage = "Key 不能为空")]
+      [Required(ErrorMessage = "无法识别验证码")]
       public string key { get; set; }
 
-      [Required(ErrorMessage = "Code 不能为空")]
+      [Required(ErrorMessage = "请输入验证码")]
       public string code { get; set; }
     }
 
