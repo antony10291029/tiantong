@@ -1,0 +1,19 @@
+.app-notifications
+  position: absolute
+  left: 50%
+  top: 24px
+  transform: translate(-50%)
+  z-index: 99999
+  .notification
+    display: flex
+    align-items: center
+    color: $text
+    padding: 1.5rem
+    min-width: 320px
+    margin-bottom: 0.75rem
+    @each $name, $pair in $colors
+      $color: nth($pair, 1)
+      $color-invert: nth($pair, 2)
+      $color-lightning: max((100% - lightness($color)) - 8%, 0%)
+      &.is-#{$name}
+        background-color: lighten($color, $color-lightning)

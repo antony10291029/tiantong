@@ -1,0 +1,18 @@
+@import '~bulma/sass/components/tabs'
+
+.tabs
+  z-index: 998
+  box-shadow: $box-shadow
+  background-color: $white
+  font-size: 1.125rem
+  &.is-boxed
+    li
+      a
+        border-top-color: transparent
+      &.is-active
+        a
+          border-top-color: transparent
+      &:first-child
+        a
+          border-left-color: transparent
+          border-left: none
