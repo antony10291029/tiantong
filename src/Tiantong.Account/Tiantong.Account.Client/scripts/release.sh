@@ -8,8 +8,8 @@ cd ./dist
 
 set +e
 
-coscmd -b ierp-client-1258274033 -r ap-shanghai delete -rf /
+coscmd -b tiantong-account-1258274033 -r ap-shanghai delete -rf /
 
 set -e
 
-coscmd -b ierp-client-1258274033 -r ap-shanghai upload -r ./ /
+coscmd -b tiantong-account-1258274033 -r ap-shanghai upload -r ./ /
