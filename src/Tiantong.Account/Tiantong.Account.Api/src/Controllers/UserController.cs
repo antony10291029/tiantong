@@ -149,7 +149,8 @@ namespace Tiantong.Account.Api
       }
 
       return new {
-        message = "token 验证通过"
+        message = "token 验证通过",
+        id = id,
       };
     }
 

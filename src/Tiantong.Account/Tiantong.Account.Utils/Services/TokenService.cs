@@ -21,10 +21,14 @@ namespace Tiantong.Account.Utils
       _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
     }
 
-    public async Task VerifyAsync(string token)
+    public async Task<int> VerifyAsync(string token)
     {
+      if (token == null) {
+        throw KnownException.Error("请提供身份凭证", 401);
+      }
+
       var content = new StringContent("{}", Encoding.UTF8, MediaTypeNames.Application.Json);
-      content.Headers.Add("Authorization", token);
+      _client.DefaultRequestHeaders.Add("Authorization", token);
 
       var response = await _client.PostAsync("/token/verify", content);
       var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
@@ -32,6 +36,8 @@ namespace Tiantong.Account.Utils
       if (response.StatusCode != HttpStatusCode.OK) {
         throw KnownException.Error(dom.RootElement.GetProperty("message").GetString(), (int) response.StatusCode);
       }
+
+      return dom.RootElement.GetProperty("id").GetInt32();
     }
   }
 }
