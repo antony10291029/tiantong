@@ -31,6 +31,20 @@ export const chanjet = {
   }
 }
 
+export const account = {
+  token: {
+    get: () => store.get('account.token', ''),
+
+    set: (token: string) => store.set('account.token', token),
+
+    isExpired: () => !store.get('account.token')
+  },
+
+  clear () {
+    store.remove('account.token')
+  }
+}
+
 export default {
   chanjet,
 }

@@ -5,7 +5,6 @@
   >
     <ProjectChart
       :details="details"
-      :categories="categories"
     />
 
   </AsyncLoader>
@@ -31,9 +30,6 @@ export default class extends Vue {
 
   @Prop({ required: true })
   projectCode!: string
-
-  @Prop({ required: true })
-  categories!: any[]
 
   details = [] as any[]
 

@@ -75,7 +75,6 @@
           <router-view
             :orgCode="orgCode"
             :bookCode="bookCode"
-            :categories="categories"
             :key="$route.params.projectCode"
           />
         </div>

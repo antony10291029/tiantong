@@ -19,6 +19,19 @@
         </span>
         <span>财务报表</span>
       </router-link>
+
+      <router-link
+        class="navbar-item is-flex is-centered"
+        to="/projects"
+      >
+        <span
+          class="icon"
+          style="margin-right: 0.25rem"
+        >
+          <i class="iconfont icon-monitor"></i>
+        </span>
+        <span>设备监控</span>
+      </router-link>
     </div>
   </nav>
 </template>

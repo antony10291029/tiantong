@@ -10,6 +10,7 @@ namespace Yuchuan.IErp.Database
     public PostgresContext(PostgresBuilder builder)
     {
       _builder = builder;
+      UseAssembly(typeof(PostgresContext).Assembly);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)

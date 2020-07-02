@@ -28,6 +28,7 @@ namespace Tiantong.Account.Utils
       }
 
       var content = new StringContent("{}", Encoding.UTF8, MediaTypeNames.Application.Json);
+      _client.DefaultRequestHeaders.Clear();
       _client.DefaultRequestHeaders.Add("Authorization", token);
 
       var response = await _client.PostAsync("/token/verify", content);

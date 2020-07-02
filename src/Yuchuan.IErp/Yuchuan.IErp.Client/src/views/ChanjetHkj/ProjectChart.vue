@@ -46,9 +46,6 @@ import echarts from "echarts";
 })
 export default class extends Vue {
   @Prop({ required: true })
-  categories!: any[]
-
-  @Prop({ required: true })
   details!: any[]
 
   detailsGroups = new Array<any>()

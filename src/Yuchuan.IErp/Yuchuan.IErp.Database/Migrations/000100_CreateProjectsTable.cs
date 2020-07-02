@@ -6,7 +6,7 @@ namespace Yuchuan.IErp.Database
   {
     public void Up(DbContext db)
     {
-      db.ExecuteFromSql("004000_CreateProjectsTable");
+      db.ExecuteFromSql("000100_CreateProjectsTable");
     }
 
     public void Down(DbContext db)

@@ -27,6 +27,12 @@ namespace Yuchuan.IErp.Api
 
     public string PG_DATABASE { get; }
 
+    public string SIGNALR_REDIS { get; }
+
+    public string CACHE_REDIS { get; }
+
+    public string CORS_ORIGIN { get; }
+
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
@@ -39,6 +45,11 @@ namespace Yuchuan.IErp.Api
       PG_USERNAME = config.GetValue("postgres:username", "postgres");
       PG_PASSWORD = config.GetValue("postgres:password", "password");
       PG_DATABASE = config.GetValue("postgres:database", "postgres");
+
+      SIGNALR_REDIS = config.GetValue<string>("signalr:redis");
+      CACHE_REDIS = config.GetValue<string>("cache:redis");
+
+      CORS_ORIGIN = config.GetValue<string>("cors:origin");
     }
   }
 }

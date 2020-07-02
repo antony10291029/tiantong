@@ -15,7 +15,7 @@ namespace Yuchuan.IErp.Api
     }
 
     [HttpPost]
-    [Route("/dev/migrate")]
+    [Route("/development/migrate")]
     public object Migrate()
     {
       _migrator.Migrate();
@@ -24,7 +24,7 @@ namespace Yuchuan.IErp.Api
     }
 
     [HttpPost]
-    [Route("/dev/rollback")]
+    [Route("/development/rollback")]
     public object Rollback()
     {
       _migrator.Rollback();
@@ -33,7 +33,7 @@ namespace Yuchuan.IErp.Api
     }
 
     [HttpPost]
-    [Route("/dev/refresh")]
+    [Route("/development/refresh")]
     public object Refresh()
     {
       _migrator.Refresh();

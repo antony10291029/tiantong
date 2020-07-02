@@ -5,15 +5,15 @@ namespace Yuchuan.IErp.Api
 {
   public class DomainContext: PostgresContext
   {
-    public DbSet<SubjectCategory> SubjectCategories { get; set; }
+    public DbSet<Device> Devices { get; set; }
 
-    public DbSet<SubjectSubCategory> SubjectSubCategories { get; set; }
+    public DbSet<DeviceState> DeviceStates { get; set; }
 
-    public DbSet<VerifyEmail> VerifyEmails { get; set; }
+    public DbSet<Project> Projects { get; set; }
 
-    public DbSet<ResetPassword> ResetPasswords { get; set; }
+    public DbSet<ProjectUser> ProjectUsers { get; set; }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<ProjectDevice> ProjectDevices { get; set; }
 
     public DomainContext(DbBuilder builder): base(builder)
     {
