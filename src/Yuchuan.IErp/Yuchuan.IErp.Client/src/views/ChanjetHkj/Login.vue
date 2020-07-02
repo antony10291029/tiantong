@@ -89,15 +89,11 @@ export default class extends Vue {
 
     const code = (await chanjet.getChanjetCode())
     const userData = await chanjet.getUserData(code, this.params.account, this.params.password)
-    const tokenCode = await chanjet.getHkjCode()
-    const token = await chanjet.getToken(tokenCode)
     const vmToken = (await chanjet.getVmCode())
     const result = await chanjet.loginVm(vmToken)
-    const status = await chanjet.checkVmStatus(userData.orgId)
-
-    var address = status.vmAddress.split('/')
-    var orgCode = address[4]
-    var bookCode = address[5]
+    const { orgCode, bookCode } = await chanjet.checkVmStatus(userData.orgId)
+    const tokenCode = await chanjet.getHkjCode()
+    const token = await chanjet.getToken(tokenCode, orgCode, bookCode)
 
     localStorage.chanjet.token.set(token)
     localStorage.chanjet.orgId.set(userData.orgId)

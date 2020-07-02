@@ -107,15 +107,13 @@ async function checkVmStatus (orgId: string) {
   }
 
   const response = await proxy.get('/vm/checkVMStatus', { params })
+  const status = response.data
 
-  return response.data
-}
+  var address = status.vmAddress.split('/')
+  var orgCode = address[4]
+  var bookCode = address[5]
 
-async function getToken (code: string) {
-  const params = { code }
-  const response = await proxy.get('/accounting/uzzcbkthbw2o/c0x0l6ci87/token', { params })
-
-  return response.data
+  return { orgCode, bookCode }
 }
 
 async function loginVm (code: string) {
@@ -127,6 +125,13 @@ async function logout () {
   try {
     await proxy.post('/logout')
   } catch {}
+}
+
+async function getToken (code: string, orgCode: string, bookCode: string) {
+  const params = { code }
+  const response = await proxy.get(`/accounting/${orgCode}/${bookCode}/token`, { params })
+
+  return response.data
 }
 
 async function getBooks (orgCode: string, bookCode: string) {
