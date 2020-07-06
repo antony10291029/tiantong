@@ -2,7 +2,7 @@
   <AsyncButton
     v-if="!isRunning"
     :handler="handleRun"
-    class="button is-small is-info is-light"
+    class="button is-small is-info"
   >
     <span>启动</span>
     <span class="icon is-small">
@@ -12,7 +12,7 @@
   <AsyncButton
     v-else
     :handler="handleStop"
-    class="button is-small is-info is-light"
+    class="button is-small is-info"
   >
     <span>停止</span>
     <span class="icon is-small">

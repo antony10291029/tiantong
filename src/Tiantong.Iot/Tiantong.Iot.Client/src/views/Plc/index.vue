@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="is-flex-auto is-flex is-flex-column"
-    style="overflow-y: auto"
-  >
-    <div class="tabs is-boxed" style="margin-bottom: 0; flex-shrink: 0">
+  <div class="is-flex-auto is-flex is-flex-column">
+    <div class="tabs" style="margin-bottom: 0; flex-shrink: 0">
       <ul>
         <router-link
           tag="li"
@@ -77,6 +74,7 @@
 
     <router-view
       class="is-flex-auto"
+      style="overflow: auto"
       :plcId="plcId"
       :baseURL="`${baseURL}/${plcId}`"
       v-on="$listeners"

@@ -1,10 +1,14 @@
 @import '~bulma/sass/components/tabs'
 
 .tabs
+  z-index: 998
+  background-color: $white
+  border-bottom: 1px solid $border
+  &.is-toggle
+    border-bottom-color: transparent
   &.is-boxed
     li
       a
-        border-radius: 0
         border-top-color: transparent
       &.is-active
         a

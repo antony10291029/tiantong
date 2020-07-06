@@ -1,15 +1,17 @@
 <template>
   <div style="padding: 1.25rem">
-    <div
-      class="is-bordered"
-      style="border-bottom: none"
-    >
-      <QuickOperations />
-    </div>
-    <div
-      class="is-bordered"
-    >
-      <Autorun />
+    <div class="box is-paddingless">
+      <div
+        style="border-bottom: none"
+      >
+        <QuickOperations />
+      </div>
+
+      <hr style="margin: 1.25rem">
+
+      <div>
+        <Autorun />
+      </div>
     </div>
   </div>
 </template>

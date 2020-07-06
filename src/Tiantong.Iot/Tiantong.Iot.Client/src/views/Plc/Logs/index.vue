@@ -1,5 +1,8 @@
 <template>
-  <div style="padding: 1.25rem; padding-top: 1.25rem">
+  <div
+    class="box"
+    style="margin: 1.25rem; padding-top: 1.25rem"
+  >
     <div
       class="tabs is-toggle is-small"
       style="margin-bottom: 0.75rem"

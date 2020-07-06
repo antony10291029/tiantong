@@ -28,8 +28,8 @@ export default class extends Vue {
   flex-flow: column
 
 .app-nav
-  min-height: 52px
-  max-height: 52px
+  min-height: 3.75rem
+  max-height: 3.75rem
 
 .app-body
   flex: 2

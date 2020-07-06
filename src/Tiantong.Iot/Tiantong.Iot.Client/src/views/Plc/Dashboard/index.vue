@@ -1,60 +1,47 @@
 <template>
   <div style="padding: 1.25rem">
-    <div class="is-flex is-vcentered">
-      <PlcRunningButton
-        :plcId="plcId"
-        :isRunning="isRunning"
-        @change="handleRunningChange"
-      />
+    <div class="box">
+      <div class="is-flex is-vcentered">
+        <PlcRunningButton
+          :plcId="plcId"
+          :isRunning="isRunning"
+          @change="handleRunningChange"
+        />
 
-      <span style="width: 0.5rem"></span>
+        <span style="width: 0.5rem"></span>
 
-      <Checkbox
-        v-if="isRunning"
-        v-model="isDataWatchOpen"
-      >
-        实时监控
-      </Checkbox>
-    </div>
-
-    <div style="height: 0.75rem"></div>
-<!-- 
-    <div
-      class="tabs is-bordered"
-      style="border-bottom: none; margin-bottom: 0.75rem"
-    >
-      <ul>
-        <li
-          v-class:is-active="key === currentTab"
-          v-for="(text, key) in tabs" :key="key"
-          @click="currentTab = key"
+        <Checkbox
+          v-if="isRunning"
+          v-model="isDataWatchOpen"
         >
-          <a>{{text}}</a>
-        </li>
-      </ul>
-    </div> -->
-
-    <template v-if="currentTab == 0">
-      <div class="columns">
-        <div class="column">
-          <PlcStates
-            :plcId="plcId"
-            :isRunning="isRunning"
-            :isDataWatchOpen="isDataWatchOpen"
-          />
-        </div>
-
-        <div class="column">
-          <PlcLogs
-            :plcId="plcId"
-            :isRunning="isRunning"
-          />
-        </div>
+          实时监控
+        </Checkbox>
       </div>
-    </template>
-    <template v-else-if="currentTab == 1">
-      <PlcDataDebug />
-    </template>
+
+      <hr>
+
+      <template v-if="currentTab == 0">
+        <div class="columns">
+          <div class="column">
+            <PlcStates
+              :plcId="plcId"
+              :isRunning="isRunning"
+              :isDataWatchOpen="isDataWatchOpen"
+            />
+          </div>
+
+          <div class="column">
+            <PlcLogs
+              :plcId="plcId"
+              :isRunning="isRunning"
+            />
+          </div>
+        </div>
+      </template>
+      <template v-else-if="currentTab == 1">
+        <PlcDataDebug />
+      </template>
+    </div>
   </div>
 </template>
 

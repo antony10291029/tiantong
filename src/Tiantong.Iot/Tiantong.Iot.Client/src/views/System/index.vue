@@ -1,36 +1,29 @@
 <template>
   <div
-    class="is-flex-auto has-background-white"
+    class="is-flex-auto"
     style="overflow: auto"
   >
     <section
-      class="container is-flex-auto"
+      class="container is-flex-auto box is-paddingless"
       style="overflow: auto; max-width: 768px; margin: 1.5rem auto 1.5rem auto"
     >
-      <div
-        v-if="false"
-        class="is-bordered"
-      >
+      <div v-if="false">
         <AdminEmail></AdminEmail>
       </div>
 
-      <div
-        class="is-bordered"
-      >
+      <div>
         <SystemLock></SystemLock>
       </div>
 
-      <div
-        class="is-bordered"
-        style="border-top: none"
-      >
+      <hr>
+
+      <div style="border-top: none">
         <ClearLogs></ClearLogs>
       </div>
 
-      <div
-        class="is-bordered"
-        style="border-top: none"
-      >
+      <hr>
+
+      <div style="border-top: none">
         <SetPassword></SetPassword>
       </div>
     </section>

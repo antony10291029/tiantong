@@ -2,7 +2,7 @@
   <div>
     <div
       class="tabs is-bordered"
-      style="margin-bottom: 0; border-bottom: none"
+      style="margin-bottom: 0"
     >
       <ul>
         <router-link

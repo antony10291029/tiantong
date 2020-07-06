@@ -5,7 +5,7 @@
   >
     <aside
       class="menu has-border-right is-unselectable"
-      style="min-width: 220px; max-width: 220px; height: 100%; overflow-y: auto"
+      style="height: 100%; overflow-y: auto"
     >
       <ul class="menu-list">
         <li>
@@ -51,7 +51,6 @@
       :key="$route.params.plcId"
       baseURL="/plcs"
       class="is-flex-auto"
-      style="overflow: auto"
       @refresh="getPlcs"
     />
   </AsyncLoader>

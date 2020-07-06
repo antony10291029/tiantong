@@ -1,9 +1,14 @@
 @import '~bulma/sass/components/navbar'
 
 .navbar
+  z-index: 1000
+  border-bottom: 1px solid $border
   .navbar-item
+    font-size: 1.125rem
+    .icon
+      i
+        font-size: 1.125rem
     &.is-active
       background-color: $white
-
     &:hover
       background-color: $navbar-item-hover-background-color

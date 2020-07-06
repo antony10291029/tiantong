@@ -1,41 +1,43 @@
 <template>
-  <PlcForm
-    :plc="plc"
-    :handler="getPlc"
-  >
-    <template #footer>
-      <div class="field" style="width: 480px">
-        <div class="control is-flex">
-          <AsyncButton
-            :handler="handleSave"
-            :disabled="!isChanged"
-            class="button is-info is-small"
-            style="margin-right: 0.5rem"
-          >
-            保存
-          </AsyncButton>
+  <div class="box is-paddingless" style="margin: 1.25rem">
+    <PlcForm
+      :plc="plc"
+      :handler="getPlc"
+    >
+      <template #footer>
+        <div class="field" style="width: 480px">
+          <div class="control is-flex">
+            <AsyncButton
+              :handler="handleSave"
+              :disabled="!isChanged"
+              class="button is-info is-small"
+              style="margin-right: 0.5rem"
+            >
+              保存
+            </AsyncButton>
 
-          <AsyncButton
-            :handler="handleTest"
-            :disabled="isChanged"
-            class="button is-success is-small"
-            style="margin-right: 0.5rem"
-          >
-            连接测试
-          </AsyncButton>
+            <AsyncButton
+              :handler="handleTest"
+              :disabled="isChanged"
+              class="button is-success is-small"
+              style="margin-right: 0.5rem"
+            >
+              连接测试
+            </AsyncButton>
 
-          <span class="is-flex-auto"></span>
+            <span class="is-flex-auto"></span>
 
-          <AsyncButton
-            :handler="handleDelete"
-            class="button is-danger is-light is-small"
-          >
-            删除
-          </AsyncButton>
+            <AsyncButton
+              :handler="handleDelete"
+              class="button is-danger is-light is-small"
+            >
+              删除
+            </AsyncButton>
+          </div>
         </div>
-      </div>
-    </template>
-  </PlcForm>
+      </template>
+    </PlcForm>
+  </div>
 </template>
 
 <script lang="ts">
