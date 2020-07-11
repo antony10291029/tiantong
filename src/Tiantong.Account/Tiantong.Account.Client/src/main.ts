@@ -5,7 +5,7 @@ import uid from './providers/uid'
 import notify from './providers/notify'
 import confirm from './providers/confirm'
 import router from './providers/vue-router'
-import components from './components/index'
+import components from './share/components'
 import directives from './providers/directives'
 
 Vue.use(directives)

@@ -1,11 +1,8 @@
 <template>
   <div style="height: 100vh; width: 100vw; overflow-y: hidden">
     <div class="columns is-vcentered is-gapless">
-      <div
-        class="column is-narrow"
-        style="min-width: 420px;"
-      >
-        <section style="padding: 1.25rem">
+      <div class="column is-narrow">
+        <section style="padding: 1.25rem; min-width: 380px">
           <slot></slot>
         </section>
       </div>
