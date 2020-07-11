@@ -7,26 +7,26 @@ namespace Renet.Web
 {
   public class Auth
   {
-    private int _ttl;
+    private long _ttl;
 
-    private int _rft;
+    private long _rft;
 
     private string _secret;
 
     //
 
-    public Auth(string secret, int ttl, int rft)
+    public Auth(string secret, long ttl, long rft)
     {
       _secret = secret;
       _ttl = ttl;
       _rft = rft;
     }
 
-    public (string, DateTime, DateTime) Encode(int id)
+    public (string, DateTime, DateTime) Encode(int id, long? ttl = null, long? rft = null)
     {
       var iat = DateTime.Now;
-      var exp = iat.AddSeconds(_ttl);
-      var rfa = iat.AddSeconds(_rft);
+      var exp = iat.AddSeconds(ttl ?? this._ttl);
+      var rfa = iat.AddSeconds(rft ?? this._rft);
       var token = "Bearer " + new JwtBuilder()
         .WithAlgorithm(new HMACSHA256Algorithm())
         .WithSecret(_secret)

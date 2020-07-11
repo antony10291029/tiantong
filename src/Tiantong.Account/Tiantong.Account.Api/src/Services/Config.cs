@@ -19,9 +19,9 @@ namespace Tiantong.Account.Api
 
     public string JWT_SECRET { get; }
 
-    public int JWT_TTL { get; }
+    public long JWT_TTL { get; }
 
-    public int JWT_RFT { get; }
+    public long JWT_RFT { get; }
 
     public string PG_HOST { get; }
 
@@ -49,8 +49,8 @@ namespace Tiantong.Account.Api
       AppKey = config.GetValue<string>("app_key");
 
       JWT_SECRET = config.GetValue<string>("jwt:secret");
-      JWT_TTL = config.GetValue<int>("jwt:ttl");
-      JWT_RFT = config.GetValue<int>("jwt:rft");
+      JWT_TTL = config.GetValue<long>("jwt:ttl");
+      JWT_RFT = config.GetValue<long>("jwt:rft");
 
       STMP_HOST = config.GetValue<string>("stmp:host");
       STMP_PORT = config.GetValue<int>("stmp:port");
