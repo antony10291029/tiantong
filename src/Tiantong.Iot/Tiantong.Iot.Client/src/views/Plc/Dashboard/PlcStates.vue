@@ -12,7 +12,7 @@
         <th>地址</th>
         <th>类型</th>
         <th>数据</th>
-        <th style="width: 1px">操作</th>
+        <th>操作</th>
       </thead>
       <tbody
         slot="body"
