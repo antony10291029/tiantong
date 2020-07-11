@@ -109,6 +109,36 @@ namespace Tiantong.Account.Api
       };
     }
 
+    public class ConfirmPasswordParams
+    {
+      public string message { get; set; }
+
+      public string password { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/password/confirm")]
+    public object ConfirmPassword(
+      [FromHeader] string authorization,
+      [FromBody] ConfirmPasswordParams param
+    ) {
+      var (id, _, _) = _jwt.Parse(authorization);
+
+      var user = _account.Users.FirstOrDefault(u => u.id == id);
+
+      if (user is null) {
+        throw KnownException.Error("用户不存在");
+      }
+
+      if (!_hash.Match(param.password, user.password)) {
+        throw KnownException.Error("密码确认失败");
+      }
+
+      return new {
+        message = param.message ?? "密码已确认"
+      };
+    }
+
     public class LoginByEmailParams
     {
       [Required(ErrorMessage = "邮箱地址不能为空")]
