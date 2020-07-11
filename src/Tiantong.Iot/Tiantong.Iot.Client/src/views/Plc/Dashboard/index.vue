@@ -1,24 +1,23 @@
 <template>
   <div style="padding: 1.25rem">
-    <div class="box">
-      <div class="is-flex is-vcentered">
-        <PlcRunningButton
-          :plcId="plcId"
-          :isRunning="isRunning"
-          @change="handleRunningChange"
-        />
+    <div class="is-flex is-vcentered">
+      <PlcRunningButton
+        :plcId="plcId"
+        :isRunning="isRunning"
+        @change="handleRunningChange"
+      />
 
-        <span style="width: 0.5rem"></span>
+      <span style="width: 0.5rem"></span>
 
-        <Checkbox
-          v-if="isRunning"
-          v-model="isDataWatchOpen"
-        >
-          实时监控
-        </Checkbox>
-      </div>
+      <Checkbox
+        v-if="isRunning"
+        v-model="isDataWatchOpen"
+      >
+        实时监控
+      </Checkbox>
+    </div>
 
-      <hr>
+    <div style="height: 1.25rem"></div>
 
       <template v-if="currentTab == 0">
         <div class="columns">
@@ -41,7 +40,6 @@
       <template v-else-if="currentTab == 1">
         <PlcDataDebug />
       </template>
-    </div>
   </div>
 </template>
 

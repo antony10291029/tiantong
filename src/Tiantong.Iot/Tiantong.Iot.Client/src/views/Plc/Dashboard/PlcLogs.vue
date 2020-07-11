@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="box">
     <Table
       colspan="2"
-      class="table is-bordered is-fullwidth"
+      class="table is-fullwidth"
     >
       <thead slot="head">
         <th>日志</th>

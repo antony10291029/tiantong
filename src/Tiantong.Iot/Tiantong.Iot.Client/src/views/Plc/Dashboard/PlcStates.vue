@@ -1,11 +1,11 @@
 <template>
   <AsyncLoader
-    class="is-flex-auto"
+    class="is-flex-auto box"
     :handler="getStates"
   >
     <Table
       colspan="5"
-      class="table is-centered is-nowrap is-fullwidth is-bordered"
+      class="table is-centered is-nowrap is-fullwidth"
     >
       <thead slot="head">
         <th>数据名</th>
