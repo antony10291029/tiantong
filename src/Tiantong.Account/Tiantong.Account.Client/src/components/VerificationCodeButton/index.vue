@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import account from '@/providers/contexts/account'
+import emailVerification from '@/providers/contexts/emailVerification'
 
 @Component({
   name: 'VerificationCode',
@@ -27,7 +27,7 @@ export default class extends Vue {
   async handleClick () {
     if (this.isDisabled) return
 
-    const key = await account.sendVerificationEmail(this.address, '注册账户')
+    const key = await emailVerification.sendVerificationEmail(this.address, '注册账户')
 
     this.$emit('change', key)
   }
