@@ -5,7 +5,7 @@
   >
     <aside
       class="menu has-border-right is-unselectable"
-      style="height: 100%; overflow-y: auto"
+      style="height: 100%; overflow-y: auto; min-width: 280px"
     >
       <ul class="menu-list">
         <li>

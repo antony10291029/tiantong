@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Utils;
 using Renet.Web;
@@ -46,7 +47,6 @@ namespace Tiantong.Iot.Api
     [Route("test")]
     public object TestRun()
     {
-      
       var plc = new Plc {
         id = 1,
         name = "test",
@@ -77,7 +77,8 @@ namespace Tiantong.Iot.Api
                   when_value = "",
                   url = "http://localhost:5000/data",
                   value_key = "heartbeat",
-                  data = "{\"plc\": 1}",
+                  header = "{}",
+                  body = "{\"plc\": 1}",
                   is_value_to_string = false,
                 }
               }
@@ -105,7 +106,8 @@ namespace Tiantong.Iot.Api
                   when_value = "",
                   url = "http://localhost:5000/data",
                   value_key = "scanner",
-                  data = "{\"plc\": 1}",
+                  header = "{}",
+                  body = "{\"plc\": 1}",
                   is_value_to_string = false,
                 }
               }

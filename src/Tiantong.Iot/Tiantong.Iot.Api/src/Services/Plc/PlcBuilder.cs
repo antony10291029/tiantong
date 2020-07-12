@@ -91,7 +91,7 @@ namespace Tiantong.Iot.Api
       foreach (var pusher in st.http_pushers) {
         ResolveHttpPusher<T>(client, manager, st.name)
           .IsConcurrent(pusher.is_concurrent)
-          .Post(pusher.url, pusher.value_key, pusher.is_value_to_string, pusher.data)
+          .Post(pusher.url, pusher.value_key, pusher.is_value_to_string, pusher.body)
           .When(pusher.when_opt, pusher.when_value)
           .Id(pusher.id);
       }

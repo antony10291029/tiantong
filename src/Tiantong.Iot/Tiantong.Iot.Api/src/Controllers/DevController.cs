@@ -101,7 +101,8 @@ namespace Tiantong.Iot.Api
                   when_value = "",
                   value_key = "value",
                   is_value_to_string = false,
-                  data = "{\"field\": 1}"
+                  header = "{}",
+                  body = "{\"field\": 1}"
                 }
               }
             }

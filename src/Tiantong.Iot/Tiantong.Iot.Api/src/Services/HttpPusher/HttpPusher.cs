@@ -24,12 +24,12 @@ namespace Tiantong.Iot.Api
       return this;
     }
 
-    public HttpPusher<T> Post(string url, string valueKey, bool toString = false, string json = null, Encoding encoding = null)
+    public HttpPusher<T> Post(string url, string valueKey, bool toString = false, string header = null, string body = null, Encoding encoding = null)
     {
       if (valueKey == "") {
         valueKey = "value";
       }
-      var data = JsonSerializer.Deserialize<Dictionary<string, object>>(json ?? "{}");
+      var data = JsonSerializer.Deserialize<Dictionary<string, object>>(body ?? "{}");
       _handler = async value => {
         if (!_isConcurrent && _isWaiting) {
           return;
@@ -44,7 +44,7 @@ namespace Tiantong.Iot.Api
         }
 
         try {
-          await _httpClient.PostAsync(_id, url, JsonSerializer.Serialize(data), encoding);
+          await _httpClient.PostAsync(_id, url, header, JsonSerializer.Serialize(data), encoding);
         } catch {
 
         } finally {
@@ -54,7 +54,5 @@ namespace Tiantong.Iot.Api
 
       return this;
     }
-
   }
-
 }

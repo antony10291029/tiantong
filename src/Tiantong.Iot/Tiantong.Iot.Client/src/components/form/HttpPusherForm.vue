@@ -103,11 +103,21 @@
 
     <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
       <label class="label" style="width: 100px; align-self: start">
-        附加数据
+        Header
       </label>
 
       <div style="width: 480px">
-        <Textarea v-model="pusher.data"></Textarea>
+        <Textarea v-model="pusher.body"></Textarea>
+      </div>
+    </div>
+
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px; align-self: start">
+        Body
+      </label>
+
+      <div style="width: 480px">
+        <Textarea v-model="pusher.body"></Textarea>
       </div>
     </div>
 

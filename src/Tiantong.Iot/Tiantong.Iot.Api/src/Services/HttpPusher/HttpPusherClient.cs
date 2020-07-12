@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System;
-using System.Text;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Tiantong.Iot.Entities;
 
@@ -25,29 +27,38 @@ namespace Tiantong.Iot.Api
       _client.Timeout = new TimeSpan(0, 0, 0, 0, mileseconds);
     }
 
-    public async Task PostAsync(int id, string uri, string data, Encoding encoding = null)
+    public async Task PostAsync(int id, string uri, string header, string body, Encoding encoding = null)
     {
-      var content = new StringContent(data, encoding ?? Encoding.UTF8, "application/json");
-      try {
-        var response = await _client.PostAsync(uri, content);
-        var statusCode = ((int) response.StatusCode);
-        var responseContent = await response.Content.ReadAsStringAsync();
-        _domain.Log(new HttpPusherLog {
-          pusher_id = id,
-          request = data,
-          response = responseContent,
-          status_code = statusCode.ToString()
-        });
-      } catch (Exception e) {
-        _domain.Log(new HttpPusherError {
-          pusher_id = id,
-          message = e.Message,
-        });
+      using (var request = new HttpRequestMessage(HttpMethod.Post, uri)) {
+        request.Content = new StringContent(body, encoding ?? Encoding.UTF8, "application/json");
 
-        throw e;
+        foreach (var keyValue in JsonSerializer.Deserialize<Dictionary<string, object>>(header)) {
+          request.Headers.Add(keyValue.Key, keyValue.Value.ToString());
+        }
+
+        try {
+          var response = await _client.SendAsync(request);
+
+          var statusCode = ((int) response.StatusCode);
+          var responseContent = await response.Content.ReadAsStringAsync();
+
+          var obj = JsonSerializer.Deserialize<object>(responseContent);
+
+          _domain.Log(new HttpPusherLog {
+            pusher_id = id,
+            request = body,
+            response = responseContent,
+            status_code = statusCode.ToString()
+          });
+        } catch (Exception e) {
+          _domain.Log(new HttpPusherError {
+            pusher_id = id,
+            message = e.Message,
+          });
+
+          throw e;
+        }
       }
     }
-
   }
-
 }

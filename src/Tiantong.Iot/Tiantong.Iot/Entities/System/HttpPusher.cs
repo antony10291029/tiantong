@@ -28,7 +28,10 @@ namespace Tiantong.Iot.Entities
     public virtual bool is_value_to_string { get; set; }
 
     [JsonObject]
-    public virtual string data { get; set; }
+    public virtual string body { get; set; }
+    
+    [JsonObject]
+    public virtual string header { get; set; }
 
     public virtual bool is_concurrent { get; set; }
   }
