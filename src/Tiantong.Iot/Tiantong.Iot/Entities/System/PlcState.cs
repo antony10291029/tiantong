@@ -18,6 +18,9 @@ namespace Tiantong.Iot.Entities
     [MaxLength(20, ErrorMessage = "设备名称长度不可超过20")]
     public virtual string name { get; set; }
 
+    [MaxLength(20, ErrorMessage = "编号长度不可超过20")]
+    public virtual string number { get; set; }
+
     [PlcStateType]
     public virtual string type { get; set; }
 

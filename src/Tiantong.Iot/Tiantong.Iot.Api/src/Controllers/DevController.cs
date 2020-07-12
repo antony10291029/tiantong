@@ -75,12 +75,14 @@ namespace Tiantong.Iot.Api
       _random.For(10, 20, i => {
         _system.Add(new Plc {
           name = $"测试设备 {i}",
+          number = $"{i}",
           comment = $"测试设备 {i}",
           host = "localhost",
           port = 8000,
           model = PlcModel.Test,
           states = _random.Enumerate(1, 10).Select(j => new PlcState {
             name = $"测试数据点 {j}",
+            number = $"{j}",
             type = _random.Bool() ? PlcStateType.String : PlcStateType.UInt16,
             address = $"D{_random.Int(1000, 10000)}",
             length = 10,
@@ -93,6 +95,7 @@ namespace Tiantong.Iot.Api
               new PlcStateHttpPusher {
                 pusher = new HttpPusher {
                   name = "测试推送",
+                  number = "1",
                   url = "http://localhost:5000/data",
                   when_opt = "",
                   when_value = "",

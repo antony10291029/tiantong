@@ -1,21 +1,29 @@
 <template>
-  <section>
-    <div class="tabs" style="margin-bottom: 0">
-      <ul>
-        <li class="is-active">
-          <a>添加 PLC</a>
-        </li>
-      </ul>
-    </div>
+  <section style="overflow: auto">
     <div class="box" style="margin: 1.25rem; padding: 0">
       <PlcForm :plc="plc">
+        <template #header>
+          <p class="title is-4">
+            添加 PLC
+          </p>
+
+          <hr>
+        </template>
         <template #footer>
-          <AsyncButton
-            :handler="handleSubmit"
-            class="button is-info is-small"
+          <hr>
+
+          <div
+            class="is-flex"
+            style="padding: 0.75rem 0"
           >
-            提交
-          </AsyncButton>
+            <div style="width: 100px"></div>
+            <AsyncButton
+              :handler="handleSubmit"
+              class="button is-info is-small"
+            >
+              提交
+            </AsyncButton>
+          </div>
         </template>
       </PlcForm>
     </div>

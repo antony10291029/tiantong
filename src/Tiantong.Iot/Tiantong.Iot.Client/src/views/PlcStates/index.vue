@@ -1,14 +1,17 @@
 <template>
   <AsyncLoader
     :handler="getStates"
-    style="padding: 1.25rem;"
+    style="padding: 1.25rem"
   >
-    <div class="box">
-      <div class="is-flex">
-        <div style="min-width: 400px; max-width: 400px">
+    <div class="columns">
+      <div class="column is-narrow">
+        <div
+          class="box"
+          style="width: 400px"
+        >
           <Table
             colspan="4"
-            class="table is-bordered is-fullwidth is-nowrap is-hoverable"
+            class="table is-fullwidth is-nowrap is-hoverable"
           >
             <thead slot="head">
               <th>
@@ -50,23 +53,20 @@
               </tr>
             </tbody>
           </Table>
-
-          <div style="height: 0.75rem"></div>
-
-          <div>
-            <router-link
-              :to="`/plcs/${plcId}/states/create`"
-              class="button is-info is-small"
-            >
-              添加
-            </router-link>
-          </div>
         </div>
 
-        <div style="min-width: 1.25rem; max-width: 1.25rem"></div>
+        <div>
+          <router-link
+            :to="`/plcs/${plcId}/states/create`"
+            class="button is-info is-small"
+          >
+            添加
+          </router-link>
+        </div>
+      </div>
 
+      <div class="column">
         <router-view
-          class="is-flex-auto"
           :key="stateId"
           :plcId="plcId"
           :stateId="stateId"

@@ -1,6 +1,7 @@
 export class HttpPusher {
   id = 0
   name = '数据推送'
+  number = ''
   url = 'http://192.168.1.1'
   data = '{}'
   when_opt = ''

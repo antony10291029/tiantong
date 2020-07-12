@@ -2,6 +2,7 @@ import Input from './Input.vue'
 import Radio from './Radio.vue'
 import Table from './Table.vue'
 import Loader from './Loader.vue'
+import Switcher from './Switcher.vue'
 import Checkbox from './Checkbox.vue'
 import Textarea from './Textarea.vue'
 import Pagination from './Pagination.vue'
@@ -19,6 +20,7 @@ export default {
     Vue.component('Radio', Radio)
     Vue.component('Table', Table)
     Vue.component('Loader', Loader)
+    Vue.component('Switcher', Switcher)
     Vue.component('Checkbox', Checkbox)
     Vue.component('Textarea', Textarea)
     Vue.component('DatePicker', DatePicker)

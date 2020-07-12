@@ -5,9 +5,9 @@
       :state="state"
     />
 
-    <div style="height: 0.75rem"></div>
+    <div class="is-flex" style="padding: 0.75rem 0">
+      <div style="width: 100px"></div>
 
-    <div>
       <AsyncButton
         :handler="handleSave"
         :disabled="!isChanged"

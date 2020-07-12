@@ -90,7 +90,8 @@ namespace Tiantong.Iot.Api
     {
       return _system.PlcStates
         .Where(s => s.plc_id == plcId)
-        .OrderBy(s => s.id)
+        .OrderBy(s => s.number)
+          .ThenBy(s => s.id)
         .ToArray();
     }
   }

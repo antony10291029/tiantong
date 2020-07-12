@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <div
-      class="tabs is-bordered"
-      style="margin-bottom: 0"
-    >
+  <div class="box" style="padding: 0">
+    <div class="tabs mb-0">
       <ul>
         <router-link
           tag="li"
@@ -22,12 +19,14 @@
       </ul>
     </div>
 
-    <router-view
-      :plcId="$attrs.plcId"
-      :stateId="stateId"
-      :baseURL="`${baseURL}/states/${stateId}`"
-      v-on="$listeners"
-    />
+    <div style="padding: 1.25rem">
+      <router-view
+        :plcId="$attrs.plcId"
+        :stateId="stateId"
+        :baseURL="`${baseURL}/states/${stateId}`"
+        v-on="$listeners"
+      />
+    </div>
   </div>
 </template>
 

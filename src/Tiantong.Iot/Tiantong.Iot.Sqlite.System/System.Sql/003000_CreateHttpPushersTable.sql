@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS "http_pushers" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "name" TEXT NOT NULL,
+  "number" TEXT NOT NULL,
   "url" TEXT NOT NULL,
   "data" TEXT NOT NULL,
   "when_opt" TEXT NOT NULL,

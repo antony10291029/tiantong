@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <div
-      class="tabs is-bordered"
-      style="margin-bottom: 0; border-bottom: none"
-    >
+  <div class="box is-paddingless">
+    <div class="tabs mb-0">
       <ul>
         <li class="is-active">
           <a>创建数据点</a>
@@ -11,24 +8,28 @@
       </ul>
     </div>
 
-    <PlcStateForm :state="state" />
+    <div style="padding: 1.25rem">
+      <PlcStateForm :state="state" />
 
-    <div style="height: 0.75rem"></div>
+      <div class="is-flex" style="padding: 0.75rem 0">
+        <div style="width: 100px"></div>
 
-    <AsyncButton
-      class="button is-info is-small"
-      style="margin-right: 0.5rem"
-      :handler="handleSubmit"
-    >
-      提交
-    </AsyncButton>
+        <AsyncButton
+          class="button is-info is-small"
+          style="margin-right: 0.5rem"
+          :handler="handleSubmit"
+        >
+          提交
+        </AsyncButton>
 
-    <a
-      @click="$router.go(-1)"
-      class="button is-info is-light is-small"
-    >
-      返回
-    </a>
+        <a
+          @click="$router.go(-1)"
+          class="button is-info is-light is-small"
+        >
+          返回
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 

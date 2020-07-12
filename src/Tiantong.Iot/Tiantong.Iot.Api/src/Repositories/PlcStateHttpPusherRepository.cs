@@ -61,6 +61,8 @@ namespace Tiantong.Iot.Api
         .Include(state => state.pusher)
         .Where(shp => shp.state_id == stateId)
         .Select(shp => shp.pusher)
+        .OrderBy(shp => shp.number)
+          .ThenBy(shp => shp.id)
         .ToArray();
     }
   }

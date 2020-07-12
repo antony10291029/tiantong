@@ -1,64 +1,71 @@
 <template>
-  <div
-    class="is-bordered"
-    style="padding: 1.25rem; border-top: none"
-  >
-    <div class="field" style="width: 320px">
-      <label class="label">推送名</label>
-      <div class="control">
-        <input
-          v-model="pusher.name"
-          type="text" class="input"
-        >
-      </div>
+  <div>
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px">
+        推送名
+      </label>
+      <input
+        v-model="pusher.name"
+        type="text" class="input"
+        style="width: 320px"
+      >
     </div>
 
-    <div class="field" style="width: 320px">
-      <label class="label">URL</label>
-      <div class="control">
+    <hr>
+
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px">
+        编号
+      </label>
+      <input
+        v-model="pusher.number"
+        type="text" class="input"
+        style="width: 320px"
+      >
+    </div>
+
+    <hr>
+
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px">
+        URL
+      </label>
         <input
           v-model="pusher.url"
           type="text" class="input"
+          style="width: 320px"
         >
-      </div>
     </div>
 
-    <div class="field" style="width: 320px">
-      <label class="label">字段名</label>
-      <div class="control">
-        <input
-          v-model="pusher.value_key"
-          type="text" class="input"
-        >
-      </div>
-    </div>
+    <hr>
 
-    <div class="field">
-      <label class="label">推送条件</label>
-    </div>
-
-    <div
-      class="field has-addons"
-      style="width: 320px"
-    >
-      <div
-        v-if="pusher.when_opt === ''"
-        class="control is-expanded"
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px">
+        字段名
+      </label>
+      <input
+        v-model="pusher.value_key"
+        type="text" class="input"
+        style="width: 320px"
       >
-        <div class="select is-fullwidth">
-          <select v-model="pusher.when_opt">
-            <option
-              v-for="option in whenOptions" :key="option.value"
-              :value="option.value"
-            >
-              {{option.text}}
-            </option>
-          </select>
-        </div>
-      </div>
-      <template v-else>
-        <div class="control">
-          <div class="select">
+    </div>
+
+    <hr>
+
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px">
+        推送条件
+      </label>
+
+      <div
+        class="field has-addons"
+        style="width: 320px"
+      >
+        <div
+          v-if="pusher.when_opt === ''"
+          class="control is-expanded"
+        >
+          <div class="select is-fullwidth">
             <select v-model="pusher.when_opt">
               <option
                 v-for="option in whenOptions" :key="option.value"
@@ -69,39 +76,68 @@
             </select>
           </div>
         </div>
-        <div class="control is-expanded">
-          <input
-            v-model="pusher.when_value"
-            type="text" class="input"
-          >
-        </div>
-      </template>
+        <template v-else>
+          <div class="control">
+            <div class="select">
+              <select v-model="pusher.when_opt">
+                <option
+                  v-for="option in whenOptions" :key="option.value"
+                  :value="option.value"
+                >
+                  {{option.text}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="control is-expanded">
+            <input
+              v-model="pusher.when_value"
+              type="text" class="input"
+            >
+          </div>
+        </template>
+      </div>
     </div>
 
-    <div class="field" style="width: 480px">
-      <label class="label">附加数据</label>
-      <div class="control">
+    <hr>
+
+    <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
+      <label class="label" style="width: 100px; align-self: start">
+        附加数据
+      </label>
+
+      <div style="width: 480px">
         <Textarea v-model="pusher.data"></Textarea>
       </div>
     </div>
 
-    <div class="class">
-      <label class="label">
-        <Checkbox v-model="pusher.is_value_to_string">转为字符串</Checkbox>
-      </label>
-      <div class="control">
+    <hr>
 
-      </div>
+    <div
+      class="is-flex is-vcentered"
+      style="padding: 0.75rem 0"
+    >
+      <label class="label" style="width: 100px;">
+        转为字符串
+      </label>
+
+      <Switcher v-model="pusher.is_value_to_string"></Switcher>
     </div>
 
-    <div class="class">
-      <label class="label">
-        <Checkbox v-model="pusher.is_concurrent">并发推送</Checkbox>
-      </label>
-      <div class="control">
+    <hr>
 
-      </div>
+    <div
+      class="is-flex is-vcentered"
+      style="padding: 0.75rem 0"
+    >
+      <label class="label" style="width: 100px;">
+        并发推送
+      </label>
+
+      <Switcher v-model="pusher.is_concurrent"></Switcher>
     </div>
+
+    <hr>
 
     <slot name="footer" />
   </div>

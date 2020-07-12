@@ -53,7 +53,8 @@ namespace Tiantong.Iot.Api
     public Plc[] All()
     {
       return _system.Plcs
-        .OrderBy(p => p.id)
+        .OrderBy(p => p.number)
+          .ThenBy(p => p.id)
         .ToArray();
     }
 
@@ -63,14 +64,13 @@ namespace Tiantong.Iot.Api
         .Include(p => p.states)
           .ThenInclude(s => s.state_http_pushers)
             .ThenInclude(shp => shp.pusher)
-        .OrderBy(p => p.id)
+        .OrderBy(p => p.number)
+          .ThenBy(p => p.id)
         .ToArray();
     }
 
     public HttpPusher[] AllHttpPushers(int plcId)
     {
-      System.Console.WriteLine(plcId);
-
       return _system.PlcStates
         .Include(s => s.state_http_pushers)
           .ThenInclude(shp => shp.pusher)

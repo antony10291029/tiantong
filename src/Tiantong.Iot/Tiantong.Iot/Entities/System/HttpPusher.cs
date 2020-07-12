@@ -12,6 +12,10 @@ namespace Tiantong.Iot.Entities
 
     public virtual string name { get; set; }
 
+    [MaxLength(20, ErrorMessage = "编号长度不可超过20")]
+    public virtual string number { get; set; }
+
+
     [Url(ErrorMessage = "URL 格式错误")]
     public virtual string url { get; set; }
 

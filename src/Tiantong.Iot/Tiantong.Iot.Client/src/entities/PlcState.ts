@@ -2,6 +2,7 @@ export class PlcState {
   id: number = 0
   plc_id: number = 0
   name: string = ''
+  number: string = ''
   type: string = PlcStateType.uint16
   address: string = ''
   length: number = 8

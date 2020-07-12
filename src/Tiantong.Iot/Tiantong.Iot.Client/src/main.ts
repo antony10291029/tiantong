@@ -5,7 +5,7 @@ import store from './providers/vuex'
 import notify from './providers/notify'
 import confirm from './providers/confirm'
 import router from './providers/vue-router'
-import components from './share/components'
+import components from './share/components/index'
 import directives from './providers/directives'
 import confirmAdminPassword from './providers/confirm-admin-password'
 

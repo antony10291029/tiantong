@@ -34,6 +34,7 @@ namespace Tiantong.Iot.Sqlite.Test
       db.HttpPushers.Add(new HttpPusher {
         id = 0,
         name = "name",
+        number = "1",
         when_opt = "!=",
         when_value = "value",
         url = "localhost",
@@ -54,6 +55,7 @@ namespace Tiantong.Iot.Sqlite.Test
       db.Plcs.Add(new Plc() {
         model = "test",
         name = "name",
+        number = "1",
         host = "localhost",
         port = 102,
         comment = "comment",
@@ -84,6 +86,7 @@ namespace Tiantong.Iot.Sqlite.Test
         id = 0,
         plc_id = 0,
         name = "name",
+        number = "1",
         type = "uint16",
         address = "d100",
         length = 1,

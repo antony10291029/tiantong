@@ -1,43 +1,60 @@
 <template>
-  <div class="box is-paddingless" style="margin: 1.25rem">
-    <PlcForm
-      :plc="plc"
-      :handler="getPlc"
-    >
-      <template #footer>
-        <div class="field" style="width: 480px">
-          <div class="control is-flex">
-            <AsyncButton
-              :handler="handleSave"
-              :disabled="!isChanged"
-              class="button is-info is-small"
-              style="margin-right: 0.5rem"
-            >
-              保存
-            </AsyncButton>
+  <section>
+    <div class="box is-paddingless" style="margin: 1.25rem;">
+      <PlcForm
+        :plc="plc"
+        :handler="getPlc"
+      >
+        <template #header>
+          <p class="title is-4">PLC 设置</p>
 
-            <AsyncButton
-              :handler="handleTest"
-              :disabled="isChanged"
-              class="button is-success is-small"
-              style="margin-right: 0.5rem"
-            >
-              连接测试
-            </AsyncButton>
+          <hr>
+        </template>
 
-            <span class="is-flex-auto"></span>
+        <template #footer>
+          <hr>
 
-            <AsyncButton
-              :handler="handleDelete"
-              class="button is-danger is-light is-small"
-            >
-              删除
-            </AsyncButton>
+          <div
+            class="is-flex"
+            style="padding: 0.75rem 0"
+          >
+            <div style="width: 100px"></div>
+
+            <div class="field" style="width: 480px">
+              <div class="control is-flex">
+                <AsyncButton
+                  :handler="handleSave"
+                  :disabled="!isChanged"
+                  class="button is-info is-small"
+                  style="margin-right: 0.5rem"
+                >
+                  保存
+                </AsyncButton>
+
+                <AsyncButton
+                  :handler="handleTest"
+                  :disabled="isChanged"
+                  class="button is-success is-small"
+                  style="margin-right: 0.5rem"
+                >
+                  连接测试
+                </AsyncButton>
+
+                <span class="is-flex-auto"></span>
+
+                <AsyncButton
+                  :handler="handleDelete"
+                  class="button is-danger is-light is-small"
+                >
+                  删除
+                </AsyncButton>
+              </div>
+            </div>
           </div>
-        </div>
-      </template>
-    </PlcForm>
-  </div>
+        </template>
+      </PlcForm>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">

@@ -7,56 +7,126 @@
     <template v-if="!isPending">
       <slot name="header" />
 
-      <div class="field" style="width: 320px">
-        <label class="label">设备名称</label>
-        <div class="control">
+      <div
+        class="is-flex is-vcentered"
+        style="padding: 0.75rem 0"
+      >
+        <label class="label" style="width: 100px">
+          名称
+        </label>
+
+        <div class="is-flex-auto">
           <input
             v-model="plc.name"
             type="text" class="input"
+            style="width: 320px"
           >
         </div>
       </div>
-      <div class="field" style="width: 320px">
-        <label class="label">通信协议</label>
-        <div
-          v-for="(model, key) in models" :key="key"
-          @click="plc.model = model.value"
-          class="is-bordered is-flex is-vcentered"
-          style="padding: 0.5rem; cursor: pointer"
-          :style="key !== 0 && 'border-top: none'"
-        >
-          <Radio :value="plc.model === model.value">
-            {{model.text}}
-          </Radio>
+
+      <hr>
+
+      <div
+        class="is-flex is-vcentered"
+        style="padding: 0.75rem 0"
+      >
+        <label class="label" style="width: 100px">
+          编号
+        </label>
+
+        <div class="is-flex-auto">
+          <input
+            v-model="plc.number"
+            type="text" class="input"
+            style="width: 320px"
+          >
         </div>
       </div>
 
+      <hr>
+
+      <div
+        class="is-flex is-vcentered"
+        style="padding: 0.75rem 0"
+      >
+        <label
+          class="label"
+          style="width: 100px; align-self: start"
+        >
+          通信协议
+        </label>
+        <div class="is-flex-auto">
+          <div
+            v-for="(model, key) in models" :key="key"
+            @click="plc.model = model.value"
+            class="is-bordered is-flex is-vcentered"
+            style="padding: 0.5rem; cursor: pointer; width: 320px;"
+            :style="key !== 0 && 'border-top: none'"
+          >
+            <Radio :value="plc.model === model.value">
+              {{model.text}}
+            </Radio>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
       <template v-if="plc.model !== 'test'">
-        <div class="field" style="width: 320px">
-          <label class="label">IP 地址</label>
-          <div class="control">
+        <div
+          class="is-flex is-vcentered"
+          style="padding: 0.75rem 0"
+        >
+          <label class="label" style="width: 100px">
+            IP 地址
+          </label>
+
+          <div class="is-flex-auto">
             <input
               v-model="plc.host"
               type="text" class="input"
+              style="width: 320px"
             >
           </div>
         </div>
-        <div class="field" style="width: 320px">
-          <label class="label">IP 端口</label>
-          <div class="control">
-            <Input
+
+        <hr>
+
+        <div
+          class="is-flex is-vcentered"
+          style="padding: 0.75rem 0"
+        >
+          <label class="label" style="width: 100px">
+            IP 端口
+          </label>
+
+          <div class="is-flex-auto">
+            <input
               v-model="plc.port"
-              type="number" class="input"
-            />
+              type="text" class="input"
+              style="width: 320px"
+            >
           </div>
         </div>
+
+        <hr>
       </template>
-      <div class="field" style="width: 480px">
-        <label class="label">备注</label>
-        <div class="control">
-          <Textarea v-model="plc.comment" />
+
+        <div
+          class="is-flex is-vcentered"
+          style="padding: 0.75rem 0"
+        >
+          <label
+            class="label"
+            style="width: 100px; align-self: start"
+          >
+            备注
+          </label>
+
+          <div style="width: 480px;">
+            <Textarea v-model="plc.comment"/>
+          </div>
         </div>
-      </div>
 
       <slot name="footer" />
     </template>

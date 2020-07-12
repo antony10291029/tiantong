@@ -6,21 +6,27 @@
         :pusher="pusher"
       >
         <template #footer>
-          <div class="field">
-            <div class="control">
-              <AsyncButton
-                :disabled="!isPusherChanged(index)"
-                class="button is-info is-small"
-                style="margin-right: 0.5rem"
-                :handler="() => handleSave(stateId, pusher)"
-              >保存</AsyncButton>
+          <div class="is-flex" style="padding: 0.75rem 0">
+            <div style="width: 100px"></div>
 
-              <AsyncButton
-                class="button is-danger is-light is-small"
-                :handler="() => handleDelete(stateId, pusher.id)"
-              >删除</AsyncButton>
+            <div class="field">
+              <div class="control">
+                <AsyncButton
+                  :disabled="!isPusherChanged(index)"
+                  class="button is-info is-small"
+                  style="margin-right: 0.5rem"
+                  :handler="() => handleSave(stateId, pusher)"
+                >保存</AsyncButton>
+
+                <AsyncButton
+                  class="button is-danger is-light is-small"
+                  :handler="() => handleDelete(stateId, pusher.id)"
+                >删除</AsyncButton>
+              </div>
             </div>
           </div>
+
+          <div class="has-border-bottom" style="margin: 1.25rem -1.25rem"></div>
         </template>
       </HttpPusherForm>
     </template>
@@ -32,18 +38,16 @@
       @close="isCreateShow = false"
     />
 
-    <div
-      class="is-bordered"
-      style="border-top: none"
-    >
+    <div style="margin: -1.25rem -1.25rem -1.25rem -1.25rem">
       <a
         @click="isCreateShow = true"
         class="button is-white has-text-dark"
-        style="border: none; border-radius: 0; width: 100%"
+        style="border: none; border-radius: 0; width: 100%;"
       >
         添加推送
       </a>
     </div>
+
   </AsyncLoader>
 </template>
 
