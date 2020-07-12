@@ -28,8 +28,8 @@
             <tr v-for="log in logs.data" :key="log.id">
               <td>{{pushers[log.pusher_id].name}}</td>
               <td>{{pushers[log.pusher_id].url}}</td>
-              <td>{{log.request}}</td>
-              <td>{{log.response}}</td>
+              <td>{{log.request.split('\\u0000').join('')}}</td>
+              <td>{{log.response.split('\\u0000').join('')}}</td>
               <td>{{log.status_code}}</td>
               <td>{{log.created_at.split('.')[0]}}</td>
             </tr>
