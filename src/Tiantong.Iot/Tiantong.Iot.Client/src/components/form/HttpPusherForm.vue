@@ -118,7 +118,7 @@
       style="padding: 0.75rem 0"
     >
       <label class="label" style="width: 100px;">
-        转为字符串
+        转字符串
       </label>
 
       <Switcher v-model="pusher.is_value_to_string"></Switcher>

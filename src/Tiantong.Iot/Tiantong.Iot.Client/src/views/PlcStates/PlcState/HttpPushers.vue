@@ -38,10 +38,10 @@
       @close="isCreateShow = false"
     />
 
-    <div style="margin: -1.25rem -1.25rem -1.25rem -1.25rem">
+    <div style="margin: -1.25rem">
       <a
         @click="isCreateShow = true"
-        class="button is-white has-text-dark"
+        class="button is-white has-text-link"
         style="border: none; border-radius: 0; width: 100%;"
       >
         添加推送
