@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import axios from '@/providers/axios'
+import context from '@/providers/context/domain'
 
 @Component({
   name: 'SystemLock'
@@ -45,14 +45,14 @@ export default class extends Vue {
   isLocked = false
 
   async getIsLocked () {
-    let response = await axios.post('/system-lock/get')
+    let response = await context.post('/system-lock/get')
 
     this.isLocked = response.data
   }
 
   lockSystem () {
     this.$confirmAdminPassword(async password => {
-      await axios.post('/system-lock/lock', { password })
+      await context.post('/system-lock/lock', { password })
       await this.getIsLocked()
       this.$router.push('/unlock-system')
     })
@@ -60,7 +60,7 @@ export default class extends Vue {
 
   unlockSystem () {
     this.$confirmAdminPassword(async password => {
-      await axios.post('/system-lock/unlock', { password })
+      await context.post('/system-lock/unlock', { password })
       await this.getIsLocked()
     })
   }

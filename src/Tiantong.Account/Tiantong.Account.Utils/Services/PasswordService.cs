@@ -21,25 +21,30 @@ namespace Tiantong.Account.Utils
       _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
     }
 
-    public async Task<int> Confirm(string password)
+    public async Task ConfirmAsync(string token, string password)
     {
       if (password == null) {
         throw KnownException.Error("密码不能为空");
       }
+
       var text = JsonSerializer.Serialize(new {
         password = password
       });
 
       var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
 
-      var response = await _client.PostAsync("/password/confirm", content);
-      var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+      using (var request = new HttpRequestMessage(HttpMethod.Post, "/password/confirm")) {
+        request.Content = content;
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-      if (response.StatusCode != HttpStatusCode.OK) {
-        throw KnownException.Error(dom.RootElement.GetProperty("message").GetString(), (int) response.StatusCode);
+        var response = await _client.SendAsync(request);
+
+        var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+        if (response.StatusCode != HttpStatusCode.OK) {
+          throw KnownException.Error(dom.RootElement.GetProperty("message").GetString(), (int) response.StatusCode);
+        }
       }
-
-      return dom.RootElement.GetProperty("id").GetInt32();
     }
   }
 }

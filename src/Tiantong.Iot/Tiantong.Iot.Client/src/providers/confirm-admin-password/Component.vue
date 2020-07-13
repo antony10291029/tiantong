@@ -13,10 +13,10 @@
       </div>
 
       <div class="modal-card-body">
-        <p class="label">
-          输入密码
-        </p>
         <div class="field">
+          <p class="label" style="margin-bottom: 0.5rem">
+            输入密码
+          </p>
           <div class="control">
             <input
               class="input"

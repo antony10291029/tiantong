@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Renet.Utils;
 using Renet.Web;
+using Tiantong.Account.Utils;
 using Tiantong.Iot.Entities;
 using Tiantong.Iot.Sqlite.Log;
 using Tiantong.Iot.Sqlite.System;
@@ -22,6 +23,7 @@ namespace Tiantong.Iot.Api
       services.AddSingleton<HttpPusherClient>();
       services.AddSingleton<HttpPusherFactory>();
       services.AddSingleton<DomainContextFactory>();
+      services.AddHttpClient<PasswordService>();
       services.AddScoped<LogContext, SqliteLogContext>();
       services.AddScoped<SystemContext, SqliteSystemContext>();
       services.AddScoped<HttpPusherRepository>();

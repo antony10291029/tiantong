@@ -1,3 +1,4 @@
+import { RouteConfig } from 'vue-router'
 import Home from './Home/index.vue'
 import PlcList from './PlcList/index.vue'
 import PlcsDashboard from './PlcList/PlcsDashboard.vue'
@@ -20,7 +21,7 @@ import HttpPusherErrors from './Plc/HttpPusherErrors/index.vue'
 import NotFound from './_public/NotFound.vue'
 import UnlockSystem from './UnlockSystem.vue'
 
-export default [
+let routes: RouteConfig[] = [
   {
     path: '/',
     name: 'Home',
@@ -133,6 +134,14 @@ export default [
     ]
   },
   {
+    path: '/login/:path',
+    name: 'Login',
+    props: (route) => ({
+      path: atob(route.params.path)
+    }),
+    component: () => import('./Login.vue')
+  },
+  {
     path: '/unlock-system',
     name: 'UnlockSystem',
     component: UnlockSystem
@@ -143,3 +152,5 @@ export default [
     component: NotFound,
   }
 ]
+
+export default routes

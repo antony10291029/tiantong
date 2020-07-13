@@ -1,8 +1,9 @@
 <template>
-  <div class="is-flex is-centered is-vcentered" style="height: 100vh">
+  <div class="modal is-active">
+    <div class="modal-background"></div>
     <div
-      class="card is-flex is-vcentered i"
-      style="width: 440px; height: 200px"
+      class="card is-radius is-flex is-vcentered has-background-white-bis"
+      style="width: 400px; height: 220px"
     >
       <div class="card-content is-flex-auto" style="padding: 4rem">
         <div class="field">

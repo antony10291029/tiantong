@@ -16,6 +16,7 @@
     <ProjectReference Include="../../DBCore.Sqlite/DBCore.Sqlite.csproj" />
     <ProjectReference Include="../../Renet/Renet.csproj" />
     <ProjectReference Include="../../Renet.Web/Renet.Web.csproj" />
+    <ProjectReference Include="../../Tiantong.Account/Tiantong.Account.Utils/Tiantong.Account.Utils.csproj" />
     <ProjectReference Include="../Tiantong.Iot/Tiantong.Iot.csproj" />
     <ProjectReference Include="../Tiantong.Iot.Sqlite.Log/Tiantong.Iot.Sqlite.Log.csproj" />
     <ProjectReference Include="../Tiantong.Iot.Sqlite.System/Tiantong.Iot.Sqlite.System.csproj" />

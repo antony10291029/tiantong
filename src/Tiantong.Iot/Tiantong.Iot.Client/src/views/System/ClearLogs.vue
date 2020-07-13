@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1.25rem">
+  <div style="padding: 1.25rem; padding-bottom: 2rem">
     <p class="title is-5">
       日志清理
     </p>
@@ -38,7 +38,7 @@
       </label>
     </div>
 
-    <div style="height: 0.75rem"></div>
+    <div style="height: 1.25rem"></div>
 
     <div class="is-flex is-vcentered">
       <AsyncButton
