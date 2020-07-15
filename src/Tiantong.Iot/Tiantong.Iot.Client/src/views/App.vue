@@ -7,10 +7,10 @@ import axios from '@/providers/axios'
 
 export default {
   name: 'App',
-  created () {
-    axios.post("/").then(response => {
-      console.log(response.data);
-    })
+  async created () {
+    let response = await axios.post("/")
+
+    console.log(response.data)
   }
 }
 </script>

@@ -37,9 +37,6 @@
           </div>
         </div>
       </template>
-      <template v-else-if="currentTab == 1">
-        <PlcDataDebug />
-      </template>
   </div>
 </template>
 
@@ -48,7 +45,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import PlcRunningButton from './PlcRunningButton.vue'
 import PlcLogs from './PlcLogs.vue'
 import PlcStates from './PlcStates.vue'
-import PlcDataDebug from './DataDebug.vue'
 import axios from '@/providers/axios'
 
 @Component({
@@ -56,7 +52,6 @@ import axios from '@/providers/axios'
   components: {
     PlcLogs,
     PlcStates,
-    PlcDataDebug,
     PlcRunningButton,
   }
 })
