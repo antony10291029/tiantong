@@ -27,7 +27,6 @@
       <div style="border-top: none">
         <ClearLogs></ClearLogs>
       </div>
-
     </section>
   </div>
 </template>

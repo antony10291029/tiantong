@@ -7,9 +7,9 @@ namespace Tiantong.Iot.Api
   {
     public readonly string Env;
 
-    public bool IsProduction { get => Env == "Production"; }
+    public bool IsProduction => Env == "Production";
 
-    public bool IsDevelopment { get => Env == "Development"; }
+    public bool IsDevelopment => Env == "Development";
 
     public readonly string AppName;
 

@@ -1,23 +1,24 @@
 <template>
   <component :is="tag">
-    <VueLoading
+    <div
       v-if="isLoading"
-      type="spin"
-      :style="style"
-    />
+      class="is-flex is-centered is-vcentered"
+      style="width: 100%; height: 40%; padding: 2rem"
+    >
+      <div
+        class="loader"
+        :style="style"
+      ></div>
+    </div>
     <slot v-else :isLoading="isLoading"></slot>
   </component>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { VueLoading } from 'vue-loading-template'
 
 @Component({
-  name: 'Loader',
-  components: {
-    VueLoading
-  }
+  name: 'Loader'
 })
 export default class extends Vue {
   @Prop({ default: 'div' })
@@ -42,10 +43,10 @@ export default class extends Vue {
 
   get style () {
     return {
-      'fill': this.color,
+      // 'fill': this.color,
       'width': this.size,
       'height': this.size,
-      'top': '10px'
+      // 'top': '10px'
     }
   }
 
