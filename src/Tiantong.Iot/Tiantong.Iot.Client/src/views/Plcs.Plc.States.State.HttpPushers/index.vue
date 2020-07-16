@@ -54,7 +54,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import HttpPusherForm from '@/components/form/HttpPusherForm.vue'
-import HttpPusherCreate from './HttpPusherCreate.vue'
+import HttpPusherCreate from './Create.vue'
 import axios from '@/providers/axios'
 import { HttpPusher } from '@/entities'
 import cloneDeep from 'lodash/cloneDeep'

@@ -1,25 +1,22 @@
 <template>
   <AsyncLoader
-    :handler="getStates"
-    #default="{ isStatesPending }"
+    :handler="getPushers"
+    #default="{ isPushersPending }"
   >
     <AsyncLoader
-      v-if="!isStatesPending"
-      :handler="getErrors"
+      v-if="!isPushersPending"
+      :handler="getLogs"
       #default="{ isPending }"
     >
       <template v-if="!isPending">
         <Table
-          colspan="7"
+          colspan="4"
           class="table is-centered is-bordered is-fullwidth"
         >
           <thead slot="head">
-            <th>数据点</th>
-            <th>地址</th>
-            <th>类型</th>
-            <th>操作</th>
-            <th>数据</th>
-            <th>异常</th>
+            <th>推送名</th>
+            <th>URL</th>
+            <th>详情</th>
             <th>时间</th>
           </thead>
           <tbody
@@ -27,17 +24,14 @@
             v-if="logs.data.length > 0"
           >
             <tr v-for="log in logs.data" :key="log.id">
-              <td>{{states[log.state_id].name}}</td>
-              <td>{{states[log.state_id].address}}</td>
-              <td>{{states[log.state_id].type}}</td>
-              <td>{{log.operation}}</td>
-              <td>{{log.value}}</td>
+              <td>{{pushers[log.pusher_id].name}}</td>
+              <td>{{pushers[log.pusher_id].url}}</td>
               <td>{{log.message}}</td>
               <td>{{log.created_at.split('.')[0]}}</td>
             </tr>
           </tbody>
           <tbody v-else>
-            <EmptyRow :colspan="7" />
+            <EmptyRow :colspan="6" />
           </tbody>
         </Table>
 
@@ -56,10 +50,10 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import StateLogs from './Logs.vue'
 import axios from '@/providers/axios'
-import { PlcState, PlcStateError } from '@/entities'
+import { PlcState, PlcStateLog, HttpPusher } from '@/entities'
 
 @Component({
-  name: 'PlcStateErrors',
+  name: 'PlcStateLogs',
 })
 export default class extends Vue {
   @Prop({ required: true })
@@ -71,6 +65,8 @@ export default class extends Vue {
 
   pageSize = 15
 
+  pushers: { [key: string]: HttpPusher } = {}
+
   logs = {
     meta: {
       page: 1,
@@ -80,22 +76,26 @@ export default class extends Vue {
     data: []
   }
 
-  async getStates () {
-    let response = await axios.post('/plcs/states/all', {
+  get pusherIds () {
+    return Object.values(this.pushers).map(pusher => pusher.id)
+  }
+
+  async getPushers () {
+    let response = await axios.post('/plcs/http-pushers/all', {
       plc_id: this.plcId
     })
 
-    this.states = {}
-    response.data.forEach((state: PlcState) => {
-      this.$set(this.states, state.id, state)
+    this.pushers = {}
+    response.data.forEach((pusher: HttpPusher) => {
+      this.$set(this.pushers, pusher.id, pusher)
     })
   }
 
-  async getErrors () {
-    let response = await axios.post('/plcs/state-errors/paginate', {
-      plc_id: this.plcId,
+  async getLogs () {
+    let response = await axios.post('/plcs/http-pusher-errors/paginate', {
+      ids: this.pusherIds,
       page: this.page,
-      page_size: this.pageSize,
+      page_size: this.pageSize
     })
 
     this.logs = response.data
@@ -103,7 +103,7 @@ export default class extends Vue {
 
   async changePage (page: number) {
     this.page = page
-    await this.getErrors()
+    await this.getLogs()
   }
 }
 </script>

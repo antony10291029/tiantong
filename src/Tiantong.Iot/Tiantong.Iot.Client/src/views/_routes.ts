@@ -1,27 +1,28 @@
 import { RouteConfig } from 'vue-router'
 import Home from './Home/index.vue'
-import PlcList from './PlcList/index.vue'
-import PlcsDashboard from './PlcList/PlcsDashboard.vue'
-import Plc from './Plc/index.vue'
-import PlcLogs from './Plc/Logs/index.vue'
-import PlcCreate from './Plc/PlcCreate.vue'
+import Login from './Login/index.vue'
+import NotFound from './NotFound/index.vue'
+import Plcs from './Plcs/index.vue'
+import PlcsCreate from './Plcs.Create/index.vue'
+import PlcsDashboard from './Plcs.Dashboard/index.vue'
+import PlcsPlc from './Plcs.Plc/index.vue'
+import PlcsPlcDashboard from './Plcs.Plc.Dashboard/index.vue'
+import PlcsPlcDebug from './Plcs.Plc.Debug/index.vue'
+import PlcsPlcDetail from './Plcs.Plc.Detail/index.vue'
+import PlcsPlcLogs from './Plcs.Plc.Logs/index.vue'
+import PlcsPlcLogsHttpPusher from './Plcs.Plc.Logs.HttpPusher/index.vue'
+import PlcsPlcLogsHttpPusherErrors from './Plcs.Plc.Logs.HttpPusherErrors/index.vue'
+import PlcsPlcLogsStateLogs from './Plcs.Plc.Logs.StateLogs/index.vue'
+import PlcsPlcLogsStateErrors from './Plcs.Plc.Logs.StateErrors/index.vue'
+import PlcsPlcStatesCreate from './Plcs.Plc.States.Create/index.vue'
+import PlcsPlcStatesIndex from './Plcs.Plc.States.Index/index.vue'
+import PlcsPlcStatesState from './Plcs.Plc.States.State/index.vue'
+import PlcsPlcStatesStateDetail from './Plcs.Plc.States.State.Detail/index.vue'
+import PlcsPlcStatesStateHttpPusher from './Plcs.Plc.States.State.HttpPushers/index.vue'
 import System from './System/index.vue'
-import PlcDebug from './Plc/Debug/index.vue'
-import PlcDashboard from './Plc/Dashboard/index.vue'
-import PlcStateLogs from './Plc/StateLogs/index.vue'
-import PlcStateErrors from './Plc/StateErrors/index.vue'
-import PlcConfig from './Plc/PlcConfig.vue'
-import PlcStates from './PlcStates/index.vue'
-import PlcState from './PlcStates/PlcState/index.vue'
-import PlcStateCreate from './PlcStates/PlcState/StateCreate.vue'
-import PlcStateDetail from './PlcStates/PlcState/StateDetail.vue'
-import PlcStateHttpPushers from './PlcStates/PlcState/HttpPushers.vue'
-import HttpPusherLogs from './Plc/HttpPusherLogs/index.vue'
-import HttpPusherErrors from './Plc/HttpPusherErrors/index.vue'
-import NotFound from './_public/NotFound.vue'
-import UnlockSystem from './UnlockSystem.vue'
+import UnlockSystem from './UnlockSystem/index.vue'
 
-let routes: RouteConfig[] = [
+const routes: RouteConfig[] = [
   {
     path: '/',
     name: 'Home',
@@ -35,7 +36,7 @@ let routes: RouteConfig[] = [
       },
       {
         path: 'plcs',
-        component: PlcList,
+        component: Plcs,
         children: [
           {
             path: '',
@@ -44,84 +45,84 @@ let routes: RouteConfig[] = [
           },
           {
             path: 'create',
-            name: 'PlcCreate',
-            component: PlcCreate
+            name: 'PlcsCreate',
+            component: PlcsCreate
           },
           {
             path: ':plcId',
-            name: 'Plc',
+            name: 'PlcsPlc',
             redirect: '/plcs/:plcId/dashboard',
-            props: (route: any) => ({ plcId: +route.params.plcId }),
-            component: Plc,
+            props: route => ({ plcId: +route.params.plcId }),
+            component: PlcsPlc,
             children: [
               {
                 path: 'dashboard',
-                name: 'PlcDashboard',
-                component: PlcDashboard
+                name: 'PlcsPlcDashboard',
+                component: PlcsPlcDashboard
               },
               {
                 path: 'debug',
-                name: 'PlcDebug',
-                component: PlcDebug
+                name: 'PlcsPlcDebug',
+                component: PlcsPlcDebug
               },
               {
                 path: 'config',
-                name: 'PlcConfig',
-                component: PlcConfig
+                name: 'PlcsPlcDetail',
+                component: PlcsPlcDetail
               },
               {
                 path: 'logs',
-                name: 'PlcLogs',
+                name: 'PlcsPlcLogs',
                 redirect: '/plcs/:plcId/logs/state-logs',
-                component: PlcLogs,
+                component: PlcsPlcLogs,
                 children: [
                   {
                     path: 'state-logs',
-                    name: 'PlcStateLogs',
-                    component: PlcStateLogs
+                    name: 'PlcsPlcLogsStateLogs',
+                    component: PlcsPlcLogsStateLogs
                   },
                   {
                     path: 'state-errors',
-                    name: 'PlcStateErrors',
-                    component: PlcStateErrors
+                    name: 'PlcsPlcLogsStateErrors',
+                    component: PlcsPlcLogsStateErrors
                   },
                   {
                     path: 'http-pusher-logs',
-                    name: 'PlcHttpPusherLogs',
-                    component: HttpPusherLogs
+                    name: 'PlcsPlcLogsHttpPusher',
+                    component: PlcsPlcLogsHttpPusher
                   },
                   {
                     path: 'http-pusher-errors',
-                    name: 'PlcHttpPusherErrors',
-                    component: HttpPusherErrors
+                    name: 'PlcPlcsPlcLogsHttpPusherErrors',
+                    component: PlcsPlcLogsHttpPusherErrors
                   },
                 ]
               },
               {
                 path: 'states',
-                name: 'PlcStates',
-                component: PlcStates,
+                name: 'PlcsPlcStatesIndex',
+                component: PlcsPlcStatesIndex,
                 children: [
                   {
                     path: 'create',
-                    name: 'PlcStateCreate',
-                    component: PlcStateCreate
+                    name: 'PlcsPlcStatesCreate',
+                    component: PlcsPlcStatesCreate
                   },
                   {
                     path: ':stateId',
                     redirect: '/plcs/:plcId/states/:stateId/detail',
-                    name: 'PlcState',
-                    component: PlcState,
+                    name: 'PlcsPlcStatesState',
+                    component: PlcsPlcStatesState,
                     children: [
                       {
                         path: 'detail',
-                        name: 'PlcStateDetail',
-                        component: PlcStateDetail
+                        name: 'PlcsPlcStatesStateDetail',
+                        component: PlcsPlcStatesStateDetail
                       },
                       {
                         path: 'http-posters',
-                        name: 'PlcStateHttpPushers',
-                        component: PlcStateHttpPushers
+                        name: 'PlcsPlcStatesStateHttpPusher',
+                        component: PlcsPlcStatesStateHttpPusher
                       },
                     ]
                   },
@@ -139,7 +140,7 @@ let routes: RouteConfig[] = [
     props: (route) => ({
       path: atob(route.params.path)
     }),
-    component: () => import('./Login.vue')
+    component: Login
   },
   {
     path: '/unlock-system',
