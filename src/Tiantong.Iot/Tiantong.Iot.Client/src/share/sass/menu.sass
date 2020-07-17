@@ -7,6 +7,7 @@
   background-color: $white
   border-right: 1px solid $border
   width: 260px
+  min-width: 260px
 
   .menu-list li ul
     margin-top: 0.5rem
@@ -15,14 +16,16 @@
 
   .menu-list
     a
-      margin-bottom: 0.25rem
       border: 1px solid transparent
       border-top-left-radius: 0
       border-bottom-left-radius: 0
-      border-top-right-radius: 1.25rem
-      border-bottom-right-radius: 1.25rem
       .icon
-        margin-right: 0.5rem
+        padding-left: 1rem
+        padding-right: 1.5em
     a.is-active
-      color: $link
-      background-color: #ccefff
+      box-shadow: $box-shadow
+      $gradient-top-left: darken(saturate(adjust-hue($info, -10deg), 10%), 5%)
+      $gradient-bottom-right: lighten(saturate(adjust-hue($info, 10deg), 5%), 5%)
+      background-image: linear-gradient(141deg, $gradient-bottom-right 0%, $info 50%, $gradient-top-left 100%)
+      +mobile
+        background-image: linear-gradient(141deg, $gradient-bottom-right 0%, $info 50%, $gradient-top-left 100%)
