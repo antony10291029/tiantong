@@ -26,7 +26,7 @@ namespace DBCore.Sqlite
       if (_isInMemory) {
         options.UseSqlite("DataSource=:memory:");
       } else {
-        options.UseSqlite($"DataSource=./{_dbFile}");
+        options.UseSqlite($"DataSource={_dbFile}");
       }
     }
   }
