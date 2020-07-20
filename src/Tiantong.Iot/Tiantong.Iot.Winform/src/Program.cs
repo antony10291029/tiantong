@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Tiantong.Iot.Winforms
@@ -10,6 +12,10 @@ namespace Tiantong.Iot.Winforms
       if (IsProcessExisted()) {
         return;
       }
+
+      Directory.SetCurrentDirectory(
+        Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName
+      );
 
       Application.SetHighDpiMode(HighDpiMode.SystemAware);
       Application.EnableVisualStyles();
@@ -28,5 +34,4 @@ namespace Tiantong.Iot.Winforms
       return processes.Length > 1;
     }
   }
-
 }
