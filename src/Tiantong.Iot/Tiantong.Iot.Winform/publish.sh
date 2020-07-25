@@ -10,4 +10,4 @@ cd ../Tiantong.Iot.Winform
 
 rm -r ./release || true
 
-dotnet publish -o ./release -r win10-x64 --self-contained false
+dotnet publish -o ./release -r win-x64 --self-contained false
