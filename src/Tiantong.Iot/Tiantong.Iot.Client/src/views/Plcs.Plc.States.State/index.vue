@@ -1,6 +1,6 @@
 <template>
-  <div class="box" style="padding: 0; overflow: hidden">
-    <div class="tabs mb-0">
+  <div class="box" style="padding: 0">
+    <div class="tabs">
       <ul>
         <router-link
           tag="li"
