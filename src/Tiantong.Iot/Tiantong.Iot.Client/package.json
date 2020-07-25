@@ -1,24 +1,19 @@
 {
-  "name": "tiantong.iot.client",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@zhanglan1315/vue-bulma",
+  "version": "0.1.8-alpha",
+  "author": "zhanglan",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "license": "MIT",
+  "files": [
+    "src/share/"
+  ],
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-beta.3",
-    "axios": "^0.19.2",
     "bulma": "^0.9.0",
-    "flatpickr": "^4.6.3",
-    "lodash": "^4.17.15",
-    "store": "^2.0.12",
-    "vue": "^2.6.11",
-    "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^8.4.1",
-    "vue-router": "^3.1.6",
-    "vuex": "^3.1.3"
+    "flatpickr": "^4.6.3"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.150",
@@ -28,10 +23,24 @@
     "@vue/cli-plugin-typescript": "~4.3.0",
     "@vue/cli-plugin-vuex": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
+    "axios": "^0.19.2",
+    "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
+    "store": "^2.0.12",
     "typescript": "~3.8.3",
+    "vue": "^2.6.11",
+    "vuex": "^3.1.3",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.1",
+    "vue-router": "^3.1.6",
     "vue-template-compiler": "^2.6.11"
+  },
+  "peerDependencies": {
+    "node-sass": ">=4.12.0",
+    "sass-loader": ">=8.0.2",
+    "vue": ">=2.6.11",
+    "vue-property-decorator": ">=8.4.1"
   },
   "browserslist": [
     "> 1%",

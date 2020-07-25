@@ -1,4 +1,4 @@
-import DateTime from '@/utils/DateTime'
+import DateTime from '@/share/utils/DateTime'
 
 export class Plc {
   id = 0

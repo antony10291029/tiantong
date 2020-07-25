@@ -18,7 +18,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import Flatpickr from 'flatpickr'
 import zh from 'flatpickr/dist/l10n/zh.js'
-import DateTime from '@/utils/DateTime'
+import DateTime from '../../utils/DateTime'
 
 @Component({
   name: 'DatePicker',

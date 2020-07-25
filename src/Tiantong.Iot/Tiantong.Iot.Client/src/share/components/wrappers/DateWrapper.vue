@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import DateTime from '@/utils/DateTime'
+import DateTime from '../../utils/DateTime'
 
 @Component({
   name: 'TimeWrapper'

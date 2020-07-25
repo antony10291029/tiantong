@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios'
-import { notify } from './notify'
+import Vue from 'vue'
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 
@@ -12,7 +12,7 @@ function beforeResponse (response : AxiosResponse) {
   var status = response.status
 
   if (status === 201) {
-    notify.success(response.data.message)
+    Vue.prototype.$notify.success(response.data.message)
   }
 
   return response;
@@ -22,9 +22,9 @@ function beforeError (error : AxiosError) {
   let status = error.response?.status ?? 0
 
   if (status >= 400 && status < 500) {
-    notify.danger(error.response?.data.message)
+    Vue.prototype.$notify.danger(error.response?.data.message)
   } else if (error.response?.status === 500) {
-    notify.danger('非常抱歉，出现未知错误')
+    Vue.prototype.$notify.danger('非常抱歉，出现未知错误')
   }
 
   throw error;

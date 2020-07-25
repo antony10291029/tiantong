@@ -2,7 +2,7 @@
   <div :class="`notification is-${type}`">
     <template v-if="type">
       <span :class="'icon has-text-' + type">
-        <i :class="'iconfont icon-' + type" style="font-size: 1.75rem"></i>
+        <i :class="'iconfont vue-bulma-' + type" style="font-size: 1.75rem"></i>
       </span>
       <span style="width: 1rem"></span>
     </template>

@@ -131,7 +131,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import axios from '@/providers/axios'
-import DateTime from '@/utils/DateTime'
+import DateTime from '@/share/utils/DateTime'
 import PlcStateTypes from '@/components/PlcStateTypes.vue'
 
 @Component({

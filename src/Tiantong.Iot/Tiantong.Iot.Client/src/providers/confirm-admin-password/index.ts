@@ -1,15 +1,9 @@
 import Component from './Component.vue'
 
-let vm: any
-
 export default {
   install (Vue: any) {
-    Vue.prototype.$confirmAdminPassword = confirmAdminPassword
-    vm = new (Vue.extend(Component))()
-      .$mount('#confirm-admin-password')
+    const vm = new (Vue.extend(Component))().$mount()
+    document.body.appendChild(vm.$el)
+    Vue.prototype.$confirmAdminPassword = vm.open
   }
-}
-
-export function confirmAdminPassword (handler: () => {}) {
-  vm.open(handler)
 }

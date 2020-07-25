@@ -13,7 +13,7 @@
         :style="spanStyle"
       >
         <i
-          :class="'iconfont icon-checkbox-' + iconName"
+          :class="'iconfont vue-bulma-checkbox-' + iconName"
           :style="iconStyle"
         />
       </span>

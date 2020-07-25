@@ -45,7 +45,7 @@ export default {
       return style
     },
     iconClass () {
-      return 'iconfont icon-radio-' + (this.value ? 'checked' : 'unchecked')
+      return 'iconfont vue-bulma-radio-' + (this.value ? 'checked' : 'unchecked')
     },
     iconStyle () {
       const result = {}
