@@ -1323,6 +1323,14 @@
   resolved "https://registry.npm.taobao.org/@xtuc/long/download/@xtuc/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha1-0pHGpOl5ibXGHZrPOWrk/hM6cY0=
 
+"@zhanglan1315/vue-bulma@^0.1.9-alpha":
+  version "0.1.9-alpha"
+  resolved "https://registry.npmjs.org/@zhanglan1315/vue-bulma/-/vue-bulma-0.1.9-alpha.tgz#6ab990d58c8adaf6239f9bb30420113367907729"
+  integrity sha512-OGFZl5C3zOj3tdEnBKi5E915ikfNoHg7EeA/qh/zJnaoTH85DhUy4JbjkKED8XmG+AdXp/WCUYBWjFWsKKFTFw==
+  dependencies:
+    bulma "^0.9.0"
+    flatpickr "^4.6.3"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

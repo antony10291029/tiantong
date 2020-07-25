@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { notify } from '../notify/index'
+import Vue from 'vue'
 import { token } from '../local-storage'
 
 export default {
@@ -13,7 +13,7 @@ export default {
         const msg = response.data?.message
   
         if (msg) {
-          notify.success(msg)
+          Vue.prototype.$notify.success(msg)
         }
 
         return response
@@ -21,7 +21,7 @@ export default {
       error => {
         const msg = error.response.data?.message
         if (msg) {
-          notify.danger(msg)
+          Vue.prototype.$notify.danger(msg)
         }
 
         throw error
