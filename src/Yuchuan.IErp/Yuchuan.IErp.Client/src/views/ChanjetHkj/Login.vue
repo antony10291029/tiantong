@@ -63,7 +63,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import LoginBackground from '@/components/LoginBackground.vue'
 import chanjet from '@/providers/contexts/chanjet'
 import localStorage from '@/providers/local-storage'
-import notify from '@/providers/notify'
 import cookie from 'js-cookie'
 
 @Component({

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@microsoft/signalr": "^3.1.5",
+    "@zhanglan1315/vue-bulma": "^0.1.11-alpha",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "echarts": "^4.8.0",
@@ -34,8 +35,6 @@
     "@vue/cli-plugin-typescript": "~4.3.0",
     "@vue/cli-plugin-vuex": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
-    "bulma": "^0.9.0",
-    "flatpickr": "^4.6.3",
     "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",

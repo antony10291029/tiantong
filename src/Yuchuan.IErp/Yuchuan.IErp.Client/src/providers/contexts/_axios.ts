@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { notify } from '../notify/index'
+import Vue from 'vue'
 
 export default {
   create (baseURL: string, token: () => string) {
@@ -12,7 +12,7 @@ export default {
         const msg = response.data?.message
   
         if (msg) {
-          notify.success(msg)
+          Vue.prototype.$notify.success(msg)
         }
 
         return response
@@ -21,9 +21,9 @@ export default {
         const msg = error.response.data?.message
 
         if (error.response?.status === 500) {
-          notify.danger('非常抱歉，出现未知错误')
+          Vue.prototype.$notify.danger('非常抱歉，出现未知错误')
         } else if (msg) {
-          notify.danger(msg)
+          Vue.prototype.$notify.danger(msg)
         }
 
         throw error

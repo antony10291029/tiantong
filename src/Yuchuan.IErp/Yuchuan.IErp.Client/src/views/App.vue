@@ -15,4 +15,4 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="sass" src="@/assets/sass/_all.sass">
+<style lang="sass" src="@zhanglan1315/vue-bulma/src/share/sass/_all.sass">
