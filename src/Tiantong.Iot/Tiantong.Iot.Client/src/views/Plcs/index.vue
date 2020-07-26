@@ -4,7 +4,7 @@
     :handler="getPlcs"
   >
     <aside
-      class="menu has-border-right is-unselectable"
+      class="menu is-unselectable"
       style="height: 100%; overflow-y: auto; min-width: 260px"
     >
       <ul class="menu-list">
