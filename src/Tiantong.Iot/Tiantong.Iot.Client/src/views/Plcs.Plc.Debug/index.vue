@@ -85,6 +85,23 @@
             <hr>
           </template>
 
+          <div
+            class="is-flex is-vcentered"
+            style="padding: 0.75rem 0"
+          >
+            <label class="label" style="width: 100px">
+              数据点
+            </label>
+
+            <input
+              type="text" class="input"
+              v-model.lazy="params.address"
+              style="width: 320px"
+            >
+          </div>
+
+          <hr>
+
           <template v-if="params.operation === 'set'">
             <div
               class="is-flex is-vcentered"
