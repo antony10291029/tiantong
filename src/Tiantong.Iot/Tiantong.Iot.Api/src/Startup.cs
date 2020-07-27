@@ -14,6 +14,7 @@ namespace Tiantong.Iot.Api
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+      services.AddSignalR();
       services.AddHostedService<PlcManagerService>();
       services.AddSingleton<Mail>();
       services.AddSingleton<Config>();
@@ -44,7 +45,10 @@ namespace Tiantong.Iot.Api
       app.UseEmbeddedServer();
       app.UseRouting();
       app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-      app.UseEndpoints(endpoints => endpoints.MapControllers());
+      app.UseEndpoints(endpoints => {
+        endpoints.MapControllers();
+        
+      });
     }
   }
 }

@@ -12,7 +12,7 @@ namespace Renet.Web.Attributes
 
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-      if (IPAddress.TryParse(value.ToString(), out _)) {
+      if (value.ToString() == "localhost" || IPAddress.TryParse(value.ToString(), out _)) {
         return ValidationResult.Success;
       } else {
         return new ValidationResult(ErrorMessage);

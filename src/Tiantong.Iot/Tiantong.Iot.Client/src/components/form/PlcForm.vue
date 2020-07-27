@@ -101,11 +101,11 @@
           </label>
 
           <div class="is-flex-auto">
-            <input
+            <Input
               v-model="plc.port"
-              type="text" class="input"
+              type="number" class="input"
               style="width: 320px"
-            >
+            />
           </div>
         </div>
 
