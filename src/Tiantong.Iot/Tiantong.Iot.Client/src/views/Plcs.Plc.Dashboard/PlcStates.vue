@@ -65,6 +65,8 @@ export default class extends Vue {
 
   interval: any
 
+  isPending = false
+
   states: any[] = []
 
   currentValues: { [ key: string ]: string } = {}
@@ -78,11 +80,21 @@ export default class extends Vue {
   }
 
   async getCurrentVales () {
-    let response = await axios.post('/plc-workers/current-values', {
-      plc: this.plc.name
-    })
+    if (this.isPending == true) {
+      return
+    } else {
+      this.isPending = true
+    }
 
-    this.currentValues = response.data
+    try {
+      const response = await axios.post('/plc-workers/current-values', {
+        plc: this.plc.name
+      })
+
+      this.currentValues = response.data
+    } finally {
+      this.isPending = false
+    }
   }
 
   created () {
