@@ -35,14 +35,10 @@ namespace Tiantong.Iot.Sqlite.Test
         id = 0,
         name = "name",
         number = "1",
-        when_opt = "!=",
-        when_value = "value",
         url = "localhost",
         header = "",
         body = "{\"id\": 1}",
-        value_key = "value",
-        is_concurrent = true,
-        is_value_to_string = true,
+        field = "value",
       });
 
       db.SaveChanges();

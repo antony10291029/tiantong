@@ -33,6 +33,7 @@ namespace Tiantong.Iot.Api
         request.Content = new StringContent(body, encoding ?? Encoding.UTF8, "application/json");
 
         foreach (var keyValue in JsonSerializer.Deserialize<Dictionary<string, object>>(header)) {
+          Console.WriteLine($"key: {keyValue.Key}, value: {keyValue.Value}");
           request.Headers.Add(keyValue.Key, keyValue.Value.ToString());
         }
 

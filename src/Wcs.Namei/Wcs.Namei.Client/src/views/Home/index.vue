@@ -38,6 +38,14 @@
               <span>自动门系统</span>
             </router-link>
           </li>
+          <li>
+            <router-link to="/lifter">
+              <span class="icon">
+                <i class="iconfont icon-lifter"></i>
+              </span>
+              <span>货梯改造系统</span>
+            </router-link>
+          </li>
         </ul>
       </aside>
       <router-view class="is-flex-auto" />

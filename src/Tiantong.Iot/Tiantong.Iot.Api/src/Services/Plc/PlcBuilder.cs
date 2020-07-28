@@ -86,25 +86,21 @@ namespace Tiantong.Iot.Api
 
       foreach (var pusher in st.http_pushers) {
         ResolveHttpPusher<T>(client, manager, st.name)
-          .IsConcurrent(pusher.is_concurrent)
-          .Post(pusher.url, pusher.value_key, pusher.is_value_to_string, pusher.body)
-          .When(pusher.when_opt, pusher.when_value)
+          .Post(pusher.url, pusher.field, pusher.to_string, pusher.header, pusher.body)
           .Id(pusher.id);
       }
     }
 
     private void ResolveCollect<T>(PlcClient client, IntervalManager manager, string name, int interval)
     {
-      Action handler = () => client.State<T>(name).Collect(interval);
-
-      manager.Add(new Interval(handler, interval));
+      manager.Add(new Interval(() => client.State<T>(name).Collect(interval), interval));
     }
 
     private void ResolveHeartbeat(PlcClient client, IntervalManager manager, string name, int interval, int maxValue)
     {
       var value = 0;
 
-      Action handler = () => {
+      manager.Add(new Interval(() => {
         if (value < maxValue) {
           value = value + 1;
         } else {
@@ -112,9 +108,7 @@ namespace Tiantong.Iot.Api
         }
 
         client.State(name).SetString(value.ToString());
-      };
-
-      manager.Add(new Interval(handler, interval));
+      }, interval));
     }
 
     private HttpPusher<T> ResolveHttpPusher<T>(PlcClient client, IntervalManager manager, string name)

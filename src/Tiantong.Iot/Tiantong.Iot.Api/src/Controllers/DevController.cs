@@ -97,10 +97,8 @@ namespace Tiantong.Iot.Api
                   name = "测试推送",
                   number = "1",
                   url = "http://localhost:5000/data",
-                  when_opt = "",
-                  when_value = "",
-                  value_key = "value",
-                  is_value_to_string = false,
+                  field = "value",
+                  to_string = false,
                   header = "{}",
                   body = "{\"field\": 1}"
                 }

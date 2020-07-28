@@ -19,20 +19,14 @@ namespace Tiantong.Iot.Entities
     [Url(ErrorMessage = "URL 格式错误")]
     public virtual string url { get; set; }
 
-    public virtual string when_opt { get; set; }
+    public virtual string field { get; set; }
 
-    public virtual string when_value { get; set; }
+    public virtual bool to_string { get; set; }
 
-    public virtual string value_key { get; set; }
-
-    public virtual bool is_value_to_string { get; set; }
-
-    [JsonObject]
-    public virtual string body { get; set; }
-    
     [JsonObject]
     public virtual string header { get; set; }
 
-    public virtual bool is_concurrent { get; set; }
+    [JsonObject]
+    public virtual string body { get; set; }
   }
 }

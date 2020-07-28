@@ -73,13 +73,11 @@ namespace Tiantong.Iot.Api
                 state_id = 1,
                 pusher_id = 1,
                 pusher = new HttpPusher {
-                  when_opt = "",
-                  when_value = "",
                   url = "http://localhost:5000/data",
-                  value_key = "heartbeat",
+                  field = "heartbeat",
                   header = "{}",
                   body = "{\"plc\": 1}",
-                  is_value_to_string = false,
+                  to_string = false,
                 }
               }
             }
@@ -102,13 +100,11 @@ namespace Tiantong.Iot.Api
                 state_id = 2,
                 pusher_id = 2,
                 pusher = new HttpPusher {
-                  when_opt = "",
-                  when_value = "",
                   url = "http://localhost:5000/data",
-                  value_key = "scanner",
+                  field = "scanner",
                   header = "{}",
                   body = "{\"plc\": 1}",
-                  is_value_to_string = false,
+                  to_string = false,
                 }
               }
             }

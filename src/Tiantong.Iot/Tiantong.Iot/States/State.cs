@@ -82,7 +82,7 @@ namespace Tiantong.Iot
 
     protected abstract void HandleDriverBuild();
 
-    public abstract string CollectString(int cacheInterval = 1000);
+    public abstract string CollectString(int collectInterval = 1000);
 
     public abstract void AddGetHook(Action<string> hook);
 
@@ -104,12 +104,12 @@ namespace Tiantong.Iot
 
     public void AddSetHook(Action<T> hook)
     {
-      _sethooks.Add(data => hook(data));
+      _sethooks.Add(hook);
     }
 
     public void AddGetHook(Action<T> hook)
     {
-      _gethooks.Add(data => hook(data));
+      _gethooks.Add(hook);
     }
 
     public override void AddGetHook(Action<string> hook)
@@ -117,22 +117,31 @@ namespace Tiantong.Iot
       AddGetHook(value => hook(ToString(value)));
     }
 
-    public override string CollectString(int cacheInterval = 1000)
+    public override string CollectString(int collectInterval = 1000)
     {
-      if (_currentValueGetAt.AddMilliseconds(cacheInterval) <= DateTime.Now) {
-        return ToString(Get());
-      } else {
-        return ToString(_currentValue);
-      }
+      return Collect(collectInterval).ToString();
     }
 
-    public T Collect(int cacheInterval = 1000)
+    public T Collect(int collectInterval = 1000)
     {
-      if (_currentValueGetAt.AddMilliseconds(cacheInterval) < DateTime.Now) {
-        return Get();
-      } else {
+      var now = DateTime.Now;
+
+      if (_currentValueGetAt.AddMilliseconds(collectInterval) > now) {
         return _currentValue;
       }
+
+      var value = Get();
+
+      if (!value.Equals(_currentValue)) {
+        foreach (var hook in _gethooks) {
+          Task.Run(() => hook(value));
+        }
+      }
+
+      _currentValue = value;
+      _currentValueGetAt = now;
+
+      return value;
     }
 
     //
@@ -170,8 +179,10 @@ namespace Tiantong.Iot
 
     public T Get()
     {
+      var value = default(T);
+
       try {
-        _currentValue = HandleGet();
+        value = HandleGet();
       } catch (Exception e) {
         _onError(new PlcStateError {
           state_id = _id,
@@ -184,13 +195,7 @@ namespace Tiantong.Iot
         throw e;
       }
 
-      _currentValueGetAt = DateTime.Now;
-
-      foreach (var hook in _gethooks) {
-        Task.Run(() => hook(_currentValue));
-      }
-
-      return _currentValue;
+      return value;
     }
 
     protected virtual string ToString(T value) => value.ToString();

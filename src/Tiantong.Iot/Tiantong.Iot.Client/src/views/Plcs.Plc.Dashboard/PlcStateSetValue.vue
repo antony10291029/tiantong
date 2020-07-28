@@ -44,16 +44,10 @@ import axios from '@/providers/axios'
 })
 export default class extends Vue {
   @Prop({ required: true })
-  plcId!: number
-
-  @Prop({ required: true })
   plc!: any
 
   @Prop({ required: true })
   state!: any
-
-  @Prop({ required: true })
-  stateId!: number
 
   @Prop({ required: true })
   type!: string
