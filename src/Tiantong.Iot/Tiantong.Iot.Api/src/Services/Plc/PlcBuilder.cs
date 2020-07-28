@@ -102,7 +102,7 @@ namespace Tiantong.Iot.Api
 
     private void ResolveHeartbeat(PlcClient client, IntervalManager manager, string name, int interval, int maxValue)
     {
-      var value = 1;
+      var value = 0;
 
       Action handler = () => {
         if (value < maxValue) {
