@@ -3,7 +3,7 @@ using Renet.Web;
 
 namespace Tiantong.Iot.Api
 {
-  [Route("/plc-workers/states")]
+  [Route("/plc-states")]
   public class PlcWorkerStateController: BaseController
   {
     private PlcManager _manager;
