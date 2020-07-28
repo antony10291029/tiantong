@@ -7,7 +7,7 @@ namespace Tiantong.Iot
 {
   public abstract class State: IState
   {
-    public DateTime CurrentValueChangedAt { get; set; } = DateTime.Now;
+    public DateTime CurrentValueChangedAt { get; set; } = DateTime.MinValue;
 
     protected int _id { get; set; }
 
