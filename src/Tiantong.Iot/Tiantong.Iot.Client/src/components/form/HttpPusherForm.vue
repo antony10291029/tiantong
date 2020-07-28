@@ -107,7 +107,7 @@
       </label>
 
       <div style="width: 480px">
-        <Textarea v-model="pusher.body"></Textarea>
+        <Textarea v-model="pusher.header"></Textarea>
       </div>
     </div>
 
