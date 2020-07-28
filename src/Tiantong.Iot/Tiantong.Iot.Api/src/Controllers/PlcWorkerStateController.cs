@@ -109,18 +109,18 @@ namespace Tiantong.Iot.Api
 
     public class SetStringByIdParams
     {
-      public int plc_id { get; set; }
+      public string plc { get; set; }
 
-      public int state_id { get; set; }
+      public string state { get; set; }
 
       public string value { get; set; }
     }
 
     [HttpPost]
-    [Route("set-string-by-id")]
+    [Route("set-string")]
     public object SetStringById([FromBody] SetStringByIdParams param)
     {
-      _manager.Get(param.plc_id).SetString(param.state_id, param.value);
+      _manager.Get(param.plc).SetString(param.state, param.value);
 
       return SuccessOperation("数据已写入");
     }

@@ -23,11 +23,7 @@ namespace Tiantong.Iot.Api
 
     public PlcClient BuildClient(Plc plc)
     {
-      var options = new PlcClientOptions();
-
-      options.Id(plc.id).Name(plc.name)
-        .Host(plc.host).Port(plc.port).Model(plc.model)
-        .OnStateError(OnStateError);
+      var options = new PlcClientOptions(plc.id, plc.name, plc.model, plc.host, plc.port, OnStateError);
 
       foreach (var st in plc.states) {
         IState state = st.type switch {

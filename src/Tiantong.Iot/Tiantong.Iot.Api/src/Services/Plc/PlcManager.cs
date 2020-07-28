@@ -89,8 +89,8 @@ namespace Tiantong.Iot.Api
 
     public bool Run(PlcWorker worker)
     {
-      var id = worker.Client().Options().Id();
-      var name = worker.Client().Options().Name();
+      var id = worker.Client().Options().Id;
+      var name = worker.Client().Options().Name;
 
       if (_plcById.ContainsKey(id)) {
         return false;
@@ -106,7 +106,7 @@ namespace Tiantong.Iot.Api
     {
       if (_plcById.ContainsKey(id)) {
         var worker = _plcById[id];
-        var name = worker.Client().Options().Name();
+        var name = worker.Client().Options().Name;
 
         try {
           worker.Stop();
@@ -124,7 +124,7 @@ namespace Tiantong.Iot.Api
     public PlcManager Stop()
     {
       foreach (var plc in _plcById.Values) {
-        Stop(plc.Client().Options().Id());
+        Stop(plc.Client().Options().Id);
       }
 
       return this;

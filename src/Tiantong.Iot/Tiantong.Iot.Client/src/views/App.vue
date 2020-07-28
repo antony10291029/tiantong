@@ -9,8 +9,6 @@ export default {
   name: 'App',
   async created () {
     let response = await axios.post("/")
-
-    console.log(response.data)
   }
 }
 </script>

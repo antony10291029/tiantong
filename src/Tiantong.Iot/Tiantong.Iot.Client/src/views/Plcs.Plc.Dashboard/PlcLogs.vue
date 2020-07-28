@@ -43,7 +43,7 @@ export default class extends Vue {
   @Prop({ required: true })
   isRunning!: boolean
 
-  interval = 0
+  interval: any
 
   logs = {
     meta: {

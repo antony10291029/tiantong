@@ -47,6 +47,12 @@ export default class extends Vue {
   plcId!: number
 
   @Prop({ required: true })
+  plc!: any
+
+  @Prop({ required: true })
+  state!: any
+
+  @Prop({ required: true })
   stateId!: number
 
   @Prop({ required: true })
@@ -69,9 +75,9 @@ export default class extends Vue {
   }
 
   async handleSave () {
-    await axios.post(`/plc-workers/states/set-string-by-id`, {
-      plc_id: this.plcId,
-      state_id: this.stateId,
+    await axios.post(`/plc-workers/states/set-string`, {
+      plc: this.plc.name,
+      state: this.state.name,
       value: this.value
     })
 

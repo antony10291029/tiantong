@@ -77,6 +77,7 @@
       style="overflow: auto"
       :plcId="plcId"
       :baseURL="`${baseURL}/${plcId}`"
+      v-bind="$attrs"
       v-on="$listeners"
     />
   </div>

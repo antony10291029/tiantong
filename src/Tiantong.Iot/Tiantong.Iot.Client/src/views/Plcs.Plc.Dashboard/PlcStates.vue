@@ -24,11 +24,11 @@
           <td>
             {{state.type + (state.type === 'string' ? `(${state.length * 2})` : '')}}
           </td>
-          <td>{{currentValues[state.id]}}</td>
+          <td>{{currentValues[state.name]}}</td>
           <PlcStateSetValue
             v-if="isRunning"
-            :plcId="plcId"
-            :stateId="state.id"
+            :plc="plc"
+            :state="state"
             :type="state.type"
             style="width: 1px"
           />
@@ -52,6 +52,9 @@ import axios from '@/providers/axios'
 })
 export default class extends Vue {
   @Prop({ required: true })
+  plc!: any
+
+  @Prop({ required: true })
   plcId!: number
 
   @Prop({ required: true })
@@ -60,7 +63,7 @@ export default class extends Vue {
   @Prop({ required: true })
   isDataWatchOpen!: boolean
 
-  interval = 0
+  interval: any
 
   states: any[] = []
 
@@ -76,7 +79,7 @@ export default class extends Vue {
 
   async getCurrentVales () {
     let response = await axios.post('/plc-workers/current-values', {
-      plc_id: this.plcId
+      plc: this.plc.name
     })
 
     this.currentValues = response.data

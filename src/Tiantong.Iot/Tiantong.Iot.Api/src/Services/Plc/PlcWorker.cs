@@ -16,6 +16,8 @@ namespace Tiantong.Iot.Api
 
     private CancellationTokenSource _stoppingToken;
 
+    public List<IState> States;
+
     //
 
     public PlcWorker(
@@ -42,7 +44,7 @@ namespace Tiantong.Iot.Api
 
       if (state.IsWriteLogOn()) {
         _domain.Log(new PlcStateLog {
-          plc_id = _client.Options().Id(),
+          plc_id = _client.Options().Id,
           state_id = state.Id(),
           operation = StateOperation.Write,
           value = value?.ToString() ?? "",
@@ -63,7 +65,7 @@ namespace Tiantong.Iot.Api
 
       if (state.IsReadLogOn()) {
         _domain.Log(new PlcStateLog {
-          plc_id = _client.Options().Id(),
+          plc_id = _client.Options().Id,
           state_id = state.Id(),
           operation = StateOperation.Read,
           value = value.ToString() ?? "",
@@ -71,16 +73,6 @@ namespace Tiantong.Iot.Api
       }
 
       return value;
-    }
-
-    public void Set<T>(int id, T value)
-    {
-      Set(_client.State<T>(id), value);
-    }
-
-    public T Get<T>(int id)
-    {
-      return Get(_client.State<T>(id));
     }
 
     public void Set<T>(string name, T value)
@@ -97,16 +89,16 @@ namespace Tiantong.Iot.Api
     {
       var dict = new Dictionary<string, string>();
 
-      foreach (var pair in _client.StatesById()) {
-        dict.Add(pair.Key.ToString(), pair.Value.CollectString());
+      foreach (var state in _client.StatesById().Values) {
+        dict.Add(state.Name(), state.CollectString());
       }
 
       return dict;
     }
 
-    public void SetString(int id, string value)
+    public void SetString(string state, string value)
     {
-      _client.State(id).SetString(value);
+      _client.State(state).SetString(value);
     }
 
     public string GetString(IState state)
@@ -122,7 +114,7 @@ namespace Tiantong.Iot.Api
     public virtual void Log(string message)
     {
       _domain.Log(new PlcLog {
-        plc_id = _client.Options().Id(),
+        plc_id = _client.Options().Id,
         message = message
       });
     }

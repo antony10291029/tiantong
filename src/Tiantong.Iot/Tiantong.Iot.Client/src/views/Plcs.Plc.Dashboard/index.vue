@@ -23,6 +23,7 @@
         <div class="columns">
           <div class="column">
             <PlcStates
+              :plc="plc"
               :plcId="plcId"
               :isRunning="isRunning"
               :isDataWatchOpen="isDataWatchOpen"
@@ -58,6 +59,9 @@ import axios from '@/providers/axios'
 export default class extends Vue {
   @Prop({ required: true })
   plcId!: number
+
+  @Prop({ required: true })
+  plc!: any
 
   isRunning = false
 

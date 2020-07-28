@@ -21,8 +21,8 @@ namespace Tiantong.Iot
       _options = options;
       _driverProvider = options.ResolveDriverProvider();
 
-      var states = _options.States().Select(state =>
-        state.OnError(_options.OnStateError())
+      var states = _options.States.Select(state =>
+        state.OnError(_options.OnStateError)
           .Build(_driverProvider.Resolve())
       );
 
@@ -111,58 +111,44 @@ namespace Tiantong.Iot
 
   public class PlcClientOptions
   {
-    private int _id;
+    public readonly int Id;
 
-    private string _model = PlcModel.Test;
+    public readonly string Name;
 
-    private string _name;
+    public readonly string Model;
 
-    private string _host;
+    public readonly string Host;
 
-    private int _port;
+    public readonly int Port;
 
-    private Action<PlcStateError> _onStateError = _ => {};
+    public readonly List<IState> States = new List<IState>();
 
-    private List<IState> _states = new List<IState>();
+    public readonly Action<PlcStateError> OnStateError;
 
-    private PlcClientOptions Builder(Action builder)
+    public PlcClientOptions(
+      int id, string name,
+      string model, string host, int port,
+      Action<PlcStateError> onStateError
+    ) {
+      Id = id;
+      Name = name;
+      Model = model;
+      Host = host;
+      Port = port;
+      OnStateError = onStateError;
+    }
+
+    private PlcClientOptions Configure(Action handler)
     {
-      builder();
+      handler();
 
       return this;
     }
 
-    public int Id() => _id;
-
-    public string Name() => _name;
-
-    public string Model() => _model;
-
-    public string Host() => _host;
-
-    public int Port() => _port;
-
-    public List<IState> States() => _states;
-
-    public Action<PlcStateError> OnStateError() => _onStateError;
-
-    public PlcClientOptions Id(int id) => Builder(() => _id = id);
-
-    public PlcClientOptions Name(string name) => Builder(() => _name = name);
-
-    public PlcClientOptions Model(string model) => Builder(() => _model = model);
-
-    public PlcClientOptions Host(string host) => Builder(() => _host = host);
-
-    public PlcClientOptions Port(int port) => Builder(() => _port = port);
-
-    public PlcClientOptions OnStateError(Action<PlcStateError> onStateError)
-      => Builder(() => _onStateError = onStateError);
-
-    public IStateDriverProvider ResolveDriverProvider() => Model() switch {
+    public IStateDriverProvider ResolveDriverProvider() => Model switch {
       PlcModel.Test => new StateTestDriverProvider(),
-      PlcModel.MC3EBinary => new MC3EBinaryDriverProvider(Host(), Port()),
-      PlcModel.S7200Smart=> new S7200SmartDriverProvider(Host(), Port()),
+      PlcModel.MC3EBinary => new MC3EBinaryDriverProvider(Host, Port),
+      PlcModel.S7200Smart=> new S7200SmartDriverProvider(Host, Port),
       _ => throw new Exception("plc model is not supporting"),
     };
 
@@ -178,7 +164,7 @@ namespace Tiantong.Iot
         _ => throw new Exception($"不支持的数据类型: {typeof(T).Name}")
       };
 
-      _states.Add(state);
+      States.Add(state);
 
       return state;
     }

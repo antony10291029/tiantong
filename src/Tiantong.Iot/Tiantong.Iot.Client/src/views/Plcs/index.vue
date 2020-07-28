@@ -23,15 +23,15 @@
             <span>服务管理</span>
           </router-link>
         </li>
-        <li v-for="plc in plcs" :key="plc.id">
-          <router-link :to="`/plcs/${plc.id}`">
+        <li v-for="id in plcs.result" :key="id">
+          <router-link :to="`/plcs/${id}`">
             <span
               class="icon"
               style="margin-right: 0.25rem"
             >
               <span class="iconfont icon-device"></span>
             </span>
-            <span>{{plc.name}}</span>
+            <span>{{plcs.data[id].name}}</span>
           </router-link>
         </li>
         <li>
@@ -49,6 +49,7 @@
     </aside>
     <router-view
       :key="$route.params.plcId"
+      :plc="plcs.data[$route.params.plcId]"
       baseURL="/plcs"
       class="is-flex-auto"
       @refresh="getPlcs"
@@ -67,11 +68,22 @@ import axios from '@/providers/axios'
   }
 })
 export default class extends Vue {
-  plcs: object[] = []
+  plcs = {
+    result: [] as any[],
+    data: {} as any
+  }
 
   async getPlcs () {
-    let response = await axios.post('/plcs/all')
-    this.plcs = response.data
+    const response = await axios.post('/plcs/all')
+    const result = [] as any
+    const data = {} as any
+
+    response.data.forEach((plc: any) => {
+      result.push(plc.id)
+      data[plc.id] = plc
+    })
+
+    this.plcs = { result, data }
   }
 }
 </script>
