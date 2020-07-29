@@ -101,6 +101,11 @@ namespace Tiantong.Iot.Api
       _client.State(state).SetString(value);
     }
 
+    public string GetString(string state)
+    {
+      return _client.State(state).GetString();
+    }
+
     public string GetString(IState state)
     {
       return _client.GetString(state);

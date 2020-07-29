@@ -37,7 +37,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("bool/get")]
-    public object GetBool([FromBody] GetParams<bool> param)
+    public object BoolGet([FromBody] GetParams<bool> param)
     {
       return new {
         value = HandleGet<bool>(param.plc, param.state)
@@ -46,7 +46,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("bool/set")]
-    public object SetBool([FromBody] SetParams<bool> param)
+    public object BoolSet([FromBody] SetParams<bool> param)
     {
       HandleSet<bool>(param.plc, param.state, param.value);
 
@@ -55,7 +55,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("uint16/get")]
-    public object GetUInt16([FromBody] GetParams<ushort> param)
+    public object UInt16Get([FromBody] GetParams<ushort> param)
     {
       return new {
         value = HandleGet<ushort>(param.plc, param.state)
@@ -64,7 +64,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("uint16/set")]
-    public object SetUInt16([FromBody] SetParams<ushort> param)
+    public object UIntSet16([FromBody] SetParams<ushort> param)
     {
       HandleSet<ushort>(param.plc, param.state, param.value);
 
@@ -73,7 +73,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("uint32/get")]
-    public object GetInt32([FromBody] GetParams<int> param)
+    public object Int32Get([FromBody] GetParams<int> param)
     {
       return new {
         value = HandleGet<int>(param.plc, param.state)
@@ -82,7 +82,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("uint32/set")]
-    public object SetInt32([FromBody] SetParams<int> param)
+    public object Int3Set2([FromBody] SetParams<int> param)
     {
       HandleSet<int>(param.plc, param.state, param.value);
 
@@ -91,7 +91,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("string/get")]
-    public object GetString([FromBody] GetParams<string> param)
+    public object StringGet([FromBody] GetParams<string> param)
     {
       return new {
         value = HandleGet<string>(param.plc, param.state)
@@ -100,7 +100,7 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("string/set")]
-    public object SetString([FromBody] SetParams<string> param)
+    public object StriSetng([FromBody] SetParams<string> param)
     {
       HandleSet<string>(param.plc, param.state, param.value);
 
@@ -116,9 +116,25 @@ namespace Tiantong.Iot.Api
       public string value { get; set; }
     }
 
+    public class GetStringParams
+    {
+      public string plc { get; set; }
+
+      public string state { get; set; }
+    }
+
+    [HttpPost]
+    [Route("get-string")]
+    public object GetString([FromBody] GetStringParams param)
+    {
+      var value = _manager.Get(param.plc).GetString(param.state);
+
+      return new { value };
+    }
+
     [HttpPost]
     [Route("set-string")]
-    public object SetStringById([FromBody] SetStringByIdParams param)
+    public object SetString([FromBody] SetStringByIdParams param)
     {
       _manager.Get(param.plc).SetString(param.state, param.value);
 
