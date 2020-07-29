@@ -69,7 +69,7 @@ export default class extends Vue {
   }
 
   async handleSave () {
-    await axios.post(`/plc-states/set-string`, {
+    await axios.post(`/plc-states/set`, {
       plc: this.plc.name,
       state: this.state.name,
       value: this.value

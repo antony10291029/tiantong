@@ -13,25 +13,21 @@ namespace Tiantong.Iot.Api
       _manager = manager;
     }
 
-    public class SetStringByIdParams
+    public class GetParams
     {
       public string plc { get; set; }
 
       public string state { get; set; }
+    }
 
+    public class SetParams: GetParams
+    {
       public string value { get; set; }
     }
 
-    public class GetStringParams
-    {
-      public string plc { get; set; }
-
-      public string state { get; set; }
-    }
-
     [HttpPost]
-    [Route("get-string")]
-    public object GetString([FromBody] GetStringParams param)
+    [Route("get")]
+    public object GetString([FromBody] GetParams param)
     {
       var value = _manager.Get(param.plc).Get(param.state);
 
@@ -39,8 +35,8 @@ namespace Tiantong.Iot.Api
     }
 
     [HttpPost]
-    [Route("set-string")]
-    public object SetString([FromBody] SetStringByIdParams param)
+    [Route("set")]
+    public object SetString([FromBody] SetParams param)
     {
       _manager.Get(param.plc).Set(param.state, param.value);
 

@@ -30,7 +30,7 @@ namespace Tiantong.Iot.Utils
       _client.BaseAddress = new Uri(uri);
     }
 
-    public async Task SetStringAsync(string state, string value)
+    public async Task SetAsync(string state, string value)
     {
       var text = JsonSerializer.Serialize(new {
         plc = _plc,
@@ -39,7 +39,7 @@ namespace Tiantong.Iot.Utils
       });
 
       var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
-      var response = await _client.PostAsync("/plc-states/set-string", content);
+      var response = await _client.PostAsync("/plc-states/set", content);
 
       if (response.StatusCode != HttpStatusCode.Created) {
         var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
@@ -51,7 +51,7 @@ namespace Tiantong.Iot.Utils
       }
     }
 
-    public async Task<string> GetStringAsync(string state)
+    public async Task<string> GetAsync(string state)
     {
       var text = JsonSerializer.Serialize(new {
         plc = _plc,
@@ -59,7 +59,7 @@ namespace Tiantong.Iot.Utils
       });
 
       var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
-      var response = await _client.PostAsync("/plc-states/get-string", content);
+      var response = await _client.PostAsync("/plc-states/get", content);
       var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
       if (response.StatusCode == HttpStatusCode.OK) {
@@ -70,6 +70,16 @@ namespace Tiantong.Iot.Utils
           (int) response.StatusCode
         );
       }
+    }
+
+    public void Set(string state, string value)
+    {
+      SetAsync(state, value).GetAwaiter().GetResult();
+    }
+
+    public string Get(string state)
+    {
+      return GetAsync(state).GetAwaiter().GetResult();
     }
   }
 }
