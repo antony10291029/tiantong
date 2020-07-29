@@ -34,12 +34,25 @@ namespace Tiantong.Iot.Api
 
     //
 
-    private void Set<T>(IState<T> state, T value)
+    public void Set(IState state, string value)
     {
+      _client.Set(state, value);
+    }
+
+    public string Get(IState state)
+    {
+      return _client.Get(state);
+    }
+
+    public void Set(string name, string value)
+    {
+      var state = _client.State(name);
+
       try {
         state.Set(value);
       } catch (Exception e) {
         Reconnect(e);
+        throw e;
       }
 
       if (state.IsWriteLogOn()) {
@@ -52,9 +65,10 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    private T Get<T>(IState<T> state)
+    public string Get(string name)
     {
-      T value;
+      var value = "";
+      var state = _client.State(name);
 
       try {
         value = state.Get();
@@ -75,45 +89,15 @@ namespace Tiantong.Iot.Api
       return value;
     }
 
-    public void Set<T>(string name, T value)
-    {
-      Set(_client.State<T>(name), value);
-    }
-
-    public T Get<T>(string name)
-    {
-      return Get(_client.State<T>(name));
-    }
-
     public Dictionary<string, string> GetCurrentStateValues()
     {
       var dict = new Dictionary<string, string>();
 
       foreach (var state in _client.StatesById().Values) {
-        dict.Add(state.Name(), state.CollectString());
+        dict.Add(state.Name(), state.Collect());
       }
 
       return dict;
-    }
-
-    public void SetString(string state, string value)
-    {
-      _client.State(state).SetString(value);
-    }
-
-    public string GetString(string state)
-    {
-      return _client.State(state).GetString();
-    }
-
-    public string GetString(IState state)
-    {
-      return _client.GetString(state);
-    }
-
-    public void SetString(IState state, string value)
-    {
-      _client.SetString(state, value);
     }
 
     public virtual void Log(string message)

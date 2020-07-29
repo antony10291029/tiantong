@@ -2,12 +2,12 @@ namespace Tiantong.Iot
 {
   public class StateString : State<string>
   {
-    protected override string FromString(string data)
+    public override string FromString(string data)
     {
       return data;
     }
 
-    protected override string ToString(string value)
+    public override string ToString(string value)
     {
       return value ?? "";
     }

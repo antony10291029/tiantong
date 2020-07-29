@@ -2,7 +2,7 @@ namespace Tiantong.Iot
 {
   public class StateInt32 : State<int>
   {
-    protected override int FromString(string data)
+    public override int FromString(string data)
     {
       return int.Parse(data);
     }

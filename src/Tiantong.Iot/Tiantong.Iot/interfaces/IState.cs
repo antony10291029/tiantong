@@ -37,27 +37,19 @@ namespace Tiantong.Iot
 
     IState Build(IStateDriver driver);
 
-    void SetString(string value);
+    string Get();
 
-    string GetString();
+    void Set(string value);
 
-    string CollectString(int interval = 1000);
+    string Collect(int interval = 1000);
 
     void AddGetHook(Action<string> hook);
+
+    void AddSetHook(Action<string> hook);
   }
 
   public interface IState<T>: IState
   {
-    void AddGetHook(Action<T> hook);
-
-    void AddSetHook(Action<T> hook);
-
-    T Get();
-
-    void Set(T data);
-
-    T Collect(int cacheInterval);
 
   }
-
 }

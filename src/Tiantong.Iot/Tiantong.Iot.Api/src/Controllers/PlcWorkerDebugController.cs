@@ -28,14 +28,14 @@ namespace Tiantong.Iot.Api
       var value = "";
 
       if (_manager.Has(plcId)) {
-        value = _manager.Get(plcId).GetString(state);
+        value = _manager.Get(plcId).Get(state);
       } else {
         var plc = _plcRepository.EnsureGetWithRelationships(plcId);
         var worker = _plcBuilder.BuildWorker(plc);
 
         try {
           worker.Connect();
-          value = worker.GetString(state);
+          value = worker.Get(state);
         } finally {
           worker.Close();
         }
@@ -47,14 +47,14 @@ namespace Tiantong.Iot.Api
     public string ResolveSet(int plcId, IState state, string value)
     {
       if (_manager.Has(plcId)) {
-         _manager.Get(plcId).SetString(state, value);
+         _manager.Get(plcId).Set(state, value);
       } else {
         var plc = _plcRepository.EnsureGetWithRelationships(plcId);
         var worker = _plcBuilder.BuildWorker(plc);
 
         try {
           worker.Connect();
-          worker.SetString(state, value);
+          worker.Set(state, value);
 
           if (state is IState<string>) {
             value = value.Substring(0, Math.Min(value.Length, state.Length()));

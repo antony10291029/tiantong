@@ -20,10 +20,10 @@ namespace Tiantong.Iot.Test
     public void TestStateBool(bool value)
     {
       var state = ResolveState<StateBool, bool>();
-      state.Set(value);
+      state.Set(state.ToString(value));
       var result = state.Get();
 
-      Assert.AreEqual(value, result);
+      Assert.AreEqual(state.ToString(value), result);
     }
 
     [TestCase(0)]
@@ -32,10 +32,10 @@ namespace Tiantong.Iot.Test
     public void TestStateUInt16(int value)
     {
       var state = ResolveState<StateUInt16, ushort>();
-      state.Set((ushort) value);
+      state.Set(state.ToString((ushort) value));
       var result = state.Get();
 
-      Assert.AreEqual(value, result);
+      Assert.AreEqual(state.ToString((ushort) value), result);
     }
 
     [TestCase(0)]
@@ -44,10 +44,10 @@ namespace Tiantong.Iot.Test
     public void TestStateInt32(int value)
     {
       var state = ResolveState<StateInt32, int>();
-      state.Set(value);
+      state.Set(state.ToString(value));
       var result = state.Get();
 
-      Assert.AreEqual(value, result);
+      Assert.AreEqual(state.ToString(value), result);
     }
 
     [TestCase("hello word")]
@@ -58,74 +58,25 @@ namespace Tiantong.Iot.Test
       state.Set(value);
       var result = state.Get();
 
-      Assert.AreEqual(value, result);
-    }
-
-    [TestCase(new byte[] { 0x00 })]
-    [TestCase(new byte[] { 0x00, 0x01, 0x02 })]
-    public void TestStateBytes(byte[] value)
-    {
-      var state = ResolveState<StateBytes, byte[]>();
-      state.Set(value);
-      var result = state.Get();
-
-      Assert.AreEqual(value, result);
+      Assert.AreEqual(state.ToString(value), result);
     }
 
     [TestCase(1)]
     public void TestStateHook(int value)
     {
-      var getHookData = 0;
-      var setHookData = 0;
+      var getHookData = "0";
+      var setHookData = "0";
       var state = ResolveState<StateInt32, int>();
 
       state.AddSetHook(data => setHookData = data);
-      state.Set(value);
+      state.Set(state.ToString(value));
       Task.Delay(3).GetAwaiter().GetResult();
-      Assert.AreEqual(value, setHookData);
+      Assert.AreEqual(state.ToString(value), setHookData);
 
       state.AddGetHook(data => getHookData = data);
       state.Get();
       Task.Delay(3).GetAwaiter().GetResult();
-      Assert.AreEqual(value, getHookData);
+      Assert.AreEqual(state.ToString(value), getHookData);
     }
-
-    [Test]
-    public void TestSetStringBool()
-    {
-      var state = ResolveState<StateBool, bool>();
-      state.SetString("true");
-      var value = state.Get();
-      Assert.AreEqual(value, true);
-    }
-
-    [Test]
-    public void TestSetStringUShort()
-    {
-      var state = ResolveState<StateUInt16, ushort>();
-      state.SetString("100");
-      var value = state.Get();
-      Assert.AreEqual(value, 100);
-    }
-
-    [Test]
-    public void TestSetStringInt32()
-    {
-      var state = ResolveState<StateInt32, int>();
-      state.SetString("10000");
-      var value = state.Get();
-      Assert.AreEqual(value, 10000);
-    }
-
-    [Test]
-    public void TestSetStringString()
-    {
-      var state = ResolveState<StateString, string>();
-      state.SetString("hello world");
-      var value = state.Get();
-      Assert.AreEqual(value, "hello world");
-    }
-
   }
-
 }

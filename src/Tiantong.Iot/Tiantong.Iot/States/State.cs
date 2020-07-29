@@ -76,61 +76,68 @@ namespace Tiantong.Iot
       return this;
     }
 
-    public abstract string GetString();
+    public abstract string Get();
 
-    public abstract void SetString(string data);
+    public abstract string Collect(int interval);
+
+    public abstract void Set(string value);
 
     protected abstract void HandleDriverBuild();
 
-    public abstract string CollectString(int collectInterval = 1000);
-
     public abstract void AddGetHook(Action<string> hook);
+
+    public abstract void AddSetHook(Action<string> hook);
 
   }
 
   public abstract class State<T>: State, IState<T>
   {
-    private List<Action<T>> _gethooks = new List<Action<T>>();
+    private List<Action<string>> _gethooks = new List<Action<string>>();
 
-    private List<Action<T>> _sethooks = new List<Action<T>>();
+    private List<Action<string>> _sethooks = new List<Action<string>>();
 
-    private T _currentValue = default(T);
-
-    // private Task<T> _getTask = null;
-
-    // private Task<T> _setTask = null;
+    private string _currentValue;
 
     private DateTime _currentValueGetAt = DateTime.MinValue;
 
-    public void AddSetHook(Action<T> hook)
-    {
-      _sethooks.Add(hook);
-    }
-
-    public void AddGetHook(Action<T> hook)
+    public override void AddGetHook(Action<string> hook)
     {
       _gethooks.Add(hook);
     }
 
-    public override void AddGetHook(Action<string> hook)
+    public override void AddSetHook(Action<string> hook)
     {
-      AddGetHook(value => hook(ToString(value)));
+      _sethooks.Add(hook);
     }
 
-    public override string CollectString(int collectInterval = 1000)
+    public override string Collect(int collectInterval = 1000)
     {
-      return Collect(collectInterval).ToString();
-    }
-
-    public T Collect(int collectInterval = 1000)
-    {
-      var now = DateTime.Now;
-
-      if (_currentValueGetAt.AddMilliseconds(collectInterval) > now) {
+      if (_currentValueGetAt.AddMilliseconds(collectInterval) > DateTime.Now) {
         return _currentValue;
+      } else {
+        return Get();
       }
+    }
 
-      var value = Get();
+    //
+
+    public override string Get()
+    {
+      var value = "";
+
+      try {
+        value = ToString(HandleGet());
+      } catch (Exception e) {
+        _onError(new PlcStateError {
+          state_id = _id,
+          plc_id = _plcId,
+          operation = StateOperation.Write,
+          value = value,
+          message = e.Message,
+        });
+
+        throw e;
+      }
 
       if (!value.Equals(_currentValue)) {
         foreach (var hook in _gethooks) {
@@ -139,25 +146,15 @@ namespace Tiantong.Iot
       }
 
       _currentValue = value;
-      _currentValueGetAt = now;
+      _currentValueGetAt = DateTime.Now;
 
       return value;
     }
 
-    //
-
-    public override string GetString()
+    public override void Set(string value)
     {
-      return ToString(Get());
-    }
+      var data = FromString(value);
 
-    public override void SetString(string data)
-    {
-      Set(FromString(data));
-    }
-
-    public void Set(T data)
-    {
       try {
         HandleSet(data);
       } catch (Exception e) {
@@ -165,7 +162,7 @@ namespace Tiantong.Iot
           state_id = _id,
           plc_id = _plcId,
           operation = StateOperation.Write,
-          value = ToString(data),
+          value = value,
           message = e.Message,
         });
 
@@ -173,34 +170,13 @@ namespace Tiantong.Iot
       }
 
       foreach (var hook in _sethooks) {
-        Task.Run(() => hook(data));
+        Task.Run(() => hook(value));
       }
     }
 
-    public T Get()
-    {
-      var value = default(T);
+    public virtual string ToString(T value) => value.ToString();
 
-      try {
-        value = HandleGet();
-      } catch (Exception e) {
-        _onError(new PlcStateError {
-          state_id = _id,
-          plc_id = _plcId,
-          operation = StateOperation.Write,
-          value = "",
-          message = e.Message,
-        });
-
-        throw e;
-      }
-
-      return value;
-    }
-
-    protected virtual string ToString(T value) => value.ToString();
-
-    protected abstract T FromString(string value);
+    public abstract T FromString(string value);
 
     protected abstract T HandleGet();
 

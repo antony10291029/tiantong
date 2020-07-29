@@ -48,22 +48,7 @@ namespace Tiantong.Iot.Api
       var manager = new IntervalManager();
 
       foreach (var state in plc.states) {
-        switch (state.type) {
-          case PlcStateType.Bool:
-            ResolveState<bool>(client, manager, state);
-            break;
-          case PlcStateType.UInt16:
-            ResolveState<ushort>(client, manager, state);
-            break;
-          case PlcStateType.Int32:
-            ResolveState<int>(client, manager, state);
-            break;
-          case PlcStateType.String:
-            ResolveState<string>(client, manager, state);
-            break;
-          default:
-            throw new Exception("暂时不支持该数据类型");
-        };
+        ResolveState(client, manager, state);
       }
 
       return new PlcWorker(client, manager, _domain);
@@ -74,10 +59,10 @@ namespace Tiantong.Iot.Api
       _domain.Log(error);
     }
 
-    private void ResolveState<T>(PlcClient client, IntervalManager manager, PlcState st)
+    private void ResolveState(PlcClient client, IntervalManager manager, PlcState st)
     {
       if (st.is_collect) {
-        ResolveCollect<T>(client, manager, st.name, st.collect_interval);
+        ResolveCollect(client, manager, st.name, st.collect_interval);
       }
 
       if (st.is_heartbeat) {
@@ -85,15 +70,15 @@ namespace Tiantong.Iot.Api
       }
 
       foreach (var pusher in st.http_pushers) {
-        ResolveHttpPusher<T>(client, manager, st.name)
+        ResolveHttpPusher(client, manager, st.name)
           .Post(pusher.url, pusher.field, pusher.to_string, pusher.header, pusher.body)
           .Id(pusher.id);
       }
     }
 
-    private void ResolveCollect<T>(PlcClient client, IntervalManager manager, string name, int interval)
+    private void ResolveCollect(PlcClient client, IntervalManager manager, string name, int interval)
     {
-      manager.Add(new Interval(() => client.State<T>(name).Collect(interval), interval));
+      manager.Add(new Interval(() => client.State(name).Collect(interval), interval));
     }
 
     private void ResolveHeartbeat(PlcClient client, IntervalManager manager, string name, int interval, int maxValue)
@@ -107,15 +92,15 @@ namespace Tiantong.Iot.Api
           value = 1;
         }
 
-        client.State(name).SetString(value.ToString());
+        client.State(name).Set(value.ToString());
       }, interval));
     }
 
-    private HttpPusher<T> ResolveHttpPusher<T>(PlcClient client, IntervalManager manager, string name)
+    private HttpPusher<string> ResolveHttpPusher(PlcClient client, IntervalManager manager, string name)
     {
-      var pusher = _httpPusherFactory.Resolve<T>();
+      var pusher = _httpPusherFactory.Resolve<string>();
 
-      client.State<T>(name).AddGetHook(value => pusher.Emit(value));
+      client.State(name).AddGetHook(value => pusher.Emit(value));
 
       return pusher;
     }

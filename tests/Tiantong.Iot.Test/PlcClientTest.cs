@@ -16,11 +16,9 @@ namespace Tiantong.Iot.Test
       var client = new PlcClient(options);
 
       client.Connect();
-      client.Set<int>(1, 100);
+      client.State(1).Set("100");
 
-      Assert.AreEqual(100, client.Get<int>(1));
+      Assert.AreEqual("100", client.State(1).Get());
     }
-
   }
-
 }

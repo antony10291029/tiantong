@@ -4,7 +4,7 @@ namespace Tiantong.Iot
 {
   public class StateUInt16 : State<ushort>
   {
-    protected override ushort FromString(string data)
+    public override ushort FromString(string data)
     {
       return ushort.Parse(data);
     }

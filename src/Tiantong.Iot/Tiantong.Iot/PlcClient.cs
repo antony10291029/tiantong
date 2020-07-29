@@ -54,55 +54,15 @@ namespace Tiantong.Iot
       return _statesByName[name];
     }
 
-    public IState<T> State<T>(int id)
+    public void Set(IState state, string value)
     {
-      if (!_statesById.ContainsKey(id)) {
-        throw KnownException.Error("数据点不存在");
-      }
-
-      var state = _statesById[id];
-
-      if (!(state is IState<T>)) {
-        throw KnownException.Error($"数据点类型错误");
-      }
-
-      return state as IState<T>;
+      state.Build(_driverProvider.Resolve()).Set(value);
     }
 
-    public IState<T> State<T>(string name)
+    public string Get(IState state)
     {
-      if (!_statesByName.ContainsKey(name)) {
-        throw KnownException.Error($"数据点不存在");
-      }
-
-      var state = _statesByName[name];
-
-      if (!(state is IState<T>)) {
-        throw KnownException.Error($"数据点类型错误");
-      }
-
-      return state as IState<T>;
+      return state.Build(_driverProvider.Resolve()).Get();
     }
-
-    public void SetString(IState state, string value)
-    {
-      state.Build(_driverProvider.Resolve())
-        .SetString(value);
-    }
-
-    public string GetString(IState state)
-    {
-      return state.Build(_driverProvider.Resolve())
-        .GetString();
-    }
-
-    public void Set<T>(int id, T value) => State<T>(id).Set(value);
-
-    public T Get<T>(int id) => State<T>(id).Get();
-
-    public void Set<T>(string name, T value) => State<T>(name).Set(value);
-
-    public T Get<T>(string name) => State<T>(name).Get();
 
     public void Connect() => _driverProvider.Connect();
 

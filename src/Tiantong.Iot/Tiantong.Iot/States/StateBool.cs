@@ -2,7 +2,7 @@ namespace Tiantong.Iot
 {
   public class StateBool : State<bool>
   {
-    protected override bool FromString(string data)
+    public override bool FromString(string data)
     {
       switch (data) {
         case null:
@@ -17,7 +17,7 @@ namespace Tiantong.Iot
       }
     }
 
-    protected override string ToString(bool value)
+    public override string ToString(bool value)
     {
       return value ? "1" : "0";
     }
