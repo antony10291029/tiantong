@@ -27,9 +27,16 @@ namespace Tiantong.Iot.Api
       _client.Timeout = new TimeSpan(0, 0, 0, 0, mileseconds);
     }
 
-    public async Task PostAsync(int id, string uri, string header, string body, Encoding encoding = null)
+    public async Task PostAsync(int id, string uri, string header, string body, string value, string oldValue, string valueKey, Encoding encoding = null)
     {
       using (var request = new HttpRequestMessage(HttpMethod.Post, uri)) {
+        var data = JsonSerializer.Deserialize<Dictionary<string, object>>(body ?? "{}");
+
+        data[valueKey] = value;
+        data[$"old_{valueKey}"] = oldValue;
+
+        body = JsonSerializer.Serialize(data);
+
         request.Content = new StringContent(body, encoding ?? Encoding.UTF8, "application/json");
 
         foreach (var keyValue in JsonSerializer.Deserialize<Dictionary<string, object>>(header)) {

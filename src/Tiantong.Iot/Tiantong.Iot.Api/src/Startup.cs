@@ -21,7 +21,6 @@ namespace Tiantong.Iot.Api
       services.AddSingleton<IHash, Hash>();
       services.AddSingleton<IRandom, Random>();
       services.AddSingleton<HttpPusherClient>();
-      services.AddSingleton<HttpPusherFactory>();
       services.AddSingleton<DomainContextFactory>();
       services.AddHttpClient<PasswordService>();
       services.AddScoped<LogContext, SqliteLogContext>();

@@ -45,6 +45,8 @@ namespace Tiantong.Iot
 
     void AddGetHook(Action<string> hook);
 
+    void AddGetHook(Action<string, string> hook);
+
     void AddSetHook(Action<string> hook);
   }
 

@@ -76,6 +76,9 @@ namespace Tiantong.Iot
       return this;
     }
 
+    public void AddGetHook(Action<string> hook)
+      => AddGetHook((val, oldVal) => hook(val));
+
     public abstract string Get();
 
     public abstract string Collect(int interval);
@@ -84,15 +87,15 @@ namespace Tiantong.Iot
 
     protected abstract void HandleDriverBuild();
 
-    public abstract void AddGetHook(Action<string> hook);
-
     public abstract void AddSetHook(Action<string> hook);
+
+    public abstract void AddGetHook(Action<string, string> hook);
 
   }
 
   public abstract class State<T>: State, IState<T>
   {
-    private List<Action<string>> _gethooks = new List<Action<string>>();
+    private List<Action<string, string>> _gethooks = new List<Action<string, string>>();
 
     private List<Action<string>> _sethooks = new List<Action<string>>();
 
@@ -100,15 +103,11 @@ namespace Tiantong.Iot
 
     private DateTime _currentValueGetAt = DateTime.MinValue;
 
-    public override void AddGetHook(Action<string> hook)
-    {
-      _gethooks.Add(hook);
-    }
+    public override void AddGetHook(Action<string, string> hook)
+      => _gethooks.Add(hook);
 
     public override void AddSetHook(Action<string> hook)
-    {
-      _sethooks.Add(hook);
-    }
+      => _sethooks.Add(hook);
 
     public override string Collect(int collectInterval = 1000)
     {
@@ -140,8 +139,10 @@ namespace Tiantong.Iot
       }
 
       if (!value.Equals(_currentValue)) {
+        var oldValue = _currentValue;
+
         foreach (var hook in _gethooks) {
-          Task.Run(() => hook(value));
+          Task.Run(() => hook(value, oldValue));
         }
       }
 

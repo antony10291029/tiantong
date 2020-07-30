@@ -9,16 +9,12 @@ namespace Tiantong.Iot.Api
 
     private HttpPusherClient _httpPusherClient;
 
-    private HttpPusherFactory _httpPusherFactory;
-
     public PlcBuilder(
       DomainContextFactory domain,
-      HttpPusherClient httpPusherClient,
-      HttpPusherFactory httpPusherFactory
+      HttpPusherClient httpPusherClient
     ) {
       _domain = domain;
       _httpPusherClient = httpPusherClient;
-      _httpPusherFactory = httpPusherFactory;
     }
 
     public PlcClient BuildClient(Plc plc)
@@ -70,9 +66,7 @@ namespace Tiantong.Iot.Api
       }
 
       foreach (var pusher in st.http_pushers) {
-        ResolveHttpPusher(client, manager, st.name)
-          .Post(pusher.url, pusher.field, pusher.to_string, pusher.header, pusher.body)
-          .Id(pusher.id);
+        ResolveHttpPusher(client, manager, st.name, pusher);
       }
     }
 
@@ -96,13 +90,18 @@ namespace Tiantong.Iot.Api
       }, interval));
     }
 
-    private HttpPusher<string> ResolveHttpPusher(PlcClient client, IntervalManager manager, string name)
+    private void ResolveHttpPusher(PlcClient client, IntervalManager manager, string name, HttpPusher pusher)
     {
-      var pusher = _httpPusherFactory.Resolve<string>();
-
-      client.State(name).AddGetHook(value => pusher.Emit(value));
-
-      return pusher;
+      client.State(name).AddGetHook(async (value, oldValue) => await _httpPusherClient.PostAsync(
+        pusher.id,
+        pusher.url,
+        pusher.header,
+        pusher.body,
+        value,
+        oldValue,
+        pusher.field,
+        System.Text.Encoding.UTF8
+      ));
     }
   }
 }
