@@ -11,8 +11,6 @@
       >
     </div>
 
-    <hr>
-
     <div class="is-flex is-vcentered" style="padding: 0.75rem 0">
       <label class="label" style="width: 100px">
         编号
