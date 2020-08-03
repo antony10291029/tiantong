@@ -9,6 +9,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<Log> Logs { get; set; }
 
+    public DbSet<DeviceState> DeviceStates { get; set; }
+
     public DomainContext(Config config)
     {
       _config = config;

@@ -23,6 +23,16 @@ namespace Namei.Wcs.Api
       };
     }
 
+    [Route("/dev/rollback")]
+    public object Rollback()
+    {
+      _mg.Rollback();
+
+      return new {
+        message = "数据库已迁移"
+      };
+    }
+
     [Route("/dev/refresh")]
     public object Refresh()
     {
