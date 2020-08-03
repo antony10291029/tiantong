@@ -66,6 +66,10 @@ namespace Tiantong.Iot.Api
       }
 
       foreach (var pusher in st.http_pushers) {
+        if (!st.is_collect) {
+          ResolveCollect(client, manager, st.name, 1000);
+        }
+
         ResolveHttpPusher(client, manager, st.name, pusher);
       }
     }
