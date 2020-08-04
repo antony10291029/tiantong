@@ -1313,10 +1313,10 @@
   resolved "https://registry.npm.taobao.org/@xtuc/long/download/@xtuc/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha1-0pHGpOl5ibXGHZrPOWrk/hM6cY0=
 
-"@zhanglan1315/vue-bulma@^0.1.12-alpha":
-  version "0.1.12-alpha"
-  resolved "https://registry.npmjs.org/@zhanglan1315/vue-bulma/-/vue-bulma-0.1.12-alpha.tgz#a659e0dc09f3ede6db7d499fdabc7078833ad5de"
-  integrity sha512-cHTYibhf0Zu6ExjNI3UGnLyBPetJSDG6DSgpCVK0H2WK98ihWEv4nDqkoT3u4/J4VFW7cb+NI74di+wrOIH1+g==
+"@zhanglan1315/vue-bulma@^0.1.14-alpha":
+  version "0.1.14-alpha"
+  resolved "https://registry.npmjs.org/@zhanglan1315/vue-bulma/-/vue-bulma-0.1.14-alpha.tgz#2fe4431db62b055fb2d54d7bd2de671185229a29"
+  integrity sha512-iiWOc4gemZ/sSQaHAzMOoaJpu14KT/9CT5NS/cjPQqzunj+DbXS+JKfTvlf1c5Np3QYIeO8UpuQB228izR6R9w==
   dependencies:
     bulma "^0.9.0"
     flatpickr "^4.6.3"

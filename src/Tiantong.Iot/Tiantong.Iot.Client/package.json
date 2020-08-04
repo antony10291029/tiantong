@@ -1,6 +1,6 @@
 {
   "name": "@zhanglan1315/vue-bulma",
-  "version": "0.1.13-alpha",
+  "version": "0.1.14-alpha",
   "author": "zhanglan",
   "scripts": {
     "serve": "vue-cli-service serve",
