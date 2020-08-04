@@ -4,9 +4,9 @@ import Home from './Home/index.vue'
 import Lifters from './Lifters/index.vue'
 import NotFound from './NotFound/index.vue'
 import AutoDoors from './AutoDoors/index.vue'
-import Lifter from './Lifter/index.vue'
 import LiftersDebug from './LiftersDebug/index.vue'
 import LiftersDebugView from './LiftersDebug.View/index.vue'
+import System from './System/index.vue'
 
 const routes: RouteConfig[] = [
   {
@@ -31,9 +31,9 @@ const routes: RouteConfig[] = [
         component: AutoDoors
       },
       {
-        path: 'lifter',
-        name: 'Lifter',
-        component: Lifter
+        path: 'system',
+        name: 'System',
+        component: System
       },
       {
         path: 'lifters-debug',

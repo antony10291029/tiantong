@@ -23,7 +23,7 @@ namespace Namei.Wcs.Api
 
     public class SetDestinationParams
     {
-      public int destination { get; set ;}
+      public string destination { get; set; }
     }
 
     [HttpPost]
@@ -48,7 +48,7 @@ namespace Namei.Wcs.Api
     [Route("/test/lifters/import")]
     public object LiftersImport([FromBody] LifterNotifyParams param)
     {
-      _lifters.Get(param.lifter_id).SetDestination(param.floor, WmsService.Destination.ToString());
+      _lifters.Get(param.lifter_id).Release(param.floor);
 
       return new {
         message = $"放货完成通知完毕: {param.lifter_id} 号梯，{param.floor} 楼"
@@ -64,6 +64,43 @@ namespace Namei.Wcs.Api
       return new {
         message = $"取货完成通知完毕: {param.lifter_id} 号梯，{param.floor} 楼"
       };
+    }
+
+    [HttpPost]
+    [Route("/test/enable-lifter-commands")]
+    public object GetLifterCommandEnable()
+    {
+      return new { value = Config.EnableLifterCommands };
+    }
+
+    [HttpPost]
+    [Route("/test/enable-doors-commands")]
+    public object GetDoorsCommandEnable()
+    {
+      return new { value = Config.EnableDoorsCommands };
+    }
+
+    public class EnableParams
+    {
+      public bool value { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/test/set-enable-lifter-commands")]
+    public object SetLifterCommandEnable([FromBody] EnableParams param)
+    {
+      Config.EnableLifterCommands = param.value;
+
+      return new { message = "货梯命令设置完毕" };
+    }
+
+    [HttpPost]
+    [Route("/test/set-enable-doors-commands")]
+    public object SetDoorsCommandEnable([FromBody] EnableParams param)
+    {
+      Config.EnableDoorsCommands = param.value;
+
+      return new { message = "自动门命令设置完毕" };
     }
   }
 }
