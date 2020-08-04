@@ -1,6 +1,5 @@
 using Renet.Web;
 using Microsoft.AspNetCore.Mvc;
-using Tiantong.Iot.Utils;
 
 namespace Namei.Wcs.Api
 {
@@ -8,11 +7,8 @@ namespace Namei.Wcs.Api
   {
     private Config _config;
 
-    private PlcStateService _plc;
-
-    public AppController(Config config, PlcStateService plc)
+    public AppController(Config config)
     {
-      _plc = plc;
       _config = config;
     }
 
@@ -21,10 +17,7 @@ namespace Namei.Wcs.Api
     [Route("/")]
     public ActionResult<object> Home()
     {
-      _plc.Configure("http://localhost:5100/", "测试设备 1");
-
       return new {
-        value = _plc.GetAsync("测试数据点 1").GetAwaiter().GetResult(),
         message = $"{_config.AppName} v{_config.AppVersion}"
       };
     }

@@ -14,7 +14,9 @@ namespace Namei.Wcs.Api
       services.AddHttpClient();
       services.AddSingleton<Config>();
       services.AddTransient<PlcStateService>();
-      services.AddScoped<ReformedLifterService>();
+      services.AddScoped<FirstLifterService>();
+      services.AddScoped<SecondLifterService>();
+      services.AddScoped<ThirdLifterService>();
       services.AddScoped<LifterServiceManager>();
       services.AddDbContext<DomainContext>();
       services.AddScoped<MigratorProvider>();

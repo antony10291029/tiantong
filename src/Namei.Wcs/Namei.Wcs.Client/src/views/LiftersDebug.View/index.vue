@@ -21,7 +21,7 @@
         >
           <a
             class="button"
-            @click="setDestination(key)"
+            @click="setDestination(key.toString())"
             v-class:is-info="key == destination"
           >
             {{key}} 楼
@@ -86,7 +86,7 @@ export default class extends Vue {
   @Prop({ required: true })
   lifterId!: number
 
-  destination = 1
+  destination = '1'
 
   async getDestination () {
     const response = await domain.post('/test/lifters/destination')

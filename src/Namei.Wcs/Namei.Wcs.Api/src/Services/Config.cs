@@ -5,6 +5,10 @@ namespace Namei.Wcs.Api
 {
   public class Config
   {
+    public static bool EnableDoorsCommands = false;
+
+    public static bool EnableLifterCommands = false;
+
     public readonly string Env;
 
     public bool IsProduction { get => Env == "Production"; }

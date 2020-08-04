@@ -9,11 +9,13 @@ namespace Namei.Wcs.Api
 
   public class WmsService
   {
-    public static int Destination = 1;
+    public static string Destination = "1";
 
     public PalletInfo GetPalletInfo(string barcode)
     {
-      return new PalletInfo();
+      return new PalletInfo() {
+        Destination = Destination,
+      };
     }
 
     public void RequestPicking(int lifterId, string floor, string code, string taskId)
