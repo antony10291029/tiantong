@@ -54,7 +54,6 @@ export default class extends Vue {
   async handleSubmit () {
     let response = await axios.post('/plcs/states/create', this.state)
     let id = response.data.id
-    this.$router.push(`${id}/detail`)
     this.$emit('refresh')
   }
 

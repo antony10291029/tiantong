@@ -58,7 +58,7 @@ namespace Namei.Wcs.Api
     public ReformedLifterService(PlcStateService plc)
     {
       _plc = plc;
-      _plc.Configure("http://localhost:5100", "改造货梯");
+      _plc.Configure("http://localhost:5101", "改造货梯");
     }
 
     public override void Release(string floor)

@@ -46,6 +46,14 @@
               <span>货梯改造系统</span>
             </router-link>
           </li>
+          <li>
+            <router-link to="/lifters-debug">
+              <span class="icon">
+                <i class="iconfont icon-lifter"></i>
+              </span>
+              <span>提升机调试</span>
+            </router-link>
+          </li>
         </ul>
       </aside>
       <router-view class="is-flex-auto" />

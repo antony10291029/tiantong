@@ -9,6 +9,8 @@ namespace Namei.Wcs.Api
 
   public class WmsService
   {
+    public static int Destination = 1;
+
     public PalletInfo GetPalletInfo(string barcode)
     {
       return new PalletInfo();

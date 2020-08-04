@@ -45,10 +45,8 @@ namespace Namei.Wcs.Api
 
       if (isScanned && isFinished) {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(1, param.floor));
-        message = "正在通知 WMS 安排取货";
       } else if (isScanned) {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(1, param.floor));
-        message = "正在设置目标楼层";
       }
 
       return new {
