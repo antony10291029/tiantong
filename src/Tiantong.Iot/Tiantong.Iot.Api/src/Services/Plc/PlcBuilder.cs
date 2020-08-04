@@ -66,11 +66,11 @@ namespace Tiantong.Iot.Api
       }
 
       foreach (var pusher in st.http_pushers) {
-        if (!st.is_collect) {
-          ResolveCollect(client, manager, st.name, 1000);
-        }
-
         ResolveHttpPusher(client, manager, st.name, pusher);
+      }
+
+      if (!st.is_collect && st.http_pushers?.Count > 0) {
+        ResolveCollect(client, manager, st.name, 1000);
       }
     }
 
@@ -96,16 +96,20 @@ namespace Tiantong.Iot.Api
 
     private void ResolveHttpPusher(PlcClient client, IntervalManager manager, string name, HttpPusher pusher)
     {
-      client.State(name).AddGetHook(async (value, oldValue) => await _httpPusherClient.PostAsync(
-        pusher.id,
-        pusher.url,
-        pusher.header,
-        pusher.body,
-        value,
-        oldValue,
-        pusher.field,
-        System.Text.Encoding.UTF8
-      ));
+      client.State(name).AddGetHook(async (value, oldValue) => {
+        try {
+          await _httpPusherClient.PostAsync(
+            pusher.id,
+            pusher.url,
+            pusher.header,
+            pusher.body,
+            value,
+            oldValue,
+            pusher.field,
+            System.Text.Encoding.UTF8
+          );
+        } catch {}
+      });
     }
   }
 }
