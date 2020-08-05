@@ -4,11 +4,11 @@ namespace Namei.Wcs.Api
   {
     public const string Message = "lifter.task.exported";
 
-    public int LifterId { get; set; }
+    public string LifterId { get; set; }
 
     public string Floor { get; set; }
 
-    public LifterTaskExportedEvent(int lifterId, string floor)
+    public LifterTaskExportedEvent(string lifterId, string floor)
     {
       Floor = floor;
       LifterId = lifterId;

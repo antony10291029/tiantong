@@ -18,7 +18,7 @@ namespace Namei.Wcs.Api
       };
     }
 
-    public void RequestPicking(int lifterId, string floor, string code, string taskId)
+    public void RequestPicking(string lifterId, string floor, string code, string taskId)
     {
 
     }

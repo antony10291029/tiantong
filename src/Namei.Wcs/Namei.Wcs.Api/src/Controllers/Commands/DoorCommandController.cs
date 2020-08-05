@@ -15,7 +15,7 @@ namespace Namei.Wcs.Api
 
     public class DoorStateChangedParams
     {
-      public int door_id { get; set; }
+      public string door_id { get; set; }
 
       public string value { get; set; }
     }

@@ -4,9 +4,9 @@ namespace Namei.Wcs.Api
   {
     public const string Message = "door.opened";
 
-    public int DoorId { get; set; }
+    public string DoorId { get; set; }
 
-    public DoorOpenedEvent(int id)
+    public DoorOpenedEvent(string id)
     {
       DoorId = id;
     }

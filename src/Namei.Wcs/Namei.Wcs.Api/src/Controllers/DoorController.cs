@@ -7,8 +7,6 @@ namespace Namei.Wcs.Api
   {
     private DoorServiceManager _doors;
 
-    private ICapPublisher _cap;
-
     private RcsService _rcs;
 
     public DoorController(
@@ -19,14 +17,14 @@ namespace Namei.Wcs.Api
       _rcs = rcs;
     }
 
-    [CapSubscribe(DoorRequestingOpenEvent.Message)]
-    public void HandleRequestingOpen(DoorRequestingOpenEvent param)
+    [CapSubscribe(DoorRequestedOpenEvent.Message)]
+    public void HandleRequestingOpen(DoorRequestedOpenEvent param)
     {
       _doors.Get(param.DoorId).Open();
     }
 
-    [CapSubscribe(DoorRequestingCloseEvent.Message)]
-    public void HandleRequestingClose(DoorRequestingCloseEvent param)
+    [CapSubscribe(DoorRequestedCloseEvent.Message)]
+    public void HandleRequestingClose(DoorRequestedCloseEvent param)
     {
       _doors.Get(param.DoorId).Close();
     }

@@ -5,9 +5,9 @@ namespace Namei.Wcs.Api
 {
   public abstract class DoorServiceManager
   {
-    private Dictionary<int, DoorService> _doors = new Dictionary<int, DoorService>();
+    private Dictionary<string, DoorService> _doors = new Dictionary<string, DoorService>();
 
-    public DoorService Get(int id)
+    public DoorService Get(string id)
     {
       if (!_doors.ContainsKey(id)) {
         throw KnownException.Error($"设备 `自动门{id}`不存在");

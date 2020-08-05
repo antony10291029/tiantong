@@ -39,11 +39,19 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/lifters-debug">
+            <router-link to="/lifter-commands">
               <span class="icon">
                 <i class="iconfont icon-lifter"></i>
               </span>
-              <span>提升机调试</span>
+              <span>提升机指令</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/door-commands">
+              <span class="icon">
+                <i class="iconfont icon-lifter"></i>
+              </span>
+              <span>自动门指令</span>
             </router-link>
           </li>
           <li>

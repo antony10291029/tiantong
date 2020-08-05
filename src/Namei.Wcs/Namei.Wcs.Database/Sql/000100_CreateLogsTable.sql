@@ -5,3 +5,6 @@ create table if not exists logs (
   message text not null,
   created_at timestamp(0) not null
 );
+
+create index logs_type on logs(type);
+create index logs_key on logs("key");

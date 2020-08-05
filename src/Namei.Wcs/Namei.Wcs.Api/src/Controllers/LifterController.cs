@@ -24,9 +24,9 @@ namespace Namei.Wcs.Api
     // events
 
     [CapSubscribe(LifterTaskImportedEvent.Message)]
-    public void HandleTaskReleased(LifterTaskImportedEvent param)
+    public void HandleTaskImported(LifterTaskImportedEvent param)
     {
-      _lifters.Get(param.LifterId).Release(param.Floor);
+      _lifters.Get(param.LifterId).Imported(param.Floor);
     }
 
     [CapSubscribe(LifterTaskScannedEvent.Message)]

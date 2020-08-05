@@ -15,7 +15,7 @@ namespace Namei.Wcs.Api
 
     public class DoorParams
     {
-      public int DoorId { get; set; }
+      public string DoorId { get; set; }
 
       public string Method { get; set; }
     }
@@ -30,10 +30,10 @@ namespace Namei.Wcs.Api
         message = "RCS 指令未开启";
       } else if (param.Method == "open") {
         message = "正在处理开门指令";
-        _cap.Publish(DoorRequestingOpenEvent.Message, new DoorRequestingOpenEvent(param.DoorId));
+        _cap.Publish(DoorRequestedOpenEvent.Message, new DoorRequestedOpenEvent(param.DoorId));
       } else if (param.Method == "close") {
         message = "正在处理关门指令";
-        _cap.Publish(DoorRequestingCloseEvent.Message, new DoorRequestingCloseEvent(param.DoorId));
+        _cap.Publish(DoorRequestedCloseEvent.Message, new DoorRequestedCloseEvent(param.DoorId));
       }
 
       return new {

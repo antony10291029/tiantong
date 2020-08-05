@@ -46,10 +46,10 @@ namespace Namei.Wcs.Api
       if (!Config.EnableLifterCommands) {
         message = "货梯指令未开启";
       } else if (isScanned && isFinished) {
-        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(1, param.floor));
+        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent("1", param.floor));
         message = "正在处理取货指令";
       } else if (isScanned) {
-        _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(1, param.floor));
+        _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent("1", param.floor));
         message = "正在处理读码指令";
       }
 
@@ -58,7 +58,7 @@ namespace Namei.Wcs.Api
 
     public class LifterTaskScannedParams
     {
-      public int lifter_id { get; set; }
+      public string lifter_id { get; set; }
 
       public string floor { get; set; }
 
@@ -83,7 +83,7 @@ namespace Namei.Wcs.Api
 
     public class LifterTaskExportedParams
     {
-      public int lifter_id { get; set; }
+      public string lifter_id { get; set; }
 
       public string floor { get; set; }
 

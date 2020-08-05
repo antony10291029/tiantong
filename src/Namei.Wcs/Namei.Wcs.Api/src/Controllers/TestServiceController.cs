@@ -1,3 +1,4 @@
+using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
 
@@ -5,10 +6,13 @@ namespace Namei.Wcs.Api
 {
   public class TestServiceController: BaseController
   {
+    private ICapPublisher _cap;
+    
     private LifterServiceManager _lifters;
 
-    public TestServiceController(LifterServiceManager lifters)
+    public TestServiceController(LifterServiceManager lifters, ICapPublisher cap)
     {
+      _cap = cap;
       _lifters = lifters;
     }
 
@@ -39,31 +43,56 @@ namespace Namei.Wcs.Api
 
     public class LifterNotifyParams
     {
-      public int lifter_id { get; set; }
+      public string lifter_id { get; set; }
 
       public string floor { get; set; }
+
+      public string message { get; set; }
     }
 
     [HttpPost]
-    [Route("/test/lifters/import")]
-    public object LiftersImport([FromBody] LifterNotifyParams param)
+    [Route("/test/lifters/publish-message")]
+    public object PublishMessage([FromBody] LifterNotifyParams param)
     {
-      _lifters.Get(param.lifter_id).Release(param.floor);
+      if (param.message == "imported") {
+        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.lifter_id, param.floor));
+      } else if (param.message == "exported") {
+        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
+      } else if (param.message == "scanned") {
+        _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(param.lifter_id, param.floor));
+      } else if (param.message == "taken") {
+        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
+      } else if (param.message == "requested.open") {
+        _cap.Publish(LifterDoorRequestedOpenEvent.Message, new LifterDoorRequestedOpenEvent(param.lifter_id, param.floor));
+      }
 
       return new {
-        message = $"放货完成通知完毕: {param.lifter_id} 号梯，{param.floor} 楼"
+        message = $"指令已发送: {param.lifter_id} 号梯，{param.floor} 楼"
       };
     }
 
-    [HttpPost]
-    [Route("/test/lifters/export")]
-    public object LiftersExport([FromBody] LifterNotifyParams param)
+    public class PublishDoorsMessageParams
     {
-      _lifters.Get(param.lifter_id).Pickup(param.floor);
+      public string door_id { get; set; }
 
-      return new {
-        message = $"取货完成通知完毕: {param.lifter_id} 号梯，{param.floor} 楼"
-      };
+      public string message { get; set; }
+    }
+
+    [HttpPost]
+    [Route("/test/doors/publish-message")]
+    public object PublishDoorsMessage([FromBody] PublishDoorsMessageParams param)
+    {
+      if (param.message == "requested.open") {
+        _cap.PublishAsync(DoorRequestedOpenEvent.Message, new DoorRequestedOpenEvent(param.door_id));
+      } else if (param.message  == "requested.close") {
+        _cap.PublishAsync(DoorRequestedCloseEvent.Message, new DoorRequestedCloseEvent(param.door_id));
+      } else if (param.message == "opened") {
+        _cap.PublishAsync(DoorOpenedEvent.Message, new DoorOpenedEvent(param.door_id));
+      } else if (param.message == "closed") {
+        _cap.PublishAsync(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
+      }
+
+      return new { message = "指令已发送" };
     }
 
     [HttpPost]
@@ -79,7 +108,8 @@ namespace Namei.Wcs.Api
       };
     }
 
-    public class SystemSettingsParams {
+    public class SystemSettingsParams
+    {
       public bool enableDoorsCommands { get; set; }
 
       public bool enableLifterCommands { get; set; }

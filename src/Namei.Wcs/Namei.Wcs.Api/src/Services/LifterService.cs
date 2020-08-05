@@ -7,7 +7,7 @@ namespace Namei.Wcs.Api
 {
   public class LifterServiceManager
   {
-    private Dictionary<int, LifterService> _lifters = new Dictionary<int, LifterService>();
+    private Dictionary<string, LifterService> _lifters = new Dictionary<string, LifterService>();
 
     private ICapPublisher _cap;
 
@@ -19,12 +19,12 @@ namespace Namei.Wcs.Api
     ) {
       // 待添加两台提升机
       _cap = cap;
-      _lifters.Add(1, firstLifter);
-      _lifters.Add(2, secondLifter);
-      _lifters.Add(3, thirdLifter);
+      _lifters.Add("1", firstLifter);
+      _lifters.Add("2", secondLifter);
+      _lifters.Add("3", thirdLifter);
     }
 
-    public LifterService Get(int id)
+    public LifterService Get(string id)
     {
       if (!_lifters.ContainsKey(id)) {
         throw KnownException.Error($"lifter_id: {id} 设备不存在", 400);
@@ -37,7 +37,7 @@ namespace Namei.Wcs.Api
   public abstract class LifterService
   {
     // 放货完成
-    public abstract void Release(string floor);
+    public abstract void Imported(string floor);
 
     // 取货完成
     public abstract void Pickup(string floor);
@@ -65,7 +65,7 @@ namespace Namei.Wcs.Api
       _plc.Configure("http://localhost:5101", "改造货梯");
     }
 
-    public override void Release(string floor)
+    public override void Imported(string floor)
       => _plc.Set($"{floor}F - 放货完成", "1");
 
     public override void Pickup(string floor)
@@ -102,7 +102,7 @@ namespace Namei.Wcs.Api
       _plc = plc;
     }
 
-    public override void Release(string floor)
+    public override void Imported(string floor)
       => _plc.Set($"{floor}F - A 段 - 放取货状态", "3");
 
     public override void Pickup(string floor)
@@ -125,7 +125,7 @@ namespace Namei.Wcs.Api
   {
     public SecondLifterService(PlcStateService plc): base(plc)
     {
-
+      plc.Configure("http://localhost:5101", "提升机 - 1");
     }
   }
 
@@ -133,7 +133,7 @@ namespace Namei.Wcs.Api
   {
     public ThirdLifterService(PlcStateService plc): base(plc)
     {
-
+      plc.Configure("http://localhost:5101", "提升机 - 2");
     }
   }
 }

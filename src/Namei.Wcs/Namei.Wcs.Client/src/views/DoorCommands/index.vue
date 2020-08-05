@@ -9,27 +9,39 @@
 
           <router-link
             class="panel-block"
-            to="/lifters-debug/1"
+            to="/door-commands/101"
           >
-            1 号梯（改造货梯）
+            101 号自动门
           </router-link>
           <router-link
             class="panel-block"
-            to="/lifters-debug/2"
+            to="/door-commands/102"
           >
-            2 号梯（提升机）
+            102 号自动门
           </router-link>
           <router-link
             class="panel-block"
-            to="/lifters-debug/3"
+            to="/door-commands/103"
           >
-            3 号梯（提升机）
+            103 号自动门
+          </router-link>
+          <router-link
+            class="panel-block"
+            to="/door-commands/201"
+          >
+            201 号自动门
+          </router-link>
+          <router-link
+            class="panel-block"
+            to="/door-commands/202"
+          >
+            202 号自动门
           </router-link>
         </div>
       </div>
 
       <div class="column">
-        <router-view />
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -39,7 +51,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component({
-  name: 'LiftersDebug'
+  name: 'DoorCommands'
 })
 export default class extends Vue {
 

@@ -22,7 +22,7 @@ namespace Namei.Wcs.Api
     {
       public string method;
 
-      public int lifter_id;
+      public string lifter_id;
 
       public string floor;
     }

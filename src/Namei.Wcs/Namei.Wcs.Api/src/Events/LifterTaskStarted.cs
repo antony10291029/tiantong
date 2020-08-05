@@ -4,14 +4,17 @@ namespace Namei.Wcs.Api
   {
     public const string Message = "lifter.task.started";
 
-    public int LifterId { get; set; }
+    public string LifterId { get; set; }
 
     public string Floor { get; set; }
 
-    public LifterTaskStartedEvent(int lifterId, string floor)
+    public string Destination { get; set; }
+
+    public LifterTaskStartedEvent(string lifterId, string floor, string destination)
     {
       LifterId = lifterId;
       Floor = floor;
+      Destination = destination;
     }
   }
 }

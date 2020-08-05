@@ -14,13 +14,14 @@ namespace Namei.Wcs.Api
       services.AddHttpClient();
       services.AddSingleton<Config>();
       services.AddTransient<PlcStateService>();
+      services.AddDbContext<DomainContext>();
       services.AddScoped<FirstLifterService>();
       services.AddScoped<SecondLifterService>();
       services.AddScoped<ThirdLifterService>();
       services.AddScoped<LifterServiceManager>();
-      services.AddDbContext<DomainContext>();
       services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
+      services.AddScoped<WmsService>();
       services.AddCap(cap => {
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();

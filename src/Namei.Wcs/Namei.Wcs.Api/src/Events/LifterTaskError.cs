@@ -4,11 +4,11 @@ namespace Namei.Wcs.Api
   {
     public const string Message = "lifter.task.error";
 
-    public int LifterId { get; set; }
+    public string LifterId { get; set; }
 
     public string Floor { get; set; }
 
-    public LifterTaskErrorEvent(int lifterId, string floor)
+    public LifterTaskErrorEvent(string lifterId, string floor)
     {
       LifterId = lifterId;
       Floor = floor;
