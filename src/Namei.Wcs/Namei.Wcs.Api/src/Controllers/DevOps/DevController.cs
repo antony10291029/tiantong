@@ -1,4 +1,5 @@
 using DBCore;
+using Renet;
 using Renet.Web;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +9,11 @@ namespace Namei.Wcs.Api
   {
     private IMigrator _mg;
 
-    public DevController(MigratorProvider mg)
+    public DevController(MigratorProvider mg, Config config)
     {
+      if (!config.IsDevelopment) {
+        throw KnownException.Error("该接口只面向开发环境");
+      }
       _mg = mg.Migrator;
     }
 

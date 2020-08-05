@@ -67,40 +67,43 @@ namespace Namei.Wcs.Api
     }
 
     [HttpPost]
-    [Route("/test/enable-lifter-commands")]
-    public object GetLifterCommandEnable()
+    [Route("/test/system-settings")]
+    public object GetSystemSettings()
     {
-      return new { value = Config.EnableLifterCommands };
+      return new {
+        enableDoorsCommands = Config.EnableDoorsCommands,
+        enableLifterCommands = Config.EnableLifterCommands,
+        enableHoisterCommands = Config.EnableHoistersCommands,
+        enableWmsCommands = Config.EnableWmsCommands,
+        enableRcsCommands = Config.EnableRcsCommands,
+      };
+    }
+
+    public class SystemSettingsParams {
+      public bool enableDoorsCommands { get; set; }
+
+      public bool enableLifterCommands { get; set; }
+
+      public bool enableHoisterCommands { get; set; }
+
+      public bool enableWmsCommands { get; set; }
+
+      public bool enableRcsCommands { get; set; }
     }
 
     [HttpPost]
-    [Route("/test/enable-doors-commands")]
-    public object GetDoorsCommandEnable()
+    [Route("/test/system-settings/set")]
+    public object SetSystemSettings([FromBody] SystemSettingsParams param)
     {
-      return new { value = Config.EnableDoorsCommands };
-    }
+      Config.EnableDoorsCommands = param.enableDoorsCommands;
+      Config.EnableLifterCommands = param.enableLifterCommands;
+      Config.EnableHoistersCommands = param.enableHoisterCommands;
+      Config.EnableWmsCommands = param.enableWmsCommands;
+      Config.EnableRcsCommands = param.enableRcsCommands;
 
-    public class EnableParams
-    {
-      public bool value { get; set; }
-    }
-
-    [HttpPost]
-    [Route("/test/set-enable-lifter-commands")]
-    public object SetLifterCommandEnable([FromBody] EnableParams param)
-    {
-      Config.EnableLifterCommands = param.value;
-
-      return new { message = "货梯命令设置完毕" };
-    }
-
-    [HttpPost]
-    [Route("/test/set-enable-doors-commands")]
-    public object SetDoorsCommandEnable([FromBody] EnableParams param)
-    {
-      Config.EnableDoorsCommands = param.value;
-
-      return new { message = "自动门命令设置完毕" };
+      return new {
+        message = "系统设置已保存"
+      };
     }
   }
 }

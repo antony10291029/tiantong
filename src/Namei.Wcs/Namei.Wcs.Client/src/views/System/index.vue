@@ -1,6 +1,6 @@
 <template>
   <AsyncLoader
-    :handler="initialize"
+    :handler="getSystemParams"
     style="padding: 1.25rem"
   >
     <div class="box">
@@ -19,8 +19,24 @@
         </p>
 
         <Switcher
-          :value="enableLifterCommands"
-          @input="changeEnableLifterCommands"
+          v-model="settings.enableLifterCommands"
+          @input="setSystemParams"
+        />
+      </div>
+
+      <hr>
+
+      <div
+        class="is-flex is-vcentered"
+        style="padding: 1.25rem 0"
+      >
+        <p class="label" style="width: 180px">
+          执行提升机指令
+        </p>
+
+        <Switcher
+          v-model="settings.enableDoorsCommands"
+          @input="setSystemParams"
         />
       </div>
 
@@ -35,8 +51,40 @@
         </p>
 
         <Switcher
-          :value="enableDoorsCommands"
-          @input="changeEnableDoorsCommands"
+          v-model="settings.enableHoisterCommands"
+          @input="setSystemParams"
+        />
+      </div>
+
+      <hr>
+
+      <div
+        class="is-flex is-vcentered"
+        style="padding: 1.25rem 0"
+      >
+        <p class="label" style="width: 180px">
+          执行 WMS 指令
+        </p>
+
+        <Switcher
+          v-model="settings.enableWmsCommands"
+          @input="setSystemParams"
+        />
+      </div>
+
+      <hr>
+
+      <div
+        class="is-flex is-vcentered"
+        style="padding: 1.25rem 0"
+      >
+        <p class="label" style="width: 180px">
+          执行 RCS 指令
+        </p>
+
+        <Switcher
+          v-model="settings.enableRcsCommands"
+          @input="setSystemParams"
         />
       </div>
 
@@ -54,35 +102,23 @@ import domain from '@/providers/contexts/domain'
   name: 'System'
 })
 export default class extends Vue {
-  enableLifterCommands = false
-
-  enableDoorsCommands = false
-
-  async getLifterSettings () {
-    const response = await domain.post('/test/enable-lifter-commands')
-    this.enableLifterCommands = response.data.value
+  settings = {
+    enableDoorsCommands: false,
+    enableLifterCommands: false,
+    enableHoisterCommands: false,
+    enableWmsCommands: false,
+    enableRcsCommands: false,
   }
 
-  async getDoorsSettings () {
-    const response = await domain.post('/test/enable-doors-commands')
-    this.enableDoorsCommands = response.data.value
+  async getSystemParams () {
+    const response = await domain.post('/test/system-settings')
+
+    this.settings = response.data
   }
 
-  async changeEnableLifterCommands (value: boolean) {
-    await domain.post('/test/set-enable-lifter-commands', { value })
-    await this.initialize()
-  }
-
-  async changeEnableDoorsCommands (value: boolean) {
-    await domain.post('/test/set-enable-doors-commands', { value })
-    await this.initialize()
-  }
-
-  async initialize () {
-    await Promise.all([
-      this.getDoorsSettings(),
-      this.getLifterSettings(),
-    ])
+  async setSystemParams () {
+    await domain.post('/test/system-settings/set', this.settings)
+    await this.getSystemParams()
   }
 }
 </script>

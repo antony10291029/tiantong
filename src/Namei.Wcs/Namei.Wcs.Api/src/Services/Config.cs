@@ -9,6 +9,12 @@ namespace Namei.Wcs.Api
 
     public static bool EnableLifterCommands = false;
 
+    public static bool EnableHoistersCommands = false;
+
+    public static bool EnableWmsCommands = false;
+
+    public static bool EnableRcsCommands = false;
+
     public readonly string Env;
 
     public bool IsProduction { get => Env == "Production"; }

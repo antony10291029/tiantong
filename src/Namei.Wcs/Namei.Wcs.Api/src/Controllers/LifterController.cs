@@ -1,5 +1,4 @@
 using Renet.Web;
-using Microsoft.AspNetCore.Mvc;
 using DotNetCore.CAP;
 
 namespace Namei.Wcs.Api
@@ -20,35 +19,6 @@ namespace Namei.Wcs.Api
       _cap = cap;
       _lifters = lifters;
       _wms = wms;
-    }
-
-    public class LifterNotify
-    {
-      public string method;
-
-      public int lifter_id;
-
-      public string floor;
-    }
-
-    [Route("/lifters/notify")]
-    public object LiftersNotify([FromBody] LifterNotify param)
-    {
-      var message = "";
-
-      if (param.method == "import") {
-        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.lifter_id, param.floor));
-        message = "收到放货完成通知";
-      } else if (param.method == "export") {
-        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
-        message = "收到取货完成通知";
-      }
-
-      return new {
-        message = message,
-        lifter_id = param.lifter_id,
-        floor = param.floor,
-      };
     }
 
     // events

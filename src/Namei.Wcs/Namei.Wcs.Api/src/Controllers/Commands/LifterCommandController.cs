@@ -4,7 +4,7 @@ using DotNetCore.CAP;
 
 namespace Namei.Wcs.Api
 {
-  public class LifterDeviceController: BaseController
+  public class LifterCommandController: BaseController
   {
     private WmsService _wms;
 
@@ -14,7 +14,7 @@ namespace Namei.Wcs.Api
 
     private ICapPublisher _cap;
 
-    public LifterDeviceController(
+    public LifterCommandController(
       ICapPublisher cap,
       LifterServiceManager lifters,
       FirstLifterService lifter,
@@ -43,12 +43,14 @@ namespace Namei.Wcs.Api
       var isScanned = _lifter.IsTaskScanned(param.value, param.old_value);
       var isFinished = _lifter.IsRequestingPickup(param.value);
 
-      if (isScanned && isFinished) {
+      if (!Config.EnableLifterCommands) {
+        message = "货梯指令未开启";
+      } else if (isScanned && isFinished) {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(1, param.floor));
-        message = "正在处理取货请求";
+        message = "正在处理取货指令";
       } else if (isScanned) {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(1, param.floor));
-        message = "正在处理条码中";
+        message = "正在处理读码指令";
       }
 
       return new { message };
@@ -69,9 +71,11 @@ namespace Namei.Wcs.Api
     {
       var message = "扫码状态无需处理";
 
-      if (param.value == "1") {
+      if (!Config.EnableHoistersCommands) {
+        message = "提升机指令未开启";
+      } else if (param.value == "1") {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(param.lifter_id, param.floor));
-        message = "正在处理条码中";
+        message = "正在处理读码指令";
       }
 
       return new { message };
@@ -90,11 +94,13 @@ namespace Namei.Wcs.Api
     [Route("/standard-lifters/exported")]
     public object LifterTaskExported([FromBody] LifterTaskExportedParams param)
     {
-      var message = "取货状态无需处理";
+      var message = "指令未识别";
 
-      if (param.value == "3") {
+      if (!Config.EnableHoistersCommands) {
+        message = "提升机指令未开启";
+      } else if (param.value == "3") {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
-        message = "正在处理取货请求";
+        message = "正在处理取货指令";
       }
 
       return new { message };
