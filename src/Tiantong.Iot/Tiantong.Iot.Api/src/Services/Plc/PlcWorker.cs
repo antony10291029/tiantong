@@ -94,12 +94,25 @@ namespace Tiantong.Iot.Api
       return _client.StatesByName()[name].Collect(interval);
     }
 
-    public Dictionary<string, string> GetCurrentStateValues()
+    public Dictionary<string, string> GetValues()
     {
       var dict = new Dictionary<string, string>();
 
       foreach (var state in _client.StatesById().Values) {
-        dict.Add(state.Name(), state.Collect());
+        if (state.IsCollect) {
+          dict.Add(state.Name(), state.CurrentValue);
+        }
+      }
+
+      return dict;
+    }
+
+    public Dictionary<string, string> GetAllValues()
+    {
+      var dict = new Dictionary<string, string>();
+
+      foreach (var state in _client.StatesById().Values) {
+        dict.Add(state.Name(), state.IsCollect ? state.CurrentValue : state.Collect());
       }
 
       return dict;

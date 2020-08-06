@@ -33,6 +33,7 @@ namespace Tiantong.Iot.Api
         state.Id(st.id).PlcId(st.plc_id).Name(st.name)
           .Address(st.address).Length(st.length)
           .IsReadLogOn(st.is_read_log_on).IsWriteLogOn(st.is_write_log_on);
+        state.IsCollect = st.is_collect;
       }
 
       return new PlcClient(options);

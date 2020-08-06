@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
+using System.Collections.Generic;
 
 namespace Tiantong.Iot.Api
 {
@@ -50,6 +51,33 @@ namespace Tiantong.Iot.Api
       var value = _manager.Get(param.plc).Collect(param.state, 1000);
 
       return new { value };
+    }
+
+    public class GetValuesParams
+    {
+      public string plc { get; set; }
+    }
+
+    [HttpPost]
+    [Route("values")]
+    public Dictionary<string, string> GetValues([FromBody] GetValuesParams param)
+    {
+      try {
+        return _manager.Get(param.plc).GetValues();
+      } catch {
+        throw new HttpException("数据不存在", 400);
+      }
+    }
+
+    [HttpPost]
+    [Route("all-values")]
+    public Dictionary<string, string> GetAllValues([FromBody] GetValuesParams param)
+    {
+      try {
+        return _manager.Get(param.plc).GetAllValues();
+      } catch {
+        throw new HttpException("数据不存在", 400);
+      }
     }
   }
 }

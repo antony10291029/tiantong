@@ -87,7 +87,7 @@ export default class extends Vue {
     }
 
     try {
-      const response = await axios.post('/plc-workers/current-values', {
+      const response = await axios.post('/plc-states/all-values', {
         plc: this.plc.name
       })
 

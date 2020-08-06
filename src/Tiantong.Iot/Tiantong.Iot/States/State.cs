@@ -7,7 +7,11 @@ namespace Tiantong.Iot
 {
   public abstract class State: IState
   {
+    public string CurrentValue { get; set; }
+
     public DateTime CurrentValueChangedAt { get; set; } = DateTime.MinValue;
+
+    public bool IsCollect { get; set; }
 
     protected int _id { get; set; }
 
@@ -99,10 +103,6 @@ namespace Tiantong.Iot
 
     private List<Action<string>> _sethooks = new List<Action<string>>();
 
-    private string _currentValue;
-
-    private DateTime _currentValueGetAt = DateTime.MinValue;
-
     public override void AddGetHook(Action<string, string> hook)
       => _gethooks.Add(hook);
 
@@ -111,8 +111,8 @@ namespace Tiantong.Iot
 
     public override string Collect(int collectInterval = 1000)
     {
-      if (_currentValueGetAt.AddMilliseconds(collectInterval) > DateTime.Now) {
-        return _currentValue;
+      if (CurrentValueChangedAt.AddMilliseconds(collectInterval) > DateTime.Now) {
+        return CurrentValue;
       } else {
         return Get();
       }
@@ -138,16 +138,16 @@ namespace Tiantong.Iot
         throw e;
       }
 
-      if (!value.Equals(_currentValue)) {
-        var oldValue = _currentValue;
+      if (!value.Equals(CurrentValue)) {
+        var oldValue = CurrentValue;
 
         foreach (var hook in _gethooks) {
           Task.Run(() => hook(value, oldValue));
         }
       }
 
-      _currentValue = value;
-      _currentValueGetAt = DateTime.Now;
+      CurrentValue = value;
+      CurrentValueChangedAt = DateTime.Now;
 
       return value;
     }

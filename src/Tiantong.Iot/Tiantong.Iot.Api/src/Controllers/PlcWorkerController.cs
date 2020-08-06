@@ -108,21 +108,5 @@ namespace Tiantong.Iot.Api
         return new { is_running = false };
       }
     }
-
-    public class GetCurrentValueParams
-    {
-      public string plc { get; set; }
-    }
-
-    [HttpPost]
-    [Route("current-values")]
-    public Dictionary<string, string> GetCurrentValue([FromBody] GetCurrentValueParams param)
-    {
-      try {
-        return _plcManager.Get(param.plc).GetCurrentStateValues();
-      } catch {
-        throw new HttpException("数据不存在", 400);
-      }
-    }
   }
 }

@@ -5,7 +5,11 @@ namespace Tiantong.Iot
 {
   public interface IState
   {
+    string CurrentValue { get; }
+
     DateTime CurrentValueChangedAt { get; }
+
+    bool IsCollect { get; set; }
 
     int Id();
 
