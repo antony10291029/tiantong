@@ -72,14 +72,34 @@ namespace Tiantong.Iot.Utils
       }
     }
 
-    public void Set(string state, string value)
+    public async Task<string> CollectAsync(string state)
     {
-      SetAsync(state, value).GetAwaiter().GetResult();
+      var text = JsonSerializer.Serialize(new {
+        plc = _plc,
+        state = state
+      });
+
+      var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
+      var response = await _client.PostAsync("/plc-states/collect", content);
+      var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+      if (response.StatusCode == HttpStatusCode.OK) {
+        return dom.RootElement.GetProperty("value").GetString();
+      } else {
+        throw KnownException.Error(
+          dom.RootElement.GetProperty("message").GetString(),
+          (int) response.StatusCode
+        );
+      }
     }
 
+    public void Set(string state, string value)
+      => SetAsync(state, value).GetAwaiter().GetResult();
+
     public string Get(string state)
-    {
-      return GetAsync(state).GetAwaiter().GetResult();
-    }
+      => GetAsync(state).GetAwaiter().GetResult();
+
+    public string Collect(string state)
+      => CollectAsync(state).GetAwaiter().GetResult();
   }
 }

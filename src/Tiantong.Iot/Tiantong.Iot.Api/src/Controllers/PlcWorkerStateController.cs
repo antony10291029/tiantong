@@ -42,5 +42,14 @@ namespace Tiantong.Iot.Api
 
       return SuccessOperation("数据已写入");
     }
+
+    [HttpPost]
+    [Route("collect")]
+    public object CollectString([FromBody] GetParams param)
+    {
+      var value = _manager.Get(param.plc).Collect(param.state, 1000);
+
+      return new { value };
+    }
   }
 }

@@ -89,6 +89,11 @@ namespace Tiantong.Iot.Api
       return value;
     }
 
+    public string Collect(string name, int interval = 1000)
+    {
+      return _client.StatesByName()[name].Collect(interval);
+    }
+
     public Dictionary<string, string> GetCurrentStateValues()
     {
       var dict = new Dictionary<string, string>();
