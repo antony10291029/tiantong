@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@zhanglan1315/vue-bulma": "^0.1.14-alpha",
+    "@zhanglan1315/vue-bulma": "^0.1.15-alpha",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "store": "^2.0.12",

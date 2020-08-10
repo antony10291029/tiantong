@@ -1,5 +1,6 @@
 using Renet;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -93,6 +94,33 @@ namespace Tiantong.Iot.Utils
       }
     }
 
+    public async Task<Dictionary<string, string>> GetValuesAsync()
+    {
+      var text = JsonSerializer.Serialize(new {
+        plc = _plc
+      });
+
+      var content = new StringContent(text, Encoding.UTF8, MediaTypeNames.Application.Json);
+      var response = await _client.PostAsync("/plc-states/values", content);
+      var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+      if (response.StatusCode == HttpStatusCode.OK) {
+        var data = dom.RootElement.GetProperty("data");
+        var result = new Dictionary<string, string>();
+
+        foreach (var item in data.EnumerateObject()) {
+          result.Add(item.Name, item.Value.GetString());
+        }
+
+        return result;
+      } else {
+        throw KnownException.Error(
+          dom.RootElement.GetProperty("message").GetString(),
+          (int) response.StatusCode
+        );
+      }
+    }
+
     public void Set(string state, string value)
       => SetAsync(state, value).GetAwaiter().GetResult();
 
@@ -101,5 +129,8 @@ namespace Tiantong.Iot.Utils
 
     public string Collect(string state)
       => CollectAsync(state).GetAwaiter().GetResult();
+
+    public Dictionary<string, string> GetValues()
+      => GetValuesAsync().GetAwaiter().GetResult();
   }
 }

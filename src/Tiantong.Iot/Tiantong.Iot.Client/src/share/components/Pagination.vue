@@ -8,7 +8,7 @@
           :disabled="page === 1"
         >
           <span class="icon">
-            <i class="iconfont icon-arrow-left"></i>
+            <i class="iconfont vue-bulma-arrow-left"></i>
           </span>
         </a>
       </li>
@@ -31,7 +31,7 @@
           :disabled="page === lastPage"
         >
           <span class="icon">
-            <i class="iconfont icon-arrow-right"></i>
+            <i class="iconfont vue-bulma-arrow-right"></i>
           </span>
         </a>
       </li>

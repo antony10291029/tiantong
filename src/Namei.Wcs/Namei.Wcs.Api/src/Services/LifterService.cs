@@ -1,5 +1,7 @@
 using DotNetCore.CAP;
 using Renet;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using Tiantong.Iot.Utils;
 
@@ -17,7 +19,6 @@ namespace Namei.Wcs.Api
       ThirdLifterService thirdLifter,
       ICapPublisher cap
     ) {
-      // 待添加两台提升机
       _cap = cap;
       _lifters.Add("1", firstLifter);
       _lifters.Add("2", secondLifter);
@@ -32,6 +33,26 @@ namespace Namei.Wcs.Api
 
       return _lifters[id];
     }
+  }
+
+  public class LifterState
+  {
+    public bool IsWorking { get; set; }
+
+    public bool IsAlarming { get; set; }
+
+    public List<LifterFloorState> Floors { get; set; }
+  }
+
+  public class LifterFloorState
+  {
+    public bool IsScanned { get; set; }
+
+    public bool IsImportAllowed { get; set; }
+
+    public bool IsExported { get; set; }
+
+    public bool IsDoorOpened { get; set; }
   }
 
   public abstract class LifterService
@@ -53,6 +74,8 @@ namespace Namei.Wcs.Api
 
     // 是否允许取货
     public abstract bool IsRequestingPickup(string floor);
+
+    public abstract LifterState GetStates();
   }
 
   public class FirstLifterService: LifterService
@@ -91,6 +114,22 @@ namespace Namei.Wcs.Api
 
     public bool IsTaskScanned(string data, string oldData)
       => GetIsTaskScanned(data) && !GetIsTaskScanned(oldData);
+
+    public override LifterState GetStates()
+    {
+      var states = _plc.GetValues();
+
+      return new LifterState() {
+        IsWorking = states["升降平台状态"] != "0",
+        IsAlarming = states["故障代码"] != "0",
+        Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
+          IsScanned = GetIsTaskScanned(states[$"{floor}F - A 段 - 输送机"]),
+          IsImportAllowed = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 6),
+          IsExported = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 7),
+          IsDoorOpened = false
+        }).ToList()
+      };
+    }
   }
 
   public class StandardLifterService: LifterService
@@ -119,6 +158,22 @@ namespace Namei.Wcs.Api
 
     public override bool IsRequestingPickup(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "3";
+
+    public override LifterState GetStates()
+    {
+      var states = _plc.GetValues();
+
+      return new LifterState() {
+        IsWorking = states["升降平台状态"] != "0",
+        IsAlarming = states["故障代码"] != "0",
+        Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
+          IsScanned = states[$"{floor}F - A 段 - 读码状态"] == "1",
+          IsImportAllowed = states[$"{floor}F - A 段 - 输送机"] == "1",
+          IsExported = states[$"{floor}F - A 段 - 放取货状态"] == "3",
+          IsDoorOpened = false
+        }).ToList()
+      };
+    }
   }
 
   public class SecondLifterService: StandardLifterService
@@ -133,7 +188,7 @@ namespace Namei.Wcs.Api
   {
     public ThirdLifterService(PlcStateService plc): base(plc)
     {
-      plc.Configure("http://localhost:5101", "提升机 - 2");
+      plc.Configure("http://localhost:5101", "提升机 - 1");
     }
   }
 }

@@ -20,6 +20,7 @@ namespace Tiantong.Iot.Api
       IRandom random,
       SystemContext system,
       DomainContextFactory domain
+      
     ) {
       _random = random;
       _system = system;

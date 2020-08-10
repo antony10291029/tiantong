@@ -60,10 +60,12 @@ namespace Tiantong.Iot.Api
 
     [HttpPost]
     [Route("values")]
-    public Dictionary<string, string> GetValues([FromBody] GetValuesParams param)
+    public object GetValues([FromBody] GetValuesParams param)
     {
       try {
-        return _manager.Get(param.plc).GetValues();
+        return new {
+          data = _manager.Get(param.plc).GetValues()
+        };
       } catch {
         throw new HttpException("数据不存在", 400);
       }

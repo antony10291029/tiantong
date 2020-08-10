@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <PublishDir>bin/publish</PublishDir>
-    <UseAppHost>false</UseAppHost>
+    <UseAppHost>true</UseAppHost>
   </PropertyGroup>
 
   <ItemGroup>

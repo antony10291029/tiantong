@@ -15,7 +15,7 @@ namespace Namei.Wcs.Api
     }
 
     private void Info(string lifterId, string floor, string message)
-      => _logger.Info($"lifter.{lifterId}", $"{lifterId}号提升机 - {floor}楼，{message}");
+      => _logger.Info($"lifter.{lifterId}", $"{lifterId}号梯 - {floor}楼，{message}");
 
     [CapSubscribe(LifterDoorRequestedOpenEvent.Message, Group = Group)]
     public void HandleDoorRequested(LifterDoorRequestedOpenEvent param)
