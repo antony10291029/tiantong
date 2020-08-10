@@ -10,6 +10,10 @@
 
       <hr>
 
+      <ClearLogs />
+
+      <hr>
+
       <div
         class="is-flex is-vcentered"
         style="padding: 1.25rem 0"
@@ -97,9 +101,13 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import domain from '@/providers/contexts/domain'
+import ClearLogs from './ClearLogs.vue'
 
 @Component({
-  name: 'System'
+  name: 'System',
+  components: {
+    ClearLogs
+  }
 })
 export default class extends Vue {
   settings = {

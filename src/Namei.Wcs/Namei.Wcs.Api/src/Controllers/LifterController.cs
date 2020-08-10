@@ -40,22 +40,6 @@ namespace Namei.Wcs.Api
       return _lifters.Get(param.lifter_id).GetStates();
     }
 
-    public class GetLifterLogsParams
-    {
-      public int page { get; set; }
-
-      public int page_size { get; set; } = 20;
-    }
-
-    [HttpPost]
-    [Route("/lifters/logs")]
-    public object GetLifterLogs([FromBody] GetLifterLogsParams param)
-    {
-      return _domain.Logs.Where(log => log.key.StartsWith("lifter"))
-        .OrderByDescending(log => log.created_at)
-        .Paginate(param.page, param.page_size);
-    }
-
     // events
 
     [CapSubscribe(LifterTaskImportedEvent.Message)]

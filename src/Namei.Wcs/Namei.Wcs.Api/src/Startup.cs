@@ -12,7 +12,9 @@ namespace Namei.Wcs.Api
     {
       services.AddControllers();
       services.AddHttpClient();
+      services.AddHostedService<CrashDoorJobManager>();
       services.AddSingleton<Config>();
+      services.AddSingleton<PlcStateServiceProvider>();
       services.AddTransient<PlcStateService>();
       services.AddDbContext<DomainContext>();
       services.AddScoped<FirstLifterService>();
@@ -22,6 +24,8 @@ namespace Namei.Wcs.Api
       services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
       services.AddScoped<WmsService>();
+      services.AddScoped<RcsService>();
+      services.AddScoped<DoorServiceManager>();
       services.AddCap(cap => {
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();

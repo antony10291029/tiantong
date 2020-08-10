@@ -23,13 +23,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import domain from '@/providers/contexts/domain'
 
 @Component({
   name: 'LifterLogs'
 })
 export default class extends Vue {
+  @Prop({ required: true })
+  search!:string
+
   logs = {
     data: [],
     meta: {
@@ -40,14 +43,19 @@ export default class extends Vue {
   }
 
   async getDataSource (page = 1) {
-    const response = await domain.post('/lifters/logs', {
-      page
+    const response = await domain.post('/logs/search', {
+      page,
+      search: this.search,
     })
 
     this.logs = response.data
   }
 
   interval: any
+
+  created () {
+    this.getDataSource()
+  }
 
   @Watch('logs.meta.page', { immediate: true })
   handlePage (page: number) {
@@ -58,8 +66,10 @@ export default class extends Vue {
     }
   }
 
-  created () {
-    this.getDataSource()
+  beforeDestroy () {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
   }
 }
 </script>

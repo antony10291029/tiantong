@@ -7,6 +7,8 @@ namespace Namei.Wcs.Api
   {
     private Config _config;
 
+    public DbSet<Job> Jobs { get; set; }
+
     public DbSet<Log> Logs { get; set; }
 
     public DbSet<DeviceState> DeviceStates { get; set; }

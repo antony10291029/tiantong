@@ -11,31 +11,49 @@
             class="panel-block"
             to="/door-commands/101"
           >
-            101 号自动门
+            自动门 - 101
           </router-link>
           <router-link
             class="panel-block"
             to="/door-commands/102"
           >
-            102 号自动门
+            自动门 - 102
           </router-link>
           <router-link
             class="panel-block"
             to="/door-commands/103"
           >
-            103 号自动门
+            自动门 - 103
           </router-link>
           <router-link
             class="panel-block"
             to="/door-commands/201"
           >
-            201 号自动门
+            自动门 - 201
           </router-link>
           <router-link
             class="panel-block"
             to="/door-commands/202"
           >
-            202 号自动门
+            自动门 - 202
+          </router-link>
+          <router-link
+            class="panel-block"
+            to="/door-commands/901"
+          >
+            自动门 - 901
+          </router-link>
+          <router-link
+            class="panel-block"
+            to="/door-commands/902"
+          >
+            自动门 - 902
+          </router-link>
+          <router-link
+            class="panel-block"
+            to="/door-commands/903"
+          >
+            自动门 - 903
           </router-link>
         </div>
       </div>

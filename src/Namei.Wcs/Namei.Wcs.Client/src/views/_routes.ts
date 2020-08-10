@@ -40,7 +40,7 @@ const routes: RouteConfig[] = [
       {
         path: 'door-commands',
         name: 'DoorCommands',
-        redirect: '/door-commands/101',
+        redirect: '/door-commands/901',
         component: DoorCommands,
         children: [
           {

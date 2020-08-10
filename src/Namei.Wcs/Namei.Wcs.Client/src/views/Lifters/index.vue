@@ -42,7 +42,7 @@
         </div>
 
         <div class="column">
-          <LifterLogs />
+          <LogList search="lifter" />
         </div>
       </div>
     </div>
@@ -51,13 +51,13 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import LifterLogs from './LifterLogs.vue'
+import LogList from '@/components/LogList.vue'
 import LifterStates from './LifterStates.vue'
 
 @Component({
   name: 'Lifters',
   components: {
-    LifterLogs,
+    LogList,
     LifterStates
   }
 })
