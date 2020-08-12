@@ -37,24 +37,17 @@
           >
             自动门 - 202
           </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/901"
-          >
-            自动门 - 901
-          </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/902"
-          >
-            自动门 - 902
-          </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/903"
-          >
-            自动门 - 903
-          </router-link>
+          <template v-for="key in 3">
+            <template v-for="index in 4">
+              <router-link
+                class="panel-block"
+                :to="`/door-commands/9${key}${index}`"
+                :key="`${key}.${index}`"
+              >
+                防撞门 - 9{{key}}{{index}}
+              </router-link>
+            </template>
+          </template>
         </div>
       </div>
 

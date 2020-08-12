@@ -58,10 +58,10 @@ namespace Namei.Wcs.Api
   public abstract class LifterService
   {
     // 放货完成
-    public abstract void Imported(string floor);
+    public abstract void SetImported(string floor, bool value);
 
     // 取货完成
-    public abstract void Pickup(string floor);
+    public abstract void SetPickuped(string floor, bool value);
 
     // 获取托盘码
     public abstract string GetPalletCode(string floor);
@@ -80,6 +80,18 @@ namespace Namei.Wcs.Api
 
   public class FirstLifterService: LifterService
   {
+    public static bool GetIsTaskScanned(string data)
+      => MelsecStateHelper.GetBit(data, 4);
+
+    public static bool GetIsRequestingPickup(string data)
+      => MelsecStateHelper.GetBit(data, 7);
+
+    public static bool IsTaskScanned(string data, string oldData)
+      => GetIsTaskScanned(data) && !GetIsTaskScanned(oldData);
+
+    public static bool IsRequestingPickup(string data, string oldData)
+      => GetIsRequestingPickup(data) && !GetIsRequestingPickup(oldData);
+
     private PlcStateService _plc;
 
     public FirstLifterService(PlcStateService plc)
@@ -88,11 +100,11 @@ namespace Namei.Wcs.Api
       _plc.Configure("http://localhost:5101", "改造货梯");
     }
 
-    public override void Imported(string floor)
-      => _plc.Set($"{floor}F - 放货完成", "1");
+    public override void SetImported(string floor, bool value)
+      => _plc.Set($"{floor}F - 放货完成", value ? "1" : "0");
 
-    public override void Pickup(string floor)
-      => _plc.Set($"{floor}F - 取货完成", "1");
+    public override void SetPickuped(string floor, bool value)
+      => _plc.Set($"{floor}F - 取货完成", value ? "1" : "0");
 
     public override string GetPalletCode(string floor)
       => _plc.Get($"{floor}F - A 段 - 托盘码");
@@ -101,19 +113,13 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{from}F - 目的楼层", to);
 
     public override bool IsImportAllowed(string floor)
-      => MelsecStateHelper.GetBit(_plc.Get($"{floor} - A 段 - 输送机"), 6);
+      => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
 
     public override bool IsRequestingPickup(string floor)
-      => MelsecStateHelper.GetBit(_plc.Get($"{floor} - A 段 - 输送机"), 7);
-
-    private bool GetIsTaskScanned(string data)
-      => MelsecStateHelper.GetBit(data, 4);
+      => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
 
     public bool IsTaskScanned(string floor)
-      => GetIsTaskScanned(_plc.Get($"{floor} - A 段 - 输送机"));
-
-    public bool IsTaskScanned(string data, string oldData)
-      => GetIsTaskScanned(data) && !GetIsTaskScanned(oldData);
+      => GetIsTaskScanned(_plc.Get($"{floor}F - A 段 - 输送机"));
 
     public override LifterState GetStates()
     {
@@ -141,11 +147,11 @@ namespace Namei.Wcs.Api
       _plc = plc;
     }
 
-    public override void Imported(string floor)
-      => _plc.Set($"{floor}F - A 段 - 放取货状态", "3");
+    public override void SetImported(string floor, bool value)
+      => _plc.Set($"{floor}F - A 段 - 放取货状态", value ? "3" : "0");
 
-    public override void Pickup(string floor)
-      => _plc.Set($"{floor}F - A 段 - 放取货状态", "5");
+    public override void SetPickuped(string floor, bool value)
+      => _plc.Set($"{floor}F - A 段 - 放取货状态", value ? "3" : "0");
 
     public override string GetPalletCode(string floor)
       => _plc.Get($"{floor}F - A 段 - 托盘码");

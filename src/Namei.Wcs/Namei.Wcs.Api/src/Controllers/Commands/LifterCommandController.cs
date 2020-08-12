@@ -1,6 +1,7 @@
-using Renet.Web;
-using Microsoft.AspNetCore.Mvc;
 using DotNetCore.CAP;
+using Microsoft.AspNetCore.Mvc;
+using Renet.Web;
+using Tiantong.Iot.Utils;
 
 namespace Namei.Wcs.Api
 {
@@ -36,12 +37,13 @@ namespace Namei.Wcs.Api
     }
 
     [HttpPost]
-    [Route("reformed-lifters/conveyor/change")]
+    [Route("reformed-lifters/conveyor/changed")]
     public object ConveyorChanged([FromBody] ConveyorChangedParams param)
     {
       var message = "输送线状态无需处理";
-      var isScanned = _lifter.IsTaskScanned(param.value, param.old_value);
-      var isFinished = _lifter.IsRequestingPickup(param.value);
+      var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
+      var isFinished = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
+      var isSpare = !MelsecStateHelper.GetBit(param.value, 3) && MelsecStateHelper.GetBit(param.old_value, 3);
 
       if (!Config.EnableLifterCommands) {
         message = "货梯指令未开启";
@@ -51,6 +53,11 @@ namespace Namei.Wcs.Api
       } else if (isScanned) {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent("1", param.floor));
         message = "正在处理读码指令";
+      } else if (isSpare) {
+        _lifter.SetImported(param.floor, false);
+        _lifter.SetPickuped(param.floor, false);
+        _lifter.SetDestination(param.floor, "0");
+        message = "正在清除信号";
       }
 
       return new { message };
@@ -101,6 +108,29 @@ namespace Namei.Wcs.Api
       } else if (param.value == "3") {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
         message = "正在处理取货指令";
+      }
+
+      return new { message };
+    }
+
+    public class StandardLifterConveyorChangedParams
+    {
+      public string lifter_id { get; set; }
+
+      public string floor { get; set; }
+
+      public string value { get; set; }
+    }
+
+    [HttpPost("/standard-lifters/conveyor/changed")]
+    public object StandardLifterConveyorChanged([FromBody] StandardLifterConveyorChangedParams param)
+    {
+      var message = "状态无需处理";
+
+      if (param.value == "1") {
+        _lifters.Get(param.lifter_id).SetDestination(param.floor, "0");
+        _lifters.Get(param.lifter_id).SetImported(param.floor, false);
+        message = "数据已清空";
       }
 
       return new { message };

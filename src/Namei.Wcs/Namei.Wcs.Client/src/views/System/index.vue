@@ -39,8 +39,8 @@
         </p>
 
         <Switcher
-          v-model="settings.enableDoorsCommands"
           @input="setSystemParams"
+          v-model="settings.enableHoisterCommands"
         />
       </div>
 
@@ -55,8 +55,8 @@
         </p>
 
         <Switcher
-          v-model="settings.enableHoisterCommands"
           @input="setSystemParams"
+          v-model="settings.enableDoorsCommands"
         />
       </div>
 

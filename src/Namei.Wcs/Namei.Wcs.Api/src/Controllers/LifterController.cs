@@ -1,8 +1,7 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet;
 using Renet.Web;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
@@ -45,7 +44,7 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskImportedEvent.Message)]
     public void HandleTaskImported(LifterTaskImportedEvent param)
     {
-      _lifters.Get(param.LifterId).Imported(param.Floor);
+      _lifters.Get(param.LifterId).SetImported(param.Floor, true);
     }
 
     [CapSubscribe(LifterTaskScannedEvent.Message)]
@@ -69,7 +68,11 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskTakenEvent.Message)]
     public void HandleTaskTaken(LifterTaskTakenEvent param)
     {
-      _lifters.Get(param.LifterId).Pickup(param.Floor);
+      _lifters.Get(param.LifterId).SetPickuped(param.Floor, true);
+      Task.Delay(1000).ContinueWith(async task => {
+        await task;
+        _lifters.Get(param.LifterId).SetPickuped(param.Floor, false);
+      });
     }
   }
 }
