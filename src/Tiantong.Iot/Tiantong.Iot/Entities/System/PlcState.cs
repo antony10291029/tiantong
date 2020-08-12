@@ -63,8 +63,9 @@ namespace Tiantong.Iot.Entities
 
       IPlcReadRequest request = model switch {
         PlcModel.MC3EBinary => new MC3EBinaryReadRequest(),
+        PlcModel.MC1EBinary => new MC1EBinaryReadRequest(),
         PlcModel.S7200Smart => new S7ReadRequest(),
-        _ => throw KnownException.Error("PLC 型号错误"),
+        _ => throw KnownException.Error("PLC 型号不支持该数据类型"),
       };
 
       request.UseAddress(address);
