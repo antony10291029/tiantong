@@ -107,8 +107,9 @@ namespace Tiantong.Iot
 
     public IStateDriverProvider ResolveDriverProvider() => Model switch {
       PlcModel.Test => new StateTestDriverProvider(),
+      PlcModel.MC1EBinary => new MC1EBinaryDriverProvider(Host, Port),
       PlcModel.MC3EBinary => new MC3EBinaryDriverProvider(Host, Port),
-      PlcModel.S7200Smart=> new S7200SmartDriverProvider(Host, Port),
+      PlcModel.S7200Smart => new S7200SmartDriverProvider(Host, Port),
       _ => throw new Exception("plc model is not supporting"),
     };
 

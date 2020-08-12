@@ -6,6 +6,8 @@ namespace Tiantong.Iot.Entities
   {
     public const string MC3EBinary = "mc3e-binary";
 
+    public const string MC1EBinary = "mc1e-binary";
+
     public const string S7200Smart = "s7200smart";
 
     public const string Test = "test";
@@ -13,6 +15,7 @@ namespace Tiantong.Iot.Entities
     public static IEnumerable<string> Values()
     {
       yield return MC3EBinary;
+      yield return MC1EBinary;
       yield return S7200Smart;
       yield return Test;
     }

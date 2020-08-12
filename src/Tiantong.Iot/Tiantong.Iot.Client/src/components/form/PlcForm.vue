@@ -150,7 +150,11 @@ export default class extends Vue {
   models = [
     {
       value: PlcModel.mc3eBinary,
-      text: '三菱 MC - TCP（二进制）',
+      text: '三菱 MC3E - TCP（二进制）',
+    },
+    {
+      value: PlcModel.mc1eBinary,
+      text: '三菱 MC1E - TCP（二进制）',
     },
     {
       value: PlcModel.s7200Smart,

@@ -11,16 +11,11 @@ namespace Tiantong.Iot.Protocol
         _message = value;
         GetResultCode();
         GetErrorCode();
-        CheckError();
       }
     }
 
     public void CheckError()
     {
-      if (IsError) {
-
-      }
-
       if (_message[7] != 0x02) {
         var byteString = BitConverter.ToString(_message);
         throw new Exception($"写入结果校对失败，编码: {byteString}");

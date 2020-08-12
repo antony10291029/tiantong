@@ -13,6 +13,7 @@ export class Plc {
 
 export enum PlcModel {
   mc3eBinary = 'mc3e-binary',
+  mc1eBinary = 'mc1e-binary',
   s7200Smart = 's7200smart',
   test = 'test',
 }

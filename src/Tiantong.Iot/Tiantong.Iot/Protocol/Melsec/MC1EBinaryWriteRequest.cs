@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Tiantong.Iot.Protocol
 {
-  public class MC3EBinaryWriteRequest: MC3EBinaryReadRequest, IPlcWriteRequest
+  public class MC1EBinaryWriteRequest: MC1EBinaryReadRequest, IPlcWriteRequest
   {
     private int _length;
 
@@ -11,7 +11,7 @@ namespace Tiantong.Iot.Protocol
     {
       base.UseDataCount(count);
       _length = count * 2;
-      Array.Resize(ref _msg, 21 + _length);
+      Array.Resize(ref _msg, 12 + _length);
     }
 
     public new void UseBool()
@@ -41,7 +41,6 @@ namespace Tiantong.Iot.Protocol
     public new void UseAddress(string address)
     {
       SetAddress(address);
-      SetMessageLength();
     }
 
     public void UseData(byte[] data)
@@ -50,7 +49,7 @@ namespace Tiantong.Iot.Protocol
         Array.Resize(ref data, _length);
       }
 
-      Array.Copy(data, 0, Message, 21, _length);
+      Array.Copy(data, 0, Message, 12, _length);
     }
 
     public void UseData(bool data)

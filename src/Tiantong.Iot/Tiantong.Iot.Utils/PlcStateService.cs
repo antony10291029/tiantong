@@ -25,6 +25,15 @@ namespace Tiantong.Iot.Utils
       );
     }
 
+    public PlcStateService(IHttpClientFactory factory, string uri, string plc)
+    {
+      _client = factory.CreateClient();
+      _client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
+      );
+      Configure(uri, plc);
+    }
+
     public void Configure(string uri, string plc)
     {
       _plc = plc;

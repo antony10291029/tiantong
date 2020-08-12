@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Tiantong.Iot.Protocol
 {
-  public class MC3EBinaryReadResponse: BinaryMessage, IPlcReadResponse
+  public class MC1EBinaryReadResponse: BinaryMessage, IPlcReadResponse
   {
     protected byte[] _message; 
 
@@ -28,7 +28,7 @@ namespace Tiantong.Iot.Protocol
 
     public bool IsError
     {
-      get => ResultCode[0] != 0x00 || ResultCode[1] != 0x00;
+      get => ResultCode[0] != 0x00;
     }
 
     public void UseBool()
@@ -67,13 +67,13 @@ namespace Tiantong.Iot.Protocol
 
     protected void GetResultCode()
     {
-      ResultCode = Message[9..11];
+      ResultCode = Message[1..2];
     }
 
     protected void GetErrorCode()
     {
       if (IsError) {
-        ErrorCode = Message[11..13];
+        ErrorCode = Message[2..3];
         var errorCode = BitConverter.ToString(ErrorCode);
         var resultCode = BitConverter.ToString(ResultCode);
         throw KnownException.Error($"PLC 通信错误：结束代码: {resultCode}、异常代码: {errorCode}");
@@ -84,14 +84,7 @@ namespace Tiantong.Iot.Protocol
 
     private byte[] GetData()
     {
-      var length = BitConverter.ToUInt16(Message[7..9]) - 2;
-
-      if (length != _messageDataLength) {
-        var bitString = BitConverter.ToString(Message[11..(11 + length)]);
-        throw KnownException.Error($"数据校对失败，长度应为：{_messageDataLength}，实际长度：{length}，二进制数据：{bitString}。");
-      }
-
-      return Message[11..(11 + _dataLength)];
+      return Message[2..(2 + _dataLength)];
     }
 
     public bool GetBool()
