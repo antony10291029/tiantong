@@ -23,7 +23,7 @@
             </router-link>
           </li> -->
           <li>
-            <router-link to="/" exact-active-class="is-active" active-class="false">
+            <router-link to="/lifters">
               <span class="icon">
                 <i class="iconfont icon-lifter"></i>
               </span>
@@ -31,27 +31,11 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/auto-doors">
+            <router-link to="/doors">
               <span class="icon">
-                <i class="iconfont icon-lifter"></i>
+                <i class="iconfont icon-door"></i>
               </span>
               <span>自动门系统</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/lifter-commands">
-              <span class="icon">
-                <i class="iconfont icon-lifter"></i>
-              </span>
-              <span>提升机指令</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/door-commands">
-              <span class="icon">
-                <i class="iconfont icon-lifter"></i>
-              </span>
-              <span>自动门指令</span>
             </router-link>
           </li>
           <li>

@@ -38,16 +38,31 @@
       </Radio>
     </label>
 
+    <div style="width: 1rem"></div>
+
+    <label
+      class="label"
+      @click="days = 0"
+    >
+      <Radio :value="days === 0">
+        全部清理
+      </Radio>
+    </label>
+
     <div style="width: 1.5rem"></div>
 
-    <a class="button is-info">
+    <AsyncButton
+      :handler="handleClick"
+      class="button is-info"
+    >
       开始清理
-    </a>
+    </AsyncButton>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import domain from '@/providers/contexts/domain'
 
 @Component({
   name: 'ClearLogs'
@@ -55,6 +70,14 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class extends Vue {
   days = 30
 
+  handleClick () {
+    console.log(this.days)
 
+    this.$confirm({
+      title: '确认',
+      content: '清除日志后将无法找回',
+      handler: () => domain.post('/logs/clear', { days: this.days })
+    })
+  }
 }
 </script>

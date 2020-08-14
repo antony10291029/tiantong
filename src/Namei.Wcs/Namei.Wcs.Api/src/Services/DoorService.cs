@@ -9,28 +9,39 @@ namespace Namei.Wcs.Api
 {
   public class DoorServiceManager
   {
-    private Dictionary<string, DoorService> _doors = new Dictionary<string, DoorService>();
+    private Dictionary<string, IDoorService> _doors = new Dictionary<string, IDoorService>();
 
     public DoorServiceManager(
       ICapPublisher cap,
-      DomainContext domain,
+      LifterServiceManager lifters,
       PlcStateServiceProvider provider
     ) {
-      foreach (var id in CrashDoor.Enumerate()) {
-        _doors.Add(id, new CrashDoorService(id, cap, domain));
-      }
+      _doors.Add(CrashDoor.Floor1_1, new CrashDoorService(CrashDoor.Floor1_1, "1", "1", cap, lifters));
+      _doors.Add(CrashDoor.Floor2_1, new CrashDoorService(CrashDoor.Floor2_1, "2", "1", cap, lifters));
+      _doors.Add(CrashDoor.Floor3_1, new CrashDoorService(CrashDoor.Floor3_1, "3", "1", cap, lifters));
+      _doors.Add(CrashDoor.Floor4_1, new CrashDoorService(CrashDoor.Floor4_1, "4", "1", cap, lifters));
+      _doors.Add(CrashDoor.Floor1_2, new CrashDoorService(CrashDoor.Floor1_2, "1", "2", cap, lifters));
+      _doors.Add(CrashDoor.Floor2_2, new CrashDoorService(CrashDoor.Floor2_2, "2", "2", cap, lifters));
+      _doors.Add(CrashDoor.Floor3_2, new CrashDoorService(CrashDoor.Floor3_2, "3", "2", cap, lifters));
+      _doors.Add(CrashDoor.Floor4_2, new CrashDoorService(CrashDoor.Floor4_2, "4", "2", cap, lifters));
+      _doors.Add(CrashDoor.Floor1_3, new CrashDoorService(CrashDoor.Floor1_3, "1", "3", cap, lifters));
+      _doors.Add(CrashDoor.Floor2_3, new CrashDoorService(CrashDoor.Floor2_3, "2", "3", cap, lifters));
+      _doors.Add(CrashDoor.Floor3_3, new CrashDoorService(CrashDoor.Floor3_3, "3", "3", cap, lifters));
+      _doors.Add(CrashDoor.Floor4_3, new CrashDoorService(CrashDoor.Floor4_3, "4", "3", cap, lifters));
+
       var plc = provider.Resolve();
       plc.Configure("http://localhost:5101", "自动门 - 1F");
-      _doors.Add("101", new AutomatedDoorService(plc, "101"));
-      _doors.Add("102", new AutomatedDoorService(plc, "102"));
-      _doors.Add("103", new AutomatedDoorService(plc, "103"));
+      _doors.Add(AutomatedDoor.Floor1_1, new AutomatedDoorService(plc, "101"));
+      _doors.Add(AutomatedDoor.Floor1_2, new AutomatedDoorService(plc, "102"));
+      _doors.Add(AutomatedDoor.Floor1_3, new AutomatedDoorService(plc, "103"));
+
       plc = provider.Resolve();
       plc.Configure("http://localhost:5101", "自动门 - 2F");
-      _doors.Add("201", new AutomatedDoorService(plc, "201"));
-      _doors.Add("202", new AutomatedDoorService(plc, "202"));
+      _doors.Add(AutomatedDoor.Floor2_1, new AutomatedDoorService(plc, "201"));
+      _doors.Add(AutomatedDoor.Floor2_2, new AutomatedDoorService(plc, "202"));
     }
 
-    public DoorService Get(string id)
+    public IDoorService Get(string id)
     {
       if (!_doors.ContainsKey(id)) {
         throw KnownException.Error($"设备 `自动门{id}`不存在");
@@ -39,7 +50,7 @@ namespace Namei.Wcs.Api
       return _doors[id];
     }
 
-    public List<DoorService> All()
+    public List<IDoorService> All()
     {
       return _doors
         .OrderBy(kv => kv.Key)
@@ -48,22 +59,47 @@ namespace Namei.Wcs.Api
     }
   }
 
-  public abstract class DoorService
+  public interface IDoorService
   {
-    public abstract string Id { get; }
+    string Type { get; }
 
-    public abstract void Open();
+    string Id { get; }
 
-    public abstract void Close();
+    bool IsOpened { get; }
 
-    public abstract bool IsClosed();
+    bool IsAvaliable { get; }
+
+    DateTime OpenedAt { get; }
+
+    DateTime ClosedAt { get; }
+
+    void Open();
+
+    void Close();
+
+    void OnOpened();
+
+    void OnClosed();
   }
 
-  public class AutomatedDoorService: DoorService
+  public class AutomatedDoorService: IDoorService
   {
-    public override string Id { get; }
-
     private PlcStateService _plc;
+
+    public string Type { get => DoorType.Automatic; }
+
+    public string Id { get; }
+
+    public bool IsOpened
+    {
+      get => _plc.Get($"{Id} # 状态") == "1";
+    }
+
+    public bool IsAvaliable { get => true; }
+
+    public DateTime OpenedAt { get; private set; } = DateTime.MinValue;
+
+    public DateTime ClosedAt { get; private set; } = DateTime.MinValue;
 
     public AutomatedDoorService(PlcStateService plc, string id)
     {
@@ -71,54 +107,83 @@ namespace Namei.Wcs.Api
       _plc = plc;
     }
 
-    public override void Open()
+    public void Open()
       => _plc.Set($"{Id} # 指令", "1");
 
-    public override void Close()
+    public void Close()
       => _plc.Set($"{Id} # 指令", "2");
 
-    public override bool IsClosed()
-      => _plc.Get($"{Id} # 状态") != "1";
-  }
-
-  public class CrashDoorService: DoorService
-  {
-    public override string Id { get; }
-
-    private DomainContext _domain;
-
-    private ICapPublisher _cap;
-
-    public CrashDoorService(string id, ICapPublisher cap, DomainContext domain)
+    public void OnOpened()
     {
-      Id = id;
-      _cap = cap;
-      _domain = domain;
+      OpenedAt = DateTime.Now;
     }
 
-    public override void Open()
+    public void OnClosed()
     {
-      var door = _domain.Jobs.First(job => job.name == $"防撞门 - {Id}");
+      _plc.Set($"{Id} # 指令", "0");
+      ClosedAt = DateTime.Now;
+    }
+  }
 
-      door.executed_at = DateTime.Now;
-      door.is_enable = true;
-      _domain.SaveChanges();
+  public class CrashDoorService: IDoorService
+  {
+    private ICapPublisher _cap;
 
+    private LifterService _lifter;
+
+    public string Type { get => DoorType.Crash; }
+
+    public string Id { get; }
+
+    public string Floor;
+
+    public string LifterId;
+
+    public bool IsOpened { get; private set; } = false;
+
+    public bool IsAvaliable
+    {
+      get => _lifter.IsImportAllowed(Floor) || _lifter.IsRequestingPickup(Floor);
+    }
+
+    public DateTime OpenedAt { get; private set; } = DateTime.MinValue;
+
+    public DateTime ClosedAt { get; private set; } = DateTime.MinValue;
+
+    public CrashDoorService(
+      string id,
+      string floor,
+      string lifterId,
+      ICapPublisher cap,
+      LifterServiceManager lifters
+    ) {
+      Id = id;
+      Floor = floor;
+      LifterId = lifterId;
+      _cap = cap;
+      _lifter = lifters.Get(LifterId);
+    }
+
+    public void Open()
+    {
       _cap.Publish(DoorOpenedEvent.Message, new DoorOpenedEvent(Id));
     }
 
-    public override void Close()
+    public void Close()
     {
-      var door = _domain.Jobs.First(job => job.name == $"防撞门 - {Id}");
-      door.is_enable = false;
-      _domain.SaveChanges();
-
       _cap.Publish(DoorClosedEvent.Message, new DoorClosedEvent(Id));
     }
 
-    public override bool IsClosed()
+    public void OnOpened()
     {
-      return !_domain.Jobs.First(job => job.name == $"防撞门 - {Id}").is_enable;
+      IsOpened = true;
+      OpenedAt = DateTime.Now;
+    }
+
+    public void OnClosed()
+    {
+      IsOpened = false;
+      ClosedAt = DateTime.Now;
     }
   }
 }

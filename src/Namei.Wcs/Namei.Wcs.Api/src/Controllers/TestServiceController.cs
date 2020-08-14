@@ -62,8 +62,6 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(param.lifter_id, param.floor));
       } else if (param.message == "taken") {
         _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
-      } else if (param.message == "requested.open") {
-        _cap.Publish(LifterDoorRequestedOpenEvent.Message, new LifterDoorRequestedOpenEvent(param.lifter_id, param.floor));
       }
 
       return new {
@@ -83,9 +81,9 @@ namespace Namei.Wcs.Api
     public object PublishDoorsMessage([FromBody] PublishDoorsMessageParams param)
     {
       if (param.message == "requested.open") {
-        _cap.PublishAsync(DoorRequestedOpenEvent.Message, new DoorRequestedOpenEvent(param.door_id));
+        _cap.PublishAsync(DoorTaskRequestOpenEvent.Message, new DoorTaskRequestOpenEvent(param.door_id, "A0001"));
       } else if (param.message  == "requested.close") {
-        _cap.PublishAsync(DoorRequestedCloseEvent.Message, new DoorRequestedCloseEvent(param.door_id));
+        _cap.PublishAsync(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.door_id, "A0001"));
       } else if (param.message == "opened") {
         _cap.PublishAsync(DoorOpenedEvent.Message, new DoorOpenedEvent(param.door_id));
       } else if (param.message == "closed") {

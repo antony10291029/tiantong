@@ -1,6 +1,5 @@
 using DotNetCore.CAP;
 using Renet;
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using Tiantong.Iot.Utils;
@@ -83,6 +82,9 @@ namespace Namei.Wcs.Api
     public static bool GetIsTaskScanned(string data)
       => MelsecStateHelper.GetBit(data, 4);
 
+    public static bool GetIsImportAllowed(string data)
+      => MelsecStateHelper.GetBit(data, 6);
+
     public static bool GetIsRequestingPickup(string data)
       => MelsecStateHelper.GetBit(data, 7);
 
@@ -91,6 +93,9 @@ namespace Namei.Wcs.Api
 
     public static bool IsRequestingPickup(string data, string oldData)
       => GetIsRequestingPickup(data) && !GetIsRequestingPickup(oldData);
+
+    public static bool IsImportAllowed(string data, string oldData)
+      => GetIsImportAllowed(data) && !GetIsImportAllowed(oldData);
 
     private PlcStateService _plc;
 
@@ -113,7 +118,7 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{from}F - 目的楼层", to);
 
     public override bool IsImportAllowed(string floor)
-      => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
+      => GetIsImportAllowed(_plc.Get($"{floor}F - A 段 - 输送机"));
 
     public override bool IsRequestingPickup(string floor)
       => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
@@ -151,7 +156,7 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{floor}F - A 段 - 放取货状态", value ? "3" : "0");
 
     public override void SetPickuped(string floor, bool value)
-      => _plc.Set($"{floor}F - A 段 - 放取货状态", value ? "3" : "0");
+      => _plc.Set($"{floor}F - A 段 - 放取货状态", value ? "5" : "0");
 
     public override string GetPalletCode(string floor)
       => _plc.Get($"{floor}F - A 段 - 托盘码");
@@ -171,11 +176,11 @@ namespace Namei.Wcs.Api
 
       return new LifterState() {
         IsWorking = states["升降平台状态"] != "0",
-        IsAlarming = states["故障代码"] != "0",
+        IsAlarming = states["故障代码"] != "1",
         Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
           IsScanned = states[$"{floor}F - A 段 - 读码状态"] == "1",
-          IsImportAllowed = states[$"{floor}F - A 段 - 输送机"] == "1",
-          IsExported = states[$"{floor}F - A 段 - 放取货状态"] == "3",
+          IsImportAllowed = states[$"{floor}F - A 段 - 工位状态"] == "2",
+          IsExported = states[$"{floor}F - A 段 - 工位状态"] == "3",
           IsDoorOpened = false
         }).ToList()
       };
@@ -194,7 +199,7 @@ namespace Namei.Wcs.Api
   {
     public ThirdLifterService(PlcStateService plc): base(plc)
     {
-      plc.Configure("http://localhost:5101", "提升机 - 1");
+      plc.Configure("http://localhost:5101", "提升机 - 2");
     }
   }
 }

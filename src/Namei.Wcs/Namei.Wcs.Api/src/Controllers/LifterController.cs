@@ -53,6 +53,10 @@ namespace Namei.Wcs.Api
       var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
       var destination = _wms.GetPalletInfo(barcode).Destination;
 
+      _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
+        param.LifterId, param.Floor, barcode, destination
+      ));
+
       _lifters.Get(param.LifterId).SetDestination(param.Floor, destination);
     }
 
@@ -63,12 +67,14 @@ namespace Namei.Wcs.Api
       var taskId = _wms.GetPalletInfo(barcode).TaskId;
 
       _wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
+      _cap.Publish(LifterTaskPickingEvent.Message, new LifterTaskPickingEvent(param.LifterId, param.Floor, barcode));
     }
 
     [CapSubscribe(LifterTaskTakenEvent.Message)]
     public void HandleTaskTaken(LifterTaskTakenEvent param)
     {
       _lifters.Get(param.LifterId).SetPickuped(param.Floor, true);
+
       Task.Delay(1000).ContinueWith(async task => {
         await task;
         _lifters.Get(param.LifterId).SetPickuped(param.Floor, false);

@@ -9,56 +9,75 @@ namespace Namei.Wcs.Api
   {
     const string Group = "command";
 
+    private static object _lock = new object();
+
     private DomainContext _domain;
 
     private DoorServiceManager _doors;
+
+    private DoorTaskManager _taskManager;
 
     private RcsService _rcs;
 
     public DoorController(
       DomainContext domain,
       DoorServiceManager doors,
+      DoorTaskManager taskManager,
       RcsService rcs
     ) {
       _domain = domain;
       _doors = doors;
       _rcs = rcs;
+      _taskManager = taskManager;
     }
 
     [HttpPost]
     [Route("/doors/states")]
     public object GetStates()
     {
-      return _doors.All().Select(door => new {
-        id = door.Id,
-        isClosed = door.IsClosed()
+      return AutomatedDoor.Enumerate().Concat(CrashDoor.Enumerate()).Select(id => {
+        var door = _doors.Get(id);
+        var task = _taskManager.Tasks[id];
+
+        return new {
+          id = door.Id,
+          type = door.Type,
+          isClosed = !door.IsOpened,
+          avaliable = door.IsAvaliable,
+          taskId = task.TaskId,
+          count = task.Count,
+        };
       });
     }
 
     // events
 
-    [CapSubscribe(DoorRequestedOpenEvent.Message, Group = Group)]
-    public void HandleRequestingOpen(DoorRequestedOpenEvent param)
-    {
-      _doors.Get(param.DoorId).Open();
-    }
-
-    [CapSubscribe(DoorRequestedCloseEvent.Message, Group = Group)]
-    public void HandleRequestingClose(DoorRequestedCloseEvent param)
-    {
-      _doors.Get(param.DoorId).Close();
-    }
-
     [CapSubscribe(DoorOpenedEvent.Message, Group = Group)]
     public void HandleDoorOpened(DoorOpenedEvent param)
     {
-      _rcs.NotifyDoorOpened(param.DoorId);
+      _doors.Get(param.DoorId).OnOpened();
     }
 
     [CapSubscribe(DoorClosedEvent.Message, Group = Group)]
     public void HandleDoorClosed(DoorClosedEvent param)
     {
-      _rcs.NotifyDoorClosed(param.DoorId);
+      _doors.Get(param.DoorId).OnClosed();
+    }
+
+    [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
+    public void HandleTaskImported(LifterTaskImportedEvent param)
+    {
+      var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
+
+      _doors.Get(doorId).Open();
+    }
+
+    [CapSubscribe(LifterTaskTakenEvent.Message, Group = Group)]
+    public void HandleLifterTaskTaken(LifterTaskTakenEvent param)
+    {
+      var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
+
+      _doors.Get(doorId).Open();
     }
   }
 }

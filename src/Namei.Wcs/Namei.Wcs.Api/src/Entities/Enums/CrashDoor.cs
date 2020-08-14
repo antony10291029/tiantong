@@ -4,29 +4,34 @@ namespace Namei.Wcs.Api
 {
   public class CrashDoor
   {
-    public const string Floor1_1 = "911";
+    public const string Floor1_1 = "151";
 
-    public const string Floor2_1 = "921";
+    public const string Floor2_1 = "251";
 
-    public const string Floor3_1 = "931";
+    public const string Floor3_1 = "351";
 
-    public const string Floor4_1 = "941";
+    public const string Floor4_1 = "451";
 
-    public const string Floor1_2 = "912";
+    public const string Floor1_2 = "152";
 
-    public const string Floor2_2 = "922";
+    public const string Floor2_2 = "252";
 
-    public const string Floor3_2 = "932";
+    public const string Floor3_2 = "352";
 
-    public const string Floor4_2 = "942";
+    public const string Floor4_2 = "452";
 
-    public const string Floor1_3 = "913";
+    public const string Floor1_3 = "153";
 
-    public const string Floor2_3 = "923";
+    public const string Floor2_3 = "253";
 
-    public const string Floor3_3 = "933";
+    public const string Floor3_3 = "353";
 
-    public const string Floor4_3 = "943";
+    public const string Floor4_3 = "453";
+
+    public static string GetDoorIdFromLifter(string floor, string lifterId)
+    {
+      return $"{floor}5{lifterId}";
+    }
 
     public static IEnumerable<string> Enumerate()
     {

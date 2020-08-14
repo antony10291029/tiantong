@@ -1,3 +1,5 @@
+using DotNetCore.CAP;
+
 namespace Namei.Wcs.Api
 {
   public class PalletInfo
@@ -10,6 +12,13 @@ namespace Namei.Wcs.Api
   public class WmsService
   {
     public static string Destination = "1";
+
+    public ICapPublisher _cap;
+
+    public WmsService(ICapPublisher cap)
+    {
+      _cap = cap;
+    }
 
     public PalletInfo GetPalletInfo(string barcode)
     {

@@ -13,8 +13,6 @@ namespace Namei.Wcs.Api
 
     public DbSet<DeviceState> DeviceStates { get; set; }
 
-    public DbSet<RcsTask> RcsTasks { get; set; } 
-
     public DomainContext(Config config)
     {
       _config = config;

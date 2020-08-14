@@ -35,6 +35,5 @@ namespace Tiantong.Wms.Api
         version = _config.APP_VERSION
       };
     }
-
   }
 }

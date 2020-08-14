@@ -42,12 +42,13 @@ namespace Namei.Wcs.Api
     {
       var message = "输送线状态无需处理";
       var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
-      var isFinished = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
+      var isImportedAllowed = FirstLifterService.IsImportAllowed(param.value, param.old_value);
+      var isRequestingPickup = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
       var isSpare = !MelsecStateHelper.GetBit(param.value, 3) && MelsecStateHelper.GetBit(param.old_value, 3);
 
       if (!Config.EnableLifterCommands) {
         message = "货梯指令未开启";
-      } else if (isScanned && isFinished) {
+      } else if (isScanned && isRequestingPickup) {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent("1", param.floor));
         message = "正在处理取货指令";
       } else if (isScanned) {
@@ -58,6 +59,12 @@ namespace Namei.Wcs.Api
         _lifter.SetPickuped(param.floor, false);
         _lifter.SetDestination(param.floor, "0");
         message = "正在清除信号";
+      }
+
+      if (isImportedAllowed || isRequestingPickup) {
+        var doorId = CrashDoor.GetDoorIdFromLifter(param.floor, "1");
+
+        _cap.Publish(DoorTaskHandleEvent.Message, new DoorTaskHandleEvent(doorId));
       }
 
       return new { message };
@@ -108,6 +115,12 @@ namespace Namei.Wcs.Api
       } else if (param.value == "3") {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
         message = "正在处理取货指令";
+      }
+
+      if (param.value == "2" || param.value == "3") {
+        var doorId =  CrashDoor.GetDoorIdFromLifter(param.floor, param.lifter_id);
+
+        _cap.Publish(DoorTaskHandleEvent.Message, new DoorTaskHandleEvent(doorId));
       }
 
       return new { message };

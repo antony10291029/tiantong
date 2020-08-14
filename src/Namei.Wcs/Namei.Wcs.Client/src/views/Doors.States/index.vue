@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import TheStates from './TheStates.vue'
+import TheStates from './States.vue'
 import LogList from '@/components/LogList.vue'
 
 @Component({

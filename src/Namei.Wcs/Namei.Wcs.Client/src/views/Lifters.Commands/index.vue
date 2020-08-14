@@ -9,19 +9,19 @@
 
           <router-link
             class="panel-block"
-            to="/lifter-commands/1"
+            to="/lifters/commands/1"
           >
             1 号梯（改造货梯）
           </router-link>
           <router-link
             class="panel-block"
-            to="/lifter-commands/2"
+            to="/lifters/commands/2"
           >
             2 号梯（提升机）
           </router-link>
           <router-link
             class="panel-block"
-            to="/lifter-commands/3"
+            to="/lifters/commands/3"
           >
             3 号梯（提升机）
           </router-link>

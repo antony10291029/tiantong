@@ -20,6 +20,7 @@ namespace Namei.Wcs.Api
       public string value { get; set; }
     }
 
+    [HttpPost("/doors/state/changed")]
     public object DoorStateChanged([FromBody] DoorStateChangedParams param)
     {
       var message = "指令未识别";

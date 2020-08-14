@@ -1,4 +1,5 @@
-using System.Linq;
+using DotNetCore.CAP;
+using System;
 using System.Net.Mime;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,13 +12,13 @@ namespace Namei.Wcs.Api
   {
     private HttpClient _client;
 
-    private DomainContext _domain;
+    private ICapPublisher _cap;
 
-    public RcsService(IHttpClientFactory factory, DomainContext domain)
+    public RcsService(IHttpClientFactory factory, ICapPublisher cap)
     {
-      _domain = domain;
+      _cap = cap;
       _client = factory.CreateClient();
-      _client.BaseAddress = new System.Uri("http://172.16.2.94:8000");
+      _client.BaseAddress = new System.Uri("http://172.16.2.230:80");
       _client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
       );
@@ -25,6 +26,10 @@ namespace Namei.Wcs.Api
 
     private void Send(string doorId, string uuid, string action)
     {
+      if (uuid == "" || uuid == "A001") {
+        return;
+      }
+
       var json = JsonSerializer.Serialize(new {
         deviceType = "door",
         deviceIndex = doorId,
@@ -32,42 +37,21 @@ namespace Namei.Wcs.Api
         uuid = uuid,
       });
       var content = new StringContent(json, Encoding.UTF8);
-      _client.PostAsync("cms/services/rest/liftCtlService/notifyExcuteResultInfo", content)
-        .GetAwaiter().GetResult();
-    }
 
-    public void NotifyDoorOpened(string doorId)
-    {
-      var tasks = _domain.RcsTasks.Where(task =>
-        task.type == "notifyTask" &&
-        task.action_task == "applyLock" &&
-        task.device_type == "door" &&
-        task.device_index == doorId
-      ).ToArray();
+      try {
+        var response = _client.PostAsync("/rcs/services/rest/liftCtlService/notifyExcuteResultInfo", content).GetAwaiter().GetResult();
+        var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-      foreach (var task in tasks) {
-        Send(task.device_index, task.uuid, "1");
+        _cap.Publish(RcsNotifiedEvent.Message, new RcsNotifiedEvent(doorId, action, uuid, result));
+      } catch (Exception e) {
+        _cap.Publish(RcsNotifiedFailedEvent.Message, new RcsNotifiedFailedEvent(doorId, action, uuid, e.Message));
       }
-
-      _domain.RemoveRange(tasks);
-      _domain.SaveChanges();
     }
 
-    public void NotifyDoorClosed(string doorId)
-    {
-      var tasks = _domain.RcsTasks.Where(task =>
-        task.type == "notifyTask" &&
-        task.action_task == "releaseDevice" &&
-        task.device_type == "door" &&
-        task.device_index == doorId
-      ).ToArray();
+    public void NotifyDoorOpened(string doorId, string uuid)
+      => Send(doorId, uuid, "1");
 
-      foreach (var task in tasks) {
-        Send(task.device_index, task.uuid, "2");
-      }
-
-      _domain.RemoveRange(tasks);
-      _domain.SaveChanges();
-    }
+    public void NotifyDoorClosing(string doorId, string uuid)
+      => Send(doorId, uuid, "2");
   }
 }

@@ -9,13 +9,13 @@
     >
       <ul>
         <router-link
-          to="/lifters/states"
+          to="/doors/states"
           tag="li"
         >
           <a>设备状态</a>
         </router-link>
         <router-link
-          to="/lifters/commands"
+          to="/doors/commands"
           tag="li"
         >
           <a>控制指令</a>
@@ -31,7 +31,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component({
-  name: 'Lifters'
+  name: 'Doors'
 })
 export default class extends Vue {
 

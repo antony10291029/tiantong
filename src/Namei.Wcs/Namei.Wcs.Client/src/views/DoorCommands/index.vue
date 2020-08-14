@@ -1,5 +1,8 @@
 <template>
-  <div style="padding: 1.25rem">
+  <AsyncLoader
+    :handler="getDoors"
+    style="padding: 1.25rem"
+  >
     <div class="columns">
       <div class="column is-narrow">
         <div class="panel" style="width: 280px">
@@ -8,46 +11,12 @@
           </div>
 
           <router-link
+            v-for="door in doors" :key="door.id"
             class="panel-block"
-            to="/door-commands/101"
+            :to="`/doors/commands/${door.id}`"
           >
-            自动门 - 101
+            {{door.type}} - {{door.id}}
           </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/102"
-          >
-            自动门 - 102
-          </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/103"
-          >
-            自动门 - 103
-          </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/201"
-          >
-            自动门 - 201
-          </router-link>
-          <router-link
-            class="panel-block"
-            to="/door-commands/202"
-          >
-            自动门 - 202
-          </router-link>
-          <template v-for="key in 3">
-            <template v-for="index in 4">
-              <router-link
-                class="panel-block"
-                :to="`/door-commands/9${key}${index}`"
-                :key="`${key}.${index}`"
-              >
-                防撞门 - 9{{key}}{{index}}
-              </router-link>
-            </template>
-          </template>
         </div>
       </div>
 
@@ -55,16 +24,23 @@
         <router-view></router-view>
       </div>
     </div>
-  </div>
+  </AsyncLoader>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import domain from '@/providers/contexts/domain'
 
 @Component({
   name: 'DoorCommands'
 })
 export default class extends Vue {
+  doors: any[] = []
 
+  async getDoors () {
+    const response = await domain.post('/doors/states')
+
+    this.doors = response.data
+  }
 }
 </script>
