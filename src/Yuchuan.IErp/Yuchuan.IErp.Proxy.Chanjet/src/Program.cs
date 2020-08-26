@@ -50,10 +50,7 @@ namespace Yuchuan.IErp.Proxy.Chanjet
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration config)
     {
       app.UseProvider<ExceptionHandler>();
-      app.UseCors(cors =>
-        cors.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-          .WithOrigins(config.GetValue("client_url", "http://localhost:8080"))
-      );
+      app.UseCors(policy => policy.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
       app.RunProxy(proxy => proxy.UseHttp(
         (context, args) => {
           if (
@@ -65,6 +62,7 @@ namespace Yuchuan.IErp.Proxy.Chanjet
             context.Request.Path.StartsWithSegments("/vm") ||
             context.Request.Path.StartsWithSegments("/loginV2")
           ) {
+            app.UseCors(policy => policy.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             return "https://passport.chanjet.com";
           } else if (context.Request.Path.StartsWithSegments("/internal_api")) {
             return "https://cia.chanapp.chanjet.com";

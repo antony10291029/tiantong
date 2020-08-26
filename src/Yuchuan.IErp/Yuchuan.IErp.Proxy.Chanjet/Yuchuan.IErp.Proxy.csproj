@@ -2,13 +2,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Yuchuan.IErp.Proxy</AssemblyName>
-    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <UseAppHost>false</UseAppHost>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Proxy" Version="4.0.1" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>

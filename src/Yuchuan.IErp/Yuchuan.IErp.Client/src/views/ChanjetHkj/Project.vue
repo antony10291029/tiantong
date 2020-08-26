@@ -43,7 +43,11 @@ export default class extends Vue {
 
   async getDetails () {
     const details = await chanjetContext.getProjectDetails(this.orgCode, this.bookCode, this.projectCode)
-    this.details = details.filter((detail: any) => !!detail.acctgTransCode)
+    console.log(details[1])
+    this.details = details.filter((detail: any) =>
+      !!detail.acctgTransCode &&
+      !!detail.glAccountCode?.startsWith('4001')
+    )
   }
 }
 </script>
