@@ -45,13 +45,17 @@ namespace Namei.Wcs.Api
 
   public class LifterFloorState
   {
-    public bool IsScanned { get; set; }
+    // A 段托盘码
+    public string PalletCodeA { get; set; }
 
+    // B 段托盘码
+    public string PalletCodeB { get; set; }
+
+    // 允许放货
     public bool IsImportAllowed { get; set; }
 
+    // 请求取货
     public bool IsExported { get; set; }
-
-    public bool IsDoorOpened { get; set; }
   }
 
   public abstract class LifterService
@@ -134,10 +138,10 @@ namespace Namei.Wcs.Api
         IsWorking = states["升降平台状态"] != "0",
         IsAlarming = states["故障代码"] != "0",
         Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
-          IsScanned = GetIsTaskScanned(states[$"{floor}F - A 段 - 输送机"]),
+          PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
+          PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],
           IsImportAllowed = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 6),
           IsExported = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 7),
-          IsDoorOpened = false
         }).ToList()
       };
     }
@@ -178,10 +182,10 @@ namespace Namei.Wcs.Api
         IsWorking = states["升降平台状态"] != "0",
         IsAlarming = states["故障代码"] != "1",
         Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
-          IsScanned = states[$"{floor}F - A 段 - 读码状态"] == "1",
+          PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
+          PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],
           IsImportAllowed = states[$"{floor}F - A 段 - 工位状态"] == "2",
           IsExported = states[$"{floor}F - A 段 - 工位状态"] == "3",
-          IsDoorOpened = false
         }).ToList()
       };
     }
