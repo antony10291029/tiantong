@@ -3,15 +3,15 @@ using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
-  public class DoorTaskController: BaseController
+  public class RcsDoorTaskController: BaseController
   {
-    const string Group = "door.task";
+    const string Group = "rcs.door.task";
 
     private ICapPublisher _cap;
 
     private DoorTaskManager _tasks;
 
-    public DoorTaskController(ICapPublisher cap, DoorTaskManager tasks)
+    public RcsDoorTaskController(ICapPublisher cap, DoorTaskManager tasks)
     {
       _cap = cap;
       _tasks = tasks;

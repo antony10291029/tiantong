@@ -42,8 +42,7 @@ namespace Namei.Wcs.Api
         return new {
           id = door.Id,
           type = door.Type,
-          isClosed = !door.IsOpened,
-          avaliable = door.IsAvaliable,
+          IsOpened = !door.IsOpened,
           taskId = task.TaskId,
           count = task.Count,
         };
@@ -64,14 +63,16 @@ namespace Namei.Wcs.Api
       _doors.Get(param.DoorId).OnClosed();
     }
 
+    // 放货完成
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
-    public void HandleTaskImported(LifterTaskImportedEvent param)
+    public void HandleLifterTaskImported(LifterTaskImportedEvent param)
     {
       var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
 
       _doors.Get(doorId).Open();
     }
 
+    // 取货完成
     [CapSubscribe(LifterTaskTakenEvent.Message, Group = Group)]
     public void HandleLifterTaskTaken(LifterTaskTakenEvent param)
     {

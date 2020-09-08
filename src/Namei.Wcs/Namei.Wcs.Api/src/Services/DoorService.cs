@@ -115,11 +115,13 @@ namespace Namei.Wcs.Api
 
     public void OnOpened()
     {
+      // 保持开门信号
       OpenedAt = DateTime.Now;
     }
 
     public void OnClosed()
     {
+      // 移除开门信号
       _plc.Set($"{Id} # 指令", "0");
       ClosedAt = DateTime.Now;
     }

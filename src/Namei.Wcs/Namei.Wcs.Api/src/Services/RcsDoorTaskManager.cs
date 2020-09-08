@@ -104,6 +104,7 @@ namespace Namei.Wcs.Api
     }
   }
 
+  // 后台托管服务
   public class DoorTaskHostedService: IntervalService
   {
     private ICapPublisher _cap;
@@ -119,13 +120,16 @@ namespace Namei.Wcs.Api
     protected override Task HandleJob(CancellationToken token)
     {
       foreach (var task in _manager.Tasks.Values) {
+        // agc 通过 30s 后，无论是否请求关门，都将强行关门
         if (task.Count > 0 && task.EnteredAt.AddSeconds(30) < DateTime.Now) {
-          _cap.Publish(DoorClosedEvent.Message, new DoorClosedEvent(task.Door.Id));
+          task.Door.Close();
           task.Clear();
         }
 
+        // 开启 10s 后将强行关闭防撞门
         if (
-          task.Door.Type == DoorType.Crash && task.Door.IsOpened &&
+          task.Door.Type == DoorType.Crash &&
+          task.Door.IsOpened &&
           task.Door.OpenedAt.AddSeconds(10) < DateTime.Now
         ) {
           task.Door.Close();
