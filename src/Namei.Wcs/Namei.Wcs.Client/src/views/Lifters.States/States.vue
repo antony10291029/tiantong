@@ -2,13 +2,14 @@
   <AsyncLoader :handler="getDataSource">
     <table class="table is-nowrap is-bordered is-vcentered is-centered is-fullwidth">
       <thead>
-        <th colspan="5">
+        <th colspan="6">
           {{text}}
         </th>
       </thead>
       <tbody>
         <tr>
-          <th colspan="2">工作状态</th>
+          <th></th>
+          <th>工作状态</th>
           <td style="min-width: 50px">
             <span
               v-if="!states.isWorking"
@@ -38,6 +39,7 @@
               报警中
             </span>
           </td>
+          <td></td>
         </tr>
       </tbody>
 
@@ -48,6 +50,7 @@
           <th>请求取货</th>
           <th>允许放货</th>
           <th>虚拟安全门</th>
+          <th>操作</th>
         </tr>
       </thead>
 
@@ -109,6 +112,9 @@
             >
               已打开
             </span>
+          </td>
+          <td>
+            <a>控制指令</a>
           </td>
         </tr>
       </tbody>

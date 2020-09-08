@@ -14,14 +14,6 @@
         style="min-width: 260px; max-width: 260px"
       >
         <ul class="menu-list">
-          <!-- <li>
-            <router-link to="/" exact-active-class="is-active" active-class="false">
-              <span class="icon">
-                <i class="iconfont icon-dashboard"></i>
-              </span>
-              <span>控制面板</span>
-            </router-link>
-          </li> -->
           <li>
             <router-link to="/lifters">
               <span class="icon">
@@ -44,6 +36,14 @@
                 <i class="iconfont icon-lifter"></i>
               </span>
               <span>系统设置</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/devices">
+              <span class="icon">
+                <i class="iconfont icon-lifter"></i>
+              </span>
+              <span>设备管理</span>
             </router-link>
           </li>
         </ul>
