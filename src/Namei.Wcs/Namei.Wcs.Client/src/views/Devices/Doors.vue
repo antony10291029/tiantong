@@ -6,8 +6,8 @@
           1F 自动门
         </p>
         <Door
-          v-for="key in ['101', '102']" :key="key"
-          :id="key"
+          v-for="id in ['101', '102', '103']" :key="id"
+          :door="doors[id]"
         />
       </div>
     </div>
@@ -18,8 +18,8 @@
           2F 自动门
         </p>
         <Door
-          v-for="key in ['201', '202', '203']" :key="key"
-          :id="key"
+          v-for="id in ['201', '202']" :key="id"
+          :door="doors[id]"
         />
       </div>
     </div>
@@ -35,6 +35,13 @@ export default Vue.extend({
 
   components: {
     Door
+  },
+
+  props: {
+    doors: {
+      type: Object,
+      required: true
+    }
   }
 })
 </script>

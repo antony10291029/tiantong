@@ -42,11 +42,11 @@ namespace Namei.Wcs.Api
         return new {
           id = door.Id,
           type = door.Type,
-          IsOpened = !door.IsOpened,
+          IsOpened = door.IsOpened,
           taskId = task.TaskId,
           count = task.Count,
         };
-      });
+      }).ToDictionary(door => door.id, door => door);
     }
 
     // events

@@ -133,6 +133,7 @@ namespace Namei.Wcs.Api
           task.Door.OpenedAt.AddSeconds(10) < DateTime.Now
         ) {
           task.Door.Close();
+          task.Clear();
         }
       }
 

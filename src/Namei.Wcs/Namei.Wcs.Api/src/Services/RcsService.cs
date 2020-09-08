@@ -18,6 +18,7 @@ namespace Namei.Wcs.Api
     {
       _cap = cap;
       _client = factory.CreateClient();
+      _client.Timeout = new TimeSpan(0, 0, 2);
       _client.BaseAddress = new System.Uri("http://172.16.2.230:80");
       _client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)

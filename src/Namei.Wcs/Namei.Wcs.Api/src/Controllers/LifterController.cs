@@ -1,3 +1,4 @@
+using System.Linq;
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
@@ -27,16 +28,11 @@ namespace Namei.Wcs.Api
       _wms = wms;
     }
 
-    public class GetLifterStatesParams
-    {
-      public string lifter_id { get; set; }
-    }
-
     [HttpPost]
     [Route("/lifters/states")]
-    public object GetLifterStates([FromBody] GetLifterStatesParams param)
+    public object GetLifterStates()
     {
-      return _lifters.Get(param.lifter_id).GetStates();
+      return _lifters.All().ToDictionary(kv => kv.Key, kv => kv.Value.GetStates());
     }
 
     // events

@@ -4,11 +4,11 @@ using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
-  public class DoorCommandController: BaseController
+  public class DoorPlcCommandController: BaseController
   {
     private ICapPublisher _cap;
 
-    public DoorCommandController(ICapPublisher cap)
+    public DoorPlcCommandController(ICapPublisher cap)
     {
       _cap = cap;
     }
