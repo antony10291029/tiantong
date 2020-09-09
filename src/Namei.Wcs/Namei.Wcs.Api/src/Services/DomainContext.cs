@@ -13,6 +13,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<DeviceState> DeviceStates { get; set; }
 
+    public DbSet<LifterTask> LifterTasks { get; set; }
+
     public DomainContext(Config config)
     {
       _config = config;
