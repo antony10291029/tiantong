@@ -11,6 +11,7 @@
     "@zhanglan1315/vue-bulma": "^0.1.15-alpha",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "echarts": "^4.9.0",
     "store": "^2.0.12",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

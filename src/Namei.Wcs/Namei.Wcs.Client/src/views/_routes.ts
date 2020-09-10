@@ -12,6 +12,7 @@ import DoorCommands from './DoorCommands/index.vue'
 import DoorCommandsDashboard from './DoorCommands.Dashboard/index.vue'
 import System from './System/index.vue'
 import Devices from './Devices/index.vue'
+import LiftersDataScreen from './Lifters.DataScreen/index.vue'
 
 const rootRoutes: RouteConfig[] = [
   {
@@ -83,6 +84,11 @@ const rootRoutes: RouteConfig[] = [
     name: 'Devices',
     component: Devices,
   },
+  {
+    path: '/data-screen',
+    name: 'LiftersDataScreen',
+    component: LiftersDataScreen
+  }
 ]
 
 const routes: RouteConfig[] = [

@@ -46,6 +46,14 @@
               <span>设备管理</span>
             </router-link>
           </li>
+          <li>
+            <router-link to="/data-screen">
+              <span class="icon">
+                <i class="iconfont icon-lifter"></i>
+              </span>
+              <span>提升机数据屏</span>
+            </router-link>
+          </li>
         </ul>
       </aside>
       <router-view class="is-flex-auto" />
