@@ -1,5 +1,6 @@
 create table if not exists lifter_tasks (
   id serial not null primary key,
+  lifter_id varchar(255) not null,
   task_id varchar(255) not null,
   pallet_code varchar(255) not null,
   "from" varchar(255) not null,

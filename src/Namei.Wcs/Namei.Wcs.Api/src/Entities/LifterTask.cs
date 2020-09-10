@@ -8,6 +8,8 @@ namespace Namei.Wcs.Api
   {
     public int id { get; set; }
 
+    public string lifter_id { get; set; }
+
     public string from { get; set; }
 
     public string to { get; set; }
@@ -18,11 +20,10 @@ namespace Namei.Wcs.Api
 
     public string status { get; set; } = LifterTaskStatusType.Imported;
 
-    public DateTime imported_at { get; set; }
+    public DateTime imported_at { get; set; } = DateTime.Now;
 
-    public DateTime exported_at { get; set; }
+    public DateTime exported_at { get; set; } = DateTime.MinValue;
 
-    public DateTime taken_at { get; set; }
-
+    public DateTime taken_at { get; set; } = DateTime.MinValue;
   }
 }

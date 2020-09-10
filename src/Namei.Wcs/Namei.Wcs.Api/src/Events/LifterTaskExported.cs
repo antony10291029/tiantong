@@ -8,10 +8,13 @@ namespace Namei.Wcs.Api
 
     public string Floor { get; set; }
 
-    public LifterTaskExportedEvent(string lifterId, string floor)
+    public string TaskId { get; set; }
+
+    public LifterTaskExportedEvent(string lifterId, string floor,  string taskId = null)
     {
       Floor = floor;
       LifterId = lifterId;
+      TaskId = taskId;
     }
   }
 }
