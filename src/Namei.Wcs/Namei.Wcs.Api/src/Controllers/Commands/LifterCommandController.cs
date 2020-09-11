@@ -7,24 +7,16 @@ namespace Namei.Wcs.Api
 {
   public class LifterCommandController: BaseController
   {
-    private WmsService _wms;
-
-    private FirstLifterService _lifter;
-
     private LifterServiceManager _lifters;
 
     private ICapPublisher _cap;
 
     public LifterCommandController(
       ICapPublisher cap,
-      LifterServiceManager lifters,
-      FirstLifterService lifter,
-      WmsService wms
+      LifterServiceManager lifters
     ) {
       _cap = cap;
-      _lifter = lifter;
       _lifters = lifters;
-      _wms = wms;
     }
 
     public class ConveyorChangedParams
@@ -40,6 +32,7 @@ namespace Namei.Wcs.Api
     [Route("reformed-lifters/conveyor/changed")]
     public object ConveyorChanged([FromBody] ConveyorChangedParams param)
     {
+      var lifter = _lifters.Get("1");
       var message = "输送线状态无需处理";
       var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
       var isImportedAllowed = FirstLifterService.IsImportAllowed(param.value, param.old_value);
@@ -55,9 +48,9 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent("1", param.floor));
         message = "正在处理读码指令";
       } else if (isSpare) {
-        _lifter.SetImported(param.floor, false);
-        _lifter.SetPickuped(param.floor, false);
-        _lifter.SetDestination(param.floor, "0");
+        lifter.SetImported(param.floor, false);
+        lifter.SetPickuped(param.floor, false);
+        lifter.SetDestination(param.floor, "0");
         message = "正在清除信号";
       }
 

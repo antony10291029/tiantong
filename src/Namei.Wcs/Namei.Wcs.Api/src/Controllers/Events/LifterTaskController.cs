@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using DotNetCore.CAP;
 using Renet.Web;
 using System;
@@ -7,6 +8,8 @@ namespace Namei.Wcs.Api
 {
   public class LifterTaskController: BaseController
   {
+    public const string Group = "lifter.task";
+
     private DomainContext _domain;
 
     public LifterTaskController(DomainContext domain)

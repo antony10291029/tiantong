@@ -1,13 +1,13 @@
-using System.Linq;
 using DotNetCore.CAP;
-using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
 using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
-  public class LifterController: BaseController
+  public class LifterEventController: BaseController
   {
+    public const string Group = "lifter";
+
     private ICapPublisher _cap;
 
     private LifterServiceManager _lifters;
@@ -16,7 +16,7 @@ namespace Namei.Wcs.Api
 
     private DomainContext _domain;
 
-    public LifterController(
+    public LifterEventController(
       ICapPublisher cap,
       DomainContext domain,
       LifterServiceManager lifters,
@@ -28,36 +28,38 @@ namespace Namei.Wcs.Api
       _wms = wms;
     }
 
-    [HttpPost]
-    [Route("/lifters/states")]
-    public object GetLifterStates()
-    {
-      return _lifters.All().ToDictionary(kv => kv.Key, kv => kv.Value.GetStates());
-    }
-
     // events
 
-    [CapSubscribe(LifterTaskImportedEvent.Message)]
+    [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
     public void HandleTaskImported(LifterTaskImportedEvent param)
     {
       _lifters.Get(param.LifterId).SetImported(param.Floor, true);
     }
 
-    [CapSubscribe(LifterTaskScannedEvent.Message)]
+    [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
     public void HandleTaskScanned(LifterTaskScannedEvent param)
     {
       var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
       var destination = _wms.GetPalletInfo(barcode).Destination;
 
+      // 目标楼层与当前楼层相同，则不触发 TaskQueried 事件
+      if (param.Floor == destination) {
+        return;
+      }
+
       _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
         param.LifterId, param.Floor, barcode, destination
       ));
-
-      _lifters.Get(param.LifterId).SetDestination(param.Floor, destination);
     }
 
-    [CapSubscribe(LifterTaskExportedEvent.Message)]
-    public void HandleTaskFinished(LifterTaskExportedEvent param)
+    [CapSubscribe(LifterTaskQueriedEvent.Message, Group = Group)]
+    public void HandleTaskQueried(LifterTaskQueriedEvent param)
+    {
+      _lifters.Get(param.LifterId).SetDestination(param.Floor, param.Destination);
+    }
+
+    [CapSubscribe(LifterTaskExportedEvent.Message, Group = Group)]
+    public void HandleTaskExported(LifterTaskExportedEvent param)
     {
       var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
       var taskId = _wms.GetPalletInfo(barcode).TaskId;
@@ -66,7 +68,7 @@ namespace Namei.Wcs.Api
       _cap.Publish(LifterTaskPickingEvent.Message, new LifterTaskPickingEvent(param.LifterId, param.Floor, barcode));
     }
 
-    [CapSubscribe(LifterTaskTakenEvent.Message)]
+    [CapSubscribe(LifterTaskTakenEvent.Message, Group = Group)]
     public void HandleTaskTaken(LifterTaskTakenEvent param)
     {
       _lifters.Get(param.LifterId).SetPickuped(param.Floor, true);

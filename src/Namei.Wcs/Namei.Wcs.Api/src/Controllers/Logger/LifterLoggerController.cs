@@ -19,11 +19,11 @@ namespace Namei.Wcs.Api
 
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
     public void HandleTaskImported(LifterTaskImportedEvent param)
-      => Info(param.LifterId, param.Floor, $"收到 WMS 放货完成信号，任务id: {param.TaskId}，正在通知提升机");
+      => Info(param.LifterId, param.Floor, $"收到 WMS 放货完成信号，任务id: {param.TaskId}，正在将信号转发至设备");
 
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
     public void HandleTaskScanned(LifterTaskScannedEvent param)
-      => Info(param.LifterId, param.Floor, $"收到提升机扫码完成信号，正在向查询 WMS 任务信息");
+      => Info(param.LifterId, param.Floor, $"收到提升机扫码完成信号，正在向 WMS 查询任务信息");
 
     [CapSubscribe(LifterTaskQueriedEvent.Message, Group = Group)]
     public void HandleTaskQueried(LifterTaskQueriedEvent param)
@@ -31,7 +31,7 @@ namespace Namei.Wcs.Api
 
     [CapSubscribe(LifterTaskExportedEvent.Message, Group = Group)]
     public void HandleTaskExported(LifterTaskExportedEvent param)
-      => Info(param.LifterId, param.Floor, $"任务已完成，正在向 WMS 查询任务信息");
+      => Info(param.LifterId, param.Floor, $"设备请求取货中，正在向 WMS 查询任务信息");
 
     [CapSubscribe(LifterTaskPickingEvent.Message, Group = Group)]
     public void HandleTaskPicking(LifterTaskPickingEvent param)

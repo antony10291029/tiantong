@@ -1,16 +1,27 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Renet.Web;
+using System.Linq;
 
 namespace Namei.Wcs.Api
 {
-  public class LifterWebCommandController: BaseController
+  public class LifterWebController: BaseController
   {
     private ICapPublisher _cap;
 
-    public LifterWebCommandController(ICapPublisher cap)
+    private LifterServiceManager _lifters;
+
+    public LifterWebController(ICapPublisher cap, LifterServiceManager lifters)
     {
       _cap = cap;
+      _lifters = lifters;
+    }
+
+    [HttpPost]
+    [Route("/lifters/states")]
+    public object GetLifterStates()
+    {
+      return _lifters.All().ToDictionary(kv => kv.Key, kv => kv.Value.GetStates());
     }
 
     public class Params
