@@ -1,14 +1,6 @@
 <template>
   <div style="padding: 1.25rem; overflow: auto">
-    <div class="columns">
-      <div class="column is-narrow">
-        <TheStates />
-      </div>
-
-      <div class="column">
-        <LogList search="door" />
-      </div>
-    </div>
+    <LogList search="door" />
   </div>
 </template>
 

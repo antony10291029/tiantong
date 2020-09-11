@@ -55,6 +55,10 @@ export default Vue.extend({
     }
 
     chart.setOption(option as any)
+
+    const resize = () => chart.resize()
+    window.addEventListener('resize', resize);
+    this.$once('hook:destroyed', () => window.removeEventListener('resize', resize))
   }
 })
 </script>

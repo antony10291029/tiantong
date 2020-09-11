@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <table class="table is-fullwidth">
+    <table class="table is-fullwidth is-bordered">
       <thead>
         <th>运行记录</th>
         <th>时间</th>
@@ -13,7 +13,7 @@
       </tbody>
     </table>
 
-    <div style="height: 1.25rem"></div>
+    <div style="height: 1.5rem"></div>
 
     <Pagination
       v-bind="logs.meta"

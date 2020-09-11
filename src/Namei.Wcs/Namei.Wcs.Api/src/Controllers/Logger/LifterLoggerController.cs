@@ -1,5 +1,5 @@
-using Renet.Web;
 using DotNetCore.CAP;
+using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
@@ -19,7 +19,10 @@ namespace Namei.Wcs.Api
 
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
     public void HandleTaskImported(LifterTaskImportedEvent param)
-      => Info(param.LifterId, param.Floor, $"收到 WMS 放货完成信号，任务id: {param.TaskId}，正在将信号转发至设备");
+      => Info(param.LifterId, param.Floor, param.TaskId == null
+        ? $"手动触发放货完成信号，正在将信号转发至设备"
+        : $"收到 WMS 放货完成信号，任务id: {param.TaskId}，正在将信号转发至设备"
+      );
 
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
     public void HandleTaskScanned(LifterTaskScannedEvent param)
@@ -39,6 +42,8 @@ namespace Namei.Wcs.Api
 
     [CapSubscribe(LifterTaskTakenEvent.Message, Group = Group)]
     public void HandleTaskTaken(LifterTaskTakenEvent param)
-      => Info(param.LifterId, param.Floor, $"收到 WMS 反馈，AGC 取货完毕");
+      => Info(param.LifterId, param.Floor, param.TaskId == null
+        ? $"手动触发取货完成信号，正在将信号转发至设备"
+        : $"收到 WMS 反馈，AGC 取货完毕");
   }
 }

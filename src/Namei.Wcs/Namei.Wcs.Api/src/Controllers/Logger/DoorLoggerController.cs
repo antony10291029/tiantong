@@ -1,3 +1,4 @@
+using System.Linq;
 using DotNetCore.CAP;
 using Renet.Web;
 
@@ -15,7 +16,11 @@ namespace Namei.Wcs.Api
     }
 
     private void Info(string doorId, string message)
-      => _logger.Info($"door.{doorId}", $"{doorId}号自动门，{message}");
+    {
+      var doorType = AutomatedDoor.Enumerate().Contains(doorId) ? "自动门" : "防撞门";
+
+      _logger.Info($"door.{doorId}", $"{doorId}号{doorType}，{message}");
+    }
 
     [CapSubscribe(DoorTaskRequestOpenEvent.Message, Group = Group)]
     public void RequestedOpen(DoorTaskRequestOpenEvent param)

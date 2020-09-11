@@ -19,33 +19,9 @@
       >
         <ul class="menu-list">
           <li>
-            <router-link to="/lifters">
-              <span class="icon">
-                <i class="iconfont icon-lifter"></i>
-              </span>
-              <span>提升机系统</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/doors">
-              <span class="icon">
-                <i class="iconfont icon-door"></i>
-              </span>
-              <span>自动门系统</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/system">
-              <span class="icon">
-                <i class="iconfont icon-lifter"></i>
-              </span>
-              <span>系统设置</span>
-            </router-link>
-          </li>
-          <li>
             <router-link to="/devices">
               <span class="icon">
-                <i class="iconfont icon-lifter"></i>
+                <i class="iconfont icon-dashboard"></i>
               </span>
               <span>设备管理</span>
             </router-link>
@@ -53,9 +29,33 @@
           <li>
             <router-link to="/data-screen">
               <span class="icon">
+                <i class="iconfont icon-monitor"></i>
+              </span>
+              <span>数据分析</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/lifters">
+              <span class="icon">
                 <i class="iconfont icon-lifter"></i>
               </span>
-              <span>提升机数据屏</span>
+              <span>提升机日志</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/doors">
+              <span class="icon">
+                <i class="iconfont icon-door"></i>
+              </span>
+              <span>自动门日志</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/system">
+              <span class="icon">
+                <i class="iconfont icon-settings"></i>
+              </span>
+              <span>系统设置</span>
             </router-link>
           </li>
         </ul>
