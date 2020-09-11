@@ -63,11 +63,9 @@
           </p>
           <a
             class="panel-block is-flex"
-            style="height: 60px;"
+            style="height: 60px; padding-left: 20px; padding-right: 20px"
             v-for="key in 20" :key="key"
           >
-            <span style="width: 12px"></span>
-
             <div>
               <span>
                 状态：
