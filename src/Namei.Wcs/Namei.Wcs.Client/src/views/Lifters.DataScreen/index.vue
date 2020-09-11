@@ -1,66 +1,109 @@
 <template>
-  <div class="is-flex is-flex-column" style="padding: 1.25rem">
-    <div class="box">
-      <p class="title is-4">
-        今日数据
-      </p>
+  <div style="padding: 1.25rem; overflow: auto; width: 100%; padding-bottom: 0">
+    <div class="columns" style="height: 100%">
+      <div class="column is-flex is-flex-column" style="height: 100%">
+        <div class="box">
+          <div style="height: 0.5rem"></div>
 
-      <hr>
-
-      <div style="height: 0.5rem"></div>
-
-      <div class="columns">
-        <div class="column">
-          <article class="notification is-primary">
-            <div class="notification-body">
-              <p class="title is-3 is-flex">
-                <span>入库任务</span>
-                <span class="is-flex-auto"></span>
-                <span>123</span>
-              </p>
+          <div class="columns">
+            <div class="column">
+              <article class="notification is-primary">
+                <div class="notification-body">
+                  <p class="title is-4 is-flex">
+                    <span>今日入库</span>
+                    <span class="is-flex-auto"></span>
+                    <span>123</span>
+                  </p>
+                </div>
+              </article>
             </div>
-          </article>
+
+            <div class="column">
+              <article class="notification is-success">
+                <div class="notification-body">
+                  <p class="title is-4 is-flex">
+                    <span>今日出库</span>
+                    <span class="is-flex-auto"></span>
+                    <span>123</span>
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <div class="column">
+              <article class="notification is-info">
+                <div class="notification-body">
+                  <p class="title is-4 is-flex">
+                    <span>今日调库</span>
+                    <span class="is-flex-auto"></span>
+                    <span>123</span>
+                  </p>
+                </div>
+              </article>
+
+            </div>
+          </div>
+
+          <scatter-plot-chart style="margin-bottom: -1rem" />
         </div>
 
-        <div class="column">
-          <article class="notification is-success">
-            <div class="notification-body">
-              <p class="title is-3 is-flex">
-                <span>出库任务</span>
-                <span class="is-flex-auto"></span>
-                <span>123</span>
-              </p>
-            </div>
-          </article>
-
-        </div>
-
-        <div class="column">
-          <article class="notification is-info">
-            <div class="notification-body">
-              <p class="title is-3 is-flex">
-                <span>调库任务</span>
-                <span class="is-flex-auto"></span>
-                <span>123</span>
-              </p>
-            </div>
-          </article>
-
+        <div class="box is-flex-auto" style="padding-bottom: 0">
+          <PieChart />
         </div>
       </div>
-    </div>
 
-    <div class="box">
+      <div class="column is-narrow">
+        <div class="panel" style="height: 100%; margin-bottom: 0; overflow: auto">
+          <p class="panel-heading is-size-5 is-flex is-vcentered">
+            <span>正在执行任务数：</span>
 
-      <p class="title is-4">
-        7日数据
-      </p>
+            <span class="tag is-light is-size-6">
+              10
+            </span>
+          </p>
+          <a
+            class="panel-block is-flex"
+            style="height: 60px;"
+            v-for="key in 20" :key="key"
+          >
+            <span style="width: 12px"></span>
 
-      <hr>
+            <div>
+              <span>
+                状态：
+              </span>
+              <span class="tag is-info is-light">
+                放货完成
+              </span>
+            </div>
 
-      <div class="columns">
-        <div class="column">
-          <BarChart />
+            <span style="width: 24px"></span>
+
+            <div>
+              <span>
+                托盘码：
+              </span>
+              <span class="tag is-info is-light">
+                待扫描
+              </span>
+            </div>
+
+            <span style="width: 24px"></span>
+
+            <div>
+              <span>
+                楼层：
+              </span>
+              <span class="tag is-info is-light">
+                待扫描
+              </span>
+            </div>
+          </a>
+          <a
+            class="panel-block has-background-white"
+            style="max-height: 0; cursor: default"
+          >
+          </a>
         </div>
       </div>
     </div>
@@ -70,12 +113,18 @@
 <script lang="ts">
 import Vue from 'vue'
 import BarChart from './BarChart.vue'
+import ScatterPlotChart from './ScatterPlotChart.vue'
+import PieChart from './PieChart.vue'
+import BrokenLineChart from './BrokenLineChart.vue'
 
 export default Vue.extend({
   name: 'LiftersDataScreen',
 
   components: {
-    BarChart
+    BarChart,
+    PieChart,
+    ScatterPlotChart,
+    BrokenLineChart
   },
 
   mounted () {
