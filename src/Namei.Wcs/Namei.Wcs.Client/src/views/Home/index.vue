@@ -2,7 +2,10 @@
   <div class="app">
     <div class="app-nav navbar">
       <div class="navbar-brand">
-        <a class="navbar-item is-size-4 is-unselectable has-text-link">
+        <a
+          @click="handleLogoClick"
+          class="navbar-item is-size-4 is-unselectable has-text-link"
+        >
           玉串 WCS
         </a>
       </div>
@@ -10,6 +13,7 @@
 
     <div class="app-body">
       <aside
+        v-if="isMenuShow"
         class="menu is-unselectable"
         style="min-width: 260px; max-width: 260px"
       >
@@ -62,14 +66,21 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import Vue from 'vue'
 
-@Component({
-  name: 'Home'
+export default Vue.extend({
+  name: 'Home',
+
+  data: () => ({
+    isMenuShow: true,
+  }),
+
+  methods: {
+    handleLogoClick () {
+      this.isMenuShow = !this.isMenuShow
+    }
+  }
 })
-export default class extends Vue {
-
-}
 </script>
 
 <style lang="sass">
