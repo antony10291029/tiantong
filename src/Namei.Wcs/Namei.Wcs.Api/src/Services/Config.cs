@@ -5,15 +5,15 @@ namespace Namei.Wcs.Api
 {
   public class Config
   {
-    public static bool EnableDoorsCommands = false;
+    public static bool EnableDoorsCommands = true;
 
     public static bool EnableLifterCommands = false;
 
     public static bool EnableHoistersCommands = false;
 
-    public static bool EnableWmsCommands = false;
+    public static bool EnableWmsCommands = true;
 
-    public static bool EnableRcsCommands = false;
+    public static bool EnableRcsCommands = true;
 
     public readonly string Env;
 
