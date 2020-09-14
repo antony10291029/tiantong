@@ -1,13 +1,21 @@
 <template>
   <section class="box">
-    <p class="title is-5" style="margin-bottom: 0.75rem">
+    <p class="title is-5 is-flex" style="margin-bottom: 0.75rem">
       <span v-if="lifterId == '1'">
-        #{{lifterId}} 改造货梯
+        改造货梯
       </span>
       <span v-else>
-        # {{lifterId}} 提升机
+        提升机
       </span>
 
+      <span class="is-flex-auto"></span>
+
+      <span v-if="lifterId == '1'">
+        #{{lifterId}}
+      </span>
+      <span v-else>
+        #{{lifterId}}
+      </span>
     </p>
 
     <div class="is-flex">

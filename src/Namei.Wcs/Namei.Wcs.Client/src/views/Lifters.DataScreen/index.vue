@@ -44,11 +44,20 @@
             </div>
           </div>
 
-          <scatter-plot-chart style="margin-bottom: -1rem" />
+          <div class="columns">
+            <div class="column is-8">
+             <ScatterPlotChart style="margin-bottom: -1rem" />
+            </div>
+
+            <div class="column">
+              <PieChart />
+            </div>
+          </div>
+
         </div>
 
         <div class="box is-flex-auto" style="padding-bottom: 0">
-          <PieChart />
+          <LineChart />
         </div>
       </div>
 
@@ -112,15 +121,17 @@
 import Vue from 'vue'
 import BarChart from './BarChart.vue'
 import ScatterPlotChart from './ScatterPlotChart.vue'
+import LineChart from './LineChart.vue'
 import PieChart from './PieChart.vue'
 import BrokenLineChart from './BrokenLineChart.vue'
 
 export default Vue.extend({
-  name: 'LiftersDataScreen',
+  name: 'LiftersDataScreen',  
 
   components: {
     BarChart,
     PieChart,
+    LineChart,
     ScatterPlotChart,
     BrokenLineChart
   },
