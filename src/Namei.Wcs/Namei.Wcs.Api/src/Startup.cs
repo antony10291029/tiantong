@@ -30,6 +30,7 @@ namespace Namei.Wcs.Api
       services.AddCap(cap => {
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();
+        cap.FailedRetryCount = 0;
       });
     }
 
