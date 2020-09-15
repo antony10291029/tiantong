@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using DotNetCore.CAP;
 using Renet.Web;
 
@@ -45,5 +46,17 @@ namespace Namei.Wcs.Api
       => Info(param.LifterId, param.Floor, param.TaskId == null
         ? $"手动触发取货完成信号，正在将信号转发至设备"
         : $"收到 WMS 反馈，AGC 取货完毕");
+
+    [CapSubscribe(LifterTaskQueryFailedEvent.Message, Group = Group)]
+    public void HandleQueriedFailed(LifterTaskQueryFailedEvent param)
+      => Info("0", "0", $"托盘任务信息查询失败，托盘码: {param.Barcode}");
+
+    [CapSubscribe(LifterTaskPickingFailedEvent.Message, Group = Group)]
+    public void HandleTaskPickingFailed(LifterTaskPickingFailedEvent param)
+      => Info(param.LifterId, param.Floor, $"通知 WMS 取货失败，托盘码: {param.Barcode}");
+
+    [CapSubscribe(LifterTaskExceptionEvent.Message, Group = Group)]
+    public void HandleLifterTaskException(LifterTaskExceptionEvent param)
+      => Info(param.LifterId, param.Floor, param.ErrorMessage);
   }
 }
