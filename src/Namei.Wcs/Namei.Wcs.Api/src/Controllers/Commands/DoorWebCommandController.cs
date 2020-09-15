@@ -14,13 +14,21 @@ namespace Namei.Wcs.Api
 
     public class OpenParams
     {
-      public string DoorId { get; set; }
+      public string door_id { get; set; }
+
+      public string command { get; set; }
     }
 
-    [HttpPost("/doors/open")]
+    [HttpPost("/doors/control")]
     public object Open([FromBody] OpenParams param)
     {
-      _doors.Get(param.DoorId).Open();
+      if (param.command == "open") {
+        _doors.Get(param.door_id).Open();
+      } else if (param.command == "close") {
+        _doors.Get(param.door_id).Close();
+      } else {
+        return new { message = "指令未识别" };
+      }
 
       return new { message = "开门命令已执行" };
     }
