@@ -15,17 +15,9 @@ namespace Namei.Wcs.Api
 
     public IDoorService Door { get; }
 
-    public string TaskId { get; private set; } = "";
+    public Dictionary<string, DateTime> EnteringTasks = new Dictionary<string, DateTime>();
 
-    public int Count { get; private set; } = 0;
-
-    public DateTime RequestedAt { get; private set; } = DateTime.MinValue;
-
-    public DateTime EnteredAt { get; private set; } = DateTime.MinValue;
-
-    public DateTime LeftAt { get; private set; } = DateTime.MinValue;
-
-    public bool HasTask { get => TaskId != ""; }
+    public List<string> RequestingTasks = new List<string>();
 
     public DoorTask(IDoorService door, ICapPublisher cap, RcsService rcs)
     {
@@ -36,20 +28,18 @@ namespace Namei.Wcs.Api
 
     public void Request(string taskId)
     {
-      TaskId = taskId;
-      RequestedAt = DateTime.Now;
+      RequestingTasks.Add(taskId);
       Handle();
     }
 
     public void Handle()
     {
-      if (!HasTask) {
+      if (RequestingTasks.Count == 0) {
         return;
       }
 
       if (Door.IsOpened) {
         Enter();
-        return;
       }
 
       if (!Door.IsAvaliable) {
@@ -61,36 +51,28 @@ namespace Namei.Wcs.Api
 
     public void Enter()
     {
-      if (!HasTask) {
-        return;
-      }
+      var taskIds = RequestingTasks.ToArray();
+      RequestingTasks.Clear();
 
-      _rcs.NotifyDoorOpened(Door.Id, TaskId);
-      Count++;
-      TaskId = "";
-      EnteredAt = DateTime.Now;
+      foreach (var taskId in taskIds) {
+        _rcs.NotifyDoorOpened(Door.Id, taskId);
+        EnteringTasks.Add(taskId, DateTime.Now);
+      }
     }
 
     public void Leave(string taskId)
     {
       _rcs.NotifyDoorClosing(Door.Id, taskId);
 
-      if (Count > 0) {
-        Count--;
-        LeftAt = DateTime.Now;
-      } else {
-        Count = 0;
-      }
-
-      if (Count == 0) {
-        Door.Close();
+      if (EnteringTasks.ContainsKey(taskId)) {
+        EnteringTasks.Remove(taskId);
       }
     }
 
     public void Clear()
     {
-      Count = 0;
-      Door.Close();
+      EnteringTasks.Clear();
+      Door.Clear();
     }
   }
 
@@ -120,20 +102,25 @@ namespace Namei.Wcs.Api
     protected override Task HandleJob(CancellationToken token)
     {
       foreach (var task in _manager.Tasks.Values) {
-        // agc 通过 30s 后，无论是否请求关门，都将强行关门
-        if (task.Count > 0 && task.EnteredAt.AddSeconds(30) < DateTime.Now) {
-          task.Door.Close();
-          task.Clear();
+        // 只给 10s 用于 agc 通过自动门
+        if (task.Door.Type == DoorType.Automatic) {
+          foreach (var enteringTask in task.EnteringTasks) {
+            if (enteringTask.Value.AddSeconds(10) < DateTime.Now) {
+              task.EnteringTasks.Remove(enteringTask.Key);
+              if (task.EnteringTasks.Count == 0) {
+                task.Door.Clear();
+              }
+            }
+          }
         }
 
         // 开启 10s 后将强行关闭防撞门
         if (
-          task.Door.Type == DoorType.Crash &&
           task.Door.IsOpened &&
+          task.Door.Type == DoorType.Crash &&
           task.Door.OpenedAt.AddSeconds(10) < DateTime.Now
         ) {
           task.Door.Close();
-          task.Clear();
         }
       }
 

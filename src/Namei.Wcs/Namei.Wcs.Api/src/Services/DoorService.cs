@@ -77,6 +77,8 @@ namespace Namei.Wcs.Api
 
     void Close();
 
+    void Clear();
+
     void OnOpened();
 
     void OnClosed();
@@ -119,10 +121,13 @@ namespace Namei.Wcs.Api
       OpenedAt = DateTime.Now;
     }
 
+    public void Clear()
+    {
+      _plc.Set($"{Id} # 指令", "0");
+    }
+
     public void OnClosed()
     {
-      // 移除开门信号
-      _plc.Set($"{Id} # 指令", "0");
       ClosedAt = DateTime.Now;
     }
   }
@@ -174,6 +179,11 @@ namespace Namei.Wcs.Api
     public void Close()
     {
       _cap.Publish(DoorClosedEvent.Message, new DoorClosedEvent(Id));
+    }
+
+    public void Clear()
+    {
+      Close();
     }
 
     public void OnOpened()
