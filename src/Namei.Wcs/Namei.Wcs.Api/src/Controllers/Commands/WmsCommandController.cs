@@ -20,31 +20,35 @@ namespace Namei.Wcs.Api
 
     public class LifterNotify
     {
-      public string method;
+      public string method { get; set; }
 
-      public string lifter_id;
+      public string liftCode { get; set; }
 
-      public string floor;
+      public string floor { get; set; }
     }
 
-    [Route("/lifters/notify")]
+    [Route("/finish")]
     public object LiftersNotify([FromBody] LifterNotify param)
     {
       var message = "指令未识别";
 
       if (!Config.EnableWmsCommands) {
         message = "WMS 指令未开启";
-      } if (param.method == "import") {
-        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.lifter_id, param.floor));
+      } if (param.method == "deliver") {
+        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.liftCode, param.floor));
         message = "正在处理放货完成指令";
-      } else if (param.method == "export") {
-        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
+      } else if (param.method == "pick") {
+        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.liftCode, param.floor));
         message = "正在处理取货完成指令";
+      } else {
+        message = "放取货信号接收异常";
+
+        _cap.Publish(LifterTaskExceptionEvent.Message, new LifterTaskExceptionEvent(param.liftCode, param.floor, message));
       }
 
       return new {
         message = message,
-        lifter_id = param.lifter_id,
+        liftCode = param.liftCode,
         floor = param.floor,
       };
     }
