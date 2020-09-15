@@ -41,7 +41,7 @@ namespace Namei.Wcs.Api
 
       if (!Config.EnableLifterCommands) {
         message = "货梯指令未开启";
-      } else if (isScanned && isRequestingPickup) {
+      } else if (isRequestingPickup) {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent("1", param.floor));
         message = "正在处理取货指令";
       } else if (isScanned) {
