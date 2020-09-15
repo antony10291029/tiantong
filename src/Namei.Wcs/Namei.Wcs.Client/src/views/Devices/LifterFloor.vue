@@ -11,10 +11,10 @@
 
       <div class="is-flex is-centered">
         <span
-          v-if="hasPalletCodeA"
+          v-if="hasPalletCodeB"
           class="tag is-light is-info"
         >
-          {{palletCodeA}}
+          {{palletCodeB}}
         </span>
         <span v-else
           class="tag is-light"
@@ -39,10 +39,10 @@
 
       <div class="is-flex is-centered">
         <span
-          v-if="hasPalletCodeB"
+          v-if="hasPalletCodeA"
           class="tag is-light is-info"
         >
-          {{palletCodeB}}
+          {{palletCodeA}}
         </span>
         <span v-else
           class="tag is-light"
