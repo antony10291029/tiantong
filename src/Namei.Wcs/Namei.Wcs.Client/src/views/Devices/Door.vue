@@ -18,6 +18,7 @@
 
       <a
         v-if="isOpened"
+        @click="handleClose"
         class="tag is-light is-info"
       >
         关门
@@ -25,6 +26,7 @@
 
       <a
         v-else
+        @click="handleOpen"
         class="tag is-light"
       >
         开门
@@ -34,24 +36,49 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
+import domain from '@/providers/contexts/domain'
 
 export default Vue.extend({
   name: 'Door',
 
   props: {
     door: {
-      type: Object,
+      type: Object as PropType<any>,
       required: true
     }
   },
 
   computed: {
     isRequesting () {
-      return !!(this.door as any ).taskId
+      return (this.door as any ).requestingTasks.length !== 0
     },
 
     isOpened () {
       return (this.door as any).isOpened
+    }
+  },
+
+  methods: {
+    async handleOpen () {
+      this.$confirm({
+        title: '开门',
+        content: '手动执行关门指令',
+        handler: async () => await domain.post('/doors/control', {
+          door_id: (this as any).door.id,
+          command: 'open'
+        })
+      })
+    },
+
+    async handleClose () {
+      this.$confirm({
+        title: '关门',
+        content: '手动执行关门指令',
+        handler: async () => await domain.post('/doors/control', {
+          door_id: (this as any).door.id,
+          command: 'close'
+        })
+      })
     }
   }
 })
