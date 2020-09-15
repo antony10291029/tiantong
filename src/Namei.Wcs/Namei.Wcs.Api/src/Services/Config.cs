@@ -7,9 +7,9 @@ namespace Namei.Wcs.Api
   {
     public static bool EnableDoorsCommands = true;
 
-    public static bool EnableLifterCommands = false;
+    public static bool EnableLifterCommands = true;
 
-    public static bool EnableHoistersCommands = false;
+    public static bool EnableHoistersCommands = true;
 
     public static bool EnableWmsCommands = true;
 
