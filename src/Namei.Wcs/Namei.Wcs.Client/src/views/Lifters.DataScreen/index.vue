@@ -12,7 +12,7 @@
                   <p class="title is-4 is-flex">
                     <span>今日入库</span>
                     <span class="is-flex-auto"></span>
-                    <span>123</span>
+                    <span>230</span>
                   </p>
                 </div>
               </article>
@@ -24,7 +24,7 @@
                   <p class="title is-4 is-flex">
                     <span>今日出库</span>
                     <span class="is-flex-auto"></span>
-                    <span>123</span>
+                    <span>145</span>
                   </p>
                 </div>
               </article>
@@ -36,7 +36,7 @@
                   <p class="title is-4 is-flex">
                     <span>今日调库</span>
                     <span class="is-flex-auto"></span>
-                    <span>123</span>
+                    <span>88</span>
                   </p>
                 </div>
               </article>
