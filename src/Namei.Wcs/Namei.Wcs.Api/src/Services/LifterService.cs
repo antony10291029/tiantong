@@ -129,9 +129,6 @@ namespace Namei.Wcs.Api
     public override bool IsRequestingPickup(string floor)
       => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
 
-    public bool IsTaskScanned(string floor)
-      => GetIsTaskScanned(_plc.Get($"{floor}F - A 段 - 输送机"));
-
     public override LifterState GetStates()
     {
       var states = _plc.GetValues();
