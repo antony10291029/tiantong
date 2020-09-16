@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Renet.Web;
 
@@ -9,8 +10,11 @@ namespace Namei.Wcs.Api
 
     private DoorTaskManager _tasks;
 
+    private ICapPublisher _cap;
+
     public RcsDoorTaskEventController(ICapPublisher cap, DoorTaskManager tasks)
     {
+      _cap = cap;
       _tasks = tasks;
     }
 
@@ -18,6 +22,10 @@ namespace Namei.Wcs.Api
     public void HandleRequestOpen(DoorTaskRequestOpenEvent param)
     {
       _tasks.Tasks[param.DoorId].Request(param.TaskId);
+
+      if (param.DoorId == "201") {
+        _cap.Publish(DoorOpenedEvent.Message, new DoorOpenedEvent(param.DoorId));
+      }
     }
 
     [CapSubscribe(DoorTaskHandleEvent.Message, Group = Group)]
