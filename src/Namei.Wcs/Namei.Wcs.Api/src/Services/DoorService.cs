@@ -128,6 +128,7 @@ namespace Namei.Wcs.Api
 
     public void OnClosed()
     {
+      Clear();
       ClosedAt = DateTime.Now;
     }
   }
