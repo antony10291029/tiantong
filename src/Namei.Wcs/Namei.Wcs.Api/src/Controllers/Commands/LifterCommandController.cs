@@ -35,6 +35,7 @@ namespace Namei.Wcs.Api
       var lifter = _lifters.Get("1");
       var message = "输送线状态无需处理";
       var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
+      var isScannedFailed = FirstLifterService.IsTaskScannedFailed(param.value, param.old_value);
       var isImportedAllowed = FirstLifterService.IsImportAllowed(param.value, param.old_value);
       var isRequestingPickup = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
       var isSpare = !MelsecStateHelper.GetBit(param.value, 3) && MelsecStateHelper.GetBit(param.old_value, 3);
@@ -49,8 +50,6 @@ namespace Namei.Wcs.Api
         message = "正在处理读码指令";
       } else if (isSpare) {
         lifter.SetImported(param.floor, false);
-        lifter.SetPickuped(param.floor, false);
-        lifter.SetDestination(param.floor, "0");
         message = "正在清除信号";
       }
 
