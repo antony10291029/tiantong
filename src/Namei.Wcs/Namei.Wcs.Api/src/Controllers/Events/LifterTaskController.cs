@@ -33,8 +33,8 @@ namespace Namei.Wcs.Api
       _domain.SaveChanges();
     }
 
-    [CapSubscribe(LifterTaskExportedEvent.Message)]
-    public void LifterTaskExported(LifterTaskExportedEvent param)
+    [CapSubscribe(LifterTaskPickingEvent.Message)]
+    public void HandleLifterTaskPicking(LifterTaskPickingEvent param)
     {
       if (param.TaskId == null) {
         return;
