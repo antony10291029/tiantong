@@ -1,11 +1,19 @@
 <template>
   <section class="box">
-    <p class="title is-5 is-flex" style="margin-bottom: 0.75rem">
+    <p class="title is-5 is-flex is-vcentered" style="margin-bottom: 0.75rem">
       <span v-if="lifterId == '1'">
         改造货梯
       </span>
       <span v-else>
         提升机
+      </span>
+
+      <span
+        v-if="isAlerting"
+        class="tag is-danger is-light"
+        style="margin-left: 0.5rem"
+      >
+        报警中
       </span>
 
       <span class="is-flex-auto"></span>
@@ -61,6 +69,12 @@ export default Vue.extend({
     doors: {
       type: Object,
       required: true
+    }
+  },
+
+  computed: {
+    isAlerting () {
+      return this.lifter.isAlerting
     }
   }
 })
