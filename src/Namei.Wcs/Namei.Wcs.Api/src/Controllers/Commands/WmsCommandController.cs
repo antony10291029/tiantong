@@ -25,6 +25,8 @@ namespace Namei.Wcs.Api
       public string liftCode { get; set; }
 
       public string floor { get; set; }
+
+      public string taskid { get; set; }
     }
 
     [Route("/finish")]
@@ -35,10 +37,10 @@ namespace Namei.Wcs.Api
       if (!Config.EnableWmsCommands) {
         message = "WMS 指令未开启";
       } if (param.method == "deliver") {
-        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.liftCode, param.floor));
+        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.liftCode, param.floor, param.taskid));
         message = "正在处理放货完成指令";
       } else if (param.method == "pick") {
-        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.liftCode, param.floor));
+        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.liftCode, param.floor, param.taskid));
         message = "正在处理取货完成指令";
       } else {
         message = "放取货信号接收异常";
