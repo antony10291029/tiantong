@@ -1,5 +1,8 @@
 using DotNetCore.CAP;
 using Renet.Web;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
@@ -12,6 +15,8 @@ namespace Namei.Wcs.Api
 
     private LifterServiceManager _lifters;
 
+    private LifterTaskService _tasks;
+
     private WmsService _wms;
 
     private DomainContext _domain;
@@ -20,11 +25,13 @@ namespace Namei.Wcs.Api
       ICapPublisher cap,
       DomainContext domain,
       LifterServiceManager lifters,
+      LifterTaskService tasks,
       WmsService wms
     ) {
       _cap = cap;
       _domain = domain;
       _lifters = lifters;
+      _tasks = tasks;
       _wms = wms;
     }
 
@@ -41,9 +48,12 @@ namespace Namei.Wcs.Api
     {
       var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
       var destination = "";
+      var taskid = "";
 
       try {
-        destination = _wms.GetPalletInfo(barcode).Destination;
+        var info = _wms.GetPalletInfo(barcode);
+        taskid = info.TaskId;
+        destination = info.Destination;
       } catch {
         _cap.Publish(LifterTaskQueryFailedEvent.Message, new LifterTaskQueryFailedEvent(param.LifterId, param.Floor, barcode));
         return;
@@ -54,7 +64,7 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.LifterId, param.Floor));
       } else {
         _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
-          param.LifterId, param.Floor, barcode, destination
+          param.LifterId, param.Floor, barcode, destination, taskid
         ));
       }
     }
@@ -68,12 +78,27 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskExportedEvent.Message, Group = Group)]
     public void HandleTaskExported(LifterTaskExportedEvent param)
     {
-      var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
+      var now = DateTime.Now;
+      var lifter = _lifters.Get(param.LifterId);
+
+      // 对于同一台提升机的同一楼层，10 秒内只接收一次取货请求
+      if (lifter.ExportedAt[param.Floor].AddSeconds(10) > now) {
+        return;
+      }
+
+      lifter.ExportedAt[param.Floor] = now;
+
+      var barcode = lifter.GetPalletCode(param.Floor);
+
+      if (_tasks.Get(barcode).AddSeconds(300) > now) {
+        return;
+      }
 
       try {
         var taskId = _wms.GetPalletInfo(barcode).TaskId;
         _wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
         _cap.Publish(LifterTaskPickingEvent.Message, new LifterTaskPickingEvent(param.LifterId, param.Floor, barcode, taskId));
+        _tasks.Set(barcode);
       } catch {
         _cap.Publish(LifterTaskPickingFailedEvent.Message, new LifterTaskPickingFailedEvent(param.LifterId, param.Floor, barcode));
       }
