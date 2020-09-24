@@ -1,5 +1,6 @@
 using DotNetCore.CAP;
 using Renet;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Tiantong.Iot.Utils;
@@ -62,6 +63,13 @@ namespace Namei.Wcs.Api
 
   public abstract class LifterService
   {
+    public Dictionary<string, DateTime> ExportedAt = new Dictionary<string, DateTime>() {
+      { "1", DateTime.MinValue },
+      { "2", DateTime.MinValue },
+      { "3", DateTime.MinValue },
+      { "4", DateTime.MinValue },
+    };
+
     // 放货完成
     public abstract void SetImported(string floor, bool value);
 
@@ -85,6 +93,9 @@ namespace Namei.Wcs.Api
 
   public class FirstLifterService: LifterService
   {
+    public static bool GetIsSpare(string data)
+      => !MelsecStateHelper.GetBit(data, 1) && !MelsecStateHelper.GetBit(data, 3);
+
     public static bool GetIsTaskScanned(string data)
       => MelsecStateHelper.GetBit(data, 4);
 
@@ -102,6 +113,9 @@ namespace Namei.Wcs.Api
 
     public static bool IsImportAllowed(string data, string oldData)
       => GetIsImportAllowed(data) && !GetIsImportAllowed(oldData);
+
+    public static bool IsSpare(string data, string oldData)
+      => GetIsSpare(data) && !GetIsSpare(oldData);
 
     private PlcStateService _plc;
 
@@ -124,7 +138,11 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{from}F - 目的楼层", to);
 
     public override bool IsImportAllowed(string floor)
-      => GetIsImportAllowed(_plc.Get($"{floor}F - A 段 - 输送机"));
+    {
+      var state = _plc.Get($"{floor}F - A 段 - 输送机");
+
+      return GetIsImportAllowed(state);
+    }
 
     public override bool IsRequestingPickup(string floor)
       => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
@@ -139,7 +157,7 @@ namespace Namei.Wcs.Api
         Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
           PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
           PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],
-          IsImportAllowed = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 6),
+          IsImportAllowed = GetIsImportAllowed(states[$"{floor}F - A 段 - 输送机"]),
           IsExported = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 7),
         }).ToList()
       };
