@@ -17,8 +17,8 @@ namespace Namei.Wcs.Api
       _domain = domain;
     }
 
-    [CapSubscribe(LifterTaskImportedEvent.Message)]
-    public void LifterTaskImported(LifterTaskImportedEvent param)
+    [CapSubscribe(LifterTaskQueriedEvent.Message)]
+    public void LifterTaskQueried(LifterTaskQueriedEvent param)
     {
       if (param.TaskId == null) {
         return;
@@ -28,6 +28,8 @@ namespace Namei.Wcs.Api
         lifter_id = param.LifterId,
         from = param.Floor,
         task_id = param.TaskId,
+        to = param.Destination,
+        pallet_code = param.Barcode,
       });
 
       _domain.SaveChanges();
@@ -48,25 +50,6 @@ namespace Namei.Wcs.Api
 
       task.status = LifterTaskStatusType.Exported;
       task.exported_at = DateTime.Now;
-
-      _domain.SaveChanges();
-    }
-
-    [CapSubscribe(LifterTaskTakenEvent.Message)]
-    public void LifterTaskTaken(LifterTaskTakenEvent param)
-    {
-      if (param.TaskId == null) {
-        return;
-      }
-
-      var task = _domain.LifterTasks.Where(task => task.task_id == param.TaskId).First();
-
-      if (task == null) {
-        return;
-      }
-
-      task.status = LifterTaskStatusType.Taken;
-      task.taken_at = DateTime.Now;
 
       _domain.SaveChanges();
     }

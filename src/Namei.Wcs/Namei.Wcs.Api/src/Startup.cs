@@ -24,6 +24,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<LifterServiceManager>();
       services.AddSingleton<WmsService>();
       services.AddSingleton<RcsService>();
+      services.AddSingleton<LifterTaskService>();
       services.AddDbContext<DomainContext>();
       services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
