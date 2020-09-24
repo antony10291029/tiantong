@@ -12,9 +12,12 @@ namespace Namei.Wcs.Api
 
     public string Destination { get; set; }
 
-    public LifterTaskQueriedEvent(string lifterId, string floor, string barcode, string destination)
+    public string TaskId { get; set; }
+
+    public LifterTaskQueriedEvent(string lifterId, string floor, string barcode, string destination, string taskid)
     {
       Floor = floor;
+      TaskId = taskid;
       Barcode = barcode;
       LifterId = lifterId;
       Destination = destination;
