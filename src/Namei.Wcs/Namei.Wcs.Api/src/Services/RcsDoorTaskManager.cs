@@ -15,7 +15,7 @@ namespace Namei.Wcs.Api
 
     public IDoorService Door { get; }
 
-    public Dictionary<string, DateTime> EnteringTasks = new Dictionary<string, DateTime>();
+    public SortedSet<DateTime> EnteringTasks = new SortedSet<DateTime>();
 
     public List<string> RequestingTasks = new List<string>();
 
@@ -55,8 +55,8 @@ namespace Namei.Wcs.Api
       RequestingTasks.Clear();
 
       foreach (var taskId in taskIds) {
+        EnteringTasks.Add(DateTime.Now);
         _rcs.NotifyDoorOpened(Door.Id, taskId);
-        EnteringTasks.Add(taskId, DateTime.Now);
       }
     }
 
@@ -64,8 +64,12 @@ namespace Namei.Wcs.Api
     {
       _rcs.NotifyDoorClosing(Door.Id, taskId);
 
-      if (EnteringTasks.ContainsKey(taskId)) {
-        EnteringTasks.Remove(taskId);
+      try {
+        EnteringTasks.Remove(EnteringTasks.First());
+      } catch { }
+
+      if (EnteringTasks.Count == 0) {
+        Door.Close();
       }
     }
 
@@ -101,26 +105,30 @@ namespace Namei.Wcs.Api
 
     protected override Task HandleJob(CancellationToken token)
     {
-      foreach (var task in _manager.Tasks.Values) {
-        // 只给 10s 用于 agc 通过自动门
-        if (task.Door.Type == DoorType.Automatic) {
-          foreach (var enteringTask in task.EnteringTasks) {
-            if (enteringTask.Value.AddSeconds(10) < DateTime.Now) {
-              task.EnteringTasks.Remove(enteringTask.Key);
-              if (task.EnteringTasks.Count == 0) {
-                task.Door.Clear();
-              }
+      foreach (var door in _manager.Tasks.Values) {
+        // 只给 20s 用于 agc 通过自动门
+        var tasks = door.EnteringTasks.ToArray();
+
+        foreach (var task in tasks) {
+          if (door.RequestingTasks.Count > 0) {
+            door.Handle();
+          }
+
+          if (task.AddSeconds(20) < DateTime.Now) {
+            door.EnteringTasks.Remove(task);
+            if (door.EnteringTasks.Count == 0) {
+              door.Door.Clear();
             }
           }
         }
 
         // 开启 10s 后将强行关闭防撞门
         if (
-          task.Door.IsOpened &&
-          task.Door.Type == DoorType.Crash &&
-          task.Door.OpenedAt.AddSeconds(10) < DateTime.Now
+          door.Door.IsOpened &&
+          door.Door.Type == DoorType.Crash &&
+          door.Door.OpenedAt.AddSeconds(10) < DateTime.Now
         ) {
-          task.Door.Close();
+          door.Door.Close();
         }
       }
 
