@@ -11,12 +11,16 @@ namespace Namei.Wcs.Api
 
     private ICapPublisher _cap;
 
+    private WmsService _wms;
+
     public LifterCommandController(
       ICapPublisher cap,
-      LifterServiceManager lifters
+      LifterServiceManager lifters,
+      WmsService wms
     ) {
       _cap = cap;
       _lifters = lifters;
+      _wms = wms;
     }
 
     public class ConveyorChangedParams
@@ -37,7 +41,7 @@ namespace Namei.Wcs.Api
       var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
       var isImportedAllowed = FirstLifterService.IsImportAllowed(param.value, param.old_value);
       var isRequestingPickup = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
-      var isSpare = !MelsecStateHelper.GetBit(param.value, 3) && MelsecStateHelper.GetBit(param.old_value, 3);
+      var isSpare = FirstLifterService.IsSpare(param.value, param.old_value);
 
       if (!Config.EnableLifterCommands) {
         message = "货梯指令未开启";
