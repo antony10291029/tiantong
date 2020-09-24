@@ -113,7 +113,7 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{Id} # 指令", "1");
 
     public void Close()
-      => _plc.Set($"{Id} # 指令", "2");
+      => _plc.Set($"{Id} # 指令", "0");
 
     public void OnOpened()
     {
