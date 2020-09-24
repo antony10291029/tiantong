@@ -1,5 +1,12 @@
 <template>
   <div class="box">
+    <SearchField
+      :isPending="isPending"
+      @search="handleSearch"
+    />
+
+    <slot></slot>
+
     <table class="table is-fullwidth is-bordered">
       <thead>
         <th>运行记录</th>
@@ -8,7 +15,7 @@
       <tbody>
         <tr v-for="log in logs.data" :key="log.id">
           <td>{{log.message}}</td>
-          <td>{{log.created_at.split('T')[1]}}</td>
+          <td>{{log.created_at.split('T').join(' ')}}</td>
         </tr>
       </tbody>
     </table>
@@ -31,7 +38,11 @@ import domain from '@/providers/contexts/domain'
 })
 export default class extends Vue {
   @Prop({ required: true })
-  search!:string
+  search!: string[]
+
+  query = ''
+
+  isPending = false
 
   logs = {
     data: [],
@@ -46,9 +57,20 @@ export default class extends Vue {
     const response = await domain.post('/logs/search', {
       page,
       search: this.search,
+      query: [this.query]
     })
 
     this.logs = response.data
+  }
+
+  async handleSearch (query: string) {
+    try {
+      this.isPending = true
+      this.query = query
+      await this.getDataSource()
+    } finally {
+      this.isPending = false
+    }
   }
 
   interval: any

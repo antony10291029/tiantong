@@ -1,6 +1,7 @@
 <template>
   <div style="padding: 1.25rem; overflow: auto">
-    <LogList search="door" />
+    <LogList :search="search">
+    </LogList>
   </div>
 </template>
 
@@ -17,6 +18,6 @@ import LogList from '@/components/LogList.vue'
   }
 })
 export default class extends Vue {
-
+  search: string[] = ['door']
 }
 </script>
