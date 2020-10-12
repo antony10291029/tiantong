@@ -40,12 +40,12 @@
       <div class="is-flex is-centered">
         <span
           v-if="hasPalletCodeA"
-          class="tag is-light is-info"
+          class="tag is-info"
         >
           {{palletCodeA}}
         </span>
         <span v-else
-          class="tag is-light"
+          class="tag"
         >
           无托盘
         </span>
@@ -75,7 +75,7 @@
 
         <div class="is-flex is-centered">
           <a
-            class="tag is-light"
+            class="tag"
             v-class:is-success="isExported"
             style="margin-right: 0.125rem"
             @click="handleTaken"
@@ -83,7 +83,7 @@
             取货
           </a>
           <a
-            class="tag is-light"
+            class="tag"
             v-class:is-success="isImportAllowed"
             @click="handleImported"
           >
@@ -101,7 +101,7 @@
           <a
             v-else
             @click="handleOpenDoor"
-            class="tag is-light is-info"
+            class="tag is-info"
           >
             AGC 请求通过
           </a>
