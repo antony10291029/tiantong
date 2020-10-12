@@ -10,11 +10,14 @@ namespace Namei.Wcs.Api
 
     public string Barcode { get; set; }
 
-    public LifterTaskPickingFailedEvent(string lifterId, string floor, string barcode)
+    public string ErrorMessage { get; set; }
+
+    public LifterTaskPickingFailedEvent(string lifterId, string floor, string barcode, string message)
     {
       Floor = floor;
       Barcode = barcode;
       LifterId = lifterId;
+      ErrorMessage = message;
     }
   }
 }

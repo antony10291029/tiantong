@@ -52,7 +52,7 @@ namespace Namei.Wcs.Api
 
     [CapSubscribe(LifterTaskPickingFailedEvent.Message, Group = Group)]
     public void HandleTaskPickingFailed(LifterTaskPickingFailedEvent param)
-      => Info(param.LifterId, param.Floor, "picking.failed", $"通知 WMS 取货失败，托盘码: {param.Barcode}");
+      => Info(param.LifterId, param.Floor, "picking.failed", $"通知 WMS 取货失败，托盘码: {param.Barcode}, 错误信息: {param.ErrorMessage}");
 
     [CapSubscribe(LifterTaskExceptionEvent.Message, Group = Group)]
     public void HandleLifterTaskException(LifterTaskExceptionEvent param)
