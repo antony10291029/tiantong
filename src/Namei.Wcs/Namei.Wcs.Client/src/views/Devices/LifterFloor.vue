@@ -93,7 +93,7 @@
 
         <div class="is-flex is-centered is-vcentered" style="height: 30px">
           <span
-            v-if="isAgcRequesting"
+            v-if="!isAgcRequesting"
             class="tag is-light"
           >
             AGC 请求通过
@@ -139,7 +139,7 @@ export default Vue.extend({
 
   computed: { 
     isAgcRequesting () {
-      return !this.door.taskId
+      return !!this.door.requestingTasks.length
     },
 
     isImportAllowed () {
@@ -172,8 +172,9 @@ export default Vue.extend({
       this.$confirm({
         title: '确认',
         content: '确认后将直接允许 AGC 通过',
-        handler: () => domain.post('/doors/open', {
-          doorId: this.door.id
+        handler: () => domain.post('/doors/control', {
+          command: 'open',
+          door_id: this.door.id,
         }),
       })
     },
