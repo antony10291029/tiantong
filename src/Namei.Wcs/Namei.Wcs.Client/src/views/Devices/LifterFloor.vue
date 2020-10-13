@@ -12,12 +12,12 @@
       <div class="is-flex is-centered">
         <span
           v-if="hasPalletCodeB"
-          class="tag is-light is-info"
+          class="tag is-info"
         >
           {{palletCodeB}}
         </span>
         <span v-else
-          class="tag is-light"
+          class="tag"
         >
           无托盘
         </span>
