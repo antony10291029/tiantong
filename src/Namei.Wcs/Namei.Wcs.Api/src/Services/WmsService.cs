@@ -50,8 +50,8 @@ namespace Namei.Wcs.Api
 
       try {
         var dom = JsonDocument.Parse(result);
-        dom.RootElement.GetProperty("TO_LF").GetString();
-        dom.RootElement.GetProperty("taskid").GetString();
+        destination = dom.RootElement.GetProperty("TO_LF").GetString();
+        taskid = dom.RootElement.GetProperty("taskid").GetString();
       } catch {
         throw new Exception("任务查询失败：" + result);
       }
