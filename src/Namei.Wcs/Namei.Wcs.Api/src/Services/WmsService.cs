@@ -45,12 +45,19 @@ namespace Namei.Wcs.Api
       var content = new StringContent(json, Encoding.UTF8);
       var response = _client.PostAsync("/namei_wms/wcsCallback/request", content).GetAwaiter().GetResult();
       var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-      var dom = JsonDocument.Parse(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-      var taskid = dom.RootElement.GetProperty("taskid").GetString();
-      var destination =  dom.RootElement.GetProperty("TO_LF").GetString();
+      var taskid = "";
+      var destination =  "";
+
+      try {
+        var dom = JsonDocument.Parse(result);
+        dom.RootElement.GetProperty("TO_LF").GetString();
+        dom.RootElement.GetProperty("taskid").GetString();
+      } catch {
+        throw new Exception("任务查询失败：" + result);
+      }
 
       if (taskid == "") {
-        throw new Exception("任务查询失败");
+        throw new Exception("任务查询失败：" + result);
       }
 
       return new PalletInfo() {
