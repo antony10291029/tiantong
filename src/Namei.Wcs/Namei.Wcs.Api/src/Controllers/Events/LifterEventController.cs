@@ -90,7 +90,7 @@ namespace Namei.Wcs.Api
 
       var barcode = lifter.GetPalletCode(param.Floor);
 
-      if (barcode.Length != 6 || int.TryParse(barcode, out _)) {
+      if (barcode.Length != 6 || !int.TryParse(barcode, out _)) {
         return;
       }
 
