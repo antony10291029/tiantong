@@ -91,6 +91,7 @@ namespace Namei.Wcs.Api
       var barcode = lifter.GetPalletCode(param.Floor);
 
       if (barcode.Length != 6 || !int.TryParse(barcode, out _)) {
+        _cap.Publish(LifterTaskPickingFailedEvent.Message, new LifterTaskPickingFailedEvent(param.LifterId, param.Floor, barcode, "托盘号异常"));
         return;
       }
 
