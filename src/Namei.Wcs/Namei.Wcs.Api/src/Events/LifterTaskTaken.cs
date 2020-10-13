@@ -10,11 +10,14 @@ namespace Namei.Wcs.Api
 
     public string TaskId { get; set; }
 
-    public LifterTaskTakenEvent(string lifterId, string floor, string taskId = null)
+    public bool IsFromWms { get; set; }
+
+    public LifterTaskTakenEvent(string lifterId, string floor, string taskId = null, bool isFromWms = false)
     {
       LifterId = lifterId;
       Floor = floor;
       TaskId = taskId;
+      IsFromWms = isFromWms;
     }
   }
 }
