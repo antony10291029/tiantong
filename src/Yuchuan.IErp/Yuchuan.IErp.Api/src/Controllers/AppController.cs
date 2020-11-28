@@ -11,6 +11,17 @@ namespace Yuchuan.IErp.Api
 
     }
 
+    public class IndexParams
+    {
+      public string echostr { get; set; }
+    }
+
+    [HttpGet("/weixin/auth")]
+    public object Index([FromQuery] IndexParams param)
+    {
+      return param.echostr;
+    }
+
     [HttpPost]
     [Route("/hc")]
     public object HealthCheck()

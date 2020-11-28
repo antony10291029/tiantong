@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System;
 using AspNetCore.Proxy;
 using AspNetCore.Proxy.Options;
@@ -66,6 +67,8 @@ namespace Yuchuan.IErp.Proxy.Chanjet
             return "https://passport.chanjet.com";
           } else if (context.Request.Path.StartsWithSegments("/internal_api")) {
             return "https://cia.chanapp.chanjet.com";
+          } else if (context.Request.Path.StartsWithSegments("/mp")) {
+            return "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0NzIxMTgyMA==&action=getalbum&album_id=1346581013702705154&scene=173&from_msgid=2247484657&from_itemidx=1&count=3#wechat_redirect";
           } else {
             return "https://cloud.chanjet.com";
           }
