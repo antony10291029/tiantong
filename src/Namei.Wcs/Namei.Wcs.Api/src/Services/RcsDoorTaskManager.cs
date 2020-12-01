@@ -38,7 +38,7 @@ namespace Namei.Wcs.Api
         return;
       }
 
-      if (Door.IsOpened) {
+      if (Door.IsOpened || Door.IsForceOpened) {
         Enter();
       }
 

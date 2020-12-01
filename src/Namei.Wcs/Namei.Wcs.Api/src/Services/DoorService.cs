@@ -67,6 +67,8 @@ namespace Namei.Wcs.Api
 
     bool IsOpened { get; }
 
+    bool IsForceOpened { get; set; }
+
     bool IsAvaliable { get; }
 
     DateTime OpenedAt { get; }
@@ -91,6 +93,8 @@ namespace Namei.Wcs.Api
     public string Type { get => DoorType.Automatic; }
 
     public string Id { get; }
+
+    public bool IsForceOpened { get; set; } = false;
 
     public bool IsOpened
     {
@@ -146,6 +150,8 @@ namespace Namei.Wcs.Api
     public string Floor;
 
     public string LifterId;
+
+    public bool IsForceOpened { get; set; } = false;
 
     public bool IsOpened { get; private set; } = false;
 

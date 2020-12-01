@@ -21,10 +21,6 @@ namespace Namei.Wcs.Api
     [CapSubscribe(DoorTaskRequestOpenEvent.Message, Group = Group)]
     public void HandleRequestOpen(DoorTaskRequestOpenEvent param)
     {
-      if (param.DoorId == "101") {
-        _cap.Publish(DoorOpenedEvent.Message, new DoorOpenedEvent(param.DoorId));
-      }
-
       _tasks.Tasks[param.DoorId].Request(param.TaskId);
     }
 
