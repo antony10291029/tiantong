@@ -11,6 +11,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<Log> Logs { get; set; }
 
+    public DbSet<Device> Devices { get; set; }
+
     public DbSet<DeviceState> DeviceStates { get; set; }
 
     public DbSet<LifterTask> LifterTasks { get; set; }
