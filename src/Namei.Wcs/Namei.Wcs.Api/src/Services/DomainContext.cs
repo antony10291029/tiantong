@@ -13,6 +13,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<Device> Devices { get; set; }
 
+    public DbSet<DeviceError> DeviceErrors { get; set; }
+
     public DbSet<DeviceState> DeviceStates { get; set; }
 
     public DbSet<LifterTask> LifterTasks { get; set; }
