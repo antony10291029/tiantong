@@ -12,6 +12,8 @@ import DoorCommands from './DoorCommands/index.vue'
 import DoorCommandsDashboard from './DoorCommands.Dashboard/index.vue'
 import System from './System/index.vue'
 import Devices from './Devices/index.vue'
+import DeviceErrors from './Devices.Errors/index.vue'
+import DeviceErrorsCreate from './Devices.Errors.Create/index.vue'
 import LiftersDataScreen from './Lifters.DataScreen/index.vue'
 
 const rootRoutes: RouteConfig[] = [
@@ -83,6 +85,18 @@ const rootRoutes: RouteConfig[] = [
     path: '/devices',
     name: 'Devices',
     component: Devices,
+  },
+  {
+    path: '/devices/errors',
+    name: 'DeviceErrors',
+    component: DeviceErrors,
+    children: [
+      {
+        path: 'create',
+        name: 'DeviceErrorsCreate',
+        component: DeviceErrorsCreate
+      }
+    ]
   },
   {
     path: '/data-screen',

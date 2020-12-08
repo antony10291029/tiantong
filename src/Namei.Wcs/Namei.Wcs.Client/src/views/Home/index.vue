@@ -19,7 +19,7 @@
       >
         <ul class="menu-list">
           <li>
-            <router-link to="/devices">
+            <router-link to="/devices" active-class="false" exact-active-class="is-active">
               <span class="icon">
                 <i class="iconfont icon-dashboard"></i>
               </span>
@@ -48,6 +48,14 @@
                 <i class="iconfont icon-door"></i>
               </span>
               <span>自动门日志</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/devices/errors">
+              <span class="icon">
+                <i class="iconfont icon-warn"></i>
+              </span>
+              <span>故障信息</span>
             </router-link>
           </li>
           <li>
