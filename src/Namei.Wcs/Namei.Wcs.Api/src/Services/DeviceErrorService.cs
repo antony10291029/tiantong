@@ -13,7 +13,7 @@ namespace Namei.Wcs.Api
       _domain = domain;
     }
 
-    public void Log(string deviceKey, int code, string message = "")
+    public void Log(string deviceKey, string code, string message = "")
     {
       var device = _domain.Devices.FirstOrDefault(d => d.key == deviceKey);
 
@@ -25,7 +25,13 @@ namespace Namei.Wcs.Api
         .Where(de => de.device_id == device.id && de.recovered_at == DateTime.MinValue)
         .FirstOrDefault();
 
-      if (code != 0 && error == null) {
+      if (error != null && error.error != code) {
+        error.recovered_at = DateTime.Now;
+        _domain.SaveChanges();
+        error = null;
+      }
+
+      if (error == null && code != "0") {
         if (message == "") {
           message = "发生异常，请查看相关硬件";
         }
@@ -37,8 +43,6 @@ namespace Namei.Wcs.Api
           error_at = DateTime.Now,
           recovered_at = DateTime.MinValue,
         });
-      } else if (code == 0 && error != null) {
-        error.recovered_at = DateTime.Now;
       }
 
       _domain.SaveChanges();

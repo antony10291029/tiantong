@@ -76,7 +76,7 @@ namespace Namei.Wcs.Api
     {
       public string device_key { get; set; }
 
-      public int error { get; set; }
+      public string error { get; set; }
     }
 
     [HttpPost("/devices/errors/log")]
