@@ -17,6 +17,7 @@
 
       <Doors :doors="doors" />
     </template>
+    <router-view />
   </AsyncLoader>
 </template>
 

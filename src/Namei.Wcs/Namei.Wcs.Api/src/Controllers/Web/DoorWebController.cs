@@ -54,10 +54,26 @@ namespace Namei.Wcs.Api
           type = door.Type,
           IsError = door.IsError,
           IsOpened = door.IsOpened,
+          IsForceOpened = door.IsForceOpened,
           RequestingTasks = task.RequestingTasks,
           EnteringTasksCount = task.EnteringTasks.Count,
         };
       }).ToDictionary(door => door.id, door => door);
+    }
+
+    public class SetForceOpenedParams
+    {
+      public string doorId { get; set; }
+
+      public bool value { get; set; }
+    }
+
+    [HttpPost("/doors/force-opened/set")]
+    public object SetForceOpened([FromBody] SetForceOpenedParams param)
+    {
+      _doors.Get(param.doorId).IsForceOpened = param.value;
+
+      return new { message = "设置完毕" };
     }
   }
 }
