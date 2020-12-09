@@ -11,10 +11,16 @@ namespace Namei.Wcs.Api
 
     private LifterServiceManager _lifters;
 
-    public LifterWebController(ICapPublisher cap, LifterServiceManager lifters)
-    {
+    private DeviceErrorService _deviceErrorService;
+
+    public LifterWebController(
+      ICapPublisher cap,
+      LifterServiceManager lifters,
+      DeviceErrorService deviceErrorService
+    ) {
       _cap = cap;
       _lifters = lifters;
+      _deviceErrorService = deviceErrorService;
     }
 
     [HttpPost]
@@ -45,6 +51,25 @@ namespace Namei.Wcs.Api
       _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.LifterId,  param.Floor));
 
       return new { message = "取货完成信号已发送" };
+    }
+
+    public class ErrorParams
+    {
+      public string deviceKey { get; set; }
+
+      public int error { get; set; }
+    }
+
+    [HttpPost("/lifters/error")]
+    public object Error([FromBody] ErrorParams param)
+    {
+      if (param.error == 1) {
+        param.error = 0;
+      }
+
+      _deviceErrorService.Log(param.deviceKey, param.error);
+
+      return new { message = "异常已记录" };
     }
   }
 }

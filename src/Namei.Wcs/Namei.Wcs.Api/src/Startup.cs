@@ -26,6 +26,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<RcsService>();
       services.AddSingleton<LifterTaskService>();
       services.AddDbContext<DomainContext>();
+      services.AddScoped<DeviceErrorService>();
       services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
       services.AddCap(cap => {

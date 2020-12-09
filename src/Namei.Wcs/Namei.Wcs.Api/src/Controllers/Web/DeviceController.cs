@@ -11,9 +11,14 @@ namespace Namei.Wcs.Api
   {
     private DomainContext _domain;
 
-    public DeviceController(DomainContext domain)
-    {
+    private DeviceErrorService _deviceErrorService;
+
+    public DeviceController(
+      DomainContext domain,
+      DeviceErrorService deviceErrorService
+    ) {
       _domain = domain;
+      _deviceErrorService = deviceErrorService;
     }
 
     [HttpPost("/devices/add")]
@@ -77,28 +82,7 @@ namespace Namei.Wcs.Api
     [HttpPost("/devices/errors/log")]
     public object LogError([FromBody] ErrorLogParams param)
     {
-      var device = _domain.Devices.FirstOrDefault(d => d.key == param.device_key);
-
-      if (device == null) {
-        throw KnownException.Error("设备不存在");
-      }
-
-      var error = _domain.DeviceErrors
-        .Where(de => de.device_id == device.id && de.recovered_at == DateTime.MinValue)
-        .FirstOrDefault();
-
-      if (param.error != 0 && error == null) {
-        _domain.Add(new DeviceError {
-          error = param.error.ToString(),
-          message = "",
-          error_at = DateTime.Now,
-          recovered_at = DateTime.MinValue,
-        });
-      } else if (param.error == 0 && error != null) {
-        error.recovered_at = DateTime.Now;
-      }
-
-      _domain.SaveChanges();
+      _deviceErrorService.Log(param.device_key, param.error);
 
       return new { message = "异常记录完毕" };
     }
