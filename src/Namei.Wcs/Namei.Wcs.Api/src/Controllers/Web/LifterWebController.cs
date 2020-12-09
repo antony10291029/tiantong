@@ -55,19 +55,21 @@ namespace Namei.Wcs.Api
 
     public class ErrorParams
     {
-      public string deviceKey { get; set; }
+      public string device_key { get; set; }
 
-      public int error { get; set; }
+      public string error { get; set; }
     }
 
-    [HttpPost("/lifters/error")]
+    [HttpPost("/standard-lifters/error")]
     public object Error([FromBody] ErrorParams param)
     {
-      if (param.error == 1) {
-        param.error = 0;
+      if (param.error == "1") {
+        param.error = "0";
+      } else if (param.error == "0") {
+        param.error = "1";
       }
 
-      _deviceErrorService.Log(param.deviceKey, param.error);
+      _deviceErrorService.Log(param.device_key, param.error);
 
       return new { message = "异常已记录" };
     }

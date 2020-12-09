@@ -52,6 +52,7 @@ namespace Namei.Wcs.Api
         return new {
           id = door.Id,
           type = door.Type,
+          IsError = door.IsError,
           IsOpened = door.IsOpened,
           RequestingTasks = task.RequestingTasks,
           EnteringTasksCount = task.EnteringTasks.Count,

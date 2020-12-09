@@ -65,6 +65,8 @@ namespace Namei.Wcs.Api
 
     string Id { get; }
 
+    bool IsError { get; }
+
     bool IsOpened { get; }
 
     bool IsForceOpened { get; set; }
@@ -95,6 +97,11 @@ namespace Namei.Wcs.Api
     public string Id { get; }
 
     public bool IsForceOpened { get; set; } = false;
+
+    public bool IsError
+    {
+      get => _plc.Get($"{Id} # 异常") != "0";
+    }
 
     public bool IsOpened
     {
@@ -150,6 +157,8 @@ namespace Namei.Wcs.Api
     public string Floor;
 
     public string LifterId;
+
+    public bool IsError => false;
 
     public bool IsForceOpened { get; set; } = false;
 

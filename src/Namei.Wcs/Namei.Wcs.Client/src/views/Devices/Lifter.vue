@@ -2,10 +2,10 @@
   <section class="box">
     <div class="title is-5 is-flex is-vcentered" style="margin-bottom: 0.75rem">
       <span v-if="lifterId == '1'">
-        {{lifterId}}#改造货梯
+        {{lifterId}}# 改造货梯
       </span>
       <span v-else>
-        {{lifterId}}#提升机
+        {{lifterId}}# 提升机
       </span>
     </div>
 

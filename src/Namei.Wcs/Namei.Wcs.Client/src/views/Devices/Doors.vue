@@ -1,7 +1,7 @@
 <template>
   <section class="columns">
     <div class="column is-narrow">
-      <div class="panel" style="width: 280px">
+      <div class="panel" style="width: 320px">
         <p class="panel-heading">
           1F 自动门
         </p>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="column is-narrow">
-      <div class="panel" style="width: 280px">
+      <div class="panel" style="width: 320px">
         <p class="panel-heading">
           2F 自动门
         </p>

@@ -8,6 +8,14 @@
       <div class="is-flex-auto"></div>
 
       <span
+        v-if="door.isError"
+        class="tag is-danger is-light"
+        style="margin-right: 0.5rem"
+      >
+        <span>异常</span>
+      </span>
+
+      <span
         class="tag is-light"
         style="margin-right: 0.5rem"
         v-class:is-info="isRequesting"
