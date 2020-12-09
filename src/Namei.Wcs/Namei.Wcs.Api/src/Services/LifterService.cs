@@ -43,6 +43,10 @@ namespace Namei.Wcs.Api
 
     public bool IsAlerting { get; set; }
 
+    public string PalletCodeA { get; set; }
+
+    public string PalletCodeB { get; set; }
+
     public List<LifterFloorState> Floors { get; set; }
   }
 
@@ -154,6 +158,8 @@ namespace Namei.Wcs.Api
       return new LifterState() {
         IsWorking = states["升降平台状态"] != "0",
         IsAlerting = states["故障代码"] != "0",
+        PalletCodeA = states["货梯 - A 段 - 托盘码"],
+        PalletCodeB = states["货梯 - B 段 - 托盘码"],
         Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
           PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
           PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],
@@ -198,6 +204,8 @@ namespace Namei.Wcs.Api
       return new LifterState() {
         IsWorking = states["升降平台状态"] != "0",
         IsAlerting = states["故障代码"] != "1",
+        PalletCodeA = states["平台内托盘码"],
+        PalletCodeB = "0",
         Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
           PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
           PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],

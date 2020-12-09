@@ -1,6 +1,5 @@
 import { RouteConfig } from 'vue-router/types/router'
 import NotFound from './NotFound/index.vue'
-import Dashboard from './Dashboard/index.vue'
 import Home from './Home/index.vue'
 import Lifters from './Lifters/index.vue'
 import LifterStates from './Lifters.States/index.vue'
@@ -17,11 +16,6 @@ import DeviceErrorsCreate from './Devices.Errors.Create/index.vue'
 import LiftersDataScreen from './Lifters.DataScreen/index.vue'
 
 const rootRoutes: RouteConfig[] = [
-  {
-    path: 'dashboard',
-    name: 'Dashboard',
-    component: Dashboard
-  },
   {
     path: 'lifters',
     name: 'Lifters',

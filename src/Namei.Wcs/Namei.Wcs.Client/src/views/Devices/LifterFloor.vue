@@ -3,63 +3,15 @@
     class="is-flex"
     style="height: 110px"
   >
-    <div
-      class="is-flex is-flex-column"
-      style="width: 100px"
-    >
-      <div class="is-flex-auto"></div>
+    <LifterPlatform
+      :code="floorState.palletCodeB"
+      text="B 段"
+    />
 
-      <div class="is-flex is-centered">
-        <span
-          v-if="hasPalletCodeB"
-          class="tag is-info"
-        >
-          {{palletCodeB}}
-        </span>
-        <span v-else
-          class="tag"
-        >
-          无托盘
-        </span>
-      </div>
-
-      <div
-        class="has-background-primary is-flex is-vcentered is-centered has-text-white"
-        style="height: 30px; width: 100px"
-      >
-        B 段
-      </div>
-    </div>
-
-    <div
-      class="is-flex is-flex-column"
-      style="width: 100px"
-    >
-      <div class="is-flex-auto"></div>
-
-      <div class="is-flex is-centered">
-        <span
-          v-if="hasPalletCodeA"
-          class="tag is-info"
-        >
-          {{palletCodeA}}
-        </span>
-        <span v-else
-          class="tag"
-        >
-          无托盘
-        </span>
-      </div>
-
-      <div
-        class="has-background-primary is-flex is-vcentered is-centered is-radius has-text-white"
-        style="height: 30px; width: 100px;"
-        v-style:border-top-left-radius="0"
-        v-style:border-bottom-left-radius="0"
-      >
-        A 段
-      </div>
-    </div>
+    <LifterPlatform
+      :code="floorState.palletCodeA"
+      text="A 段"
+    />
 
     <div
       class="is-flex is-flex-column"
@@ -114,9 +66,14 @@
 <script>
 import Vue from 'vue'
 import domain from '@/providers/contexts/domain'
+import LifterPlatform from './LifterPlatform.vue'
 
 export default Vue.extend({
   name: 'LifterFloor',
+
+  components: {
+    LifterPlatform
+  },
 
   props: {
     lifterId: {
@@ -148,22 +105,6 @@ export default Vue.extend({
 
     isExported () {
       return this.floorState.isExported
-    },
-
-    palletCodeA () {
-      return this.floorState.palletCodeA
-    },
-
-    palletCodeB () {
-      return this.floorState.palletCodeB
-    },
-
-    hasPalletCodeA () {
-      return parseInt(this.palletCodeA) && this.floorState.palletCodeA.length == 6
-    },
-
-    hasPalletCodeB () {
-      return parseInt(this.palletCodeB) && this.floorState.palletCodeB.length == 6
     }
   },
 
