@@ -30,10 +30,20 @@ namespace Namei.Wcs.Api
       _doors.Add(CrashDoor.Floor4_3, new CrashDoorService(CrashDoor.Floor4_3, "4", "3", cap, lifters));
 
       var plc = provider.Resolve();
-      plc.Configure("http://localhost:5101", "自动门 - 1F");
+      plc.Configure("http://localhost:5101", "自动门 - 1F - 1");
       _doors.Add(AutomatedDoor.Floor1_1, new AutomatedDoorService(plc, "101"));
       _doors.Add(AutomatedDoor.Floor1_2, new AutomatedDoorService(plc, "102"));
       _doors.Add(AutomatedDoor.Floor1_3, new AutomatedDoorService(plc, "103"));
+
+      plc = provider.Resolve();
+      plc.Configure("http://localhost:5101", "自动门 - 1F - 2");
+      _doors.Add(AutomatedDoor.Floor1_4, new AutomatedDoorService(plc, "104"));
+      _doors.Add(AutomatedDoor.Floor1_5, new AutomatedDoorService(plc, "105"));
+
+      plc = provider.Resolve();
+      plc.Configure("http://localhost:5101", "自动门 - 1F - 3");
+      _doors.Add(AutomatedDoor.Floor1_6, new AutomatedDoorService(plc, "106"));
+      _doors.Add(AutomatedDoor.Floor1_7, new AutomatedDoorService(plc, "107"));
 
       plc = provider.Resolve();
       plc.Configure("http://localhost:5101", "自动门 - 2F");
@@ -211,6 +221,62 @@ namespace Namei.Wcs.Api
     public void OnClosed()
     {
       IsOpened = false;
+      ClosedAt = DateTime.Now;
+    }
+  }
+
+  public class TableDoorService: IDoorService
+  {
+    private PlcStateService _plc;
+
+    public string Type { get => DoorType.Automatic; }
+
+    public string Id { get; }
+
+    public bool IsForceOpened { get; set; } = false;
+
+    public bool IsError
+    {
+      get => _plc.Get($"{Id} # 异常") != "0";
+    }
+
+    public bool IsOpened
+    {
+      get => _plc.Get($"{Id} # 状态") == "1";
+    }
+
+    public bool IsAvaliable { get => true; }
+
+    public DateTime OpenedAt { get; private set; } = DateTime.MinValue;
+
+    public DateTime ClosedAt { get; private set; } = DateTime.MinValue;
+
+    public TableDoorService(PlcStateService plc, string id)
+    {
+      Id = id;
+      _plc = plc;
+    }
+
+    public void Open()
+      => _plc.Set($"{Id} # 指令", "1");
+
+    public void Close()
+      => _plc.Set($"{Id} # 指令", "0");
+
+    public void OnOpened()
+    {
+      // 保持开门信号
+      OpenedAt = DateTime.Now;
+    }
+
+    public void Clear()
+    {
+      _plc.Set($"{Id} # 指令", "0");
+    }
+
+    public void OnClosed()
+    {
+      Clear();
       ClosedAt = DateTime.Now;
     }
   }

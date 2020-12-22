@@ -59,14 +59,9 @@ namespace Namei.Wcs.Api
         return;
       }
 
-      // 目标楼层与当前楼层相同，则不触发 TaskQueried 事件
-      if (param.Floor == destination) {
-        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.LifterId, param.Floor));
-      } else {
-        _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
-          param.LifterId, param.Floor, barcode, destination, taskid
-        ));
-      }
+      _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
+        param.LifterId, param.Floor, barcode, destination, taskid
+      ));
     }
 
     [CapSubscribe(LifterTaskQueriedEvent.Message, Group = Group)]

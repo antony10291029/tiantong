@@ -65,6 +65,7 @@ namespace Namei.Wcs.Api
           (10 < queryCount ? log.message.Contains(query[10]) : true)
         )
         .OrderByDescending(log => log.created_at)
+        .ThenByDescending(log => log.id)
         .Paginate(param.page, param.page_size);
     }
   }
