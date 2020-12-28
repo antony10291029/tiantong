@@ -1,5 +1,7 @@
 import axios from './_axios'
 
-const domain = axios.create(process.env.VUE_APP_API_URL)
+const url = 'http://' + window.location.hostname + ":5100"
+
+const domain = axios.create(url)
 
 export default domain;
