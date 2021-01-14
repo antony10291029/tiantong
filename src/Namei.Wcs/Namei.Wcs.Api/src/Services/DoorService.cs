@@ -12,6 +12,7 @@ namespace Namei.Wcs.Api
     private Dictionary<string, IDoorService> _doors = new Dictionary<string, IDoorService>();
 
     public DoorServiceManager(
+      Config config,
       ICapPublisher cap,
       LifterServiceManager lifters,
       PlcStateServiceProvider provider
@@ -30,23 +31,23 @@ namespace Namei.Wcs.Api
       _doors.Add(CrashDoor.Floor4_3, new CrashDoorService(CrashDoor.Floor4_3, "4", "3", cap, lifters));
 
       var plc = provider.Resolve();
-      plc.Configure("http://localhost:5101", "自动门 - 1F - 1");
+      plc.Configure(config.PLC_CONNECTION, "自动门 - 1F - 1");
       _doors.Add(AutomatedDoor.Floor1_1, new AutomatedDoorService(plc, "101"));
       _doors.Add(AutomatedDoor.Floor1_2, new AutomatedDoorService(plc, "102"));
       _doors.Add(AutomatedDoor.Floor1_3, new AutomatedDoorService(plc, "103"));
 
       plc = provider.Resolve();
-      plc.Configure("http://localhost:5101", "自动门 - 1F - 2");
+      plc.Configure(config.PLC_CONNECTION, "自动门 - 1F - 2");
       _doors.Add(AutomatedDoor.Floor1_4, new AutomatedDoorService(plc, "104"));
       _doors.Add(AutomatedDoor.Floor1_5, new AutomatedDoorService(plc, "105"));
 
       plc = provider.Resolve();
-      plc.Configure("http://localhost:5101", "自动门 - 1F - 3");
+      plc.Configure(config.PLC_CONNECTION, "自动门 - 1F - 3");
       _doors.Add(AutomatedDoor.Floor1_6, new AutomatedDoorService(plc, "106"));
       _doors.Add(AutomatedDoor.Floor1_7, new AutomatedDoorService(plc, "107"));
 
       plc = provider.Resolve();
-      plc.Configure("http://localhost:5101", "自动门 - 2F");
+      plc.Configure(config.PLC_CONNECTION, "自动门 - 2F");
       _doors.Add(AutomatedDoor.Floor2_1, new AutomatedDoorService(plc, "201"));
       _doors.Add(AutomatedDoor.Floor2_2, new AutomatedDoorService(plc, "202"));
     }

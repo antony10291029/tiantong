@@ -29,6 +29,8 @@ namespace Namei.Wcs.Api
 
     public readonly string PG_CONNECTION;
 
+    public readonly string PLC_CONNECTION;
+
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
@@ -36,6 +38,7 @@ namespace Namei.Wcs.Api
       AppVersion = config.GetValue<string>("app_version");
       AppKey = config.GetValue<string>("app_key");
       PG_CONNECTION = config.GetValue<string>("pg_connection");
+      PLC_CONNECTION = config.GetValue<string>("plc_connection");
     }
   }
 }

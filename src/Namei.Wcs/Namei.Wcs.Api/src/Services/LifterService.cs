@@ -123,10 +123,10 @@ namespace Namei.Wcs.Api
 
     private PlcStateService _plc;
 
-    public FirstLifterService(PlcStateService plc)
+    public FirstLifterService(PlcStateService plc, Config config)
     {
       _plc = plc;
-      _plc.Configure("http://localhost:5101", "改造货梯");
+      _plc.Configure(config.PLC_CONNECTION, "改造货梯");
     }
 
     public override void SetImported(string floor, bool value)
@@ -218,17 +218,21 @@ namespace Namei.Wcs.Api
 
   public class SecondLifterService: StandardLifterService
   {
-    public SecondLifterService(PlcStateService plc): base(plc)
-    {
-      plc.Configure("http://localhost:5101", "提升机 - 1");
+    public SecondLifterService(
+      Config config,
+      PlcStateService plc
+    ): base(plc) {
+      plc.Configure(config.PLC_CONNECTION, "提升机 - 1");
     }
   }
 
   public class ThirdLifterService: StandardLifterService
   {
-    public ThirdLifterService(PlcStateService plc): base(plc)
-    {
-      plc.Configure("http://localhost:5101", "提升机 - 2");
+    public ThirdLifterService(
+      Config config,
+      PlcStateService plc
+    ): base(plc) {
+      plc.Configure(config.PLC_CONNECTION, "提升机 - 2");
     }
   }
 }
