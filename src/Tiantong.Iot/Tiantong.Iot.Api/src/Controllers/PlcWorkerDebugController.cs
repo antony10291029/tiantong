@@ -81,8 +81,7 @@ namespace Tiantong.Iot.Api
       public string value { get; set; }
     }
 
-    [HttpPost]
-    [Route("bool/get")]
+    [HttpPost("bool/get")]
     public object GetBool([FromBody] GetParams param)
     {
       var state = new StateBool()
@@ -93,8 +92,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("bool/set")]
+    [HttpPost("bool/set")]
     public object SetBool([FromBody] SetParams param)
     {
       var state = new StateBool()
@@ -105,8 +103,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("uint16/get")]
+    [HttpPost("uint16/get")]
     public object GetUInt16([FromBody] GetParams param)
     {
       var state = new StateUInt16()
@@ -117,8 +114,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("uint16/set")]
+    [HttpPost("uint16/set")]
     public object SetUInt16([FromBody] SetParams param)
     {
       var state = new StateUInt16()
@@ -129,8 +125,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("int32/get")]
+    [HttpPost("int32/get")]
     public object GetInt32([FromBody] GetParams param)
     {
       var state = new StateInt32()
@@ -141,8 +136,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("int32/set")]
+    [HttpPost("int32/set")]
     public object SetInt32([FromBody] SetParams param)
     {
       var state = new StateInt32()
@@ -153,8 +147,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("string/get")]
+    [HttpPost("string/get")]
     public object GetString([FromBody] GetParams param)
     {
       var state = new StateString()
@@ -166,8 +159,7 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("string/set")]
+    [HttpPost("string/set")]
     public object SetString([FromBody] SetParams param)
     {
       var state = new StateString()

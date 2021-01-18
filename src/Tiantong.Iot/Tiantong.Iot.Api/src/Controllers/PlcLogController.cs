@@ -35,8 +35,7 @@ namespace Tiantong.Iot.Api
       public int pageSize { get; set; } = 10;
     }
 
-    [HttpPost]
-    [Route("paginate")]
+    [HttpPost("paginate")]
     public object Paginate([FromBody] LatestParams param)
     {
       return _logRepository.Paginate(param.plc_id, param.page, param.pageSize);
@@ -47,8 +46,7 @@ namespace Tiantong.Iot.Api
       public int days { get; set; }
     }
 
-    [HttpPost]
-    [Route("clear")]
+    [HttpPost("clear")]
     public object Paginate([FromBody] ClearParams param)
     {
       var date = DateTime.Now.AddDays(0 - param.days);

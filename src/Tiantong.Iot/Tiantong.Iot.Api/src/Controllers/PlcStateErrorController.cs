@@ -23,8 +23,7 @@ namespace Tiantong.Iot.Api
       public int page_size { get; set; }
     }
 
-    [HttpPost]
-    [Route("state-errors/paginate")]
+    [HttpPost("state-errors/paginate")]
     public Pagination<PlcStateError> PaginateByPlcId([FromBody] PaginateByPlc param)
     {
       return _errorRepository.PaginateByPlcId(param.plc_id, param.page, param.page_size);

@@ -26,8 +26,7 @@ namespace Tiantong.Iot.Api
       public string value { get; set; }
     }
 
-    [HttpPost]
-    [Route("get")]
+    [HttpPost("get")]
     public object GetString([FromBody] GetParams param)
     {
       var value = _manager.Get(param.plc).Get(param.state);
@@ -35,8 +34,7 @@ namespace Tiantong.Iot.Api
       return new { value };
     }
 
-    [HttpPost]
-    [Route("set")]
+    [HttpPost("set")]
     public object SetString([FromBody] SetParams param)
     {
       _manager.Get(param.plc).Set(param.state, param.value);
@@ -44,8 +42,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("数据已写入");
     }
 
-    [HttpPost]
-    [Route("collect")]
+    [HttpPost("collect")]
     public object CollectString([FromBody] GetParams param)
     {
       var value = _manager.Get(param.plc).Collect(param.state, 1000);
@@ -58,8 +55,7 @@ namespace Tiantong.Iot.Api
       public string plc { get; set; }
     }
 
-    [HttpPost]
-    [Route("values")]
+    [HttpPost("values")]
     public object GetValues([FromBody] GetValuesParams param)
     {
       try {
@@ -71,8 +67,7 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    [HttpPost]
-    [Route("all-values")]
+    [HttpPost("all-values")]
     public Dictionary<string, string> GetAllValues([FromBody] GetValuesParams param)
     {
       try {

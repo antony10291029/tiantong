@@ -14,8 +14,7 @@ namespace Tiantong.Iot.Api
       _plcRepository = plcRepository;
     }
 
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
     public object Create([FromBody] Plc plc)
     {
       _plcRepository.Add(plc);
@@ -28,8 +27,7 @@ namespace Tiantong.Iot.Api
       public int plc_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("delete")]
+    [HttpPost("delete")]
     public object Delete([FromBody] FindParams param)
     {
       _plcRepository.Delete(param.plc_id);
@@ -37,8 +35,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("PLC已删除");
     }
 
-    [HttpPost]
-    [Route("update")]
+    [HttpPost("update")]
     public object Update([FromBody] Plc plc)
     {
       _plcRepository.Update(plc);
@@ -46,15 +43,13 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("PLC配置已更新");
     }
 
-    [HttpPost]
-    [Route("find")]
+    [HttpPost("find")]
     public object Find([FromBody] FindParams param)
     {
       return _plcRepository.EnsureGet(param.plc_id);
     }
 
-    [HttpPost]
-    [Route("all")]
+    [HttpPost("all")]
     public object All()
     {
       return _plcRepository.All();
@@ -65,8 +60,7 @@ namespace Tiantong.Iot.Api
       public int plc_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("http-pushers/all")]
+    [HttpPost("http-pushers/all")]
     public HttpPusher[] AllHttpPushers([FromBody] AllHttpPushersParams param)
     {
       return _plcRepository.AllHttpPushers(param.plc_id);
@@ -81,15 +75,13 @@ namespace Tiantong.Iot.Api
       public int page_size { get; set; }
     }
 
-    [HttpPost]
-    [Route("http-pusher-logs/paginate")]
+    [HttpPost("http-pusher-logs/paginate")]
     public Pagination<HttpPusherLog> PaginateHttpPusherLogs([FromBody] PaginateHttpPusherParams param)
     {
       return _plcRepository.PaginateHttpPusherLogs(param.ids, param.page, param.page_size);
     }
 
-    [HttpPost]
-    [Route("http-pusher-errors/paginate")]
+    [HttpPost("http-pusher-errors/paginate")]
     public Pagination<HttpPusherError> PaginateHttpPusherErrors([FromBody] PaginateHttpPusherParams param)
     {
       return _plcRepository.PaginateHttpPusherErrors(param.ids, param.page, param.page_size);

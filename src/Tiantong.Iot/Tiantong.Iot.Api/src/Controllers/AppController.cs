@@ -36,15 +36,13 @@ namespace Tiantong.Iot.Api
       };
     }
 
-    [HttpPost]
-    [Route("data")]
+    [HttpPost("data")]
     public object Data([FromBody] object data)
     {
       return data;
     }
 
-    [HttpPost]
-    [Route("test")]
+    [HttpPost("test")]
     public object TestRun()
     {
       var plc = new Plc {
@@ -119,8 +117,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("Plc 运行中");
     }
 
-    [HttpPost]
-    [Route("test/stop")]
+    [HttpPost("test/stop")]
     public object TestStop()
     {
       _plcManager.Stop(1);

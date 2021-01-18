@@ -27,8 +27,7 @@ namespace Tiantong.Iot.Api
       _domain = domain;
     }
 
-    [HttpPost]
-    [Route("migrate")]
+    [HttpPost("migrate")]
     public object Migrate()
     {
       _domain.Migrate();
@@ -36,8 +35,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("数据库已迁移");
     }
 
-    [HttpPost]
-    [Route("rollback")]
+    [HttpPost("rollback")]
     public object Rollback()
     {
       _domain.Rollback();
@@ -45,8 +43,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("数据库已回档");
     }
 
-    [HttpPost]
-    [Route("refresh")]
+    [HttpPost("refresh")]
     public object Refresh()
     {
       _domain.Refresh();
@@ -54,16 +51,14 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("数据库已刷新");
     }
 
-    [HttpPost]
-    [Route("seed")]
+    [HttpPost("seed")]
     public object Seed()
     {
       InsertPlcData();
       return SuccessOperation("数据已插入");
     }
 
-    [HttpPost]
-    [Route("reseed")]
+    [HttpPost("reseed")]
     public object Reseed()
     {
       _domain.Refresh();

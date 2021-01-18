@@ -14,8 +14,7 @@ namespace Tiantong.Iot.Api
       _stateRepository = stateRepository;
     }
 
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
     public object Create([FromBody] PlcState state)
     {
       _stateRepository.Add(state);
@@ -28,8 +27,7 @@ namespace Tiantong.Iot.Api
       public int state_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("delete")]
+    [HttpPost("delete")]
     public object Delete([FromBody] FindParams param)
     {
       _stateRepository.Delete(param.state_id);
@@ -37,8 +35,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("PLC数据点已删除");
     }
 
-    [HttpPost]
-    [Route("update")]
+    [HttpPost("update")]
     public object Update([FromBody] PlcState state)
     {
       _stateRepository.Update(state);
@@ -46,8 +43,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("PLC数据点已更新");
     }
 
-    [HttpPost]
-    [Route("find")]
+    [HttpPost("find")]
     public object Find([FromBody] FindParams param)
     {
       return _stateRepository.Find(param.state_id);
@@ -58,8 +54,7 @@ namespace Tiantong.Iot.Api
       public int plc_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("all")]
+    [HttpPost("all")]
     public PlcState[] All([FromBody] AllParams param)
     {
       return _stateRepository.All(param.plc_id);

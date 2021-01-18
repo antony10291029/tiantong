@@ -28,15 +28,13 @@ namespace Tiantong.Iot.Api
       public string password { get; set; }
     }
 
-    [HttpPost]
-    [Route("/system-lock/get")]
+    [HttpPost("/system-lock/get")]
     public bool GetIsSystemLocked()
     {
       return _systemRepository.GetIsSystemLocked();
     }
 
-    [HttpPost]
-    [Route("/system-lock/lock")]
+    [HttpPost("/system-lock/lock")]
     public async Task<object> LockSystem(
       [FromHeader] string authorization,
       [FromBody] SystemLockParams param
@@ -47,8 +45,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("设备锁定已开启");
     }
 
-    [HttpPost]
-    [Route("/system-lock/unlock")]
+    [HttpPost("/system-lock/unlock")]
     public async Task<object> UnlockSystem(
       [FromHeader] string authorization,
       [FromBody] SystemLockParams param
@@ -59,8 +56,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("设备锁定已关闭");
     }
 
-    [HttpPost]
-    [Route("/autorun/get")]
+    [HttpPost("/autorun/get")]
     public object GetIsAutorun()
     {
       return _systemRepository.GetIsAutorun();
@@ -71,8 +67,7 @@ namespace Tiantong.Iot.Api
       public bool value { get; set; }
     }
 
-    [HttpPost]
-    [Route("/autorun/set")]
+    [HttpPost("/autorun/set")]
     public object SetAutorun([FromBody] SetAutorunParams param)
     {
       _systemRepository.SetAutorun(param.value);

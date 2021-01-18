@@ -21,8 +21,7 @@ namespace Tiantong.Iot.Api
       public HttpPusher pusher { get; set; }
     }
 
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
     public object Create([FromBody] CreateParams param)
     {
       _pusherRepository.Add(param.state_id, param.pusher);
@@ -37,8 +36,7 @@ namespace Tiantong.Iot.Api
       public int pusher_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("delete")]
+    [HttpPost("delete")]
     public object Delete([FromBody] DeleteParams param)
     {
       _pusherRepository.Delete(param.state_id, param.pusher_id);
@@ -53,8 +51,7 @@ namespace Tiantong.Iot.Api
       public HttpPusher pusher { get; set; }
     }
 
-    [HttpPost]
-    [Route("update")]
+    [HttpPost("update")]
     public object Update([FromBody] UpdateParams param)
     {
       _pusherRepository.Update(param.state_id, param.pusher);
@@ -67,8 +64,7 @@ namespace Tiantong.Iot.Api
       public int state_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("all")]
+    [HttpPost("all")]
     public HttpPusher[] All([FromBody] AllParams param)
     {
       return _pusherRepository.All(param.state_id);

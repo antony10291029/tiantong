@@ -30,8 +30,7 @@ namespace Tiantong.Iot.Api
       public int plc_id { get; set; }
     }
 
-    [HttpPost]
-    [Route("run")]
+    [HttpPost("run")]
     public object Run([FromBody] FindParams param)
     {
       var plc = _plcRepository.EnsureGetWithRelationships(param.plc_id);
@@ -46,8 +45,7 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    [HttpPost]
-    [Route("stop")]
+    [HttpPost("stop")]
     public object Stop([FromBody] FindParams param)
     {
       if (_plcManager.Stop(param.plc_id)) {
@@ -57,8 +55,7 @@ namespace Tiantong.Iot.Api
       }
     }
 
-    [HttpPost]
-    [Route("start-all")]
+    [HttpPost("start-all")]
     public object StartAll()
     {
       var plcs = _plcRepository.AllWithRelationships();
@@ -71,8 +68,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("所有设备已开始运行");
     }
 
-    [HttpPost]
-    [Route("stop-all")]
+    [HttpPost("stop-all")]
     public object StopAll()
     {
       _plcManager.Stop();
@@ -80,8 +76,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("所有设备已停止运行");
     }
 
-    [HttpPost]
-    [Route("test")]
+    [HttpPost("test")]
     public object Test([FromBody] FindParams param)
     {
       var plc = _plcRepository.EnsureGetWithRelationships(param.plc_id);
@@ -96,8 +91,7 @@ namespace Tiantong.Iot.Api
       return SuccessOperation("PLC 连接测试成功");
     }
 
-    [HttpPost]
-    [Route("is-running")]
+    [HttpPost("is-running")]
     public object IsRunning([FromBody] FindParams param)
     {
       try {
