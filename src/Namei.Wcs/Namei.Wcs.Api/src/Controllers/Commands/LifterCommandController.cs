@@ -38,6 +38,11 @@ namespace Namei.Wcs.Api
     {
       var lifter = _lifters.Get("1");
       var message = "输送线状态无需处理";
+
+      if (param.value == null || param.old_value == null) {
+        return new { message };
+      }
+ 
       var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
       var isImportedAllowed = FirstLifterService.IsImportAllowed(param.value, param.old_value);
       var isRequestingPickup = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
