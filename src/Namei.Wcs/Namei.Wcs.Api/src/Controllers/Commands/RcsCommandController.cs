@@ -33,7 +33,7 @@ namespace Namei.Wcs.Api
 
       public string Src { get; set; }
 
-      public string Dst { get; set; }
+      public string Dst { get; set; } 
     }
 
     [HttpPost]

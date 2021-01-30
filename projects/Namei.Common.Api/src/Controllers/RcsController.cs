@@ -12,6 +12,17 @@ namespace Namei.Common.Api
 
     const string AreaMethod = "area";
 
+    static readonly Dictionary<string, bool> NotAllowedArea = new Dictionary<string, bool> {
+      { "201", true },
+      { "216", true },
+      { "217", true },
+      { "220", true },
+      { "221", true },
+      { "316", true },
+      { "317", true },
+      { "401", true },
+    };
+
     private RcsContext _rcs;
 
     private RcsHttpService _rcsHttp;
@@ -117,7 +128,7 @@ namespace Namei.Common.Api
       result.Message = "解绑操作执行完毕";
 
       if (map == null) {
-        result.SetError($"库位编号不存在: {param.LocationCode}", "01");
+        result.SetError($"库位编号不存在: {param.LocationCode}", "10");
 
         return result;
       }
@@ -127,9 +138,19 @@ namespace Namei.Common.Api
       if (param.Method == LocationMethod) {
         maps = _rcs.MapData.Where(item => item.PodCode == map.PodCode && item.PodCode != null).ToList();
       } else if (param.Method == AreaMethod) {
+        if (map.AreaCode == null) {
+          result.SetError("该库位不属于任何区域", "11");
+
+          return result;
+        } else if (NotAllowedArea.ContainsKey(map.AreaCode)) {
+          result.SetError($"该区域不支持整体解绑: {param.LocationCode}", "12");
+
+          return result;
+        }
+
         maps = _rcs.MapData.Where(item => item.AreaCode == map.AreaCode && item.PodCode != null).ToList();
       } else {
-        result.SetError($"解绑方式不支持: {param.Method}", "020");
+        result.SetError($"解绑方式不支持: {param.Method}", "13");
 
         return result;
       }
@@ -142,7 +163,7 @@ namespace Namei.Common.Api
         if (rcsResult.code != "0") {
           bindResult.Message = rcsResult.message;
           result.FailedTasks.Add(bindResult);
-          result.SetError("部分托架解绑失败，请查询系统核实", "030");
+          result.SetError("部分托架解绑失败，请查询系统核实", "30");
         } else {
           bindResult.Message = "解绑成功";
           result.ExecutedTasks.Add(bindResult);
