@@ -1,13 +1,17 @@
 <template>
-  <router-view />
+  <div>
+    Plc: {{plc}}
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "App"
+  name: "Plc",
+
+  props: {
+    plc: Object
+  }
 });
 </script>
-
-<style lang="sass" src="../../share/sass/_all.sass" />

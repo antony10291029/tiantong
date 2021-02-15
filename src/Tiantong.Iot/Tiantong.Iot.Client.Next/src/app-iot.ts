@@ -1,11 +1,10 @@
 import { injectable } from "@midos/core";
 import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
-import { plugin } from "./share";
 import App from "./views/Layout/index.vue";
 import Plcs from "./views/Plcs/index.vue";
 import PlcsPlc from "./views/Plcs.Plc/index.vue";
-import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
+import { plugin } from "./share";
 
 @injectable()
 export class AppIot extends VueApp {
@@ -37,16 +36,8 @@ export class AppIot extends VueApp {
           {
             path: ":plcId",
             name: "PlcsPlc",
-            component: PlcsPlc,
-            redirect: (route) => `/iot/plcs/${route.params.plcId}/dashboard`,
-            children: [
-              {
-                path: "dashboard",
-                name: "PlcsPlcDashboard",
-                component: PlcsPlcDashboard
-              },
-            ]
-          },
+            component: PlcsPlc
+          }
         ]
       }
     ]

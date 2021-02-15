@@ -59,6 +59,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defineComponent, reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useService } from "@midos/vue-ui";
@@ -76,7 +77,7 @@ export default defineComponent({
       data: {} as any
     });
     const currentPlc = computed(() =>
-      route.params.plcId && plcs.data[route.params.plcId as string]
+      plcs.data[route.params.plcId as string]
     );
 
     const getPlcs = async () => {

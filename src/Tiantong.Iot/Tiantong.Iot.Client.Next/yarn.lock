@@ -1038,10 +1038,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@midos/core@^0.0.1-alpha.14":
-  version "0.0.1-alpha.14"
-  resolved "https://registry.npmjs.org/@midos/core/-/core-0.0.1-alpha.14.tgz#d502fad0a82fd8dd3dbb3088a6ff47893786288c"
-  integrity sha512-OO8VisK7C5qrVEic8Kjqq94OiCImkaRGPF/YXUBY5NedDMGHfcc5azVLMEY5wH7Z6vPrrM+lYEmsIOsFgs/2sA==
+"@midos/core@^0.0.1-alpha.13":
+  version "0.0.1-alpha.13"
+  resolved "https://registry.npmjs.org/@midos/core/-/core-0.0.1-alpha.13.tgz#7393cdd54c8d1e1b87efbd995d72cc044db33184"
+  integrity sha512-6hRILIbS6nnYlDPBaUHLmu24FkaW4vRCIF4XedKz052iXRfdlWo9WvGRECP0F6wZLbNgMuWFbrNhn/Va4vpZHw==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
