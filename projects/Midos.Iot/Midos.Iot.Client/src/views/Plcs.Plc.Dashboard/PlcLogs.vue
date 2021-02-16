@@ -32,8 +32,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useService } from "@midos/vue-ui";
-import { IotHttpClient } from "../../services/iot-http-client";
+import { useIotHttp } from "@/services/iot-http-client";
 
 export default defineComponent({
   name: "PlcLogs",
@@ -51,7 +50,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const http = useService(IotHttpClient);
+    const http = useIotHttp();
     const interval = ref(null as any);
     const logs = ref({
       meta: {

@@ -23,8 +23,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useService } from "@midos/vue-ui";
-import { IotHttpClient } from "../../services/iot-http-client";
+import { useIotHttp } from "@/services/iot-http-client";
 
 export default defineComponent({
   name: "PlcRunningButton",
@@ -42,7 +41,7 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const http = useService(IotHttpClient);
+    const http = useIotHttp();
 
     async function handleRun () {
       await http.post("/plc-workers/run", {

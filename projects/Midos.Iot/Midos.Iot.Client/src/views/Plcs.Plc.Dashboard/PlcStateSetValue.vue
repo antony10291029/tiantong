@@ -15,7 +15,7 @@
     >
       <div class="control">
         <input
-          ref="ref"
+          ref="input"
           :value="value"
           @blur="setValue($event.target.value.trim())"
           @keypress.enter="setValue($event.target.value.trim()), handleSave()"
@@ -36,9 +36,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useService } from "@midos/vue-ui";
-import { IotHttpClient } from "../../services/iot-http-client";
+import { defineComponent, nextTick, ref } from "vue";
+import { useIotHttp } from "@/services/iot-http-client";
 
 export default defineComponent({
   name: "PlcStateSetValue",
@@ -60,36 +59,38 @@ export default defineComponent({
     }
   },
 
-  data: () => ({
-    isShow: false,
-    value: "" as any,
-    ref: null as any,
-  }),
+  setup(props) {
+    const http = useIotHttp();
+    const isShow = ref(false);
+    const value = ref<any>("");
+    const input = ref<any>(null);
 
-  methods: {
-    setValue (value: any) {
-      this.value = value;
-    },
-
-    handleOpen () {
-      this.isShow = true;
-      this.$nextTick(() => {
-        (this.ref.input as any).focus();
-        this.value = "";
+    const setValue = (val: any) => value.value = val;
+    const handleOpen = () => {
+      isShow.value = true;
+      nextTick(() => {
+        input.value.focus();
+        value.value = "";
       });
-    },
-
-    async handleSave () {
-      const http = useService(IotHttpClient);
-
+    };
+    const handleSave = async () => {
       await http.post("/plc-states/set", {
-        plc: this.plc.name,
-        state: this.state.name,
-        value: this.value
+        plc: props.plc.name,
+        state: props.state.name,
+        value: value.value
       });
 
-      this.isShow = false;
-    }
+      isShow.value = false;
+    };
+
+    return {
+      isShow,
+      value,
+      input,
+      setValue,
+      handleOpen,
+      handleSave
+    };
   }
 });
 </script>

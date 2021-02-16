@@ -43,8 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from "vue";
-import { useService } from "@midos/vue-ui";
-import { IotHttpClient } from "../../services/iot-http-client";
+import { useIotHttp } from "@/services/iot-http-client";
 import PlcRunningButton from "./PlcRunningButton.vue";
 import PlcLogs from "./PlcLogs.vue";
 import PlcStates from "./PlcStates.vue";
@@ -66,7 +65,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const http = useService(IotHttpClient);
+    const http = useIotHttp();
     const isRunning = ref(false);
     const isDataWatchOpen = ref(false);
     const currentTab = ref(0);

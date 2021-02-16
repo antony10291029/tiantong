@@ -28,6 +28,7 @@ module.exports = {
     "no-multi-assign": ["off"],
     "no-param-reassign": "off",
     "no-plusplus": ["off"],
+    "no-return-assign": ["off"],
     "no-shadow": ["off"],
     "no-useless-constructor": "off",
     "quote-props": ["off"],

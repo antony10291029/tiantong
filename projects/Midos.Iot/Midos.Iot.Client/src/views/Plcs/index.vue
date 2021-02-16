@@ -59,24 +59,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import { useService } from "@midos/vue-ui";
-import { IotHttpClient } from "../../services/iot-http-client";
+import { useIotHttp } from "@/services/iot-http-client";
 
 export default defineComponent({
   name: "PlcList",
 
   setup() {
     const route = useRoute();
-    const http = useService(IotHttpClient);
+    const http = useIotHttp();
 
-    const plcs = reactive({
+    const plcs = ref({
       result: [] as any,
       data: {} as any
     });
+
     const currentPlc = computed(() =>
-      route.params.plcId && plcs.data[route.params.plcId as string]
+      route.params.plcId && plcs.value.data[route.params.plcId as string]
     );
 
     const getPlcs = async () => {
@@ -89,8 +89,8 @@ export default defineComponent({
         data[plc.id] = plc;
       });
 
-      plcs.data = data;
-      plcs.result = result;
+      plcs.value.data = data;
+      plcs.value.result = result;
     };
 
     return {
