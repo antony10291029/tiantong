@@ -41,8 +41,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, toRefs } from "vue";
 import { useIotHttp } from "@/services/iot-http-client";
+import { useInterval } from "@/hooks/use-interval";
 import PlcStateSetValue from "./PlcStateSetValue.vue";
 
 export default defineComponent({
@@ -76,7 +77,6 @@ export default defineComponent({
 
   setup(props) {
     const http = useIotHttp();
-    const interval = ref(null as any);
     const isPending = ref(false);
     const states = ref([] as any[]);
     const currentValues = ref({} as any);
@@ -107,26 +107,15 @@ export default defineComponent({
       }
     };
 
+    useInterval(getCurrentValues, toRefs(props).isRunning);
+
     return {
-      interval,
       isPending,
       states,
       currentValues,
       getStates,
       getCurrentValues
     };
-  },
-
-  created () {
-    this.interval = setInterval(() => {
-      if (this.isDataWatchOpen) {
-        this.getCurrentValues();
-      }
-    }, 1000);
-  },
-
-  beforeUnmount() {
-    clearInterval(this.interval);
   }
 });
 </script>

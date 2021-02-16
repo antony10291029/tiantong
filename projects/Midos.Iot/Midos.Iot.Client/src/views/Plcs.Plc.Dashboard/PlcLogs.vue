@@ -31,8 +31,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, toRefs } from "vue";
 import { useIotHttp } from "@/services/iot-http-client";
+import { useInterval } from "@/hooks/use-interval";
 
 export default defineComponent({
   name: "PlcLogs",
@@ -78,6 +79,9 @@ export default defineComponent({
       await getLogs();
     };
 
+    getLogs();
+    useInterval(getLogs, toRefs(props).isRunning);
+
     return {
       page,
       pageSize,
@@ -86,25 +90,6 @@ export default defineComponent({
       getLogs,
       changePage
     };
-  },
-
-  created () {
-    this.getLogs();
-    this.interval = setInterval(() => {
-      if (this.isRunning) {
-        setTimeout(this.getLogs, 1000);
-      }
-    }, 1000);
-  },
-
-  beforeUnmount () {
-    clearInterval(this.interval);
-  },
-
-  watch: {
-    isRunning() {
-      this.getLogs();
-    }
   }
 });
 </script>
