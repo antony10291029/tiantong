@@ -3,19 +3,19 @@
     class="is-flex-auto box"
     :handler="getStates"
   >
-    <template #head>
-      <thead>
-        <th>数据名</th>
-        <th>地址</th>
-        <th>类型</th>
-        <th>数据</th>
-        <th>操作</th>
-      </thead>
-    </template>
     <Table
       colspan="5"
       class="table is-centered is-nowrap is-fullwidth"
     >
+      <template #head>
+        <thead>
+          <th>数据名</th>
+          <th>地址</th>
+          <th>类型</th>
+          <th>数据</th>
+          <th>操作</th>
+        </thead>
+      </template>
       <template #body>
         <tbody v-if="states.length">
           <tr v-for="state in states" :key="state.id">
