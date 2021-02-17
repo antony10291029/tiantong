@@ -5,7 +5,3 @@ export interface IConfirmOptions {
   beforeClose?: () => {};
   width?: string;
 }
-
-export interface IConfirm {
-  open: (options: IConfirmOptions) => void;
-}

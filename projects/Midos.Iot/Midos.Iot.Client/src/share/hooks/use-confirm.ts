@@ -1,8 +1,6 @@
-import { getCurrentInstance } from "vue";
-import { IConfirm } from "../components/Confirm";
+import { useService } from "@midos/vue-ui";
+import { Confirm } from "../services/confirm";
 
 export function useConfirm() {
-  const confirm = getCurrentInstance()?.appContext.config.globalProperties.$confirm;
-
-  return confirm as IConfirm;
+  return useService(Confirm);
 }

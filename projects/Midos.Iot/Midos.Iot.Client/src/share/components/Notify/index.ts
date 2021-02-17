@@ -1,5 +1,5 @@
 import { Plugin, createApp } from "vue";
-import Component from "./Component.vue";
+import Component from "./NotificationContainer.vue";
 import directives from "../../directives";
 
 export default {
@@ -8,6 +8,6 @@ export default {
     const vm = createApp(Component).use(directives).mount(dom);
 
     document.body.appendChild(dom);
-    app.config.globalProperties.$confirm = vm;
+    app.config.globalProperties.$notify = vm;
   }
 } as Plugin;

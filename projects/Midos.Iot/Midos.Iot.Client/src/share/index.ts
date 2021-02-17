@@ -9,6 +9,7 @@ import Textarea from "./components/Textarea.vue";
 import Pagination from "./components/Pagination.vue";
 import directives from "./directives";
 import confirm from "./components/Confirm";
+import notify from "./components/Notify";
 
 const plugin: Plugin = {
   install(app) {
@@ -22,6 +23,7 @@ const plugin: Plugin = {
     app.component("Textarea", Textarea);
     app.component("Pagination", Pagination);
     app.use(confirm);
+    app.use(notify);
   }
 };
 
