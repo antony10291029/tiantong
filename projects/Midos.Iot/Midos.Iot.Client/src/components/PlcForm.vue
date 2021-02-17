@@ -144,7 +144,6 @@ export default defineComponent({
   props: {
     plc: {
       type: Object as PropType<Plc>,
-      required: true
     },
     handler: {
       type: Function,

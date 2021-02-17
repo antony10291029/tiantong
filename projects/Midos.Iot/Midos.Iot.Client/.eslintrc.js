@@ -30,6 +30,7 @@ module.exports = {
     "no-plusplus": ["off"],
     "no-return-assign": ["off"],
     "no-shadow": ["off"],
+    "no-unused-expressions": ["off"],
     "no-useless-constructor": "off",
     "object-curly-newline": ["off"],
     "quote-props": ["off"],

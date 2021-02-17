@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+import { Plugin } from "vue";
 import clickoutside from "./clickoutside";
 
 function active (el: any, binding: any) {
@@ -30,11 +31,11 @@ function style (el: any, binding: any) {
 }
 
 export default {
-  install (Vue: any) {
-    Vue.directive("class", klass);
-    Vue.directive("style", style);
-    Vue.directive("active", active);
-    Vue.directive("loading", loading);
-    Vue.directive("clickoutside", clickoutside);
+  install (app) {
+    app.directive("class", klass);
+    app.directive("style", style);
+    app.directive("active", active);
+    app.directive("loading", loading);
+    app.directive("clickoutside", clickoutside as any);
   }
-};
+} as Plugin;

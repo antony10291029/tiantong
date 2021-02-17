@@ -53,7 +53,7 @@ export default defineComponent({
       tabs: [
         { text: "控制台", route: "IotPlcsPlcDashboard", icon: "dashboard" },
         { text: "调试", route: "IotPlcsPlcDebug", icon: "debug" },
-        // { text: "数据点", route: "states", icon: "table" },
+        { text: "配置", route: "PlcsPlcConfig", icon: "settings" },
         // { text: "日志", route: "logs", icon: "logs" },
       ]
     };

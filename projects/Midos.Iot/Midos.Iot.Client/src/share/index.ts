@@ -8,9 +8,11 @@ import Table from "./components/Table.vue";
 import Textarea from "./components/Textarea.vue";
 import Pagination from "./components/Pagination.vue";
 import directives from "./directives";
+import confirm from "./components/Confirm";
 
 const plugin: Plugin = {
   install(app) {
+    app.use(directives);
     app.component("AsyncButton", AsyncButton);
     app.component("AsyncLoader", AsyncLoader);
     app.component("Checkbox", Checkbox);
@@ -19,7 +21,7 @@ const plugin: Plugin = {
     app.component("Table", Table);
     app.component("Textarea", Textarea);
     app.component("Pagination", Pagination);
-    app.use(directives);
+    app.use(confirm);
   }
 };
 

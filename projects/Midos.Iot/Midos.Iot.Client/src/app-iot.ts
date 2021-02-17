@@ -7,6 +7,7 @@ import Plcs from "./views/Plcs/index.vue";
 import PlcsCreate from "./views/Plcs.Create/index.vue";
 import PlcsDashboard from "./views/Plcs.Dashboard/index.vue";
 import PlcsPlc from "./views/Plcs.Plc/index.vue";
+import PlcsPlcConfig from "./views/Plcs.Plc.Config/index.vue";
 import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
 import PlcsPlcDebug from "./views/Plcs.Plc.Debug/index.vue";
 
@@ -66,6 +67,11 @@ export class AppIot extends VueApp {
                 path: "debug",
                 name: "IotPlcsPlcDebug",
                 component: PlcsPlcDebug
+              },
+              {
+                path: "config",
+                name: "PlcsPlcConfig",
+                component: PlcsPlcConfig
               },
             ]
           },
