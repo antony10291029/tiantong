@@ -4,10 +4,11 @@ import { RouteRecordRaw } from "vue-router";
 import { plugin } from "./share";
 import App from "./views/Layout/index.vue";
 import Plcs from "./views/Plcs/index.vue";
+import PlcsCreate from "./views/Plcs.Create/index.vue";
 import PlcsDashboard from "./views/Plcs.Dashboard/index.vue";
 import PlcsPlc from "./views/Plcs.Plc/index.vue";
 import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
-import PlcsCreate from "./views/Plcs.Create/index.vue";
+import PlcsPlcDebug from "./views/Plcs.Plc.Debug/index.vue";
 
 @injectable()
 export class AppIot extends VueApp {
@@ -60,6 +61,11 @@ export class AppIot extends VueApp {
                 path: "dashboard",
                 name: "IotPlcsPlcDashboard",
                 component: PlcsPlcDashboard
+              },
+              {
+                path: "debug",
+                name: "IotPlcsPlcDebug",
+                component: PlcsPlcDebug
               },
             ]
           },

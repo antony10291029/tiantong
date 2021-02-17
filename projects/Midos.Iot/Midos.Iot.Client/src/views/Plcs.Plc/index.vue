@@ -6,11 +6,14 @@
       <ul>
         <router-link
           v-for="(tab, key) in tabs" :key="key"
-          :to="{ route: tab.route, params: { plcId } }"
-          v-slot="{ isActive }"
+          :to="{ name: tab.route, params: { plcId } }"
+          v-slot="{ isActive, navigate }"
           custom
         >
-          <li v-class:is-active="isActive">
+          <li
+            v-class:is-active="isActive"
+            @click="navigate"
+          >
             <a>
               <span class="icon">
                 <i :class="`iconfont icon-${tab.icon}`"></i>
@@ -49,9 +52,9 @@ export default defineComponent({
     return {
       tabs: [
         { text: "控制台", route: "IotPlcsPlcDashboard", icon: "dashboard" },
-        { text: "调试", route: "debug", icon: "debug" },
-        { text: "数据点", route: "states", icon: "table" },
-        { text: "日志", route: "logs", icon: "logs" },
+        { text: "调试", route: "IotPlcsPlcDebug", icon: "debug" },
+        // { text: "数据点", route: "states", icon: "table" },
+        // { text: "日志", route: "logs", icon: "logs" },
       ]
     };
   }
