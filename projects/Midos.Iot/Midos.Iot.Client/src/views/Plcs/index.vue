@@ -10,7 +10,7 @@
       <ul class="menu-list">
         <li>
           <router-link
-            :to="{ name: 'IotPlcs' }"
+            :to="{ name: 'IotPlcsDashboard' }"
             active-class="none"
             exact-active-class="is-active"
           >

@@ -4,6 +4,7 @@ import { RouteRecordRaw } from "vue-router";
 import { plugin } from "./share";
 import App from "./views/Layout/index.vue";
 import Plcs from "./views/Plcs/index.vue";
+import PlcsDashboard from "./views/Plcs.Dashboard/index.vue";
 import PlcsPlc from "./views/Plcs.Plc/index.vue";
 import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
 import PlcsCreate from "./views/Plcs.Create/index.vue";
@@ -33,8 +34,14 @@ export class AppIot extends VueApp {
       {
         path: "plcs",
         name: "IotPlcs",
+        redirect: () => ({ name: "IotPlcsDashboard" }),
         component: Plcs,
         children: [
+          {
+            path: "",
+            name: "IotPlcsDashboard",
+            component: PlcsDashboard
+          },
           {
             path: "create",
             name: "IotPlcsCreate",
