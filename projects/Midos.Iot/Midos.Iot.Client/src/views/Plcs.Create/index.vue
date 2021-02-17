@@ -44,13 +44,6 @@ export default defineComponent({
     PlcForm
   },
 
-  props: {
-    baseURL: {
-      type: String,
-      required: true,
-    }
-  },
-
   setup(props, { emit }) {
     const plc = ref(new Plc());
     const http = useIotHttp();
@@ -61,7 +54,10 @@ export default defineComponent({
       const { id } = result;
 
       emit("refresh");
-      router.push(`${props.baseURL}/${id}`);
+      router.push({
+        name: "IotPlcsPlc",
+        params: { plcId: id }
+      });
     }
 
     return {

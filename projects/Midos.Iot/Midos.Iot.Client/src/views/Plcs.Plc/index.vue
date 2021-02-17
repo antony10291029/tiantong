@@ -24,7 +24,6 @@
 
     <router-view
       :key="$route.fullPath"
-      :baseURL="`${baseURL}/${plcId}`"
       :plcId="plcId"
       class="is-flex-auto"
       style="overflow: auto"
@@ -40,10 +39,6 @@ export default defineComponent({
   name: "Plc",
 
   props: {
-    baseURL: {
-      type: String,
-      required: true
-    },
     plcId: {
       type: Number,
       required: true
@@ -53,7 +48,7 @@ export default defineComponent({
   setup() {
     return {
       tabs: [
-        { text: "控制台", route: "PlcsPlcDashboard", icon: "dashboard" },
+        { text: "控制台", route: "IotPlcsPlcDashboard", icon: "dashboard" },
         { text: "调试", route: "debug", icon: "debug" },
         { text: "数据点", route: "states", icon: "table" },
         { text: "日志", route: "logs", icon: "logs" },

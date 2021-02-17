@@ -10,7 +10,7 @@
       <ul class="menu-list">
         <li>
           <router-link
-            :to="`${baseURL}/plcs`"
+            :to="{ name: 'IotPlcs' }"
             active-class="none"
             exact-active-class="is-active"
           >
@@ -24,7 +24,7 @@
           </router-link>
         </li>
         <li v-for="id in plcs.result" :key="id">
-          <router-link :to="{ name: 'PlcsPlc', params: { plcId: id } }">
+          <router-link :to="{ name: 'IotPlcsPlc', params: { plcId: id } }">
             <span
               class="icon"
               style="margin-right: 0.25rem"
@@ -35,7 +35,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="`${baseURL}/plcs/create`">
+          <router-link :to="{ name: 'IotPlcsCreate' }">
             <span
               class="icon"
               style="margin-right: 0.25rem"
@@ -51,7 +51,6 @@
     <router-view
       :plcId="currentPlc?.id"
       :plc="currentPlc"
-      :baseURL="`${baseURL}/plcs`"
       class="is-flex-auto"
       @refresh="getPlcs"
     />
@@ -94,7 +93,6 @@ export default defineComponent({
     };
 
     return {
-      baseURL: "/iot",
       plcs,
       currentPlc,
       getPlcs,
