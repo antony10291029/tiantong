@@ -55,7 +55,7 @@ export default defineComponent({
         { text: "调试", route: "IotPlcsPlcDebug", icon: "debug" },
         { text: "配置", route: "IotPlcsPlcConfig", icon: "settings" },
         { text: "数据点", route: "IotPlcsPlcStatesIndex", icon: "table" },
-        // { text: "日志", route: "logs", icon: "logs" },
+        { text: "日志", route: "IotPlcsPlcLogs", icon: "logs" },
       ]
     };
   }

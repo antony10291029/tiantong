@@ -10,6 +10,11 @@ import PlcsPlc from "./views/Plcs.Plc/index.vue";
 import PlcsPlcConfig from "./views/Plcs.Plc.Config/index.vue";
 import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
 import PlcsPlcDebug from "./views/Plcs.Plc.Debug/index.vue";
+import PlcsPlcLogs from "./views/Plcs.Plc.Logs/index.vue";
+import PlcsPlcLogsHttpPusher from "./views/Plcs.Plc.Logs.HttpPusher/index.vue";
+import PlcsPlcLogsHttpPusherErrors from "./views/Plcs.Plc.Logs.HttpPusherErrors/index.vue";
+import PlcsPlcLogsStateLogs from "./views/Plcs.Plc.Logs.StateLogs/index.vue";
+import PlcsPlcLogsStateErrors from "./views/Plcs.Plc.Logs.StateErrors/index.vue";
 import PlcsPlcStatesCreate from "./views/Plcs.Plc.States.Create/index.vue";
 import PlcsPlcStatesIndex from "./views/Plcs.Plc.States.Index/index.vue";
 import PlcsPlcStatesState from "./views/Plcs.Plc.States.State/index.vue";
@@ -113,7 +118,40 @@ export class AppIot extends VueApp {
                     ]
                   }
                 ]
-              }
+              },
+              {
+                path: "logs",
+                name: "IotPlcsPlcLogs",
+                redirect: route => ({
+                  name: "IotPlcsPlcLogsStateLogs",
+                  params: {
+                    plcId: route.params.plcId
+                  }
+                }),
+                component: PlcsPlcLogs,
+                children: [
+                  {
+                    path: "state-logs",
+                    name: "IotPlcsPlcLogsStateLogs",
+                    component: PlcsPlcLogsStateLogs
+                  },
+                  {
+                    path: "state-errors",
+                    name: "IotPlcsPlcLogsStateErrors",
+                    component: PlcsPlcLogsStateErrors
+                  },
+                  {
+                    path: "http-pusher-logs",
+                    name: "IotPlcsPlcLogsHttpPusher",
+                    component: PlcsPlcLogsHttpPusher
+                  },
+                  {
+                    path: "http-pusher-errors",
+                    name: "IotPlcPlcsPlcLogsHttpPusherErrors",
+                    component: PlcsPlcLogsHttpPusherErrors
+                  },
+                ]
+              },
             ]
           },
         ]
