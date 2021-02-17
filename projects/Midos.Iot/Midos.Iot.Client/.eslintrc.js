@@ -31,9 +31,11 @@ module.exports = {
     "no-return-assign": ["off"],
     "no-shadow": ["off"],
     "no-useless-constructor": "off",
+    "object-curly-newline": ["off"],
     "quote-props": ["off"],
     "quotes": ["error", "double"],
     "space-before-function-paren": ["off"],
+    "vue/no-mutating-props": ["off"],
   },
   overrides: [
     {

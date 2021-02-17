@@ -1,5 +1,8 @@
 <template>
-  <div class="is-flex-auto is-flex is-flex-column">
+  <div
+    v-if="plc"
+    class="is-flex-auto is-flex is-flex-column"
+  >
     <div class="tabs" style="margin-bottom: 0; flex-shrink: 0">
       <ul>
         <router-link

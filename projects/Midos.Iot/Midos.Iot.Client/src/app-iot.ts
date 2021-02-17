@@ -6,6 +6,7 @@ import App from "./views/Layout/index.vue";
 import Plcs from "./views/Plcs/index.vue";
 import PlcsPlc from "./views/Plcs.Plc/index.vue";
 import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
+import PlcsCreate from "./views/Plcs.Create/index.vue";
 
 @injectable()
 export class AppIot extends VueApp {
@@ -34,6 +35,11 @@ export class AppIot extends VueApp {
         name: "Plcs",
         component: Plcs,
         children: [
+          {
+            path: "create",
+            name: "PlcsCreate",
+            component: PlcsCreate
+          },
           {
             path: ":plcId",
             name: "PlcsPlc",
