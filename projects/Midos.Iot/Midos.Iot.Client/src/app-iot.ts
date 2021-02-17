@@ -10,6 +10,11 @@ import PlcsPlc from "./views/Plcs.Plc/index.vue";
 import PlcsPlcConfig from "./views/Plcs.Plc.Config/index.vue";
 import PlcsPlcDashboard from "./views/Plcs.Plc.Dashboard/index.vue";
 import PlcsPlcDebug from "./views/Plcs.Plc.Debug/index.vue";
+import PlcsPlcStatesCreate from "./views/Plcs.Plc.States.Create/index.vue";
+import PlcsPlcStatesIndex from "./views/Plcs.Plc.States.Index/index.vue";
+import PlcsPlcStatesState from "./views/Plcs.Plc.States.State/index.vue";
+import PlcsPlcStatesStateDetail from "./views/Plcs.Plc.States.State.Detail/index.vue";
+import PlcsPlcStatesStateHttpPushers from "./views/Plcs.Plc.States.State.HttpPushers/index.vue";
 
 @injectable()
 export class AppIot extends VueApp {
@@ -70,9 +75,45 @@ export class AppIot extends VueApp {
               },
               {
                 path: "config",
-                name: "PlcsPlcConfig",
+                name: "IotPlcsPlcConfig",
                 component: PlcsPlcConfig
               },
+              {
+                path: "states",
+                name: "IotPlcsPlcStatesIndex",
+                component: PlcsPlcStatesIndex,
+                children: [
+                  {
+                    path: "create",
+                    name: "IotPlcsPlcStatesCreate",
+                    component: PlcsPlcStatesCreate
+                  },
+                  {
+                    path: ":stateId",
+                    redirect: route => ({
+                      name: "IotPlcsPlcStatesStateDetail",
+                      params: {
+                        plcId: route.params.plcId,
+                        stateId: route.params.stateId,
+                      }
+                    }),
+                    name: "IotPlcsPlcStatesState",
+                    component: PlcsPlcStatesState,
+                    children: [
+                      {
+                        path: "detail",
+                        name: "IotPlcsPlcStatesStateDetail",
+                        component: PlcsPlcStatesStateDetail
+                      },
+                      {
+                        path: "http-posters",
+                        name: "IotPlcsPlcStatesStateHttpPushers",
+                        component: PlcsPlcStatesStateHttpPushers
+                      },
+                    ]
+                  }
+                ]
+              }
             ]
           },
         ]

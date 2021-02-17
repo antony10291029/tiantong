@@ -26,7 +26,7 @@
     </div>
 
     <router-view
-      :key="$route.fullPath"
+      :key="plcId"
       :plcId="plcId"
       class="is-flex-auto"
       style="overflow: auto"
@@ -53,7 +53,8 @@ export default defineComponent({
       tabs: [
         { text: "控制台", route: "IotPlcsPlcDashboard", icon: "dashboard" },
         { text: "调试", route: "IotPlcsPlcDebug", icon: "debug" },
-        { text: "配置", route: "PlcsPlcConfig", icon: "settings" },
+        { text: "配置", route: "IotPlcsPlcConfig", icon: "settings" },
+        { text: "数据点", route: "IotPlcsPlcStatesIndex", icon: "table" },
         // { text: "日志", route: "logs", icon: "logs" },
       ]
     };
