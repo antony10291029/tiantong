@@ -24,7 +24,7 @@
           </router-link>
         </li>
         <li v-for="id in plcs.result" :key="id">
-          <router-link :to="`${baseURL}/plcs/${id}`">
+          <router-link :to="{ name: 'PlcsPlc', params: { plcId: id } }">
             <span
               class="icon"
               style="margin-right: 0.25rem"
@@ -49,7 +49,7 @@
     </aside>
 
     <router-view
-      :key="currentPlc?.id"
+      :plcId="currentPlc?.id"
       :plc="currentPlc"
       :baseURL="`${baseURL}/plcs`"
       class="is-flex-auto"

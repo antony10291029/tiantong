@@ -2,7 +2,7 @@
   <div style="padding: 1.25rem">
     <div class="is-flex is-vcentered">
       <PlcRunningButton
-        :plcId="plc.id"
+        :plcId="plcId"
         :isRunning="isRunning"
         @change="handleRunningChange"
       />
@@ -24,7 +24,7 @@
           <div class="column">
             <PlcStates
               :plc="plc"
-              :plcId="plc.id"
+              :plcId="plcId"
               :isRunning="isRunning"
               :isDataWatchOpen="isDataWatchOpen"
             />
@@ -32,7 +32,7 @@
 
           <div class="column">
             <PlcLogs
-              :plcId="plc.id"
+              :plcId="plcId"
               :isRunning="isRunning"
             />
           </div>
@@ -58,8 +58,13 @@ export default defineComponent({
   },
 
   props: {
+    // @refact remove plc
     plc: {
       type: Object,
+      required: true
+    },
+    plcId: {
+      type: Number,
       required: true
     }
   },
@@ -82,7 +87,7 @@ export default defineComponent({
 
     const getDataSource = async () => {
       const result = await http.post("/plc-workers/is-running", {
-        plc_id: props.plc.id
+        plc_id: props.plcId
       });
 
       handleRunningChange(result.is_running);

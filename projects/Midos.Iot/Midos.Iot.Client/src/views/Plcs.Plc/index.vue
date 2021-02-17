@@ -1,13 +1,12 @@
 <template>
   <div
-    v-if="plc"
     class="is-flex-auto is-flex is-flex-column"
   >
     <div class="tabs" style="margin-bottom: 0; flex-shrink: 0">
       <ul>
         <router-link
           v-for="(tab, key) in tabs" :key="key"
-          :to="`${baseURL}/${plc.id}/${tab.route}`"
+          :to="{ route: tab.route, params: { plcId } }"
           v-slot="{ isActive }"
           custom
         >
@@ -24,10 +23,11 @@
     </div>
 
     <router-view
+      :key="$route.fullPath"
+      :baseURL="`${baseURL}/${plcId}`"
+      :plcId="plcId"
       class="is-flex-auto"
       style="overflow: auto"
-      :baseURL="`${baseURL}/${plc.id}`"
-      :plc="plc"
       v-bind="$attrs"
     />
   </div>
@@ -44,8 +44,8 @@ export default defineComponent({
       type: String,
       required: true
     },
-    plc: {
-      type: Object,
+    plcId: {
+      type: Number,
       required: true
     }
   },
@@ -53,7 +53,7 @@ export default defineComponent({
   setup() {
     return {
       tabs: [
-        { text: "控制台", route: "dashboard", icon: "dashboard" },
+        { text: "控制台", route: "PlcsPlcDashboard", icon: "dashboard" },
         { text: "调试", route: "debug", icon: "debug" },
         { text: "数据点", route: "states", icon: "table" },
         { text: "日志", route: "logs", icon: "logs" },

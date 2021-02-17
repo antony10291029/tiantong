@@ -44,7 +44,10 @@ export class AppIot extends VueApp {
             path: ":plcId",
             name: "PlcsPlc",
             component: PlcsPlc,
-            redirect: (route) => `/iot/plcs/${route.params.plcId}/dashboard`,
+            redirect: route => ({
+              name: "PlcsPlcDashboard",
+              params: { plcId: route.params.plcId }
+            }),
             children: [
               {
                 path: "dashboard",
