@@ -6,7 +6,7 @@
   >
     <span>启动</span>
     <span class="icon is-small">
-      <i class="iconfont icon-play"></i>
+      <i class="iconfont iot-play"></i>
     </span>
   </AsyncButton>
   <AsyncButton
@@ -16,7 +16,7 @@
   >
     <span>停止</span>
     <span class="icon is-small">
-      <i class="iconfont icon-stop"></i>
+      <i class="iconfont iot-stop"></i>
     </span>
   </AsyncButton>
 </template>

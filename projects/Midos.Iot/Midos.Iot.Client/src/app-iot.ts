@@ -26,7 +26,9 @@ export class AppIot extends VueApp {
 
   public text = "PLC 服务";
 
-  public icon = "cpu";
+  public icon = "iot-cpu";
+
+  public iconfont = "font_1809092_6rxp9dbsc7f";
 
   public route: RouteRecordRaw = {
     path: "/iot",

@@ -16,7 +16,7 @@
           >
             <a>
               <span class="icon">
-                <i :class="`iconfont icon-${tab.icon}`"></i>
+                <i :class="`iconfont iot-${tab.icon}`"></i>
               </span>
               <span>{{tab.text}}</span>
             </a>

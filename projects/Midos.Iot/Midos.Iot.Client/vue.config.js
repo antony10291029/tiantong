@@ -2,7 +2,7 @@ module.exports = {
   pages: {
     index: {
       entry: "src/main.ts",
-      template: "public/index.html"
+      template: "public/indexs.html"
     }
   }
 };
