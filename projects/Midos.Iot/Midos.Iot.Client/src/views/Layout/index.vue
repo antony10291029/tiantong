@@ -9,5 +9,3 @@ export default defineComponent({
   name: "App",
 });
 </script>
-
-<style lang="sass" src="@midos/vue-ui/style.sass" />
