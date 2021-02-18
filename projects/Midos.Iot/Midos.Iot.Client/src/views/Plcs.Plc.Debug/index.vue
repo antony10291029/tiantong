@@ -147,7 +147,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import DateTime from "@/share/utils/DateTime";
+import DateTime from "@midos/vue-ui/src/utils/DateTime";
 import PlcStateTypes from "@/components/PlcStateTypes.vue";
 import { useIotHttp } from "@/services/iot-http-client";
 

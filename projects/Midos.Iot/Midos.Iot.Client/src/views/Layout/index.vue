@@ -10,4 +10,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="sass" src="../../share/sass/_all.sass" />
+<style lang="sass" src="@midos/vue-ui/style.sass" />

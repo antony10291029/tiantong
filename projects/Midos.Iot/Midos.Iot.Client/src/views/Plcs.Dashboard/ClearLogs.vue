@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useConfirm } from "@/share/hooks/use-confirm";
+import { useConfirm } from "@midos/vue-ui";
 import { useIotHttp } from "@/services/iot-http-client";
 
 export default defineComponent({

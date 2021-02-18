@@ -64,7 +64,7 @@ import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import { Plc } from "@/entities";
 import { useIotHttp } from "@/services/iot-http-client";
-import { useConfirm } from "@/share/hooks/use-confirm";
+import { useConfirm } from "@midos/vue-ui";
 import { useRouter } from "vue-router";
 
 export default defineComponent({

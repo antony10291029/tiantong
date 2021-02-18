@@ -34,7 +34,7 @@ import cloneDeep from "lodash/cloneDeep";
 import PlcStateForm from "@/components/PlcStateForm.vue";
 import { PlcState } from "@/entities";
 import { useIotHttp } from "@/services/iot-http-client";
-import { useConfirm } from "@/share/hooks/use-confirm";
+import { useConfirm } from "@midos/vue-ui";
 
 export default defineComponent({
   name: "StateUpdate",

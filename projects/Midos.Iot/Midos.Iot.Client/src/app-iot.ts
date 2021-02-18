@@ -1,7 +1,6 @@
 import { injectable } from "@midos/core";
-import { VueApp, VueUI } from "@midos/vue-ui";
+import { VueApp } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
-import { plugin } from "./share";
 import App from "./views/Layout/index.vue";
 import Plcs from "./views/Plcs/index.vue";
 import PlcsCreate from "./views/Plcs.Create/index.vue";
@@ -23,14 +22,6 @@ import PlcsPlcStatesStateHttpPushers from "./views/Plcs.Plc.States.State.HttpPus
 
 @injectable()
 export class AppIot extends VueApp {
-  public constructor(private ui: VueUI) {
-    super();
-  }
-
-  public configure(): void {
-    this.ui.app.use(plugin);
-  }
-
   public key = "app-iot";
 
   public text = "PLC 服务";
