@@ -1,0 +1,36 @@
+<template>
+  <span
+    v-if="hasPalletCode"
+    :class="`tag is-${color}`"
+  >
+    {{code}}
+  </span>
+  <span v-else
+    class="tag"
+  >
+    无托盘
+  </span>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: {
+    color: {
+      type: String,
+      default: "info"
+    },
+    code: {
+      type: String,
+      required: true
+    }
+  },
+
+  computed: {
+    hasPalletCode (): boolean {
+      return !!parseInt(this.code) && (this.code as any).length === 6;
+    }
+  }
+});
+</script>
