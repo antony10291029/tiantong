@@ -47,7 +47,7 @@
     </span>
 
     <a
-      v-if="isOpened"
+      v-if="door.isOpened"
       @click="handleClose"
       class="tag is-light is-info"
     >
@@ -69,13 +69,14 @@
 import { computed, defineComponent, PropType } from "vue";
 import { useConfirm } from "@midos/vue-ui";
 import { useWcsHttp } from "@/services/wcs-http";
+import { Door } from "./_interfaces";
 
 export default defineComponent({
   name: "Door",
 
   props: {
     door: {
-      type: Object as PropType<any>,
+      type: Object as PropType<Door>,
       required: true
     }
   },
@@ -84,15 +85,14 @@ export default defineComponent({
     const http = useWcsHttp();
     const confirm = useConfirm();
 
-    const isRequesting = computed(() => (props.door as any)?.requestingTasks.length);
-    const isOpened = computed(() => (props.door as any).isOpened);
+    const isRequesting = computed(() => props.door.requestingTasks.length);
 
     async function handleOpen() {
       confirm.open({
         title: "开门",
         content: "手动执行关门指令",
         handler: async () => await http.post("/doors/control", {
-          door_id: (props.door as any)?.id,
+          door_id: props.door.id,
           command: "open"
         })
       });
@@ -103,7 +103,7 @@ export default defineComponent({
         title: "关门",
         content: "手动执行关门指令",
         handler: async () => await http.post("/doors/control", {
-          door_id: (props.door as any).door?.id,
+          door_id: props.door.id,
           command: "close"
         })
       });
@@ -116,7 +116,7 @@ export default defineComponent({
           ? "设置常开后，将默认放行 AGC 通过"
           : "关闭常开后，AGC 根据正常逻辑通行",
         handler: async () => await http.post("/doors/force-opened/set", {
-          doorId: (props.door as any)?.id,
+          doorId: props.door.id,
           value
         })
       });
@@ -125,7 +125,6 @@ export default defineComponent({
     return {
       confirm,
       isRequesting,
-      isOpened,
       handleOpen,
       handleClose,
       handleSetForceOpened

@@ -11,50 +11,35 @@
           class="column is-narrow"
           v-for="id in ['1', '2', '3']" :key="id"
         >
-          <Lifter :lifterId="id" :lifter="lifters[id]" :doors="doors" />
+          <TheLifter :lifterId="id" :lifter="lifters[id]" :doors="doors" />
         </div>
       </div>
 
-      <Doors :doors="doors" />
+      <TheDoors :doors="doors" />
     </template>
   </AsyncLoader>
 </template>
 
-<script>
-/* eslint-disable vue/no-unused-components */
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useWcsHttp } from "@/services/wcs-http";
 import { useInterval } from "@midos/vue-ui";
-import Doors from "./Doors.vue";
-import Lifter from "./Lifter.vue";
+import TheDoors from "./Doors.vue";
+import TheLifter from "./Lifter.vue";
+import { Obj, Door, Lifter } from "./_interfaces";
 
 export default defineComponent({
   name: "Devices",
   components: {
-    Doors,
-    Lifter,
+    TheDoors,
+    TheLifter,
   },
 
   setup() {
     const http = useWcsHttp();
 
-    const lifters = ref([{
-      isWorking: false,
-      isAlerting: false,
-      floors: [3, 2, 1, 0].map(() => ({
-        isDoorOpened: false,
-        isExported: false,
-        isImportAllowed: false,
-        isScanned: false,
-      }))
-    }]);
-    const doors = ref([{
-      id: "",
-      type: "automated",
-      IsOpened: false,
-      taskId: "",
-      count: 0,
-    }]);
+    const lifters = ref<Obj<Lifter>>({});
+    const doors = ref<Obj<Door>>({});
     const isInitialized = ref([false, false]);
     const isPending = ref(false);
 

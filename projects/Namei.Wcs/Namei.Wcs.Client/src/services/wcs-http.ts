@@ -6,7 +6,7 @@ export class NameiWcsHttp extends HttpClient {
   public key = "NameiWcsHttp";
 
   public constructor(config: Config) {
-    super(config.IsDevelopment
+    super(config.IsProduction
       ? "http://localhost:5100"
       : "http://172.16.2.64:5100"
     );

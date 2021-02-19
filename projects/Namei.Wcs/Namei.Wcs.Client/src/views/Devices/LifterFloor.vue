@@ -63,10 +63,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent, PropType } from "vue";
 import { useWcsHttp } from "@/services/wcs-http";
 import { useConfirm } from "@midos/vue-ui";
-import { computed, defineComponent } from "vue";
 import LifterPlatform from "./LifterPlatform.vue";
 
 export default defineComponent({
@@ -90,7 +90,7 @@ export default defineComponent({
       required: true
     },
     door: {
-      type: Object,
+      type: Object as PropType<Door>,
       required: true
     }
   },
@@ -99,10 +99,8 @@ export default defineComponent({
     const http = useWcsHttp();
     const confirm = useConfirm();
 
-    const isAgcRequesting = computed(() => !props.door?.requestingTasks.length);
-
+    const isAgcRequesting = computed(() => props.door.requestingTasks.length);
     const isImportAllowed = computed(() => props.floorState.isImportAllowed);
-
     const isExported = computed(() => props.floorState.isExported);
 
     function handleOpenDoor() {
