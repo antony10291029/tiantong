@@ -126,7 +126,7 @@ namespace Namei.Wcs.Api
         if (
           door.Door.IsOpened &&
           door.Door.Type == DoorType.Crash &&
-          door.Door.OpenedAt.AddSeconds(10) < DateTime.Now
+          door.Door.OpenedAt.AddSeconds(20) < DateTime.Now
         ) {
           door.Door.Close();
         }
