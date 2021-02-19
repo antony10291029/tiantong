@@ -16,7 +16,7 @@
         class="button is-info"
       >
         <span class="icon">
-          <i class="iconfont icon-search"></i>
+          <i class="icon-namei-wcs icon-namei-wcs-search"></i>
         </span>
       </a>
     </div>

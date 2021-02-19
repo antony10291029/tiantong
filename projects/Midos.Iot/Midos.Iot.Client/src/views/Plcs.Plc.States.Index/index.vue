@@ -45,14 +45,14 @@
                         class="icon"
                         v-if="state.is_collect"
                       >
-                        <i class="iconfont iot-collect"></i>
+                        <i class="icon-iot icon-iot-collect"></i>
                       </span>
                       <span
                         class="icon"
                         style="margin-left: 0.25rem"
                         v-if="state.is_heartbeat"
                       >
-                        <i class="iconfont iot-heartbeat"></i>
+                        <i class="icon-iot icon-iot-heartbeat"></i>
                       </span>
                     </td>
                 </tr>

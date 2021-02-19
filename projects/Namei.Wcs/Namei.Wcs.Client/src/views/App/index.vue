@@ -11,7 +11,7 @@
             :to="{ name: menu.route }"
           >
             <span class="icon">
-              <i :class="`iconfont namei-wcs-${menu.icon}`"></i>
+              <i :class="`icon-namei-wcs icon-namei-wcs-${menu.icon}`"></i>
             </span>
             <span>{{menu.text}}</span>
           </router-link>

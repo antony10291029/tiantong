@@ -18,7 +18,7 @@
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <i class="iconfont iot-manage"></i>
+              <i class="icon-iot icon-iot-manage"></i>
             </span>
             <span>服务管理</span>
           </router-link>
@@ -29,7 +29,7 @@
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <span class="iconfont iot-device"></span>
+              <span class="icon-iot icon-iot-device"></span>
             </span>
             <span>{{plcs.data[id].name}}</span>
           </router-link>
@@ -40,7 +40,7 @@
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <i class="iconfont iot-add"></i>
+              <i class="icon-iot icon-iot-add"></i>
             </span>
             <span>添加设备</span>
           </router-link>

@@ -22,7 +22,7 @@
       @click="handleSetForceOpened(false)"
     >
       <span class="icon">
-        <i class="iconfont namei-wcs-press"></i>
+        <i class="icon-namei-wcs icon-namei-wcs-press"></i>
       </span>
     </a>
 
@@ -33,7 +33,7 @@
       @click="handleSetForceOpened(true)"
     >
       <span class="icon">
-        <i class="iconfont namei-wcs-press"></i>
+        <i class="icon-namei-wcs icon-namei-wcs-press"></i>
       </span>
     </a>
 

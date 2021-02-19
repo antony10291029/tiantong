@@ -17,9 +17,9 @@ export class NameiWcs extends VueApp {
 
   public text = "WCS";
 
-  public icon = "namei-wcs-logo";
+  public icon = "icon-namei-wcs icon-namei-wcs-logo";
 
-  public iconfont = "font_1966999_xzvdh8z5d8i";
+  public iconfont = "font_1966999_92xs8hawkq";
 
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
