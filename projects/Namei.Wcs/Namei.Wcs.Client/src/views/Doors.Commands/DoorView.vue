@@ -59,7 +59,7 @@ export default defineComponent({
 
   props: {
     doorId: {
-      type: Number,
+      type: String,
       required: true
     }
   },

@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, getCurrentInstance, ref } from "vue";
 import { useWcsHttp } from "@/services/wcs-http";
 import DoorView from "./DoorView.vue";
 
@@ -41,9 +41,11 @@ export default defineComponent({
   },
 
   setup() {
+    const me = getCurrentInstance();
+    console.log(me);
     const http = useWcsHttp();
 
-    const doorId = ref(1);
+    const doorId = ref("101");
     const doors = ref<any[]>([]);
 
     async function getDoors() {

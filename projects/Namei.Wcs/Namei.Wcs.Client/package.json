@@ -1,6 +1,6 @@
 {
-  "name": "@midos/namei-wcs",
-  "version": "0.0.1",
+  "name": "@midos/app-namei-wcs",
+  "version": "0.0.4",
   "license": "MIT",
   "main": "index.ts",
   "files": [
@@ -12,15 +12,9 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {
-    "@midos/core": "^0.0.1-alpha.21",
-    "@midos/vue-ui": "^0.0.1-alpha.21",
-    "core-js": "^3.6.5",
-    "lodash": "^4.17.20",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
-  },
   "devDependencies": {
+    "@midos/core": "^0.0.1-alpha.22",
+    "@midos/vue-ui": "^0.0.1-alpha.22",
     "@types/jest": "^24.0.19",
     "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -35,12 +29,24 @@
     "@vue/eslint-config-airbnb": "^5.0.2",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^2.0.0-0",
+    "core-js": "^3.6.5",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^7.0.0-0",
+    "lodash": "^4.17.20",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
-    "vue-jest": "^5.0.0-0"
+    "vue": "^3.0.0",
+    "vue-jest": "^5.0.0-0",
+    "vue-router": "^4.0.0-0"
+  },
+  "peerDependencies": {
+    "@midos/core": "^0.0.1-alpha.21",
+    "@midos/vue-ui": "^0.0.1-alpha.21",
+    "core-js": "^3.6.5",
+    "lodash": "^4.17.20",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0"
   }
 }
