@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance, ref } from "vue";
-import { useWcsHttp } from "@/services/wcs-http";
+import { useWcsHttp } from "../../services/wcs-http";
 import DoorView from "./DoorView.vue";
 
 export default defineComponent({

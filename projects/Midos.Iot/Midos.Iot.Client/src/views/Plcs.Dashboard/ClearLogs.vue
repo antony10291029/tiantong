@@ -54,7 +54,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useConfirm } from "@midos/vue-ui";
-import { useIotHttp } from "@/services/iot-http-client";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "ClearLogs",

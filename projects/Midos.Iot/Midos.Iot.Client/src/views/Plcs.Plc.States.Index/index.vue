@@ -78,7 +78,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useIotHttp } from "@/services/iot-http-client";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "PlcStates",

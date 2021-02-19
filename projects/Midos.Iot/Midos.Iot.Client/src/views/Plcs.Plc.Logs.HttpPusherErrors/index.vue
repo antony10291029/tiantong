@@ -46,8 +46,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { HttpPusher } from "@/entities";
-import { useIotHttp } from "@/services/iot-http-client";
+import { HttpPusher } from "../../entities";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "HttpPusherErrors",

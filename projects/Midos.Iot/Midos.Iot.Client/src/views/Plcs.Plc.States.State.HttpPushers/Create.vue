@@ -27,9 +27,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import HttpPusherForm from "@/components/HttpPusherForm.vue";
-import { HttpPusher } from "@/entities";
-import { useIotHttp } from "@/services/iot-http-client";
+import { HttpPusher } from "../../entities";
+import { useIotHttp } from "../../services/iot-http-client";
+import HttpPusherForm from "../../components/HttpPusherForm.vue";
 
 export default defineComponent({
   name: "PlcStateHttpPusherCreate",

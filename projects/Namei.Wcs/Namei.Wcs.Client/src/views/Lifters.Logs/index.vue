@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import LogList from "@/components/LogList.vue";
+import LogList from "../../components/LogList.vue";
 
 export default defineComponent({
   name: "Lifters",

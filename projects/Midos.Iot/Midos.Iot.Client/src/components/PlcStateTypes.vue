@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { PlcStateType } from "@/entities";
+import { PlcStateType } from "../entities";
 
 export default defineComponent({
   name: "PlcStateTypes",

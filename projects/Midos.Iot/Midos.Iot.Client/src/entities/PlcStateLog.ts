@@ -1,4 +1,4 @@
-import DateTime from "@midos/vue-ui/src/utils/DateTime";
+import { DateTime } from "@midos/vue-ui";
 
 export class PlcStateLog {
   id = 0

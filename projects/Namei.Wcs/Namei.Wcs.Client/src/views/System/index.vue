@@ -98,8 +98,8 @@
 </template>
 
 <script lang="ts">
-import { useWcsHttp } from "@/services/wcs-http";
 import { defineComponent, ref } from "vue";
+import { useWcsHttp } from "../../services/wcs-http";
 import ClearLogs from "./ClearLogs.vue";
 
 export default defineComponent({

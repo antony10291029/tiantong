@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import { useIotHttp } from "@/services/iot-http-client";
 import { defineComponent } from "vue";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "StopDevices",

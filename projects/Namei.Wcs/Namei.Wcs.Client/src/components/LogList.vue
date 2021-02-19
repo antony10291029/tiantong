@@ -31,8 +31,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from "vue";
-import { useWcsHttp } from "@/services/wcs-http";
 import { useInterval } from "@midos/vue-ui";
+import { useWcsHttp } from "../services/wcs-http";
 import SearchField from "./SearchField.vue";
 
 export default defineComponent({

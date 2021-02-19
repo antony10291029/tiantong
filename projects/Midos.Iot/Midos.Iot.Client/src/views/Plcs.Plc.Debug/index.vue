@@ -147,9 +147,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import DateTime from "@midos/vue-ui/src/utils/DateTime";
-import PlcStateTypes from "@/components/PlcStateTypes.vue";
-import { useIotHttp } from "@/services/iot-http-client";
+import { DateTime } from "@midos/vue-ui";
+import { useIotHttp } from "../../services/iot-http-client";
+import PlcStateTypes from "../../components/PlcStateTypes.vue";
 
 export default defineComponent({
   name: "PlcDebug",

@@ -138,7 +138,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { useWcsHttp } from "@/services/wcs-http";
+import { useWcsHttp } from "../../services/wcs-http";
 
 export default defineComponent({
   name: "Lifter",

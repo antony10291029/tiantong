@@ -93,7 +93,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { HttpPusher } from "@/entities";
+import { HttpPusher } from "../entities";
 
 export default defineComponent({
   name: "PlcStateHttpPusher",

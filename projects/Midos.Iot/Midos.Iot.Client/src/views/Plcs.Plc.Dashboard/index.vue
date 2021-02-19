@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from "vue";
-import { useIotHttp } from "@/services/iot-http-client";
+import { useIotHttp } from "../../services/iot-http-client";
 import PlcRunningButton from "./PlcRunningButton.vue";
 import PlcLogs from "./PlcLogs.vue";
 import PlcStates from "./PlcStates.vue";

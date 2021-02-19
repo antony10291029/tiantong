@@ -59,13 +59,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import PlcForm from "@/components/PlcForm.vue";
+import { useRouter } from "vue-router";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
-import { Plc } from "@/entities";
-import { useIotHttp } from "@/services/iot-http-client";
 import { useConfirm } from "@midos/vue-ui";
-import { useRouter } from "vue-router";
+import PlcForm from "../../components/PlcForm.vue";
+import { Plc } from "../../entities";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "PlcConfig",

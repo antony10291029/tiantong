@@ -136,7 +136,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { Plc, PlcModel } from "@/entities";
+import { Plc, PlcModel } from "../entities";
 
 export default defineComponent({
   name: "PlcForm",

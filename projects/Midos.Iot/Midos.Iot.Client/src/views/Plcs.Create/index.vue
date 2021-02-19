@@ -32,10 +32,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import PlcForm from "@/components/PlcForm.vue";
-import { Plc } from "@/entities/Plc";
-import { useIotHttp } from "@/services/iot-http-client";
 import { useRouter } from "vue-router";
+import { useIotHttp } from "../../services/iot-http-client";
+import { Plc } from "../../entities/Plc";
+import PlcForm from "../../components/PlcForm.vue";
 
 export default defineComponent({
   name: "PlcCreate",

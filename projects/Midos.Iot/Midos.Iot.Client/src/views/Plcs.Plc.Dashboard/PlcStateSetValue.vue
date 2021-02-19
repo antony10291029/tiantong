@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, ref } from "vue";
-import { useIotHttp } from "@/services/iot-http-client";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "PlcStateSetValue",

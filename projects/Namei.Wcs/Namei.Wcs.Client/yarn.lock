@@ -1038,19 +1038,19 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@midos/core@^0.0.1-alpha.21":
-  version "0.0.1-alpha.21"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.1-alpha.21.tgz#2ade9133a8961ac938bf3c5db5ca786482598ebf"
-  integrity sha512-yZ9/PpOzyrbkQsUIJg9YVYHFBC4vrtGO23H4bHVCNN7l+flPNdvOUV5qQv1/Sc3dF80ZuQqbMHESIMQB/yCvnA==
+"@midos/core@^0.0.1-alpha.22":
+  version "0.0.1-alpha.22"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.1-alpha.22.tgz#dbef3101d1b85b02af7d0d7cd0d77de5ba19763c"
+  integrity sha512-Yw6Gjrc+ScMfBT425fJmyfUkGLRDstRIdX1X0NhldjEIkBOB3yyckhYrYKwU1FgC56alc08QhM4/ngNPgkRinw==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
     tsyringe "^4.4.0"
 
-"@midos/vue-ui@^0.0.1-alpha.21":
-  version "0.0.1-alpha.21"
-  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.1-alpha.21.tgz#6a61b944fabaa0f81c355c7cff06d0abfbc9f414"
-  integrity sha512-Ss2rC4aE4BpaINhNlKhQdGlg/KY204XW28yt2eJm8HMQkAcaN2d3OQIEwwinrgRg6UOOyq/OlvEJ38+Fm6vs2A==
+"@midos/vue-ui@^0.0.1-alpha.22":
+  version "0.0.1-alpha.22"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.1-alpha.22.tgz#a7f45a13f9b1bc8ea9493863779ba1a4abda07bf"
+  integrity sha512-R9LEKa8c8E8iUi74JwzuYjekM1pSnIAA+87eL2pdWXsKF1ylhRqIYCLlkTvbnEfDSlGhh9rc3QC6ovIw081lQA==
   dependencies:
     bulma "^0.9.2"
 

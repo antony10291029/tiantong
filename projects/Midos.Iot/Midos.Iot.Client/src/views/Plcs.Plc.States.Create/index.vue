@@ -35,9 +35,9 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import PlcStateForm from "@/components/PlcStateForm.vue";
-import { PlcState } from "@/entities";
-import { useIotHttp } from "@/services/iot-http-client";
+import { PlcState } from "../../entities";
+import { useIotHttp } from "../../services/iot-http-client";
+import PlcStateForm from "../../components/PlcStateForm.vue";
 
 export default defineComponent({
   name: "PlcStateCreate",

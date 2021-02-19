@@ -22,8 +22,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useWcsHttp } from "@/services/wcs-http";
 import { useInterval } from "@midos/vue-ui";
+import { useWcsHttp } from "../../services/wcs-http";
 import TheDoors from "./Doors.vue";
 import TheLifter from "./Lifter.vue";
 import { Obj, Door, Lifter } from "./_interfaces";

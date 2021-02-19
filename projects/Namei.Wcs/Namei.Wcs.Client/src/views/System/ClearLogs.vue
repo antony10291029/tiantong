@@ -61,9 +61,9 @@
 </template>
 
 <script lang="ts">
-import { useWcsHttp } from "@/services/wcs-http";
-import { useConfirm } from "@midos/vue-ui";
 import { defineComponent, ref } from "vue";
+import { useConfirm } from "@midos/vue-ui";
+import { useWcsHttp } from "../../services/wcs-http";
 
 export default defineComponent({
   name: "ClearLogs",

@@ -65,9 +65,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { useWcsHttp } from "@/services/wcs-http";
 import { useConfirm } from "@midos/vue-ui";
+import { useWcsHttp } from "../../services/wcs-http";
 import LifterPlatform from "./LifterPlatform.vue";
+import { Door } from "./_interfaces";
 
 export default defineComponent({
   name: "LifterFloor",
@@ -109,7 +110,7 @@ export default defineComponent({
         content: "确认后将直接允许 AGC 通过",
         handler: () => http.post("/doors/control", {
           command: "open",
-          door_id: this.door.id,
+          door_id: props.door.id,
         }),
       });
     }
@@ -119,8 +120,8 @@ export default defineComponent({
         title: "放货",
         content: "发送放货完成信号",
         handler: () => http.post("/lifters/imported", {
-          lifterId: this.lifterId,
-          floor: this.floor.toString()
+          lifterId: props.lifterId,
+          floor: props.floor.toString()
         })
       });
     }
@@ -130,8 +131,8 @@ export default defineComponent({
         title: "取货",
         content: "发送取货完成信号",
         handler: () => http.post("/lifters/taken", {
-          lifterId: this.lifterId,
-          floor: this.floor.toString()
+          lifterId: props.lifterId,
+          floor: props.floor.toString()
         })
       });
     }

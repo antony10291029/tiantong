@@ -32,8 +32,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, toRefs } from "vue";
-import { useIotHttp } from "@/services/iot-http-client";
-import { useInterval } from "@/hooks/use-interval";
+import { useIotHttp } from "../../services/iot-http-client";
+import { useInterval } from "../../hooks/use-interval";
 
 export default defineComponent({
   name: "PlcLogs",

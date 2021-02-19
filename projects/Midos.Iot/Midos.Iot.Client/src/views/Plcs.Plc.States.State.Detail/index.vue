@@ -31,10 +31,10 @@
 import { computed, defineComponent, ref } from "vue";
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
-import PlcStateForm from "@/components/PlcStateForm.vue";
-import { PlcState } from "@/entities";
-import { useIotHttp } from "@/services/iot-http-client";
 import { useConfirm } from "@midos/vue-ui";
+import { PlcState } from "../../entities";
+import PlcStateForm from "../../components/PlcStateForm.vue";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "StateUpdate",

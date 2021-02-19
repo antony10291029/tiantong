@@ -1,4 +1,4 @@
-import DateTime from "@midos/vue-ui/src/utils/DateTime";
+import { DateTime } from "@midos/vue-ui";
 
 export enum PlcModel {
   mc3eBinary = "mc3e-binary",

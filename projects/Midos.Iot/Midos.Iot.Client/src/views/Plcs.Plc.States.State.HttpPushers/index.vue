@@ -54,11 +54,11 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useConfirm } from "@midos/vue-ui";
-import HttpPusherForm from "@/components/HttpPusherForm.vue";
-import { HttpPusher } from "@/entities";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
-import { useIotHttp } from "@/services/iot-http-client";
+import { HttpPusher } from "../../entities";
+import { useIotHttp } from "../../services/iot-http-client";
+import HttpPusherForm from "../../components/HttpPusherForm.vue";
 import HttpPusherCreate from "./Create.vue";
 
 export default defineComponent({

@@ -208,8 +208,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { PlcState, PlcStateType } from "@/entities";
-import PlcStateTypes from "@/components/PlcStateTypes.vue";
+import PlcStateTypes from "./PlcStateTypes.vue";
+import { PlcState, PlcStateType } from "../entities";
 
 export default defineComponent({
   name: "PlcStateForm",

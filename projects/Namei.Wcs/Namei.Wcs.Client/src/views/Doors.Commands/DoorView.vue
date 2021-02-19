@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useWcsHttp } from "@/services/wcs-http";
+import { useWcsHttp } from "../../services/wcs-http";
 
 export default defineComponent({
   name: "DoorCommandsDashboard",
