@@ -68,7 +68,7 @@ const rootRoutes: RouteConfig[] = [
           }
         ]
       }
-    ]
+    ] 
   },
   {
     path: 'system',

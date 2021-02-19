@@ -1,9 +1,15 @@
 import { injectable } from "@midos/core";
 import { VueApp } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
-import Layout from "./views/Layout/index.vue";
+import App from "./views/App/index.vue";
 import Devices from "./views/Devices/index.vue";
 import System from "./views/System/index.vue";
+import Lifters from "./views/Lifters/index.vue";
+import LifterLogs from "./views/Lifters.Logs/index.vue";
+import LifterCommands from "./views/Lifters.Commands/index.vue";
+import Doors from "./views/Doors/index.vue";
+import DoorsStates from "./views/Doors.Logs/index.vue";
+import DoorCommands from "./views/Doors.Commands/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
@@ -18,10 +24,11 @@ export class NameiWcs extends VueApp {
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
     name: "NameiWcs",
-    component: Layout,
+    redirect: { name: "NameiWcsDevices" },
+    component: App,
     children: [
       {
-        path: "/devices",
+        path: "devices",
         name: "NameiWcsDevices",
         component: Devices,
       },
@@ -29,6 +36,42 @@ export class NameiWcs extends VueApp {
         path: "system",
         name: "NameiWcsSystem",
         component: System
+      },
+      {
+        path: "lifters",
+        name: "NameiWcsLifters",
+        redirect: { name: "NameiWcsLifterLogs" },
+        component: Lifters,
+        children: [
+          {
+            path: "logs",
+            name: "NameiWcsLifterLogs",
+            component: LifterLogs
+          },
+          {
+            path: "commands",
+            name: "NameiWcsLifterCommands",
+            component: LifterCommands
+          }
+        ]
+      },
+      {
+        path: "doors",
+        name: "NameiWcsDoors",
+        redirect: { name: "NameiWcsDoorsLogs" },
+        component: Doors,
+        children: [
+          {
+            path: "logs",
+            name: "NameiWcsDoorsLogs",
+            component: DoorsStates
+          },
+          {
+            path: "commands",
+            name: "NameiWcsDoorsCommands",
+            component: DoorCommands
+          }
+        ]
       },
     ]
   }
