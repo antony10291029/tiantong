@@ -20,15 +20,15 @@
 
         <div class="field has-addons">
           <div
-            v-for="key in 4" :key="key"
+            v-for="floor in floors" :key="floor"
             class="control"
           >
             <a
               class="button"
-              @click="setDestination(key.toString())"
-              v-class:is-info="key == destination"
+              @click="setDestination(floor)"
+              v-class:is-info="floor === destination"
             >
-              {{key}} 楼
+              {{floor}} 楼
             </a>
           </div>
         </div>
@@ -49,11 +49,11 @@
 
         <div class="buttons">
           <a
-            @click="publishMessage(key.toString(), 'imported')"
+            @click="publishMessage(floor, 'imported')"
             class="button is-info"
-            v-for="key in 4" :key="key"
+            v-for="floor in floors" :key="floor"
           >
-            {{key}}F - 放货完成
+            {{floor}}F - 放货完成
           </a>
         </div>
       </div>
@@ -73,11 +73,11 @@
 
         <div class="buttons">
           <a
-            @click="publishMessage(key.toString(), 'scanned')"
+            @click="publishMessage(floor, 'scanned')"
             class="button is-info"
-            v-for="key in 4" :key="key"
+            v-for="floor in floors" :key="floor"
           >
-            {{key}}F - 扫码完成
+            {{floor}}F - 扫码完成
           </a>
         </div>
       </div>
@@ -97,11 +97,11 @@
 
         <div class="buttons">
           <a
-            @click="publishMessage(key.toString(), 'exported')"
+            @click="publishMessage(floor, 'exported')"
             class="button is-info"
-            v-for="key in 4" :key="key"
+            v-for="floor in floors" :key="floor"
           >
-            {{key}}F - 请求取货
+            {{floor}}F - 请求取货
           </a>
         </div>
       </div>
@@ -121,11 +121,11 @@
 
         <div class="buttons">
           <a
-            @click="publishMessage(key.toString(), 'taken')"
+            @click="publishMessage(floor, 'taken')"
             class="button is-info"
-            v-for="key in 4" :key="key"
+            v-for="floor in floors" :key="floor"
           >
-            {{key}}F - 取货完成
+            {{floor}}F - 取货完成
           </a>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default defineComponent({
 
   props: {
     lifterId: {
-      type: Number,
+      type: String,
       required: true
     }
   },
@@ -154,20 +154,20 @@ export default defineComponent({
     const http = useWcsHttp();
     const destination = ref("1");
 
-    async function getDestination () {
+    async function getDestination() {
       const result = await http.post("/test/lifters/destination");
 
       destination.value = result.destination;
     }
 
-    async function setDestination (value: number) {
+    async function setDestination(value: string) {
       await http.post("/test/lifters/set-destination", {
         destination: value
       });
       await getDestination();
     }
 
-    async function publishMessage (floor: string, message: string) {
+    async function publishMessage(floor: string, message: string) {
       await http.post("/test/lifters/publish-message", {
         lifter_id: props.lifterId,
         floor,
@@ -181,7 +181,8 @@ export default defineComponent({
       destination,
       getDestination,
       setDestination,
-      publishMessage
+      publishMessage,
+      floors: ["1", "2", "3", "4"],
     };
   }
 });

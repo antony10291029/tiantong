@@ -37,14 +37,14 @@ export default defineComponent({
   },
 
   setup() {
-    const lifterId = ref(1);
+    const lifterId = ref("1");
 
     return {
       lifterId,
       lifters: [
-        { id: 1, text: "1 号梯（改造货梯）" },
-        { id: 2, text: "2 号梯（提升机）" },
-        { id: 3, text: "3 号梯（提升机）" }
+        { id: "1", text: "1 号梯（改造货梯）" },
+        { id: "2", text: "2 号梯（提升机）" },
+        { id: "3", text: "3 号梯（提升机）" }
       ]
     };
   }
