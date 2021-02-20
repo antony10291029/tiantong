@@ -86,7 +86,7 @@ namespace Namei.Wcs.Api
         _cap.PublishAsync(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
       }
 
-      return new { message = "指令已发送" };
+      return Success("指令已发送");
     }
 
     [HttpPost]
