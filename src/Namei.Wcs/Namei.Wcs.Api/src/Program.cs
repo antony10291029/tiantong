@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Midos.Extensions;
 
 namespace Namei.Wcs.Api
 {
@@ -14,6 +14,7 @@ namespace Namei.Wcs.Api
     public static IHostBuilder CreateHostBuilder(string[] args, string port = null)
     {
       return Host.CreateDefaultBuilder(args)
+        .ConfigureEnvironment()
         .ConfigureWebHostDefaults(builder => {
           builder.UseIISIntegration();
           builder.UseStartup<Startup>();
