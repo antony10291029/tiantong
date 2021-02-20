@@ -38,9 +38,7 @@ namespace Namei.Wcs.Api
     {
       var message = "指令未识别";
 
-      if (!Config.EnableWmsCommands) {
-        message = "WMS 指令未开启";
-      } if (param.method == "deliver") {
+      if (param.method == "deliver") {
         _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(
           param.liftCode,
           param.floor,

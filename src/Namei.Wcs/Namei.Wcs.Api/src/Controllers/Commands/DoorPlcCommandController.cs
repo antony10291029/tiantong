@@ -25,9 +25,7 @@ namespace Namei.Wcs.Api
     {
       var message = "指令未识别";
 
-      if (!Config.EnableDoorsCommands) {
-        message = "自动门指令未开启";
-      } else if (param.value == "12") {
+      if (param.value == "12") {
         message = "正在处理开门完成指令";
         _cap.Publish(DoorOpenedEvent.Message, new DoorOpenedEvent(param.door_id));
       } else if (param.value == "22") {

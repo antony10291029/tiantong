@@ -88,44 +88,5 @@ namespace Namei.Wcs.Api
 
       return Success("指令已发送");
     }
-
-    [HttpPost]
-    [Route("/test/system-settings")]
-    public object GetSystemSettings()
-    {
-      return new {
-        enableDoorsCommands = Config.EnableDoorsCommands,
-        enableLifterCommands = Config.EnableLifterCommands,
-        enableHoisterCommands = Config.EnableHoistersCommands,
-        enableWmsCommands = Config.EnableWmsCommands,
-        enableRcsCommands = Config.EnableRcsCommands,
-      };
-    }
-
-    public class SystemSettingsParams
-    {
-      public bool enableDoorsCommands { get; set; }
-
-      public bool enableLifterCommands { get; set; }
-
-      public bool enableHoisterCommands { get; set; }
-
-      public bool enableWmsCommands { get; set; }
-
-      public bool enableRcsCommands { get; set; }
-    }
-
-    [HttpPost]
-    [Route("/test/system-settings/set")]
-    public object SetSystemSettings([FromBody] SystemSettingsParams param)
-    {
-      Config.EnableDoorsCommands = param.enableDoorsCommands;
-      Config.EnableLifterCommands = param.enableLifterCommands;
-      Config.EnableHoistersCommands = param.enableHoisterCommands;
-      Config.EnableWmsCommands = param.enableWmsCommands;
-      Config.EnableRcsCommands = param.enableRcsCommands;
-
-      return Success("系统设置已保存");
-    }
   }
 }

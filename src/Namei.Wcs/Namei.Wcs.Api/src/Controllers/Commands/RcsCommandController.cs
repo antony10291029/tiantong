@@ -44,9 +44,7 @@ namespace Namei.Wcs.Api
 
       _logger.Log("info", "test", JsonSerializer.Serialize(param));
 
-      if (!Config.EnableRcsCommands) {
-        message = "RCS 指令未开启";
-      } else if (param.actionTask == "applyLock") {
+      if (param.actionTask == "applyLock") {
         message = "正在处理开门指令";
         _cap.Publish(DoorTaskRequestOpenEvent.Message, new DoorTaskRequestOpenEvent(param.deviceIndex, param.uuid));
       } else if (param.actionTask == "releaseDevice") {

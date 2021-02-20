@@ -48,9 +48,7 @@ namespace Namei.Wcs.Api
       var isRequestingPickup = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
       var isSpare = FirstLifterService.IsSpare(param.value, param.old_value);
 
-      if (!Config.EnableLifterCommands) {
-        message = "货梯指令未开启";
-      } else if (isRequestingPickup) {
+      if (isRequestingPickup) {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent("1", param.floor));
         message = "正在处理取货指令";
       } else if (isScanned) {
@@ -85,9 +83,7 @@ namespace Namei.Wcs.Api
     {
       var message = "扫码状态无需处理";
 
-      if (!Config.EnableHoistersCommands) {
-        message = "提升机指令未开启";
-      } else if (param.value == "1") {
+      if (param.value == "1") {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(param.lifter_id, param.floor));
         message = "正在处理读码指令";
       }
@@ -110,9 +106,7 @@ namespace Namei.Wcs.Api
     {
       var message = "指令未识别";
 
-      if (!Config.EnableHoistersCommands) {
-        message = "提升机指令未开启";
-      } else if (param.value == "3") {
+      if (param.value == "3") {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
         message = "正在处理取货指令";
       }
