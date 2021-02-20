@@ -21,7 +21,7 @@ namespace Namei.Wcs.Api
     public void HandleTaskImported(LifterTaskImportedEvent param)
       => Info(param.LifterId, param.Floor, "imported", !param.IsFromWms
         ? $"手动触发放货完成信号，正在将信号转发至设备"
-        : $"收到 WMS 放货完成信号，正在将信号转发至设备"
+        : $"收到 WMS 放货完成信号，正在将信号转发至设备，任务编号: {param.TaskCode}, 条码：{param.BarCode}, 目的楼层: {param.Destination}"
       );
 
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
@@ -44,7 +44,7 @@ namespace Namei.Wcs.Api
     public void HandleTaskTaken(LifterTaskTakenEvent param)
       => Info(param.LifterId, param.Floor, "taken", !param.IsFromWms
         ? $"手动触发取货完成信号，正在将信号转发至设备"
-        : $"收到 WMS 取货完成信号，正在将信号转发至设备");
+        : $"收到 WMS 取货完成信号，正在将信号转发至设备，任务编号: {param.TaskId}");
 
     [CapSubscribe(LifterTaskQueryFailedEvent.Message, Group = Group)]
     public void HandleQueriedFailed(LifterTaskQueryFailedEvent param)

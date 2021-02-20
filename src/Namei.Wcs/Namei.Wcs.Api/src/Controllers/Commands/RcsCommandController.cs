@@ -54,10 +54,10 @@ namespace Namei.Wcs.Api
         _cap.Publish(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.deviceIndex, param.uuid));
       }
 
-      return new {
+      return Success(new {
         code = 0,
         message = message
-      };
+      });
     }
   }
 }

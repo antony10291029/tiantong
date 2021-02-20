@@ -20,9 +20,11 @@ namespace Namei.Wcs.Api
     [Route("/")]
     public ActionResult<object> Home()
     {
-      return new {
-        message = $"{_config.AppName} v{_config.AppVersion}"
-      };
+      return Success(new {
+        message = _config.AppName,
+        version = _config.AppVersion,
+        env = _config.Env
+      });
     }
   }
 }

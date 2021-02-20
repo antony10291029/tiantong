@@ -36,9 +36,7 @@ namespace Namei.Wcs.Api
     {
       WmsService.Destination = param.destination;
 
-      return new {
-        message = "目标楼层已设置"
-      };
+      return Success("目标楼层已设置");
     }
 
     public class LifterNotifyParams
@@ -64,9 +62,7 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
       }
 
-      return new {
-        message = $"指令已发送: {param.lifter_id} 号梯，{param.floor} 楼"
-      };
+      return Success($"指令已发送: {param.lifter_id} 号梯，{param.floor} 楼");
     }
 
     public class PublishDoorsMessageParams
@@ -129,9 +125,7 @@ namespace Namei.Wcs.Api
       Config.EnableWmsCommands = param.enableWmsCommands;
       Config.EnableRcsCommands = param.enableRcsCommands;
 
-      return new {
-        message = "系统设置已保存"
-      };
+      return Success("系统设置已保存");
     }
   }
 }

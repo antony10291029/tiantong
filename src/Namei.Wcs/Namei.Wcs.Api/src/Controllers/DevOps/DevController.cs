@@ -22,9 +22,7 @@ namespace Namei.Wcs.Api
     {
       _mg.Migrate();
 
-      return new {
-        message = "数据库已迁移"
-      };
+      return Success("数据库已迁移");
     }
 
     [Route("/dev/rollback")]
@@ -32,9 +30,7 @@ namespace Namei.Wcs.Api
     {
       _mg.Rollback();
 
-      return new {
-        message = "数据库已迁移"
-      };
+      return Success("数据库已迁移");
     }
 
     [Route("/dev/refresh")]
@@ -42,9 +38,7 @@ namespace Namei.Wcs.Api
     {
       _mg.Refresh();
 
-      return new {
-        message = "数据库已刷新"
-      };
+      return Success("数据库已刷新");
     }
   }
 }

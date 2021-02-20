@@ -123,7 +123,7 @@ namespace Namei.Wcs.Api
         _cap.Publish(DoorTaskHandleEvent.Message, new DoorTaskHandleEvent(doorId));
       }
 
-      return new { message };
+      return Success(message);
     }
 
     public class StandardLifterConveyorChangedParams
@@ -146,7 +146,7 @@ namespace Namei.Wcs.Api
         message = "数据已清空";
       }
 
-      return new { message };
+      return Success(message);
     }
   }
 }

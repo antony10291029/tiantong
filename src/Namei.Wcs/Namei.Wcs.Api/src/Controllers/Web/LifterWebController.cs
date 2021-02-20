@@ -42,7 +42,7 @@ namespace Namei.Wcs.Api
     {
       _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.LifterId,  param.Floor));
 
-      return new { message = "放货完成信号已发送" };
+      return Success("手动发送放货完成指令");
     }
 
     [HttpPost("/lifters/taken")]
@@ -50,7 +50,7 @@ namespace Namei.Wcs.Api
     {
       _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.LifterId,  param.Floor));
 
-      return new { message = "取货完成信号已发送" };
+      return Success("手动发送取货完成指令");
     }
 
     public class ErrorParams
@@ -71,7 +71,7 @@ namespace Namei.Wcs.Api
 
       _deviceErrorService.Log(param.device_key, param.error);
 
-      return new { message = "异常已记录" };
+      return Success("异常已记录");
     }
   }
 }

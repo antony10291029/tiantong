@@ -22,15 +22,17 @@ namespace Namei.Wcs.Api
     [HttpPost("/doors/control")]
     public object Open([FromBody] OpenParams param)
     {
+      var message = "指令未识别";
+
       if (param.command == "open") {
         _doors.Get(param.door_id).Open();
       } else if (param.command == "close") {
         _doors.Get(param.door_id).Close();
       } else {
-        return new { message = "指令未识别" };
+        return Success(message);
       }
 
-      return new { message = "开门命令已执行" };
+      return Success(message);
     }
   }
 }

@@ -38,7 +38,7 @@ namespace Namei.Wcs.Api
 
       _domain.Logs.Where(log => log.created_at < date).Delete();
 
-      return new { message = "日志已清理" };
+      return Success("日志已清理");
     }
 
     [HttpPost]
@@ -73,7 +73,7 @@ namespace Namei.Wcs.Api
     {
       _doors.Get(param.doorId).IsForceOpened = param.value;
 
-      return new { message = "设置完毕" };
+      return Success("设置完毕");
     }
   }
 }

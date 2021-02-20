@@ -10,6 +10,16 @@ namespace Renet.Web
       return new { message };
     }
 
+    protected object Success(string message)
+    {
+      throw new SuccessOperation(message);
+    }
+
+    protected object Success(object obj)
+    {
+      throw new SuccessOperation(obj);
+    }
+
     protected object SuccessOperation(string message)
     {
       throw new SuccessOperation(message);

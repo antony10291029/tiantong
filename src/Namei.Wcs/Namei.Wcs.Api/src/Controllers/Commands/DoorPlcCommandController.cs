@@ -35,7 +35,7 @@ namespace Namei.Wcs.Api
         _cap.Publish(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
       }
 
-      return new { message };
+      return Success(message);
     }
   }
 }
