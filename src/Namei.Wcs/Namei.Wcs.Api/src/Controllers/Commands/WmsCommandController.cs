@@ -26,7 +26,11 @@ namespace Namei.Wcs.Api
 
       public string floor { get; set; }
 
-      public string taskid { get; set; }
+      public long taskCode { get; set; }
+
+      public string barCode { get; set; }
+
+      public string destination { get; set; }
     }
 
     [Route("/finish")]
@@ -37,22 +41,28 @@ namespace Namei.Wcs.Api
       if (!Config.EnableWmsCommands) {
         message = "WMS 指令未开启";
       } if (param.method == "deliver") {
-        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.liftCode, param.floor, param.taskid, true));
-        message = "正在处理放货完成指令";
+        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(
+          param.liftCode,
+          param.floor,
+          param.taskCode.ToString(),
+          param.barCode,
+          param.destination
+        ));
+        message = "收到放货完成指令";
       } else if (param.method == "pick") {
-        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.liftCode, param.floor, param.taskid, true));
-        message = "正在处理取货完成指令";
+        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.liftCode, param.floor, param.taskCode.ToString()));
+        message = "收到取货完成指令";
       } else {
         message = "放取货信号接收异常";
 
         _cap.Publish(LifterTaskExceptionEvent.Message, new LifterTaskExceptionEvent(param.liftCode, param.floor, message));
       }
 
-      return new {
+      return Success(new {
         message = message,
         liftCode = param.liftCode,
         floor = param.floor,
-      };
+      });
     }
   }
 }
