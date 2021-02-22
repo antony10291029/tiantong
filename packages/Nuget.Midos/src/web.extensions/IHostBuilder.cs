@@ -9,6 +9,7 @@ namespace Midos.Extensions
     private static string GetValidEnvironment(string environment)
     {
       if (
+        environment == null ||
         environment == Environments.Development ||
         environment == Environments.Staging ||
         environment == Environments.Production
