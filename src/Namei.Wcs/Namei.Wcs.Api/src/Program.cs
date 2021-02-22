@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Midos.Extensions;
 
 namespace Namei.Wcs.Api
 {
