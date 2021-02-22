@@ -6,21 +6,27 @@ namespace Midos.Extensions
 {
   public static class IHostBuilderExtensions
   {
-    public static IHostBuilder ConfigureEnvironment(this IHostBuilder builder, string environment = null)
+    private static string GetValidEnvironment(string environment)
     {
-      var env = environment
-        ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-        ?? Environment.GetEnvironmentVariable("Env");
-
       if (
-        env != Environments.Development &&
-        env != Environments.Production &&
-        env != Environments.Staging
+        environment == Environments.Development ||
+        environment == Environments.Staging ||
+        environment == Environments.Production
       ) {
-        env = Environments.Development;
+        return environment;
+      } else {
+        throw KnownException.Error($"environment is invalid: {environment}");
       }
+    }
 
-      return builder.UseEnvironment(env);
+    public static IHostBuilder ConfigureEnvironment(this IHostBuilder builder, string env = null)
+    {
+      return builder.UseEnvironment(
+        GetValidEnvironment(env)
+          ?? Environment.GetEnvironmentVariable("Env")
+          ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+          ?? Environments.Development
+      );
     }
   }
 }
