@@ -6,7 +6,7 @@ namespace Midos.Center.Database
   {
     public PostgresMigrator(PostgresContext context): base(context)
     {
-
+      UseAssembly(typeof(PostgresMigrator).Assembly);
     }
   }
 }
