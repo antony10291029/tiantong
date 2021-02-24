@@ -82,6 +82,9 @@ namespace Namei.Wcs.Api
     // 获取托盘码
     public abstract string GetPalletCode(string floor);
 
+    // 设置托盘码
+    public abstract void SetPalletCode(string floor, string code);
+
     // 设置目的楼层
     public abstract void SetDestination(string from, string to);
 
@@ -147,6 +150,11 @@ namespace Namei.Wcs.Api
       return GetIsImportAllowed(state);
     }
 
+    public override void SetPalletCode(string floor, string code)
+    {
+      // @Todo: Waiting
+    }
+
     public override bool IsRequestingPickup(string floor)
       => GetIsRequestingPickup(_plc.Get($"{floor}F - A 段 - 输送机"));
 
@@ -186,6 +194,9 @@ namespace Namei.Wcs.Api
 
     public override string GetPalletCode(string floor)
       => _plc.Get($"{floor}F - A 段 - 托盘码");
+
+    public override void SetPalletCode(string floor, string code)
+      => _plc.Set($"{floor}F - A 段 - 任务托盘码", code);
 
     public override void SetDestination(string from, string to)
       => _plc.Set($"{from}F - A 段 - 目标楼层", to);
