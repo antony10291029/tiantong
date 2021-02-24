@@ -1,6 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 using System.Linq;
 
 namespace Namei.Wcs.Api
@@ -42,7 +41,7 @@ namespace Namei.Wcs.Api
     {
       _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.LifterId,  param.Floor));
 
-      return Success("手动发送放货完成指令");
+      return NotifyResult.FromVoid().Success("手动发送放货完成指令");
     }
 
     [HttpPost("/lifters/taken")]
@@ -50,7 +49,7 @@ namespace Namei.Wcs.Api
     {
       _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.LifterId,  param.Floor));
 
-      return Success("手动发送取货完成指令");
+      return NotifyResult.FromVoid().Success("手动发送取货完成指令");
     }
 
     public class ErrorParams
@@ -71,7 +70,7 @@ namespace Namei.Wcs.Api
 
       _deviceErrorService.Log(param.device_key, param.error);
 
-      return Success("异常已记录");
+      return NotifyResult.FromVoid().Success("异常已记录");
     }
   }
 }

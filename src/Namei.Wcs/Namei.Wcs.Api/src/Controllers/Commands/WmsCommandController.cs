@@ -1,6 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
@@ -56,11 +55,11 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskExceptionEvent.Message, new LifterTaskExceptionEvent(param.liftCode, param.floor, message));
       }
 
-      return Success(new {
+      return new {
         message = message,
         liftCode = param.liftCode,
         floor = param.floor,
-      });
+      };
     }
   }
 }

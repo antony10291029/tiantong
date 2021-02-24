@@ -1,6 +1,4 @@
-using System.Linq;
-
-namespace Midos.Linq
+namespace System.Linq
 {
   public static class IQueryableExtensions
   {

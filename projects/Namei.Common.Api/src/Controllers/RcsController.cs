@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
-using Renet;
-using Renet.Web;
 
 namespace Namei.Common.Api
 {

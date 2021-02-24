@@ -1,4 +1,4 @@
-using Renet.Web;
+using System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Namei.Wcs.Api
@@ -18,9 +18,9 @@ namespace Namei.Wcs.Api
     [HttpGet]
     [HttpPost]
     [Route("/")]
-    public ActionResult<object> Home()
+    public IResult<object> Home()
     {
-      return Success(new {
+      return Result.FromObject(new {
         message = _config.AppName,
         version = _config.AppVersion,
         env = _config.Env

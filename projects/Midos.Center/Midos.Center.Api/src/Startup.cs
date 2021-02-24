@@ -1,8 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Renet.Web;
 
 namespace Midos.Center
 {
@@ -10,6 +8,7 @@ namespace Midos.Center
   {
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddExceptionHandler();
       services.AddControllers();
       services.AddSingleton<AppConfig>();
       services.AddDbContext<DomainContext>();
@@ -18,9 +17,9 @@ namespace Midos.Center
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      app.AddExceptionHandler();
       app.UseRouting();
       app.UseMiddleware<JsonBody>();
-      app.UseProvider<ExceptionHandler>();
       app.UseEndpoints(endpoints => {
         endpoints.MapControllers();
       });

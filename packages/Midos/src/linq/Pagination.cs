@@ -1,4 +1,4 @@
-namespace Midos.Linq
+namespace System.Linq
 {
   public class Meta
   {

@@ -37,6 +37,7 @@ namespace Microsoft.AspNetCore.Mvc
     {
       SetType("Success");
       SetMessage(message);
+      StatusCode(201);
 
       return this;
     }

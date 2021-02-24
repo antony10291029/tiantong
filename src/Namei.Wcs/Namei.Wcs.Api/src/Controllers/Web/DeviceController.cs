@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Renet;
-using Renet.Web;
 using System;
 using System.Linq;
 using Z.EntityFramework.Plus;
@@ -30,7 +28,7 @@ namespace Namei.Wcs.Api
       _domain.Add(device);
       _domain.SaveChanges();
 
-      return Success("设备已添加");
+      return NotifyResult.FromVoid().Success("设备已添加");
     }
 
     public class RemoveParams
@@ -48,7 +46,7 @@ namespace Namei.Wcs.Api
       _domain.Remove(device);
       _domain.SaveChanges();
       
-      return Success("设备已删除");
+      return NotifyResult.FromVoid().Success("设备已删除");
     }
 
     [HttpPost("/devices/update")]
@@ -63,7 +61,7 @@ namespace Namei.Wcs.Api
       _domain.Entry(oldData).CurrentValues.SetValues(device);
       _domain.Entry(oldData).Property(e => e.created_at).IsModified = false;
 
-      return Success("设备已更新");
+      return NotifyResult.FromVoid().Success("设备已更新");
     }
 
     [HttpPost("/devices/all")]
@@ -84,7 +82,7 @@ namespace Namei.Wcs.Api
     {
       _deviceErrorService.Log(param.device_key, param.error);
 
-      return Success("异常记录完毕");
+      return NotifyResult.FromVoid().Success("异常记录完毕");
     }
   }
 }

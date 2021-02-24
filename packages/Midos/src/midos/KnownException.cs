@@ -1,16 +1,5 @@
-using System;
-
-namespace Midos
+namespace System
 {
-  public interface IKnownException
-  {
-    string Message { get; }
-
-    int ErrorCode { get; }
-
-    object[] ErrorData { get; }
-  }
-
   public class KnownException: Exception, IKnownException
   {
     public int ErrorCode { get; private set; }

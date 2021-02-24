@@ -1,6 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
@@ -36,7 +35,7 @@ namespace Namei.Wcs.Api
     {
       WmsService.Destination = param.destination;
 
-      return Success("目标楼层已设置");
+      return NotifyResult.FromVoid().Success("目标楼层已设置");
     }
 
     public class LifterNotifyParams
@@ -62,7 +61,7 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
       }
 
-      return Success($"指令已发送: {param.lifter_id} 号梯，{param.floor} 楼");
+      return NotifyResult.FromVoid().Success($"指令已发送: {param.lifter_id} 号梯，{param.floor} 楼");
     }
 
     public class PublishDoorsMessageParams
@@ -86,7 +85,7 @@ namespace Namei.Wcs.Api
         _cap.PublishAsync(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
       }
 
-      return Success("指令已发送");
+      return NotifyResult.FromVoid().Success("指令已发送");
     }
   }
 }

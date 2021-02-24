@@ -1,8 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
-using System;
-using System.Linq;
 using System.Text.Json;
 
 namespace Namei.Wcs.Api
@@ -52,10 +49,10 @@ namespace Namei.Wcs.Api
         _cap.Publish(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.deviceIndex, param.uuid));
       }
 
-      return Success(new {
+      return new {
         code = 0,
         message = message
-      });
+      };
     }
   }
 }

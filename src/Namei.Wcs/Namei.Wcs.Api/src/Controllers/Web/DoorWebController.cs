@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 using System;
 using System.Linq;
 using Z.EntityFramework.Plus;
@@ -38,7 +37,7 @@ namespace Namei.Wcs.Api
 
       _domain.Logs.Where(log => log.created_at < date).Delete();
 
-      return Success("日志已清理");
+      return NotifyResult.FromVoid().Success("日志已清理");
     }
 
     [HttpPost]
@@ -73,7 +72,7 @@ namespace Namei.Wcs.Api
     {
       _doors.Get(param.doorId).IsForceOpened = param.value;
 
-      return Success("设置完毕");
+      return NotifyResult.FromVoid().Success("设置完毕");
     }
   }
 }

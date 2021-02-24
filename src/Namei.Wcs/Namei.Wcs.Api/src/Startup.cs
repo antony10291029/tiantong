@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Renet.Web;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
 
@@ -10,8 +9,14 @@ namespace Namei.Wcs.Api
   {
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddExceptionHandler();
       services.AddControllers();
       services.AddHttpClient();
+      services.AddHttpContextAccessor();
+      services.AddHttpContextAccessor();
+      services.AddHttpContextAccessor();
+      services.AddHttpContextAccessor();
+      services.AddHttpContextAccessor();
       services.AddSingleton<DoorTaskManager>();
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
@@ -39,7 +44,7 @@ namespace Namei.Wcs.Api
     public void Configure(IApplicationBuilder app)
     {
       app.UseMiddleware<JsonBody>();
-      app.UseProvider<ExceptionHandler>();
+      app.AddExceptionHandler();
       app.UseRouting();
       app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
       app.UseEndpoints(endpoints => endpoints.MapControllers());

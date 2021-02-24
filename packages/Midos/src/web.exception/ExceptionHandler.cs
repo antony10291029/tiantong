@@ -1,44 +1,55 @@
-using Renet;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Renet.Web
+namespace Microsoft.AspNetCore.Builder
 {
-  public abstract class ExceptionHandlerProvider : AppProvider
+  public class ExceptionHandler
   {
-    protected IApplicationBuilder App;
+    private HttpContext _httpContext;
 
-    protected IWebHostEnvironment Env;
+    private IHostingEnvironment _env;
 
-    public override void Configure(IApplicationBuilder app)
-    {
-      Env = app.ApplicationServices.GetService<IWebHostEnvironment>();
-
-      app.Use(async (context, next) => {
-        try {
-          await next();
-          HandleStatusCode(context.Response.StatusCode);
-        } catch (Exception ex) {
-          await Handle(ex, context);
-        }
-      });
+    public ExceptionHandler(
+      IHostingEnvironment env,
+      IHttpContextAccessor httpAccessor
+    ) {
+      _env = env;
+      _httpContext = httpAccessor.HttpContext;
     }
 
-    protected virtual void HandleStatusCode(int code)
+    public void HandleStatusCode(int code)
     {
       if (code == 404) {
         throw new HttpException("Api not found", 404);
       }
     }
 
-    protected abstract Task Handle(Exception ex, HttpContext context);
+    public async Task Handle(Exception ex)
+    {
+      if (ex is IKnownException) {
+        await HandleKnownException((IKnownException) ex, _httpContext);
+      } else if (ex is IHttpException) {
+        await HandleHttpException((IHttpException) ex, _httpContext);
+      } else if (_env.IsDevelopment()) {
+        await ShowDevelopmentException(ex, _httpContext, ResolveExceptionExpander(ex));
+      } else {
+        await ShowUnprocessedError(ex, _httpContext);
+      }
+    }
+
+    protected Action<dynamic> ResolveExceptionExpander(Exception ex) => response =>
+    {
+      if (ex is DbUpdateException) {
+        var error = ex as DbUpdateException;
+        response.details = error.InnerException.ToString().Split('\n').Select(row => row.Trim());
+      }
+    };
 
     protected virtual async Task HandleKnownException(IKnownException ex, HttpContext context)
     {

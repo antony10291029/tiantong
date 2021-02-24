@@ -1,6 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
@@ -33,7 +32,8 @@ namespace Namei.Wcs.Api
         _cap.Publish(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
       }
 
-      return Success(message);
+      return NotifyResult.FromVoid()
+        .Success(message);
     }
   }
 }

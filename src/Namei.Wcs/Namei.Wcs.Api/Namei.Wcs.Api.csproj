@@ -17,8 +17,6 @@
     <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
     <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
     <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
-    <ProjectReference Include="../../Renet/Renet.csproj" />
-    <ProjectReference Include="../../Renet.Web/Renet.Web.csproj" />
     <ProjectReference Include="../../Tiantong.Iot/Tiantong.Iot.Utils/Tiantong.Iot.Utils.csproj" />
     <ProjectReference Include="../Namei.Wcs.Database/Namei.Wcs.Database.csproj" />
   </ItemGroup>

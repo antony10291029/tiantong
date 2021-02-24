@@ -1,7 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
-using Tiantong.Iot.Utils;
 
 namespace Namei.Wcs.Api
 {
@@ -117,7 +115,8 @@ namespace Namei.Wcs.Api
         _cap.Publish(DoorTaskHandleEvent.Message, new DoorTaskHandleEvent(doorId));
       }
 
-      return Success(message);
+      return NotifyResult.FromVoid()
+        .Success(message);
     }
 
     public class StandardLifterConveyorChangedParams
@@ -140,7 +139,8 @@ namespace Namei.Wcs.Api
         message = "数据已清空";
       }
 
-      return Success(message);
+      return NotifyResult.FromVoid()
+        .Success(message);
     }
   }
 }

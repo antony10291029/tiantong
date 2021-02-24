@@ -1,4 +1,3 @@
-using Renet.Web;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Namei.Common.Api

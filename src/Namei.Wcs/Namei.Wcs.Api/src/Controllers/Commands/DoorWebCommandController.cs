@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 
 namespace Namei.Wcs.Api
 {
@@ -28,11 +27,10 @@ namespace Namei.Wcs.Api
         _doors.Get(param.door_id).Open();
       } else if (param.command == "close") {
         _doors.Get(param.door_id).Close();
-      } else {
-        return Success(message);
       }
 
-      return Success(message);
+      return NotifyResult.FromVoid()
+        .Success(message);
     }
   }
 }
