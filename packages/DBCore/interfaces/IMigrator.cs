@@ -6,7 +6,6 @@ namespace DBCore
 
     int Rollback();
 
-    void Refresh();
-
+    int Refresh();
   }
 }

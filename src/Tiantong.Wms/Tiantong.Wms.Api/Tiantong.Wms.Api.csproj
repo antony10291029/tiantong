@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>Tiantong.Wms.Api</AssemblyName>
     <Title>$(AssemblyName)</Title>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 

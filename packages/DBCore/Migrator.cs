@@ -185,7 +185,7 @@ namespace DBCore
       return count;
     }
 
-    public void Refresh()
+    public int Refresh()
     {
       EnsureInitialized();
       DbContext.Database.BeginTransaction();
@@ -211,7 +211,7 @@ namespace DBCore
       DbContext.SaveChanges();
       DbContext.Database.CommitTransaction();
 
-      Migrate();
+      return Migrate();
     }
   }
 }
