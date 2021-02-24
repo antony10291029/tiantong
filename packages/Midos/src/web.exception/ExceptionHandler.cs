@@ -36,10 +36,8 @@ namespace Microsoft.AspNetCore.Builder
         await HandleKnownException((IKnownException) ex, _httpContext);
       } else if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, _httpContext);
-      } else if (_env.IsDevelopment()) {
-        await ShowDevelopmentException(ex, _httpContext, ResolveExceptionExpander(ex));
       } else {
-        await ShowUnprocessedError(ex, _httpContext);
+        await ShowDevelopmentException(ex, _httpContext, ResolveExceptionExpander(ex));
       }
     }
 
