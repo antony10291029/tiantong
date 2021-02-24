@@ -23,8 +23,9 @@ namespace Microsoft.Extensions.Hosting
     {
       return builder.UseEnvironment(
         GetValidEnvironment(env)
-          ?? Environment.GetEnvironmentVariable("Env")
           ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+          ?? Environment.GetEnvironmentVariable("Environment")
+          ?? Environment.GetEnvironmentVariable("Env")
           ?? Environments.Development
       );
     }
