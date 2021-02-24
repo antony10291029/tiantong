@@ -14,6 +14,7 @@ namespace Namei.Common.Api
     public static IHostBuilder CreateHostBuilder(string[] args, string port = null)
     {
       return Host.CreateDefaultBuilder(args)
+        .ConfigureEnvironment()
         .ConfigureWebHostDefaults(builder => {
           builder.UseIISIntegration();
           builder.UseStartup<Startup>();
