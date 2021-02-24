@@ -128,7 +128,7 @@ namespace Namei.Wcs.Api
     public FirstLifterService(PlcStateService plc, Config config)
     {
       _plc = plc;
-      _plc.Configure(config.PLC_CONNECTION, "改造货梯");
+      _plc.Configure(config.PlcUrl, "改造货梯");
     }
 
     public override void SetImported(string floor, bool value)
@@ -232,7 +232,7 @@ namespace Namei.Wcs.Api
       Config config,
       PlcStateService plc
     ): base(plc) {
-      plc.Configure(config.PLC_CONNECTION, "提升机 - 1");
+      plc.Configure(config.PlcUrl, "提升机 - 1");
     }
   }
 
@@ -242,7 +242,7 @@ namespace Namei.Wcs.Api
       Config config,
       PlcStateService plc
     ): base(plc) {
-      plc.Configure(config.PLC_CONNECTION, "提升机 - 2");
+      plc.Configure(config.PlcUrl, "提升机 - 2");
     }
   }
 }

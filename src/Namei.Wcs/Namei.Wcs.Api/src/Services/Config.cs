@@ -17,9 +17,13 @@ namespace Namei.Wcs.Api
 
     public readonly string AppVersion;
 
-    public readonly string PG_CONNECTION;
+    public readonly string Postgres;
 
-    public readonly string PLC_CONNECTION;
+    public readonly string PlcUrl;
+
+    public readonly string WmsUrl;
+
+    public readonly string RcsUrl;
 
     public Config(IConfiguration config, IHostEnvironment env)
     {
@@ -27,8 +31,10 @@ namespace Namei.Wcs.Api
       AppName = config.GetValue<string>("app_name");
       AppVersion = config.GetValue<string>("app_version");
       AppKey = config.GetValue<string>("app_key");
-      PG_CONNECTION = config.GetValue<string>("pg_connection");
-      PLC_CONNECTION = config.GetValue<string>("plc_connection");
+      Postgres = config.GetValue<string>("postgres");
+      PlcUrl = config.GetValue<string>("plc_url");
+      WmsUrl = config.GetValue<string>("wms_url");
+      RcsUrl = config.GetValue<string>("rcs_url");
     }
   }
 }

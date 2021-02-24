@@ -26,7 +26,7 @@ namespace Namei.Wcs.Api
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-      options.UseNpgsql(_config.PG_CONNECTION);
+      options.UseNpgsql(_config.Postgres);
     }
   }
 }
