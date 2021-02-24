@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>MidosCenter</RootNamespace>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
+    <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Midos.Center.Database/Midos.Center.Database.csproj" />
+  </ItemGroup>
+</Project>

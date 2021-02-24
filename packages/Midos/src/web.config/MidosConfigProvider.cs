@@ -26,7 +26,7 @@ namespace Midos.Web.Config
       var path = "/midos/configs";
       var http = new HttpClient() {
         BaseAddress = new Uri(uri),
-        Timeout = TimeSpan.FromSeconds(3),
+        Timeout = TimeSpan.FromSeconds(5),
       };
 
       try {
