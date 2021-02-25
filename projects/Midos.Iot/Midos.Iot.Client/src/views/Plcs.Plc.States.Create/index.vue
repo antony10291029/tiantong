@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import { PlcState } from "../../entities";
 import { useIotHttp } from "../../services/iot-http-client";
 import PlcStateForm from "../../components/PlcStateForm.vue";
@@ -55,6 +56,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const http = useIotHttp();
+    const router = useRouter();
     const state = ref(new PlcState());
 
     async function handleSubmit() {
@@ -62,6 +64,13 @@ export default defineComponent({
       const { id } = result;
 
       emit("refresh", id);
+      router.push({
+        name: "IotPlcsPlcStatesStateDetail",
+        params: {
+          plcId: props.plcId,
+          stateId: id
+        }
+      });
     }
 
     onMounted(() => state.value.plc_id = props.plcId);
