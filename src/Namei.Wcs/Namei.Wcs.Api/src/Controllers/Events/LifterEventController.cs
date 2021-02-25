@@ -38,13 +38,16 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
     public void HandleTaskImported(LifterTaskImportedEvent param)
     {
+      if (param.LifterId != "1") {
+        if (param.BarCode != null) {
+          _lifters.Get(param.LifterId).SetPalletCode(param.Floor, param.BarCode);
+        }
+        if (param.Destination != null) {
+          _lifters.Get(param.LifterId).SetDestination(param.Floor, param.Destination);
+        }
+      }
+
       _lifters.Get(param.LifterId).SetImported(param.Floor, true);
-      if (param.BarCode != null) {
-        _lifters.Get(param.LifterId).SetPalletCode(param.Floor, param.BarCode);
-      }
-      if (param.Destination != null) {
-        _lifters.Get(param.LifterId).SetDestination(param.Floor, param.Destination);
-      }
     }
 
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
