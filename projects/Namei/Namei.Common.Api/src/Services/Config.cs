@@ -22,14 +22,10 @@ namespace Namei.Common.Api
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
-      System.Console.WriteLine(env.EnvironmentName);
-
       AppName = config.GetValue<string>("app_name");
       AppVersion = config.GetValue<string>("app_version");
       RcsDbConfig = config.GetValue<string>("rcs.db.config");
       RcsUrl = config.GetValue<string>("rcs.url");
-
-      System.Console.WriteLine(RcsUrl);
     }
   }
 }

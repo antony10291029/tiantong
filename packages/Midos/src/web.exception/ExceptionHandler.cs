@@ -36,6 +36,9 @@ namespace Microsoft.AspNetCore.Builder
         await HandleKnownException((IKnownException) ex, _httpContext);
       } else if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, _httpContext);
+      } else if (ex is InvalidOperationException && ex.InnerException.Message == "Exception while connecting") {
+        // 无法准确定位异常
+        await HandleNpgsqlTimeoutException(ex, _httpContext);
       } else {
         await ShowDevelopmentException(ex, _httpContext, ResolveExceptionExpander(ex));
       }
@@ -61,6 +64,16 @@ namespace Microsoft.AspNetCore.Builder
       context.Response.StatusCode = ex.Status;
 
       await context.Response.WriteAsync(ex.Body);
+    }
+
+    protected virtual async Task HandleNpgsqlTimeoutException(Exception ex, HttpContext context)
+    {
+      context.Response.StatusCode = 400;
+
+      await context.Response.WriteAsync(JsonSerializer.Serialize(new {
+        error = "DatabaseTimeoutException",
+        message = "数据库连接失败，请联系技术人员",
+      }));
     }
 
     protected virtual async Task ShowUnprocessedError(Exception ex, HttpContext context)
