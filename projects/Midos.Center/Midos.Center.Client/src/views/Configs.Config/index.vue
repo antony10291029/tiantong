@@ -21,14 +21,14 @@
           <AsyncButton
             class="button is-info is-small"
             :disabled="!isChanged"
-            @click="handleUpdate"
+            :handler="handleUpdate"
           >
             更新
           </AsyncButton>
           <AsyncButton
             style="margin-left: 0.5rem"
             class="button is-danger is-light is-small"
-            @click="handleDelete"
+            :handler="handleDelete"
           >
             删除
           </AsyncButton>
