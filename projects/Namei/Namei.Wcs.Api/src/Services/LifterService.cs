@@ -82,6 +82,8 @@ namespace Namei.Wcs.Api
     // 获取托盘码
     public abstract string GetPalletCode(string floor);
 
+    public abstract string GetDestination(string floor);
+
     // 设置托盘码
     public abstract void SetPalletCode(string floor, string code);
 
@@ -139,6 +141,9 @@ namespace Namei.Wcs.Api
 
     public override string GetPalletCode(string floor)
       => _plc.Get($"{floor}F - A 段 - 托盘码");
+
+    public override string GetDestination(string floor)
+      => _plc.Get($"{floor}F - 目的楼层");
 
     public override void SetDestination(string from, string to)
       => _plc.Set($"{from}F - 目的楼层", to);
@@ -200,6 +205,9 @@ namespace Namei.Wcs.Api
 
     public override void SetDestination(string from, string to)
       => _plc.Set($"{from}F - A 段 - 目标楼层", to);
+
+    public override string GetDestination(string floor)
+      => _plc.Get($"{floor}F - 目的楼层");
 
     public override bool IsImportAllowed(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "2";

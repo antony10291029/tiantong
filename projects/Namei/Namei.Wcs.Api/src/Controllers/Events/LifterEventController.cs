@@ -53,6 +53,12 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
     public void HandleTaskScanned(LifterTaskScannedEvent param)
     {
+      var lifter = _lifters.Get(param.LifterId);
+
+      if (lifter.GetDestination(param.Floor) == "0") {
+        return;
+      }
+
       var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
       var destination = "";
       var taskid = "";
