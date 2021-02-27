@@ -1,12 +1,12 @@
 import { HttpClient, injectable } from "@midos/core";
-import { useService } from "@midos/vue-ui";
+import { VueEnv, useService } from "@midos/vue-ui";
 
 @injectable()
 export class MidosCenterHttp extends HttpClient {
   public key = "MidosCenterHttp";
 
-  public constructor() {
-    super("http://localhost:4800");
+  public constructor(env: VueEnv) {
+    super(env.getValue("MIDOS_URL"));
   }
 }
 

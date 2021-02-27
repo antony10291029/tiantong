@@ -1,2 +1,2 @@
-export { NameiWcs } from "./src/app-namei-wcs";
-export { NameiWcsHttp, useWcsHttp } from "./src/services/wcs-http";
+export { MidosCenter } from "./src/app-midos-center";
+export { MidosCenterHttp } from "./src/services/midos-center-http";
