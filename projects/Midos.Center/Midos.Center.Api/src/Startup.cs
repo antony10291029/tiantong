@@ -19,6 +19,7 @@ namespace Midos.Center
     {
       app.AddExceptionHandler();
       app.UseRouting();
+      app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
       app.UseMiddleware<JsonBody>();
       app.UseEndpoints(endpoints => {
         endpoints.MapControllers();

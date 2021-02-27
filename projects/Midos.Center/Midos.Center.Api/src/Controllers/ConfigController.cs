@@ -17,7 +17,11 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/configs")]
     public IResult<Config[]> Configs()
     {
-      return Result.From(_domain.Configs.ToArray());
+      var configs = _domain.Configs
+        .OrderBy(config => config.Key)
+        .ToArray();
+
+      return Result.From(configs);
     }
 
     public class ConfigParams
