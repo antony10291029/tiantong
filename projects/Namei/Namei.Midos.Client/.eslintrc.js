@@ -26,6 +26,7 @@ module.exports = {
     "import/prefer-default-export": ["off"],
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "import/no-extraneous-dependencies": ["off"],
     "no-multi-assign": ["off"],
     "no-param-reassign": "off",
     "no-plusplus": ["off"],
