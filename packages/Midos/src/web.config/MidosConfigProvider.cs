@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.FileProviders;
+using Midos.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,14 +45,15 @@ namespace Midos.Web.Config
     private string GetMidosUrl()
     {
       var jsonConfig = new JsonConfigurationSource();
+      var path = $"appsettings.{EnvironmentUtils.GetEnvironment()}.json";
 
       jsonConfig.FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
-      jsonConfig.Path = "appsettings.json";
+      jsonConfig.Path = path;
 
       var jsonProvider = new JsonConfigurationProvider(jsonConfig);
 
       jsonProvider.Load();
-      jsonProvider.TryGet("midos", out string uri);
+      jsonProvider.TryGet("midos.url", out string uri);
 
       if (uri == null) {
         throw KnownException.Error("Fail to load midos url in appsettings.*.json");
