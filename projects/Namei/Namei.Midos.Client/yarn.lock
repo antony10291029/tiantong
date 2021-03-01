@@ -1038,34 +1038,34 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@midos/app-iot@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.8.tgz#fe07ac8850ca1ae6cd77083a9a9fff993a0160b7"
-  integrity sha512-q51EcfWsXg8x2dIeoCxGgITngtwmcg1iT9sqAOgY/8oXumO+ut6ueALt7lGETf4wtkU1fc7JcEmk0MWuo0jhOg==
+"@midos/app-iot@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.10.tgz#d6a96deb508c5608f325d575fd21eb122c3a831e"
+  integrity sha512-u5H79Q2FZPP+/d7AToZD9uw80F/+MHhzdY1yr+WyTo9NzrEGZcAGZDm31IgLUykJhDb7oUpF6abnjbE9G3bmdw==
 
 "@midos/app-midos-center@^0.0.1-alpha.3":
   version "0.0.1-alpha.3"
   resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.1-alpha.3.tgz#eeb47aa1fde5405fea59307797c75dec8b5f2715"
   integrity sha512-v8wtaE1lu5a7iAN1sWgaDc9fw4FxnLp5uvVpUZZtbARg59qBzbDDzWqPXPRYouV0u+Et6zjJuFE81RL/Dw6ZZw==
 
-"@midos/app-namei-wcs@0.0.11":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@midos/app-namei-wcs/-/app-namei-wcs-0.0.11.tgz#80e525366b697327a6c8ab638202ef14a2d2aeaa"
-  integrity sha512-9UldZTn9uxiCB34pwYzYrS5d6TQIe4x6Tk4rQSOUpywdktGlhcUywjE1g6vJ+h0Foij0nx2m3h7P44zGPv7S9Q==
+"@midos/app-namei-wcs@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.12.tgz#06a432e18045dd78178e43a9f61c17699aada4a7"
+  integrity sha512-KuAXY95Aoh3nVdeAUhuzWI1LZHTEjIQ7fAuLaCnve6nMUE1kJXwoAGWEILJahLXejTHuklBUXfkC5RFD87W8Cw==
 
-"@midos/core@^0.0.1-alpha.31":
-  version "0.0.1-alpha.33"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.1-alpha.33.tgz#9a70ff64f4b01bebab82af62533850dd427f9953"
-  integrity sha512-QoA8FjPNa0nK9uYYWIx7+DYJRKD9U5FibN7iOgigjhZRzn4Q/1kk1ePBa69tkcupN0/Mln7i/pb2LNjlEn2pRw==
+"@midos/core@^0.0.1-alpha.34":
+  version "0.0.1-alpha.34"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.1-alpha.34.tgz#ab3e440dda9f66534f586f5dceccc4bcccae9a31"
+  integrity sha512-FYTC/W+wusIDrEH/Y8kgG5e0REPiDf2/pVPOut7nv8MH4/rtQ0ZRYFoG2RQQ+bJVIKgx73VXj099TXbZlLKceQ==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
     tsyringe "^4.4.0"
 
-"@midos/vue-ui@^0.0.1-alpha.31":
-  version "0.0.1-alpha.33"
-  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.1-alpha.33.tgz#2a7ad796406f58a58cf023f31231e2ea1e685924"
-  integrity sha512-eyJPi91QaH+mYb0Nsm2RP5BQGiztDSBfjK2FcMYA9LA6hM4NmnxGvbocL30pn1JvHVB5KY6wQBkhxwxV7kBzxg==
+"@midos/vue-ui@^0.0.1-alpha.34":
+  version "0.0.1-alpha.34"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.1-alpha.34.tgz#8bae4d802c275f031da187975547c54b550c80bb"
+  integrity sha512-lW1ejE6mUeEri7sm96dkeKevyGSv0Am2M4S+VyVJLeLCx99/gi4nLnMTFqgLLArwXm/TblFDOdMgigP3vASSrQ==
   dependencies:
     bulma "^0.9.2"
 

@@ -1,5 +1,5 @@
 import { injectable } from "@midos/core";
-import { VueApp } from "@midos/vue-ui";
+import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
 import App from "./views/App/index.vue";
 import Devices from "./views/Devices/index.vue";
@@ -13,6 +13,16 @@ import DoorCommands from "./views/Doors.Commands/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
+  public constructor(private ui: VueUI) {
+    super();
+  }
+
+  public configure() {
+    this.ui.app.config.warnHandler = (msg, vm, trace) => {
+
+    };
+  }
+
   public key = "namei-wcs";
 
   public text = "WCS";

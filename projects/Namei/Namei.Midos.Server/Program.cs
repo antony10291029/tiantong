@@ -1,6 +1,6 @@
 using MidosProgram = Midos.Center.Program;
 
-namespace Namei.Midos.Server
+namespace Namei.Midos.Api
 {
 
   public class Program
