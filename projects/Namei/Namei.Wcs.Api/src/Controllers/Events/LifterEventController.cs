@@ -55,7 +55,7 @@ namespace Namei.Wcs.Api
     {
       var lifter = _lifters.Get(param.LifterId);
 
-      if (lifter.GetDestination(param.Floor) == "0") {
+      if (lifter.GetDestination(param.Floor) != "0") {
         return;
       }
 
