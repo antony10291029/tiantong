@@ -1038,20 +1038,20 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@midos/app-iot@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.10.tgz#d6a96deb508c5608f325d575fd21eb122c3a831e"
-  integrity sha512-u5H79Q2FZPP+/d7AToZD9uw80F/+MHhzdY1yr+WyTo9NzrEGZcAGZDm31IgLUykJhDb7oUpF6abnjbE9G3bmdw==
+"@midos/app-iot@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.npmjs.org/@midos/app-iot/-/app-iot-0.0.13.tgz#aaf5a676a41586027cc14d49aec74213541247e7"
+  integrity sha512-euSVVfcxBTAX37/AmFW5exhGJrgMge6kx/YsYnr4GIDeN/dj23EMJ4GrD1SVFH8wN2fPFKh2Dcgj0sebjGY6NA==
 
 "@midos/app-midos-center@^0.0.1-alpha.3":
   version "0.0.1-alpha.3"
   resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.1-alpha.3.tgz#eeb47aa1fde5405fea59307797c75dec8b5f2715"
   integrity sha512-v8wtaE1lu5a7iAN1sWgaDc9fw4FxnLp5uvVpUZZtbARg59qBzbDDzWqPXPRYouV0u+Et6zjJuFE81RL/Dw6ZZw==
 
-"@midos/app-namei-wcs@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.12.tgz#06a432e18045dd78178e43a9f61c17699aada4a7"
-  integrity sha512-KuAXY95Aoh3nVdeAUhuzWI1LZHTEjIQ7fAuLaCnve6nMUE1kJXwoAGWEILJahLXejTHuklBUXfkC5RFD87W8Cw==
+"@midos/app-namei-wcs@0.0.14":
+  version "0.0.14"
+  resolved "https://registry.npmjs.org/@midos/app-namei-wcs/-/app-namei-wcs-0.0.14.tgz#dab25233277e0e8a603bc92458ee3472f025e250"
+  integrity sha512-UCVyo1n8WRBjmBJOW9V2r0q6kCUVAr6wJITMHEAB8FoDaOXo5jlhM8OA6CTUNbiBVmlOrnIc9kw6od1YFnxuuw==
 
 "@midos/core@^0.0.1-alpha.34":
   version "0.0.1-alpha.34"

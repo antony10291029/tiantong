@@ -10,17 +10,12 @@ import LifterCommands from "./views/Lifters.Commands/index.vue";
 import Doors from "./views/Doors/index.vue";
 import DoorsStates from "./views/Doors.Logs/index.vue";
 import DoorCommands from "./views/Doors.Commands/index.vue";
+import RcsMap from "./views/Rcs.Map/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
   public constructor(private ui: VueUI) {
     super();
-  }
-
-  public configure() {
-    this.ui.app.config.warnHandler = (msg, vm, trace) => {
-
-    };
   }
 
   public key = "namei-wcs";
@@ -29,7 +24,7 @@ export class NameiWcs extends VueApp {
 
   public icon = "icon-namei-wcs icon-namei-wcs-logo";
 
-  public iconfont = "font_1966999_tldd0ljgb8d";
+  public iconfont = "font_1966999_bsswdv33j7p";
 
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
@@ -40,7 +35,7 @@ export class NameiWcs extends VueApp {
       {
         path: "devices",
         name: "NameiWcsDevices",
-        component: Devices,
+        component: Devices
       },
       {
         path: "system",
@@ -83,6 +78,11 @@ export class NameiWcs extends VueApp {
           }
         ]
       },
+      {
+        path: "rcs-map",
+        name: "NameiWcsRcsMap",
+        component: RcsMap
+      }
     ]
-  }
+  };
 }

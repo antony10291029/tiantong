@@ -32,14 +32,13 @@ namespace Namei.Common.Api
         var response = await _client.PostAsync(path, content);
         var text = await response.Content.ReadAsStringAsync();
 
-        Console.WriteLine(text);
         result = JsonSerializer.Deserialize<BindPodAndBertResponse>(text);
 
         return result;
       } catch (Exception e) {
         return new BindPodAndBertResponse {
           code = "3",
-          message = $"解绑失败，请重试: {e.Message}"
+          message = $"操作执行失败，请重试: {e.Message}"
         };
       }
     }

@@ -8,9 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@midos/app-iot": "0.0.10",
+    "@midos/app-iot": "0.0.13",
     "@midos/app-midos-center": "^0.0.1-alpha.3",
-    "@midos/app-namei-wcs": "0.0.12"
+    "@midos/app-namei-wcs": "0.0.14"
   },
   "devDependencies": {
     "@midos/core": "^0.0.1-alpha.34",

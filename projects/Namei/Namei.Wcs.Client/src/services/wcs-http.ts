@@ -9,8 +9,8 @@ export class NameiWcsHttp extends HttpClient {
     super(env.IsStaging
       ? "http://172.16.2.74:5100"
       : env.IsProduction
-      ? "http://172.16.2.64:5100"
-      : "http://localhost:5100"
+        ? "http://172.16.2.64:5100"
+        : "http://localhost:5100"
     );
   }
 }

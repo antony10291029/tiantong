@@ -1,16 +1,7 @@
 <template>
-  <div style="padding: 1.25rem">
-    <div class="box">
-      <p class="title is-5">
-        系统配置
-      </p>
-
-      <hr>
-
+  <div>
+    <div class="box" style="margin: 1.25rem">
       <ClearLogs />
-
-      <hr>
-
     </div>
   </div>
 </template>

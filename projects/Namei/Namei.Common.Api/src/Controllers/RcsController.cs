@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Namei.Common.Api
 {
@@ -61,6 +62,10 @@ namespace Namei.Common.Api
         query = query.Where(map => map.PodCode == null);
       }
 
+      if (param.MapDataCode != null) {
+        query = query.Where(map => map.MapDataCode == param.MapDataCode);
+      }
+
       if (param.MapCode != null) {
         query = query.Where(map => map.MapCode == param.MapCode);
       }
@@ -78,6 +83,30 @@ namespace Namei.Common.Api
       }
 
       return query.Paginate(param.Page, param.PageSize);
+    }
+
+    public class BindPodRequest
+    {
+      public string LocationCode { get; set; }
+
+      public string PodCode { get; set; }
+    }
+
+    [HttpPost("/public/rcs/bindPodAndBerth")]
+    public async Task<Result> BindPod([FromBody] BindPodRequest request)
+    {
+      var result = new Result();
+      var response = await _rcsHttp.BindPodAndBerth(
+        new BindPodAndBerthRquest(request.PodCode, request.LocationCode, "1")
+      );
+
+      if (response.code != "0") {
+        result.SetError(response.message, "99");
+      } else {
+        result.Message = "解绑成功";
+      }
+
+      return result;
     }
 
     public class UnbindPodRequest

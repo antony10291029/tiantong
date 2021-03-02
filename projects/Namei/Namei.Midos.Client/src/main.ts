@@ -6,8 +6,6 @@ import { NameiWcs, NameiWcsHttp } from "@midos/app-namei-wcs";
 import { AppIot, IotHttpClient } from "@midos/app-iot";
 import "@midos/vue-ui/style.sass";
 
-console.log(process.env);
-
 MidOS.create()
   .singleton(Config)
   .useUI(VueUI)

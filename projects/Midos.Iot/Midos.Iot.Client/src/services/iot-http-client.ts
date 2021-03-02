@@ -9,8 +9,8 @@ export class IotHttpClient extends HttpClient {
     super(env.IsStaging
       ? "http://172.16.2.74:5101"
       : env.IsProduction
-      ? "http://172.16.2.65:51001"
-      : "http://localhost:5101"
+        ? "http://172.16.2.65:5101"
+        : "http://localhost:5101"
     );
   }
 }

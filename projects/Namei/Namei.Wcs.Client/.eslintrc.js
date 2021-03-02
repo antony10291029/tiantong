@@ -27,6 +27,7 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-multi-assign": ["off"],
+    "no-nested-ternary": ["off"],
     "no-param-reassign": "off",
     "no-plusplus": ["off"],
     "no-return-assign": ["off"],
