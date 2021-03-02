@@ -7,7 +7,7 @@ namespace Microsoft.AspNetCore.Mvc
     protected abstract void Reseed();
 
     [HttpPost("/midos/seeder/seed")]
-    public INotifyResult<MessageObject> HandleSeed()
+    public INotifyResult<IMessageObject> HandleSeed()
     {
       Seed();
 
@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Mvc
     }
 
     [HttpPost("/midos/seeder/reseed")]
-    public INotifyResult<MessageObject> HandleReseed()
+    public INotifyResult<IMessageObject> HandleReseed()
     {
       Reseed();
 

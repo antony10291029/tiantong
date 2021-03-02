@@ -11,11 +11,11 @@ namespace Microsoft.AspNetCore.Mvc
 
   public static class NotifyResult
   {
-    public static INotifyResult<T> From<T>(T data) where T: MessageObject
+    public static INotifyResult<T> From<T>(T data) where T: IMessageObject
       => new NotifyResult<T>(data);
 
-    public static INotifyResult<MessageObject> FromVoid()
-      => new NotifyResult<MessageObject>(new MessageObject());
+    public static INotifyResult<IMessageObject> FromVoid()
+      => new NotifyResult<IMessageObject>(new MessageObject());
 
     // @todo from object
   }

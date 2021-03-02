@@ -1,6 +1,6 @@
 namespace Microsoft.AspNetCore.Mvc
 {
-  public class NotifyResult<T>: Result<T>, INotifyResult<T> where T: MessageObject
+  public class NotifyResult<T>: Result<T>, INotifyResult<T> where T: IMessageObject
   {
     private T _data;
 

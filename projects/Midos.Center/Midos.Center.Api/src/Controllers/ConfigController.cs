@@ -32,7 +32,7 @@ namespace Midos.Center.Controllers
     }
 
     [HttpPost("/midos/configs/create")]
-    public INotifyResult<MessageObject> Create([FromBody] ConfigParams[] param)
+    public INotifyResult<IMessageObject> Create([FromBody] ConfigParams[] param)
     {
       _domain.Configs.AddRange(param.Select(item => new Config {
         Key = item.Key,
@@ -46,7 +46,7 @@ namespace Midos.Center.Controllers
     }
 
     [HttpPost("/midos/configs/update")]
-    public INotifyResult<MessageObject> Update([FromBody] ConfigParams[] param)
+    public INotifyResult<IMessageObject> Update([FromBody] ConfigParams[] param)
     {
       _domain.Configs.UpdateRange(param.Select(item => new Config {
         Key = item.Key,
@@ -64,7 +64,7 @@ namespace Midos.Center.Controllers
     }
 
     [HttpPost("/midos/configs/delete")]
-    public INotifyResult<MessageObject> Remove([FromBody] RemoveParams param)
+    public INotifyResult<IMessageObject> Remove([FromBody] RemoveParams param)
     {
       var items = _domain.Configs
         .Where(config => param.Keys.Contains(config.Key))

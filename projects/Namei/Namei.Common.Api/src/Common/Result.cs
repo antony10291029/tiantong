@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace Namei.Common.Api
 {
-  public class Result
+  public class Result: IMessageObject
   {
     public string Message { get; set; }
 
