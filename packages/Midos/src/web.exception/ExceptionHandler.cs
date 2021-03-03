@@ -36,7 +36,7 @@ namespace Microsoft.AspNetCore.Builder
         await HandleKnownException((IKnownException) ex, _httpContext);
       } else if (ex is IHttpException) {
         await HandleHttpException((IHttpException) ex, _httpContext);
-      } else if (ex is InvalidOperationException && ex.InnerException.Message == "Exception while connecting") {
+      } else if (ex is InvalidOperationException && ex?.InnerException?.Message == "Exception while connecting") {
         // 无法准确定位异常
         await HandleNpgsqlTimeoutException(ex, _httpContext);
       } else {
