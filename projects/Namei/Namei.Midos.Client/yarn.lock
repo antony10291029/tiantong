@@ -1048,24 +1048,24 @@
   resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.1-alpha.3.tgz#eeb47aa1fde5405fea59307797c75dec8b5f2715"
   integrity sha512-v8wtaE1lu5a7iAN1sWgaDc9fw4FxnLp5uvVpUZZtbARg59qBzbDDzWqPXPRYouV0u+Et6zjJuFE81RL/Dw6ZZw==
 
-"@midos/app-namei-wcs@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.npmjs.org/@midos/app-namei-wcs/-/app-namei-wcs-0.0.14.tgz#dab25233277e0e8a603bc92458ee3472f025e250"
-  integrity sha512-UCVyo1n8WRBjmBJOW9V2r0q6kCUVAr6wJITMHEAB8FoDaOXo5jlhM8OA6CTUNbiBVmlOrnIc9kw6od1YFnxuuw==
+"@midos/app-namei-wcs@0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.16.tgz#fd3af8e1f24f4eff28038998172ce3f88be7da15"
+  integrity sha512-yfh0V+HAFyj+MiJYTg/Ts5dranRxdbd2RbyzlDtD++WAXAniUKxMgRQ3HxPLmw2oMo8ic0MOdIBd6P7nmSpWhA==
 
-"@midos/core@^0.0.1-alpha.34":
-  version "0.0.1-alpha.34"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.1-alpha.34.tgz#ab3e440dda9f66534f586f5dceccc4bcccae9a31"
-  integrity sha512-FYTC/W+wusIDrEH/Y8kgG5e0REPiDf2/pVPOut7nv8MH4/rtQ0ZRYFoG2RQQ+bJVIKgx73VXj099TXbZlLKceQ==
+"@midos/core@^0.0.1-alpha.35":
+  version "0.0.1-alpha.35"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.1-alpha.35.tgz#1ebf173fba0d5160a3702035fadacd08405d2764"
+  integrity sha512-GimGbVPLjH077OWgOn4AJ3F0ibEEZpt4qxd4CgV6Ka2xfBSXDw6UQ5yVA/3ecjEKHYLweG84hwrsYfO7kIvCZQ==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
     tsyringe "^4.4.0"
 
-"@midos/vue-ui@^0.0.1-alpha.34":
-  version "0.0.1-alpha.34"
-  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.1-alpha.34.tgz#8bae4d802c275f031da187975547c54b550c80bb"
-  integrity sha512-lW1ejE6mUeEri7sm96dkeKevyGSv0Am2M4S+VyVJLeLCx99/gi4nLnMTFqgLLArwXm/TblFDOdMgigP3vASSrQ==
+"@midos/vue-ui@^0.0.1-alpha.35":
+  version "0.0.1-alpha.35"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.1-alpha.35.tgz#98038b2b636640c263c778c615b92beaa3f73953"
+  integrity sha512-i9awJx9qwuCL2A8el4DNpcVXEae4adHgu56iv/QK8OjlDxMTD325AEzuA2I5rNYSg0rC3Gf8DKflAHwDRCEYpw==
   dependencies:
     bulma "^0.9.2"
 

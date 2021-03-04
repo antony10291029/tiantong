@@ -52,7 +52,12 @@ namespace Namei.Wcs.Api
       } else {
         message = "放取货信号接收异常";
 
-        _cap.Publish(LifterTaskExceptionEvent.Message, new LifterTaskExceptionEvent(param.liftCode, param.floor, message));
+        _cap.Publish(LifterOperationError.Message, LifterOperationError.From(
+          lifterId: param.liftCode,
+          floor: param.floor,
+          operation: "wms.finish",
+          message: message
+        ));
       }
 
       return new {

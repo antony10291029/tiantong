@@ -15,7 +15,7 @@
       <tbody>
         <tr v-for="log in logs.data" :key="log.id">
           <td>{{log.message}}</td>
-          <td>{{log.created_at.split('T').join(' ')}}</td>
+          <td>{{log.createdAt.split('T').join(' ')}}</td>
         </tr>
       </tbody>
     </table>
@@ -43,7 +43,7 @@ export default defineComponent({
   },
 
   props: {
-    search: {
+    classes: {
       type: Object as PropType<string[]>,
       required: true
     }
@@ -66,8 +66,8 @@ export default defineComponent({
     async function getDataSource (page = 1) {
       const result = await http.post("/logs/search", {
         page,
-        search: props.search,
-        query: [query.value]
+        query: [query.value],
+        classes: props.classes,
       });
 
       logs.value = result;

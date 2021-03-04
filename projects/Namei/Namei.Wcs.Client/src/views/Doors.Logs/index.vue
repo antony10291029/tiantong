@@ -1,11 +1,11 @@
 <template>
   <div style="padding: 1.25rem; overflow: auto">
-    <LogList :search="search" />
+    <LogList :classes="['wcs.door']" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import LogList from "../../components/LogList.vue";
 
 export default defineComponent({
@@ -13,14 +13,6 @@ export default defineComponent({
 
   components: {
     LogList,
-  },
-
-  setup() {
-    const search = ref(["door"]);
-
-    return {
-      search
-    };
   }
 });
 </script>

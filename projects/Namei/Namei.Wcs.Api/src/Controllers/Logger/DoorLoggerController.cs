@@ -15,12 +15,16 @@ namespace Namei.Wcs.Api
       _logger = logger;
     }
 
-    private void Info(string doorId, string event_, string message)
+    private void Info(string doorId, string operation, string message)
     {
       var doorType = AutomatedDoor.Enumerate().Contains(doorId) ? DoorType.Automatic : DoorType.Crash;
       var doorTypeText = doorType == DoorType.Automatic ? "自动门" : "防撞门";
 
-      _logger.Info($"door.{doorType}.{doorId}.{event_}", $"{doorId}号{doorTypeText}，{message}");
+      message = $"{doorId}号{doorTypeText}，{message}";
+
+      var log = Log.From(LogLevel.Info, "wcs.door", operation, doorId, message, "");
+
+      _logger.Save(log);
     }
 
     [CapSubscribe(DoorTaskRequestOpenEvent.Message, Group = Group)]

@@ -39,8 +39,6 @@ namespace Namei.Wcs.Api
     {
       var message = "指令未识别";
 
-      _logger.Log("info", "test", JsonSerializer.Serialize(param));
-
       if (param.actionTask == "applyLock") {
         message = "正在处理开门指令";
         _cap.Publish(DoorTaskRequestOpenEvent.Message, new DoorTaskRequestOpenEvent(param.deviceIndex, param.uuid));

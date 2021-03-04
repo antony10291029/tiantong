@@ -35,7 +35,7 @@ namespace Namei.Wcs.Api
       System.Console.WriteLine(param.days);
       var date = DateTime.Now.AddDays(-param.days);
 
-      _domain.Logs.Where(log => log.created_at < date).Delete();
+      _domain.Logs.Where(log => log.CreatedAt < date).Delete();
 
       return NotifyResult.FromVoid().Success("日志已清理");
     }

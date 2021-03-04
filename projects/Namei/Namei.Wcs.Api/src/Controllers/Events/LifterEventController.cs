@@ -2,6 +2,7 @@ using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Namei.Wcs.Api
 {
@@ -13,8 +14,6 @@ namespace Namei.Wcs.Api
 
     private LifterServiceManager _lifters;
 
-    private LifterTaskService _tasks;
-
     private WmsService _wms;
 
     private DomainContext _domain;
@@ -23,17 +22,60 @@ namespace Namei.Wcs.Api
       ICapPublisher cap,
       DomainContext domain,
       LifterServiceManager lifters,
-      LifterTaskService tasks,
       WmsService wms
     ) {
       _cap = cap;
       _domain = domain;
       _lifters = lifters;
-      _tasks = tasks;
       _wms = wms;
     }
 
+    private LifterRuntimeTask SaveRuntimeTask(LifterTask task)
+    {
+      var runtimeTask = _domain.LifterRuntimeTasks
+        .Find(task.LifterId, task.Barcode);
+
+      if (runtimeTask == null) {
+        runtimeTask = LifterRuntimeTask.From(task);
+        _domain.Add(runtimeTask);
+      } else {
+        runtimeTask.SetLifterTaskId(task.Id);
+      }
+
+      _domain.SaveChanges();
+
+      return runtimeTask;
+    }
+
+    // private void PublishLifterError(string lifterId, string floor, string message)
+    // {
+    //   _cap.Publish(LifterError.Message, LifterError.From(lifterId, floor, message));
+    // }
+
     // events
+
+    [CapSubscribe(LifterTaskReceived.Message, Group = Group)]
+    public void HandleTaskReceived(LifterTaskReceived param)
+    {
+      var task = LifterTask.From(
+        param.LifterId,
+        param.Floor,
+        param.Destination,
+        param.BarCode,
+        param.TaskCode
+      );
+
+      _domain.Add(task);
+
+      _domain.UseTransaction(() => {
+        _domain.SaveChanges();
+        SaveRuntimeTask(task);
+        _cap.Publish(LifterTaskCreated.Message, LifterTaskCreated.From(task));
+      },
+      error => {
+        // PublishLifterError(task.LifterId, task.Floor, "");
+      });
+    }
 
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
     public void HandleTaskImported(LifterTaskImportedEvent param)
