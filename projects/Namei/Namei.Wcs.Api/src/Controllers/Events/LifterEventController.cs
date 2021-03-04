@@ -107,7 +107,6 @@ namespace Namei.Wcs.Api
         var taskId = _wms.GetPalletInfo(barcode).TaskId;
         _wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
         _cap.Publish(LifterTaskPickingEvent.Message, new LifterTaskPickingEvent(param.LifterId, param.Floor, barcode, taskId));
-        _tasks.Set(barcode);
       } catch (Exception e) {
         _cap.Publish(LifterTaskPickingFailedEvent.Message, new LifterTaskPickingFailedEvent(param.LifterId, param.Floor, barcode, e.Message));
       }
