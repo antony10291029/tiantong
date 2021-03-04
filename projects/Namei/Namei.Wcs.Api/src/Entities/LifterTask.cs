@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,24 +7,90 @@ namespace Namei.Wcs.Api
   [Table("lifter_tasks")]
   public class LifterTask
   {
-    public int id { get; set; }
+    [Key]
+    [Column("id")]
+    public int Id { get; private set; }
 
-    public string lifter_id { get; set; }
+    [Column("lifter_id")]
+    public string LifterId { get; private set; }
 
-    public string from { get; set; }
+    [Column("floor")]
+    public string Floor { get; private set; }
 
-    public string to { get; set; }
+    [Column("destination")]
+    public string Destination { get; private set; }
 
-    public string pallet_code { get; set; }
+    [Column("barcode")]
+    public string Barcode { get; private set; }
 
-    public string task_id { get; set; }
+    [Column("task_code")]
+    public string TaskCode { get; private set; }
 
-    public string status { get; set; } = LifterTaskStatusType.Imported;
+    [Column("status")]
+    public string Status { get; private set; }
 
-    public DateTime imported_at { get; set; } = DateTime.Now;
+    [Column("imported_at")]
+    public DateTime ImportedAt { get; private set; }
 
-    public DateTime exported_at { get; set; } = DateTime.MinValue;
 
-    public DateTime taken_at { get; set; } = DateTime.MinValue;
+    [Column("exported_at")]
+    public DateTime ExportedAt { get; private set; }
+
+    [Column("taken_at")]
+    public DateTime TakenAt { get; private set; }
+
+    private LifterTask()
+    {
+
+    }
+
+    public static LifterTask From(
+      string lifterId,
+      string floor,
+      string destination,
+      string barcode,
+      string taskCode
+    ) {
+      return new LifterTask() {
+        LifterId = lifterId,
+        Floor = floor,
+        Destination = destination,
+        Barcode = barcode,
+        TaskCode = taskCode,
+        Status = LifterTaskStatusType.Created,
+        ImportedAt = DateTime.MinValue,
+        ExportedAt = DateTime.MinValue,
+        TakenAt = DateTime.MinValue,
+      };
+    }
+
+    public bool IsExported()
+    {
+      return ExportedAt != DateTime.MinValue;
+    }
+
+    public LifterTask SetImported()
+    {
+      Status = LifterTaskStatusType.Imported;
+      ImportedAt = DateTime.Now;
+
+      return this;
+    }
+
+    public LifterTask SetExported()
+    {
+      Status = LifterTaskStatusType.Exported;
+      ExportedAt = DateTime.Now;
+
+      return this;
+    }
+
+    public LifterTask SetTaken()
+    {
+      Status = LifterTaskStatusType.Taken;
+      TakenAt = DateTime.Now;
+
+      return this;
+    }
   }
 }

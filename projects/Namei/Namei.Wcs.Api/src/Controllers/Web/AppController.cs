@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Namei.Wcs.Api
@@ -25,6 +26,12 @@ namespace Namei.Wcs.Api
         version = _config.AppVersion,
         env = _config.Env
       });
+    }
+
+    [HttpPost("/test")]
+    public object Test()
+    {
+      return _domain.LifterTasks.ToArray();
     }
   }
 }

@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Namei.Wcs.Database;
 
@@ -19,6 +20,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<LifterTask> LifterTasks { get; set; }
 
+    public DbSet<LifterRuntimeTask> LifterRuntimeTasks { get; set; }
+
     public DomainContext(Config config)
     {
       _config = config;
@@ -27,6 +30,12 @@ namespace Namei.Wcs.Api
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
       options.UseNpgsql(_config.Postgres);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<LifterRuntimeTask>()
+        .HasKey(task => new { task.LifterId, task.Barcode });
     }
   }
 }

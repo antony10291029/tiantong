@@ -30,7 +30,6 @@ namespace Namei.Wcs.Api
       services.AddSingleton<WmsService>();
       services.AddSingleton<RcsService>();
       services.AddDbContext<DomainContext>();
-      services.AddScoped<LifterTaskService>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
