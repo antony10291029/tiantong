@@ -15,13 +15,12 @@
 
     <div
       class="is-flex is-flex-column"
-      style="width: 100px"
     >
       <div class="is-flex-auto"></div>
 
       <div
         class="is-flex is-flex-column"
-        style="width: 100px; margin-left: 0.5rem"
+        style="margin-left: 0.5rem"
       >
         <div class="is-flex-auto"></div>
 

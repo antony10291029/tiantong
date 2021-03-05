@@ -52,7 +52,7 @@ namespace Namei.Wcs.Api
     public object PublishMessage([FromBody] LifterNotifyParams param)
     {
       if (param.message == "imported") {
-        _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.lifter_id, param.floor));
+        _lifters.Get(param.lifter_id).SetImported(param.floor, true);
       } else if (param.message == "exported") {
         _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
       } else if (param.message == "scanned") {

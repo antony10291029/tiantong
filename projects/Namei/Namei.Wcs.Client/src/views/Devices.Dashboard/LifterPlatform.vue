@@ -1,7 +1,7 @@
 <template>
   <div
-    class="is-flex is-flex-column"
-    style="width: 100px"
+    class="is-flex is-flex-column is-flex-auto"
+    style="min-width: 80px"
   >
     <div class="is-flex-auto"></div>
 
@@ -11,7 +11,7 @@
 
     <div
       class="has-background-primary is-flex is-vcentered is-centered has-text-white"
-      style="height: 30px; width: 100px"
+      style="height: 30px; min-width: 80px"
     >
       {{text}}
     </div>

@@ -28,7 +28,7 @@
               v-class:is-focused="params.lifterId == lifter.id"
               @click="params.lifterId = lifter.id"
               class="button is-small"
-              style="width: 120px"
+              style="width: 100px"
             >
               {{`${lifter.id} # ${lifter.text}`}}
             </a>
@@ -59,7 +59,7 @@
               v-class:is-focused="params.floor === floor"
               @click="params.floor = floor"
               class="button is-small"
-              style="width: 120px"
+              style="width: 100px"
             >
               {{`${floor} 楼`}}
             </a>
@@ -90,7 +90,7 @@
               v-class:is-focused="params.destination === floor"
               @click="params.destination = floor"
               class="button is-small"
-              style="width: 120px"
+              style="width: 100px"
             >
               {{`${floor} 楼`}}
             </a>

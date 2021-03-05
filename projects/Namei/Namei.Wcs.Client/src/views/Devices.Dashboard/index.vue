@@ -6,9 +6,9 @@
     v-slot="{ isLoading }"
   >
     <template v-if="!isLoading">
-      <div class="columns">
+      <div class="columns is-multiline">
         <div
-          class="column is-narrow"
+          class="column is-one-third-fullhd is-half-desktop is-12-tablet"
           v-for="id in ['1', '2', '3']" :key="id"
         >
           <TheLifter :lifterId="id" :lifter="lifters[id]" :doors="doors" />
