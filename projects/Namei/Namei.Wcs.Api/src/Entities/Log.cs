@@ -1,4 +1,3 @@
-using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,10 +27,6 @@ namespace Namei.Wcs.Api
     [Column("data")]
     public string Data { get; private set; }
 
-    // remove
-    [Column("key")]
-    public string Key { get; private set; }
-
     [Column("message")]
     public string Message { get; private set; }
 
@@ -59,40 +54,7 @@ namespace Namei.Wcs.Api
         Data = data,
         Message = message,
         CreatedAt = DateTime.Now,
-
-        Key = "old"
       };
-    }
-
-    public static Log FromOld(string key, string level, string message)
-    {
-      return new Log() {
-        Class = "old",
-        Index = "old",
-        Operation = "old",
-        Data = "old",
-        Level = level,
-        Key = key,
-        Message = message,
-        CreatedAt = DateTime.Now,
-      };
-    }
-
-    public Log UseOperator(string klass, string operation, string index)
-    {
-      Class = klass;
-      Operation = operation;
-      Index = index;
-
-      return this;
-    }
-
-    // todo remove
-    public Log UseKey(string key)
-    {
-      Key = key;
-
-      return this;
     }
 
     public Log UseSuccess(string level)
