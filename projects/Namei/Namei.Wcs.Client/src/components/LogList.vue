@@ -7,15 +7,28 @@
 
     <slot></slot>
 
-    <table class="table is-fullwidth is-bordered">
+    <table class="table is-nowrap is-centered is-fullwidth is-bordered">
       <thead>
-        <th>运行记录</th>
+        <th class="is-narrow"></th>
         <th>时间</th>
+        <th>类别</th>
+        <th>操作</th>
+        <th>对象</th>
+        <th>详情</th>
       </thead>
       <tbody>
         <tr v-for="log in logs.data" :key="log.id">
-          <td>{{log.message}}</td>
+          <td class="is-centered">
+            <span :class="`icon has-text-${log.level}`">
+              <i :class="`icon-midos icon-midos-${log.level}`"
+              style="font-size: 1.25rem"></i>
+            </span>
+          </td>
           <td>{{log.createdAt.split('T').join(' ')}}</td>
+          <td>{{log.class}}</td>
+          <td>{{log.operation}}</td>
+          <td>{{log.index}}</td>
+          <td class="has-text-left">{{log.message}}</td>
         </tr>
       </tbody>
     </table>
@@ -55,7 +68,7 @@ export default defineComponent({
     const query = ref("");
     const isPending = ref(false);
     const logs = ref({
-      data: [],
+      data: [] as any[],
       meta: {
         page: 1,
         pageSize: 15,
