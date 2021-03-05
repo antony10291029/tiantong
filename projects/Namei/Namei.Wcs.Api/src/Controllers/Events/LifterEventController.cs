@@ -47,23 +47,18 @@ namespace Namei.Wcs.Api
       return runtimeTask;
     }
 
-    // private void PublishLifterError(string lifterId, string floor, string message)
-    // {
-    //   _cap.Publish(LifterError.Message, LifterError.From(lifterId, floor, message));
-    // }
-
-    // events
-
     [CapSubscribe(LifterTaskReceived.Message, Group = Group)]
     public void HandleTaskReceived(LifterTaskReceived param)
     {
       var task = LifterTask.From(
-        param.LifterId,
-        param.Floor,
-        param.Destination,
-        param.BarCode,
-        param.TaskCode
+        lifterId: param.LifterId,
+        floor: param.Floor,
+        destination: param.Destination,
+        barcode: param.Barcode,
+        taskCode: param.TaskCode,
+        operatr: param.Operator
       );
+
 
       _domain.Add(task);
 

@@ -29,6 +29,9 @@ namespace Namei.Wcs.Api
     [Column("status")]
     public string Status { get; private set; }
 
+    [Column("operator")]
+    public string Operator { get; private set; }
+
     [Column("imported_at")]
     public DateTime ImportedAt { get; private set; }
 
@@ -45,6 +48,7 @@ namespace Namei.Wcs.Api
     }
 
     public static LifterTask From(
+      string operatr,
       string lifterId,
       string floor,
       string destination,
@@ -52,6 +56,7 @@ namespace Namei.Wcs.Api
       string taskCode
     ) {
       return new LifterTask() {
+        Operator = operatr,
         LifterId = lifterId,
         Floor = floor,
         Destination = destination,

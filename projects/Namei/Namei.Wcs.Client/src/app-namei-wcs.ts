@@ -3,6 +3,8 @@ import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
 import App from "./views/App/index.vue";
 import Devices from "./views/Devices/index.vue";
+import DevicesDashboard from "./views/Devices.Dashboard/index.vue";
+import DevicesLifterTasks from "./views/Devices.Lifter.Tasks/index.vue";
 import System from "./views/System/index.vue";
 import Lifters from "./views/Lifters/index.vue";
 import LifterLogs from "./views/Lifters.Logs/index.vue";
@@ -35,7 +37,20 @@ export class NameiWcs extends VueApp {
       {
         path: "devices",
         name: "NameiWcsDevices",
-        component: Devices
+        redirect: { name: "NameiWcsDevicesDashboard" },
+        component: Devices,
+        children: [
+          {
+            path: "dashboard",
+            name: "NameiWcsDevicesDashboard",
+            component: DevicesDashboard,
+          },
+          {
+            path: "lifter-tasks",
+            name: "NameiWcsDevicesLifterTasks",
+            component: DevicesLifterTasks,
+          },
+        ]
       },
       {
         path: "system",

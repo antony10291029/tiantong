@@ -10,9 +10,11 @@ namespace Namei.Wcs.Api
 
     public string TaskCode { get; init; }
 
-    public string BarCode { get; init; }
+    public string Barcode { get; init; }
 
     public string Destination { get; init; }
+
+    public string Operator { get; init; }
 
     private LifterTaskReceived()
     {
@@ -24,14 +26,16 @@ namespace Namei.Wcs.Api
       string floor,
       string destination,
       string barcode,
-      string taskCode
+      string taskCode,
+      string operatr
     ) {
       return new LifterTaskReceived() {
         LifterId = lifterId,
         Floor = floor,
         Destination = destination,
-        BarCode = barcode,
-        TaskCode = taskCode
+        Barcode = barcode,
+        TaskCode = taskCode,
+        Operator = operatr
       };
     }
   }

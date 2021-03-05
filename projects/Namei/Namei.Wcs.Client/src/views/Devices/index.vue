@@ -1,72 +1,42 @@
 <template>
-  <AsyncLoader
-    :handler="getDataSource"
-    class="is-flex is-flex-column"
-    style="padding: 1.25rem; overflow: auto"
-    v-slot="{ isLoading }"
-  >
-    <template v-if="!isLoading">
-      <div class="columns">
-        <div
-          class="column is-narrow"
-          v-for="id in ['1', '2', '3']" :key="id"
+  <div class="is-flex is-flex-column">
+    <div
+      class="tabs"
+      style="margin-bottom: 0; font-size: 1.125rem; flex-shrink: 0"
+    >
+      <ul>
+        <router-link
+          custom
+          v-for="(tab, key) in tabs" :key="key"
+          :to="{ name: tab.route }"
+          v-slot="{ navigate, isActive }"
         >
-          <TheLifter :lifterId="id" :lifter="lifters[id]" :doors="doors" />
-        </div>
-      </div>
+          <li
+            v-class:is-active="isActive"
+            @click="navigate"
+          >
+            <a>{{tab.text}}</a>
+          </li>
+        </router-link>
+      </ul>
+    </div>
 
-      <TheDoors :doors="doors" />
-    </template>
-  </AsyncLoader>
+    <router-view />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useInterval } from "@midos/vue-ui";
-import { useWcsHttp } from "../../services/wcs-http";
-import TheDoors from "./Doors.vue";
-import TheLifter from "./Lifter.vue";
-import { Obj, Door, Lifter } from "./_interfaces";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Devices",
-  components: {
-    TheDoors,
-    TheLifter,
-  },
 
   setup() {
-    const http = useWcsHttp();
-
-    const lifters = ref<Obj<Lifter>>({});
-    const doors = ref<Obj<Door>>({});
-    const isInitialized = ref([false, false]);
-    const isPending = ref(false);
-
-    async function getLifters() {
-      const result = await http.post("/lifters/states");
-
-      lifters.value = result;
-    }
-
-    async function getDoors() {
-      const result = await http.post("/doors/states");
-
-      doors.value = result;
-    }
-
-    async function getDataSource() {
-      await Promise.all([getLifters(), getDoors()]);
-    }
-
-    useInterval(getDataSource, ref(true));
-
     return {
-      lifters,
-      doors,
-      isInitialized,
-      isPending,
-      getDataSource
+      tabs: [
+        { text: "实时监控", route: "NameiWcsDevicesDashboard" },
+        { text: "提升机任务", route: "NameiWcsDevicesLifterTasks" },
+      ]
     };
   }
 });

@@ -12,6 +12,7 @@ namespace Microsoft.EntityFrameworkCore
         transaction.Commit();
       } catch (Exception e) {
         error(e);
+        throw e;
       }
     }
   }

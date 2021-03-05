@@ -1048,10 +1048,10 @@
   resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.1-alpha.3.tgz#eeb47aa1fde5405fea59307797c75dec8b5f2715"
   integrity sha512-v8wtaE1lu5a7iAN1sWgaDc9fw4FxnLp5uvVpUZZtbARg59qBzbDDzWqPXPRYouV0u+Et6zjJuFE81RL/Dw6ZZw==
 
-"@midos/app-namei-wcs@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.16.tgz#fd3af8e1f24f4eff28038998172ce3f88be7da15"
-  integrity sha512-yfh0V+HAFyj+MiJYTg/Ts5dranRxdbd2RbyzlDtD++WAXAniUKxMgRQ3HxPLmw2oMo8ic0MOdIBd6P7nmSpWhA==
+"@midos/app-namei-wcs@0.0.18":
+  version "0.0.18"
+  resolved "https://registry.npmjs.org/@midos/app-namei-wcs/-/app-namei-wcs-0.0.18.tgz#dfad7ea31e4340915bde235c329bce17260c0ca8"
+  integrity sha512-CulR4mq1J9XhwNbW+tRPajWYEhVEOMH3a501nsPVUGhHVt8ZkHJFi4IhMscIhCtkyu+ClNcq2x4ZJ0xoezkmYg==
 
 "@midos/core@^0.0.1-alpha.35":
   version "0.0.1-alpha.35"
