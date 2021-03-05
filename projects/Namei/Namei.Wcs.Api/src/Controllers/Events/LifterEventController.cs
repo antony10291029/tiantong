@@ -1,8 +1,9 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
@@ -32,14 +33,13 @@ namespace Namei.Wcs.Api
 
     private LifterRuntimeTask SaveRuntimeTask(LifterTask task)
     {
-      var runtimeTask = _domain.LifterRuntimeTasks
-        .Find(task.LifterId, task.Barcode);
+      var runtimeTask = _domain.LifterRuntimeTasks.Find(task.Barcode);
 
       if (runtimeTask == null) {
         runtimeTask = LifterRuntimeTask.From(task);
         _domain.Add(runtimeTask);
       } else {
-        runtimeTask.SetLifterTaskId(task.Id);
+        runtimeTask.UseLifterTaskId(task.Id);
       }
 
       _domain.SaveChanges();
@@ -59,7 +59,6 @@ namespace Namei.Wcs.Api
         operatr: param.Operator
       );
 
-
       _domain.Add(task);
 
       _domain.UseTransaction(() => {
@@ -68,7 +67,13 @@ namespace Namei.Wcs.Api
         _cap.Publish(LifterTaskCreated.Message, LifterTaskCreated.From(task));
       },
       error => {
-        // PublishLifterError(task.LifterId, task.Floor, "");
+        _cap.Publish(LifterOperationError.Message, LifterOperationError.From(
+          lifterId: task.LifterId,
+          operation: "create",
+          floor: task.Floor,
+          message: "创建提升机任务失败：" + error.Message,
+          level: "danger"
+        ));
       });
     }
 
@@ -76,8 +81,8 @@ namespace Namei.Wcs.Api
     public void HandleTaskImported(LifterTaskImportedEvent param)
     {
       if (param.LifterId != "1") {
-        if (param.BarCode != null) {
-          _lifters.Get(param.LifterId).SetPalletCode(param.Floor, param.BarCode);
+        if (param.Barcode != null) {
+          _lifters.Get(param.LifterId).SetPalletCode(param.Floor, param.Barcode);
         }
         if (param.Destination != null) {
           _lifters.Get(param.LifterId).SetDestination(param.Floor, param.Destination);
@@ -149,16 +154,24 @@ namespace Namei.Wcs.Api
       }
     }
 
-    [CapSubscribe(LifterTaskTakenEvent.Message, Group = Group)]
-    public void HandleTaskTaken(LifterTaskTakenEvent param)
+    [CapSubscribe(LifterTaskTaken.Message, Group = Group)]
+    public void HandleTaskTaken(LifterTaskTaken param)
     {
-      var lifter = _lifters.Get(param.LifterId);
+      var runtimeTask = _domain.LifterRuntimeTasks
+        .Include(task => task.LifterTask)
+        .First(task => task.Barcode == param.Barcode);
+      var task = runtimeTask.LifterTask;
+      var lifter = _lifters.Get(task.LifterId);
 
-      lifter.SetPickuped(param.Floor, true);
+      lifter.SetPickuped(task.Floor, true);
 
-      Task.Delay(2000).ContinueWith(async task => {
-        await task;
-        lifter.SetPickuped(param.Floor, false);
+      task.SetTaken();
+      _domain.Remove(runtimeTask);
+      _domain.SaveChanges();
+
+      Task.Delay(2000).ContinueWith(async _ => {
+        await _;
+        lifter.SetPickuped(task.Floor, false);
       });
     }
   }

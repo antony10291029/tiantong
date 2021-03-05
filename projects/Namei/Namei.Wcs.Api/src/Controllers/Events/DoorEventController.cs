@@ -9,12 +9,8 @@ namespace Namei.Wcs.Api
 
     private DoorServiceManager _doors;
 
-    public DoorEventController(
-      DomainContext domain,
-      DoorServiceManager doors,
-      DoorTaskManager taskManager,
-      RcsService rcs
-    ) {
+    public DoorEventController(DoorServiceManager doors)
+    {
       _doors = doors;
     }
 
@@ -40,8 +36,8 @@ namespace Namei.Wcs.Api
     }
 
     // 取货完成
-    [CapSubscribe(LifterTaskTakenEvent.Message, Group = Group)]
-    public void HandleLifterTaskTaken(LifterTaskTakenEvent param)
+    [CapSubscribe(LifterTaskTaken.Message, Group = Group)]
+    public void HandleLifterTaskTaken(LifterTaskTaken param)
     {
       var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
 

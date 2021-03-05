@@ -1,22 +1,27 @@
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskTakenEvent
+  public class LifterTaskTaken
   {
     public const string Message = "lifter.task.taken";
 
-    public string LifterId { get; set; }
+    public string Barcode { get; init; }
 
-    public string Floor { get; set; }
+    public string LifterId { get; init; }
 
-    public string TaskId { get; set; }
+    public string Floor { get; init; }
 
-    public bool IsFromWms { get => TaskId != null; }
+    private LifterTaskTaken() {}
 
-    public LifterTaskTakenEvent(string lifterId, string floor, string taskId = null)
-    {
-      LifterId = lifterId;
-      Floor = floor;
-      TaskId = taskId;
+    public static LifterTaskTaken From(
+      string barcode,
+      string lifterId,
+      string floor
+    ) {
+      return new LifterTaskTaken() {
+        Barcode = barcode,
+        LifterId = lifterId,
+        Floor = floor
+      };
     }
   }
 }

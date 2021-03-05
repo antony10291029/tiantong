@@ -47,11 +47,11 @@ namespace Namei.Wcs.Api
 
       if (param.Method == "deliver") {
         _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(
-          param.LiftCode,
-          param.Floor,
-          param.TaskCode.ToString(),
-          param.BarCode,
-          param.Destination
+          lifterId: param.LiftCode,
+          floor: param.Floor,
+          taskCode: param.TaskCode.ToString(),
+          barcode: param.BarCode,
+          destination: param.Destination
         ));
         _cap.Publish(LifterTaskReceived.Message, LifterTaskReceived.From(
           lifterId: param.LiftCode,
@@ -64,8 +64,13 @@ namespace Namei.Wcs.Api
 
         message = "收到创建提升机任务指令";
       } else if (param.Method == "pick") {
-        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.LiftCode, param.Floor, param.TaskCode.ToString()));
         message = "收到取货完成指令";
+
+        _cap.Publish(LifterTaskTaken.Message, LifterTaskTaken.From(
+          barcode: param.BarCode,
+          lifterId: param.LiftCode,
+          floor: param.Floor
+        ));
       } else {
         message = "放取货信号接收异常";
 
@@ -77,17 +82,17 @@ namespace Namei.Wcs.Api
         ));
       }
 
-      return Result
-        .FromObject(new {
-          message = message,
-          method = param.Method,
-          liftCode = param.LiftCode,
-          floor = param.Floor,
-          destination = param.Destination,
-          taskCode = param.TaskCode,
-          Operator = param.Operator,
-        })
-        .StatusCode(201);
+      var result = new {
+        message = message,
+        method = param.Method,
+        liftCode = param.LiftCode,
+        floor = param.Floor,
+        destination = param.Destination,
+        taskCode = param.TaskCode,
+        Operator = param.Operator,
+      };
+
+      return Result.FromObject(result).StatusCode(201);
     }
   }
 }

@@ -58,7 +58,7 @@ namespace Namei.Wcs.Api
       } else if (param.message == "scanned") {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(param.lifter_id, param.floor));
       } else if (param.message == "taken") {
-        _cap.Publish(LifterTaskTakenEvent.Message, new LifterTaskTakenEvent(param.lifter_id, param.floor));
+        _lifters.Get(param.lifter_id).SetPickuped(param.floor, true);
       }
 
       return NotifyResult.FromVoid().Success($"指令已发送: {param.lifter_id} 号梯，{param.floor} 楼");

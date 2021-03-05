@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DotNetCore.CAP;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Namei.Wcs.Api
 {

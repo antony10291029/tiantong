@@ -31,11 +31,5 @@ namespace Namei.Wcs.Api
     {
       options.UseNpgsql(_config.Postgres);
     }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-      modelBuilder.Entity<LifterRuntimeTask>()
-        .HasKey(task => new { task.LifterId, task.Barcode });
-    }
   }
 }

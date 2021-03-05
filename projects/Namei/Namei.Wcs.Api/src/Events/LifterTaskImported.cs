@@ -10,18 +10,18 @@ namespace Namei.Wcs.Api
 
     public string TaskCode { get; set; }
 
-    public string BarCode { get; set; }
+    public string Barcode { get; set; }
 
     public string Destination { get; set; }
 
     public bool IsFromWms { get => TaskCode != null; }
 
-    public LifterTaskImportedEvent(string lifterId, string floor, string taskCode = null, string barCode = null, string destination = null)
+    public LifterTaskImportedEvent(string lifterId, string floor, string taskCode = null, string barcode = null, string destination = null)
     {
       LifterId = lifterId;
       Floor = floor;
       TaskCode = taskCode;
-      BarCode = barCode;
+      Barcode = barcode;
       Destination = destination;
     }
   }
