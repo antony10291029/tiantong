@@ -39,7 +39,7 @@ namespace Namei.Wcs.Api
         Log.UseOperation(operation),
         Log.UseIndex(lifterId),
         Log.UseData(data),
-        Log.UseMessage($"{lifterId} 号梯，{floor} 楼，{message}")
+        Log.UseMessage($"{lifterId} 号梯, {floor} 楼, {message}")
       );
 
       Save(log);
