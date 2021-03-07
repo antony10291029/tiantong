@@ -8,13 +8,17 @@ namespace Namei.Wcs.Api
   {
     private ICapPublisher _cap;
 
+    private Logger _logger;
+
     private WmsService _wms;
 
     public LifterTaskCommand(
       ICapPublisher cap,
-      WmsService wms
+      WmsService wms,
+      Logger logger
     ) {
       _cap = cap;
+      _logger = logger;
       _wms = wms;
     }
 
@@ -32,20 +36,18 @@ namespace Namei.Wcs.Api
 
       public string Destination { get; set; }
 
-      public string Operator { get; set; }
+      public string Operator { get; set; } = "wms";
     }
 
     [Route("/finish")]
     [HttpPost("/lifter-tasks/create")]
     public object LiftersNotify([FromBody] LifterNotify param)
     {
-      var message = "指令未识别";
-
-      if (param.Operator is null) {
-        param.Operator = "wms";
-      }
+      var message = "";
 
       if (param.Method == "deliver") {
+        message = "收到创建提升机任务指令";
+
         _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(
           lifterId: param.LiftCode,
           floor: param.Floor,
@@ -53,8 +55,6 @@ namespace Namei.Wcs.Api
           barcode: param.BarCode,
           destination: param.Destination
         ));
-
-        message = "收到创建提升机任务指令";
       } else if (param.Method == "pick") {
         message = "收到取货完成指令";
 
@@ -64,7 +64,7 @@ namespace Namei.Wcs.Api
           floor: param.Floor
         ));
       } else {
-        message = "放取货信号接收异常";
+        message = $"指令未识别：{param.Method}";
 
         _cap.Publish(LifterOperationError.Message, LifterOperationError.From(
           lifterId: param.LiftCode,
@@ -74,14 +74,20 @@ namespace Namei.Wcs.Api
         ));
       }
 
+      var json = System.Text.Json.JsonSerializer.Serialize(param);
+
+      _logger.Save(Log.From(
+        Log.UseClass("wms.api"),
+        Log.UseOperation("finish"),
+        Log.UseIndex("0"),
+        Log.UseMessage("收到 WMS 指令"),
+        Log.UseData(json),
+        Log.UseInfo()
+      ));
+
       var result = new {
         message = message,
-        method = param.Method,
-        liftCode = param.LiftCode,
-        floor = param.Floor,
-        destination = param.Destination,
-        taskCode = param.TaskCode,
-        Operator = param.Operator,
+        data = param
       };
 
       return Result.FromObject(result).StatusCode(201);
