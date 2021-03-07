@@ -17,64 +17,14 @@ namespace Namei.Wcs.Api
 
     private WmsService _wms;
 
-    private DomainContext _domain;
-
     public LifterEventController(
       ICapPublisher cap,
-      DomainContext domain,
       LifterServiceManager lifters,
       WmsService wms
     ) {
       _cap = cap;
-      _domain = domain;
       _lifters = lifters;
       _wms = wms;
-    }
-
-    private LifterRuntimeTask SaveRuntimeTask(LifterTask task)
-    {
-      var runtimeTask = _domain.LifterRuntimeTasks.Find(task.Barcode);
-
-      if (runtimeTask == null) {
-        runtimeTask = LifterRuntimeTask.From(task);
-        _domain.Add(runtimeTask);
-      } else {
-        runtimeTask.UseLifterTaskId(task.Id);
-      }
-
-      _domain.SaveChanges();
-
-      return runtimeTask;
-    }
-
-    [CapSubscribe(LifterTaskReceived.Message, Group = Group)]
-    public void HandleTaskReceived(LifterTaskReceived param)
-    {
-      var task = LifterTask.From(
-        lifterId: param.LifterId,
-        floor: param.Floor,
-        destination: param.Destination,
-        barcode: param.Barcode,
-        taskCode: param.TaskCode,
-        operatr: param.Operator
-      );
-
-      _domain.Add(task);
-
-      _domain.UseTransaction(() => {
-        _domain.SaveChanges();
-        SaveRuntimeTask(task);
-        _cap.Publish(LifterTaskCreated.Message, LifterTaskCreated.From(task));
-      },
-      error => {
-        _cap.Publish(LifterOperationError.Message, LifterOperationError.From(
-          lifterId: task.LifterId,
-          operation: "create",
-          floor: task.Floor,
-          message: "创建提升机任务失败：" + error.Message,
-          level: "danger"
-        ));
-      });
     }
 
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
@@ -157,21 +107,13 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskTaken.Message, Group = Group)]
     public void HandleTaskTaken(LifterTaskTaken param)
     {
-      var runtimeTask = _domain.LifterRuntimeTasks
-        .Include(task => task.LifterTask)
-        .First(task => task.Barcode == param.Barcode);
-      var task = runtimeTask.LifterTask;
-      var lifter = _lifters.Get(task.LifterId);
+      var lifter = _lifters.Get(param.LifterId);
 
-      lifter.SetPickuped(task.Floor, true);
-
-      task.SetTaken();
-      _domain.Remove(runtimeTask);
-      _domain.SaveChanges();
+      lifter.SetPickuped(param.Floor, true);
 
       Task.Delay(2000).ContinueWith(async _ => {
         await _;
-        lifter.SetPickuped(task.Floor, false);
+        lifter.SetPickuped(param.Floor, false);
       });
     }
   }

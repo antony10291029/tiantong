@@ -53,14 +53,6 @@ namespace Namei.Wcs.Api
           barcode: param.BarCode,
           destination: param.Destination
         ));
-        _cap.Publish(LifterTaskReceived.Message, LifterTaskReceived.From(
-          lifterId: param.LiftCode,
-          floor: param.Floor,
-          destination: param.Destination,
-          barcode: param.BarCode,
-          taskCode: param.TaskCode.ToString(),
-          operatr: param.Operator
-        ));
 
         message = "收到创建提升机任务指令";
       } else if (param.Method == "pick") {
