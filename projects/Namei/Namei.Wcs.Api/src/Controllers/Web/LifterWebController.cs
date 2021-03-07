@@ -39,7 +39,10 @@ namespace Namei.Wcs.Api
     [HttpPost("/lifters/imported")]
     public object Imported([FromBody] Params param)
     {
-      _cap.Publish(LifterTaskImportedEvent.Message, new LifterTaskImportedEvent(param.LifterId,  param.Floor));
+      _cap.Publish(LifterTaskImported.Message, LifterTaskImported.From(
+        lifterId: param.LifterId,
+        floor: param.Floor
+      ));
 
       return NotifyResult.FromVoid().Success("手动发送放货完成指令");
     }

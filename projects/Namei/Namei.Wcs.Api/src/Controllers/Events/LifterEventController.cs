@@ -27,8 +27,8 @@ namespace Namei.Wcs.Api
       _wms = wms;
     }
 
-    [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
-    public void HandleTaskImported(LifterTaskImportedEvent param)
+    [CapSubscribe(LifterTaskImported.Message, Group = Group)]
+    public void HandleTaskImported(LifterTaskImported param)
     {
       if (param.LifterId != "1") {
         if (param.Barcode != null) {

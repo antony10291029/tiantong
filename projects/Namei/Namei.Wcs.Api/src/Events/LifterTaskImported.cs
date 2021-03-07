@@ -1,6 +1,6 @@
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskImportedEvent
+  public class LifterTaskImported
   {
     public const string Message = "lifter.task.imported";
 
@@ -14,15 +14,20 @@ namespace Namei.Wcs.Api
 
     public string Destination { get; set; }
 
-    public bool IsFromWms { get => TaskCode != null; }
+    private LifterTaskImported() {}
 
-    public LifterTaskImportedEvent(string lifterId, string floor, string taskCode = null, string barcode = null, string destination = null)
-    {
-      LifterId = lifterId;
-      Floor = floor;
-      TaskCode = taskCode;
-      Barcode = barcode;
-      Destination = destination;
-    }
+    public static LifterTaskImported From(
+      string lifterId,
+      string floor,
+      string taskCode = null,
+      string barcode = null,
+      string destination = null
+    ) => new LifterTaskImported {
+      LifterId = lifterId,
+      Floor = floor,
+      TaskCode = taskCode,
+      Barcode = barcode,
+      Destination = destination
+    };
   }
 }

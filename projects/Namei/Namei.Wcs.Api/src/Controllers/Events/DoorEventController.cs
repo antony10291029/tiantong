@@ -27,8 +27,8 @@ namespace Namei.Wcs.Api
     }
 
     // 放货完成
-    [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]
-    public void HandleLifterTaskImported(LifterTaskImportedEvent param)
+    [CapSubscribe(LifterTaskImported.Message, Group = Group)]
+    public void HandleLifterTaskImported(LifterTaskImported param)
     {
       var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
 
