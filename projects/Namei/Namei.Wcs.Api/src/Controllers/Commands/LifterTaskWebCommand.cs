@@ -48,7 +48,7 @@ namespace Namei.Wcs.Api
       if (param.Method == "deliver") {
         message = "收到创建提升机任务指令";
 
-        _cap.Publish(LifterTaskImported.Message, LifterTaskImported.From(
+        _cap.Publish(LifterTaskReceived.Message, LifterTaskReceived.From(
           lifterId: param.LiftCode,
           floor: param.Floor,
           taskCode: param.TaskCode.ToString(),

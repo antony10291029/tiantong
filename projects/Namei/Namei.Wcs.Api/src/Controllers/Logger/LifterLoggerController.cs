@@ -15,18 +15,18 @@ namespace Namei.Wcs.Api
       _logger = logger;
     }
 
-    [CapSubscribe(LifterTaskImported.Message, Group = Group)]
-    public void HandleTaskImported(LifterTaskImported param)
+    [CapSubscribe(LifterTaskReceived.Message, Group = Group)]
+    public void HandleTaskReceived(LifterTaskReceived param)
     {
       var from = param.Barcode is null ? "WCS": "WMS";
       var detail = param.Barcode is null ? ""
         : $", 托盘码: {param.Barcode}, 目的楼层: {param.Destination}, TaskCode: {param.TaskCode}";
 
        _logger.FromLifter(
-        operation: "imported",
+        operation: "received",
         lifterId: param.LifterId,
         floor: param.Floor,
-        message: $"收到 {from} 放货完成指令{detail}"
+        message: $"收到 {from} 提升机任务{detail}"
       );
     }
 

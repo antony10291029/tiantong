@@ -1,8 +1,6 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
@@ -25,6 +23,17 @@ namespace Namei.Wcs.Api
       _cap = cap;
       _lifters = lifters;
       _wms = wms;
+    }
+
+    [CapSubscribe(LifterTaskReceived.Message, Group = Group)]
+    public void HandleTaskReceived(LifterTaskReceived param)
+    {
+      _cap.Publish(LifterTaskImported.Message, LifterTaskImported.From(
+        lifterId: param.LifterId,
+        floor: param.Floor,
+        barcode: param.Barcode,
+        destination: param.Destination
+      ));
     }
 
     [CapSubscribe(LifterTaskImported.Message, Group = Group)]
@@ -52,22 +61,20 @@ namespace Namei.Wcs.Api
         return;
       }
 
-      var barcode = _lifters.Get(param.LifterId).GetPalletCode(param.Floor);
-      var destination = "";
-      var taskid = "";
+      var barcode = lifter.GetPalletCode(param.Floor);
 
       try {
         var info = _wms.GetPalletInfo(barcode);
-        taskid = info.TaskId;
-        destination = info.Destination;
+        var taskid = info.TaskId;
+        var destination = info.Destination;
+
+        _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
+          param.LifterId, param.Floor, barcode, destination, taskid
+        ));
       } catch {
         _cap.Publish(LifterTaskQueryFailedEvent.Message, new LifterTaskQueryFailedEvent(param.LifterId, param.Floor, barcode));
         return;
       }
-
-      _cap.Publish(LifterTaskQueriedEvent.Message, new LifterTaskQueriedEvent(
-        param.LifterId, param.Floor, barcode, destination, taskid
-      ));
     }
 
     [CapSubscribe(LifterTaskQueriedEvent.Message, Group = Group)]
