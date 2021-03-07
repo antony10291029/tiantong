@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Namei.Wcs.Api
@@ -32,9 +32,11 @@ namespace Namei.Wcs.Api
     [Column("operator")]
     public string Operator { get; private set; }
 
+    [Column("created_at")]
+    public DateTime CreatedAt { get; private set; }
+
     [Column("imported_at")]
     public DateTime ImportedAt { get; private set; }
-
 
     [Column("exported_at")]
     public DateTime ExportedAt { get; private set; }
@@ -42,18 +44,15 @@ namespace Namei.Wcs.Api
     [Column("taken_at")]
     public DateTime TakenAt { get; private set; }
 
-    private LifterTask()
-    {
-
-    }
+    private LifterTask() {}
 
     public static LifterTask From(
       string operatr,
       string lifterId,
       string floor,
-      string destination,
-      string barcode,
-      string taskCode
+      string destination = "",
+      string barcode = "",
+      string taskCode = ""
     ) {
       return new LifterTask() {
         Operator = operatr,
@@ -63,6 +62,7 @@ namespace Namei.Wcs.Api
         Barcode = barcode,
         TaskCode = taskCode,
         Status = LifterTaskStatusType.Created,
+        CreatedAt = DateTime.Now,
         ImportedAt = DateTime.MinValue,
         ExportedAt = DateTime.MinValue,
         TakenAt = DateTime.MinValue,
