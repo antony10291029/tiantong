@@ -22,7 +22,14 @@ namespace Namei.Wcs.Api
 
       message = $"{doorId}号{doorTypeText}，{message}";
 
-      var log = Log.From(LogLevel.Info, "wcs.door", operation, doorId, message, "");
+      var log = Log.From(
+        Log.UseInfo(),
+        Log.UseClass("wcs.door"),
+        Log.UseOperation(operation),
+        Log.UseIndex(doorId),
+        Log.UseMessage(message),
+        Log.UseData("")
+      );
 
       _logger.Save(log);
     }

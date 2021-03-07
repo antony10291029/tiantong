@@ -1,5 +1,6 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Namei.Wcs.Api
 {
@@ -16,8 +17,14 @@ namespace Namei.Wcs.Api
 
     private void Info(string operation, string lifterId, string floor, string message, string data = "")
     {
-      message = $"{lifterId}号梯 - {floor}楼，{message}";
-      _logger.Save(Log.From(LogLevel.Info, "wcs.lifter", operation, lifterId, message, data));
+      _logger.Save(Log.From(
+        Log.UseInfo(),
+        Log.UseClass("wcs.lifter"),
+        Log.UseOperation(operation),
+        Log.UseIndex(lifterId),
+        Log.UseMessage(message),
+        Log.UseData(data)
+      ));
     }
 
     [CapSubscribe(LifterTaskImportedEvent.Message, Group = Group)]

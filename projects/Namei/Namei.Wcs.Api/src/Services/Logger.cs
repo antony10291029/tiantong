@@ -2,7 +2,7 @@ namespace Namei.Wcs.Api
 {
   public class Logger
   {
-    private DomainContext _domain;
+    protected DomainContext _domain;
 
     public Logger(DomainContext domain)
     {

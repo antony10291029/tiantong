@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,63 +34,56 @@ namespace Namei.Wcs.Api
     [Column("created_at")]
     public DateTime CreatedAt { get; private set; }
 
-    private Log()
+    private Log() {}
+
+    public static Log From(params Action<Log>[] hooks)
     {
+      var log = new Log();
 
+      log.CreatedAt = DateTime.Now;
+
+      foreach (var hook in hooks) {
+        hook(log);
+      }
+
+      return log;
     }
 
-    public static Log From(
-      string level,
-      string klass,
-      string operation,
-      string index,
-      string message,
-      string data
-    ) {
-      return new Log() {
-        Level = level,
-        Class = klass,
-        Index = index,
-        Operation = operation,
-        Data = data,
-        Message = message,
-        CreatedAt = DateTime.Now,
-      };
-    }
-
-    public Log UseSuccess(string level)
+    public static void Use(Log log, params Action<Log>[] hooks)
     {
-      Level = LogLevel.Success;
-
-      return this;
+      foreach (var hook in hooks) {
+        hook(log);
+      }
     }
 
-    public Log UseInfo(string level)
-    {
-      Level = LogLevel.Info;
+    public static Action<Log> UseSuccess()
+      => log => log.Level = LogLevel.Success;
 
-      return this;
-    }
+    public static Action<Log> UseInfo()
+      => log => log.Level = LogLevel.Info;
 
-    public Log UseLink(string level)
-    {
-      Level = LogLevel.Link;
+    public static Action<Log> UseLink()
+      => log => log.Level = LogLevel.Link;
 
-      return this;
-    }
+    public static Action<Log> UseWarning()
+      => log => log.Level = LogLevel.Warning;
 
-    public Log UseWarning(string level)
-    {
-      Level = LogLevel.Warning;
+    public static Action<Log> UseDanger()
+      => log => log.Level = LogLevel.Danger;
 
-      return this;
-    }
+    public static Action<Log> UseClass(string klass)
+      => log => log.Class = klass;
 
-    public Log UseDanger(string level)
-    {
-      Level = LogLevel.Danger;
+    public static Action<Log> UseOperation(string operation)
+      => log => log.Operation = operation;
 
-      return this;
-    }
+    public static Action<Log> UseIndex(string index)
+      => log => log.Index = index;
+
+    public static Action<Log> UseData(string data)
+      => log => log.Data = data;
+
+    public static Action<Log> UseMessage(string message)
+      => log => log.Message = message;
   }
 }
