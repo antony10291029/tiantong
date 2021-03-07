@@ -73,6 +73,22 @@ namespace Namei.Wcs.Api
       { "4", DateTime.MinValue },
     };
 
+    public void Import(
+      string floor,
+      string destination = null,
+      string barcode = null
+    ) {
+      SetImported(floor, true);
+
+      if (destination != null) {
+        SetPalletCode(floor, barcode);
+      }
+
+      if (barcode != null) {
+        SetDestination(floor, destination);
+      }
+    }
+
     // 放货完成
     public abstract void SetImported(string floor, bool value);
 
