@@ -49,10 +49,10 @@ namespace Namei.Wcs.Api
       return log;
     }
 
-    public static void Use(Log log, params Action<Log>[] hooks)
+    public void UseHooks(params Action<Log>[] hooks)
     {
       foreach (var hook in hooks) {
-        hook(log);
+        hook(this);
       }
     }
 

@@ -2,18 +2,44 @@ using System;
 
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskLogger: Logger
+  public class LifterLogger: Logger
   {
-    public LifterTaskLogger(DomainContext domain): base(domain) {}
+    public LifterLogger(DomainContext domain): base(domain) {}
 
-    private void FromTask(LifterTask task, string message, params Action<Log>[] hooks)
-    {
-      var log = Log.From(hooks);
-
-      Log.Use(
-        log,
+    public void FromTask(
+      LifterTask task,
+      string operation,
+      string message,
+      Action<Log> useLevel = null,
+      string data = ""
+    ) {
+      var log = Log.From(
+        useLevel ?? Log.UseInfo(),
         Log.UseClass("wcs.lifter"),
+        Log.UseOperation(operation),
+        Log.UseIndex(task.Id.ToString()),
+        Log.UseData(data),
         Log.UseMessage($"{task.LifterId} 号梯，{task.Floor} 楼，{message}")
+      );
+
+      Save(log);
+    }
+
+    public void FromLifter(
+      string operation,
+      string lifterId,
+      string floor,
+      string message,
+      Action<Log> useLevel = null,
+      string data = ""
+    ) {
+      var log = Log.From(
+        useLevel ?? Log.UseInfo(),
+        Log.UseClass("wcs.lifter"),
+        Log.UseOperation(operation),
+        Log.UseIndex(lifterId),
+        Log.UseData(data),
+        Log.UseMessage($"{lifterId} 号梯，{floor} 楼，{message}")
       );
 
       Save(log);
