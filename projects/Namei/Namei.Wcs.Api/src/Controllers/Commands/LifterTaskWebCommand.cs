@@ -59,7 +59,6 @@ namespace Namei.Wcs.Api
         message = "收到取货完成指令";
 
         _cap.Publish(LifterTaskTaken.Message, LifterTaskTaken.From(
-          barcode: param.BarCode,
           lifterId: param.LiftCode,
           floor: param.Floor
         ));
