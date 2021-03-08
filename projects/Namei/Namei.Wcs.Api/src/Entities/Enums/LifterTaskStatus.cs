@@ -1,8 +1,6 @@
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskStatusType {
-    public const string Created = "created";
-
+  public class LifterTaskStatus {
     public const string Imported = "imported";
 
     public const string Exported = "exported";

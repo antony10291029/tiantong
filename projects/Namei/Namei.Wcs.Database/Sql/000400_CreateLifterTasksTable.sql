@@ -6,7 +6,6 @@ create table if not exists lifter_tasks (
   barcode varchar(255) not null,
   task_code varchar(255) not null,
   "status" varchar(255) not null,
-  created_at timestamp(0) not null,
   imported_at timestamp(0) not null,
   exported_at timestamp(0) not null,
   taken_at timestamp(0) not null

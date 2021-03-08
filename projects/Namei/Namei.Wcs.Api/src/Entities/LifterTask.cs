@@ -29,9 +29,6 @@ namespace Namei.Wcs.Api
     [Column("status")]
     public string Status { get; private set; }
 
-    [Column("created_at")]
-    public DateTime CreatedAt { get; private set; }
-
     [Column("imported_at")]
     public DateTime ImportedAt { get; private set; }
 
@@ -56,8 +53,7 @@ namespace Namei.Wcs.Api
         Destination = destination,
         Barcode = barcode,
         TaskCode = taskCode,
-        Status = LifterTaskStatusType.Created,
-        CreatedAt = DateTime.Now,
+        Status = LifterTaskStatus.Imported,
         ImportedAt = DateTime.MinValue,
         ExportedAt = DateTime.MinValue,
         TakenAt = DateTime.MinValue,
@@ -71,7 +67,7 @@ namespace Namei.Wcs.Api
 
     public LifterTask SetImported()
     {
-      Status = LifterTaskStatusType.Imported;
+      Status = LifterTaskStatus.Imported;
       ImportedAt = DateTime.Now;
 
       return this;
@@ -79,7 +75,7 @@ namespace Namei.Wcs.Api
 
     public LifterTask SetExported()
     {
-      Status = LifterTaskStatusType.Exported;
+      Status = LifterTaskStatus.Exported;
       ExportedAt = DateTime.Now;
 
       return this;
@@ -87,7 +83,7 @@ namespace Namei.Wcs.Api
 
     public LifterTask SetTaken()
     {
-      Status = LifterTaskStatusType.Taken;
+      Status = LifterTaskStatus.Taken;
       TakenAt = DateTime.Now;
 
       return this;
