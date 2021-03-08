@@ -1,6 +1,6 @@
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskReceived
+  public class LifterTaskImported
   {
     public const string Message = "lifter.task.received";
 
@@ -14,15 +14,15 @@ namespace Namei.Wcs.Api
 
     public string Destination { get; set; }
 
-    private LifterTaskReceived() {}
+    private LifterTaskImported() {}
 
-    public static LifterTaskReceived From(
+    public static LifterTaskImported From(
       string lifterId,
       string floor,
       string taskCode = null,
       string barcode = null,
       string destination = null
-    ) => new LifterTaskReceived {
+    ) => new LifterTaskImported {
       LifterId = lifterId,
       Floor = floor,
       TaskCode = taskCode,

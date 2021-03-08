@@ -50,7 +50,10 @@ namespace Namei.Wcs.Api
     [HttpPost("/lifters/taken")]
     public object Taken([FromBody] Params param)
     {
-      _lifters.Get(param.LifterId).SetPickuped(param.Floor, true);
+      _cap.Publish(LifterTaskTaken.Message, LifterTaskTaken.From(
+        lifterId: param.LifterId,
+        floor: param.Floor
+      ));
 
       return NotifyResult.FromVoid().Success("手动发送取货完成指令");
     }
