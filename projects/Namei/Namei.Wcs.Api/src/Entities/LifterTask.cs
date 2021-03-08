@@ -40,26 +40,6 @@ namespace Namei.Wcs.Api
 
     private LifterTask() {}
 
-    public static LifterTask From(
-      string lifterId,
-      string floor,
-      string destination = "",
-      string barcode = "",
-      string taskCode = ""
-    ) {
-      return new LifterTask() {
-        LifterId = lifterId,
-        Floor = floor,
-        Destination = destination,
-        Barcode = barcode,
-        TaskCode = taskCode,
-        Status = LifterTaskStatus.Imported,
-        ImportedAt = DateTime.MinValue,
-        ExportedAt = DateTime.MinValue,
-        TakenAt = DateTime.MinValue,
-      };
-    }
-
     public bool IsExported()
     {
       return ExportedAt != DateTime.MinValue;
@@ -87,6 +67,21 @@ namespace Namei.Wcs.Api
       TakenAt = DateTime.Now;
 
       return this;
+    }
+
+    public static LifterTask FromImportedEvent(LifterTaskImported param)
+    {
+      return new LifterTask {
+        LifterId = param.LifterId,
+        Floor = param.Floor,
+        Destination = param.Destination,
+        Barcode = param.Barcode,
+        TaskCode = param.TaskCode,
+        Status = LifterTaskStatus.Imported,
+        ImportedAt = DateTime.Now,
+        ExportedAt = DateTime.MinValue,
+        TakenAt = DateTime.MinValue
+      };
     }
   }
 }
