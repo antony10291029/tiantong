@@ -82,8 +82,8 @@ namespace Namei.Wcs.Api
       }
     }
 
-    [CapSubscribe(LifterTaskExportedEvent.Message, Group = Group)]
-    public void HandleTaskExported(LifterTaskExportedEvent param)
+    [CapSubscribe(LifterTaskExported.Message, Group = Group)]
+    public void HandleTaskExported(LifterTaskExported param)
     {
       _logger.FromLifter(
         operation: "exported",

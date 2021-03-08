@@ -1,17 +1,19 @@
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskExportedEvent
+  public class LifterTaskExported
   {
     public const string Message = "lifter.task.exported";
 
-    public string LifterId { get; set; }
+    public string LifterId { get; init; }
 
-    public string Floor { get; set; }
+    public string Floor { get; init; }
 
-    public LifterTaskExportedEvent(string lifterId, string floor)
-    {
-      Floor = floor;
-      LifterId = lifterId;
-    }
+    private LifterTaskExported() {}
+
+    public static LifterTaskExported From(string lifterId, string floor)
+      => new LifterTaskExported {
+        Floor = floor,
+        LifterId = lifterId,
+      };
   }
 }

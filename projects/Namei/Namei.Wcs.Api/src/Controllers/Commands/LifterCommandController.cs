@@ -47,8 +47,12 @@ namespace Namei.Wcs.Api
       var isSpare = FirstLifterService.IsSpare(param.value, param.old_value);
 
       if (isRequestingPickup) {
-        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent("1", param.floor));
         message = "正在处理取货指令";
+
+        _cap.Publish(LifterTaskExported.Message, LifterTaskExported.From(
+          lifterId: "1", 
+          floor: param.floor
+        ));
       } else if (isScanned) {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent("1", param.floor));
         message = "正在处理读码指令";
@@ -100,12 +104,15 @@ namespace Namei.Wcs.Api
 
     [HttpPost]
     [Route("/standard-lifters/exported")]
-    public object LifterTaskExported([FromBody] LifterTaskExportedParams param)
+    public object HandleLifterTaskExported([FromBody] LifterTaskExportedParams param)
     {
       var message = "指令未识别";
 
       if (param.value == "3") {
-        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
+        _cap.Publish(LifterTaskExported.Message, LifterTaskExported.From(
+          lifterId: param.lifter_id,
+          floor: param.floor
+        ));
         message = "正在处理取货指令";
       }
 

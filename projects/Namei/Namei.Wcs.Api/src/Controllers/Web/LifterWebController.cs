@@ -51,8 +51,8 @@ namespace Namei.Wcs.Api
     public object Taken([FromBody] Params param)
     {
       _cap.Publish(LifterTaskTaken.Message, LifterTaskTaken.From(
-        lifterId: param.LifterId,
-        floor: param.Floor
+        floor: param.Floor,
+        lifterId: param.LifterId
       ));
 
       return NotifyResult.FromVoid().Success("手动发送取货完成指令");

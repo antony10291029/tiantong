@@ -10,14 +10,10 @@ namespace Namei.Wcs.Api
 
     private LifterTaskTaken() {}
 
-    public static LifterTaskTaken From(
-      string lifterId,
-      string floor
-    ) {
-      return new LifterTaskTaken() {
-        LifterId = lifterId,
-        Floor = floor
+    public static LifterTaskTaken From(string floor, string lifterId)
+      => new LifterTaskTaken() {
+        Floor = floor,
+        LifterId = lifterId
       };
-    }
   }
 }

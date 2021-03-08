@@ -54,7 +54,7 @@ namespace Namei.Wcs.Api
       if (param.message == "imported") {
         _lifters.Get(param.lifter_id).SetImported(param.floor, true);
       } else if (param.message == "exported") {
-        _cap.Publish(LifterTaskExportedEvent.Message, new LifterTaskExportedEvent(param.lifter_id, param.floor));
+        _cap.Publish(LifterTaskExported.Message, LifterTaskExported.From(param.lifter_id, param.floor));
       } else if (param.message == "scanned") {
         _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(param.lifter_id, param.floor));
       } else if (param.message == "taken") {

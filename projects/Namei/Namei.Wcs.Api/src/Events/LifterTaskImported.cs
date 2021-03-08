@@ -2,17 +2,17 @@ namespace Namei.Wcs.Api
 {
   public class LifterTaskImported
   {
-    public const string Message = "lifter.task.received";
+    public const string Message = "lifter.task.imported";
 
-    public string LifterId { get; set; }
+    public string LifterId { get; init; }
 
-    public string Floor { get; set; }
+    public string Floor { get; init; }
 
-    public string TaskCode { get; set; }
+    public string TaskCode { get; init; }
 
-    public string Barcode { get; set; }
+    public string Barcode { get; init; }
 
-    public string Destination { get; set; }
+    public string Destination { get; init; }
 
     private LifterTaskImported() {}
 
