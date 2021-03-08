@@ -223,7 +223,7 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{from}F - A 段 - 目标楼层", to);
 
     public override string GetDestination(string floor)
-      => _plc.Get($"{floor}F - 目的楼层");
+      => _plc.Get($"{floor}F - A 段 - 目标楼层");
 
     public override bool IsImportAllowed(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "2";
