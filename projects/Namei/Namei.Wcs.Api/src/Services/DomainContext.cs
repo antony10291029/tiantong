@@ -20,8 +20,6 @@ namespace Namei.Wcs.Api
 
     public DbSet<LifterTask> LifterTasks { get; set; }
 
-    public DbSet<LifterRuntimeTask> LifterRuntimeTasks { get; set; }
-
     public DomainContext(Config config)
     {
       _config = config;
