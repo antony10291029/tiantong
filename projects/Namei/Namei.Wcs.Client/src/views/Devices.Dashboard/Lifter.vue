@@ -1,5 +1,5 @@
 <template>
-  <section class="box">
+  <section class="box" style="padding: 0.75rem">
     <div
       class="title is-5 is-flex is-vcentered"
       style="margin-bottom: 0.75rem"
@@ -15,7 +15,7 @@
     <div class="is-flex">
       <div
         class="has-background-primary is-radius is-flex is-flex-column is-centered is-vcentered is-flex-auto"
-        style="height: 440px; border-bottom-right-radius: 0; padding: 0.5rem; max-width: 100px"
+        style="height: 400px; border-bottom-right-radius: 0; padding: 0.25rem; min-width: 64px; max-width: 100px"
       >
         <span
           v-if="isAlerting"

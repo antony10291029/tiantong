@@ -1,7 +1,7 @@
 <template>
   <div
     class="is-flex"
-    style="height: 110px"
+    style="height: 100px"
   >
     <LifterPlatform
       :code="floorState.palletCodeB"
@@ -13,14 +13,12 @@
       text="A 段"
     />
 
-    <div
-      class="is-flex is-flex-column"
-    >
+    <div class="is-flex is-flex-column">
       <div class="is-flex-auto"></div>
 
       <div
         class="is-flex is-flex-column"
-        style="margin-left: 0.5rem"
+        style="margin-left: 0.25rem"
       >
         <div class="is-flex-auto"></div>
 
@@ -46,15 +44,17 @@
           <span
             v-if="!isAgcRequesting"
             class="tag is-light"
+            style="width: 100%"
           >
-            AGC 请求通过
+            AGC 请求中
           </span>
           <a
             v-else
             @click="handleOpenDoor"
             class="tag is-info"
+            style="width: 100%"
           >
-            AGC 请求通过
+            AGC 请求中
           </a>
         </div>
       </div>

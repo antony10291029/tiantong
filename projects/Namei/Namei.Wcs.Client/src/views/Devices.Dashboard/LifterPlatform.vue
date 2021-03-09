@@ -11,7 +11,7 @@
 
     <div
       class="has-background-primary is-flex is-vcentered is-centered has-text-white"
-      style="height: 30px; min-width: 80px"
+      style="height: 30px; min-width: 40px"
     >
       {{text}}
     </div>
