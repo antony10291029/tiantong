@@ -36,6 +36,7 @@ export default defineComponent({
         { text: "提升机日志", route: "NameiWcsLifters", icon: "lifter" },
         { text: "自动门日志", route: "NameiWcsDoors", icon: "lifter" },
         { text: "地图管理", route: "NameiWcsRcsMap", icon: "map-unbind" },
+        { text: "RCS 日志", route: "NameiWcsRcsLogs", icon: "lifter" },
         { text: "系统功能", route: "NameiWcsSystem", icon: "settings" },
       ]
     };

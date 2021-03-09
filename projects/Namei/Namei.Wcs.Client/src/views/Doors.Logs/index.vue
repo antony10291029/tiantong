@@ -1,7 +1,5 @@
 <template>
-  <div style="padding: 1.25rem; overflow: auto">
-    <LogList :classes="['wcs.door']" />
-  </div>
+  <LogList :classes="['wcs.door']" />
 </template>
 
 <script lang="ts">

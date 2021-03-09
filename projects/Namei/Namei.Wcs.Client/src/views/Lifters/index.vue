@@ -21,7 +21,7 @@
       </ul>
     </div>
 
-    <router-view class="is-flex-auto" style="overflow: auto" />
+    <router-view class="is-flex-auto" />
   </div>
 </template>
 

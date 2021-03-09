@@ -1,7 +1,5 @@
 <template>
-  <div style="padding: 1.25rem;">
-    <LogList :classes="['wcs.lifter']" />
-  </div>
+  <LogList :classes="['wcs.lifter']" />
 </template>
 
 <script lang="ts">

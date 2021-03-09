@@ -1,6 +1,6 @@
 {
   "name": "@midos/app-namei-wcs",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "license": "MIT",
   "main": "index.ts",
   "files": [
