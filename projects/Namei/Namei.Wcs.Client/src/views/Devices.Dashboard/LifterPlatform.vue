@@ -1,7 +1,7 @@
 <template>
   <div
     class="is-flex is-flex-column is-flex-auto"
-    style="min-width: 80px"
+    style="min-width: 100px"
   >
     <div class="is-flex-auto"></div>
 

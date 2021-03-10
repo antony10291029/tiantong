@@ -15,7 +15,7 @@
     <div class="is-flex">
       <div
         class="has-background-primary is-radius is-flex is-flex-column is-centered is-vcentered is-flex-auto"
-        style="height: 400px; border-bottom-right-radius: 0; padding: 0.25rem; min-width: 64px; max-width: 100px"
+        style="height: 400px; border-bottom-right-radius: 0; padding: 0.25rem; min-width: 64px; max-width: 68px"
       >
         <span
           v-if="!isConnected"
