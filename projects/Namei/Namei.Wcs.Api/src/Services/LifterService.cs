@@ -58,6 +58,8 @@ namespace Namei.Wcs.Api
   {
     public string Index { get; set; }
 
+    public string Destination { get; set; } = "0";
+
     // A 段托盘码
     public string PalletCodeA { get; set; } = "";
 
@@ -166,7 +168,7 @@ namespace Namei.Wcs.Api
       => _plc.Get($"{floor}F - A 段 - 托盘码");
 
     public override string GetDestination(string floor)
-      => _plc.Get($"{floor}F - 目的楼层");
+      => _plc.Get($"{floor}F - A 段 - 目的楼层");
 
     public override void SetDestination(string from, string to)
       => _plc.Set($"{from}F - 目的楼层", to);
@@ -200,6 +202,7 @@ namespace Namei.Wcs.Api
         result.Floors.ForEach(floor => {
           floor.PalletCodeA = states[$"{floor.Index}F - A 段 - 托盘码"];
           floor.PalletCodeB = states[$"{floor.Index}F - B 段 - 托盘码"];
+          floor.Destination = states[$"{floor.Index}F - A 段 - 目的楼层"];
           floor.IsImportAllowed = GetIsImportAllowed(states[$"{floor.Index}F - A 段 - 输送机"]);
           floor.IsExported = MelsecStateHelper.GetBit(states[$"{floor.Index}F - A 段 - 输送机"], 7);
         });
@@ -230,13 +233,13 @@ namespace Namei.Wcs.Api
       => _plc.Get($"{floor}F - A 段 - 托盘码");
 
     public override void SetPalletCode(string floor, string code)
-      => _plc.Set($"{floor}F - A 段 - 任务托盘码", code);
+      => _plc.Set($"{floor}F - 任务托盘码", code);
 
     public override void SetDestination(string from, string to)
-      => _plc.Set($"{from}F - A 段 - 目的楼层", to);
+      => _plc.Set($"{from}F - 目的楼层", to);
 
     public override string GetDestination(string floor)
-      => _plc.Get($"{floor}F - A 段 - 目的楼层");
+      => _plc.Get($"{floor}F - A 段 - 任务路径").Last().ToString();
 
     public override bool IsImportAllowed(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "2";
@@ -258,8 +261,9 @@ namespace Namei.Wcs.Api
         result.Floors.ForEach(floor => {
           floor.PalletCodeA = states[$"{floor.Index}F - A 段 - 托盘码"];
           floor.PalletCodeB = states[$"{floor.Index}F - B 段 - 托盘码"];
-          floor.IsImportAllowed = states[$"{floor.Index}F - A 段 - 工位状态"] == "2";
           floor.IsExported = states[$"{floor.Index}F - A 段 - 工位状态"] == "3";
+          floor.IsImportAllowed = states[$"{floor.Index}F - A 段 - 工位状态"] == "2";
+          floor.Destination = states[$"{floor.Index}F - A 段 - 任务路径"].Last().ToString();
         });
       } catch {
         result.IsConnected = false;
