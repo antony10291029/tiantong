@@ -18,6 +18,14 @@
         style="height: 400px; border-bottom-right-radius: 0; padding: 0.25rem; min-width: 64px; max-width: 100px"
       >
         <span
+          v-if="!isConnected"
+          class="tag is-danger is-light"
+          style="width: 100%"
+        >
+          已断开
+        </span>
+
+        <span
           v-if="isAlerting"
           class="tag is-danger is-light"
           style="width: 100%"
@@ -84,6 +92,10 @@ export default defineComponent({
   },
 
   computed: {
+    isConnected() {
+      return this.lifter.isConnected;
+    },
+
     isAlerting () {
       return this.lifter.isAlerting;
     },

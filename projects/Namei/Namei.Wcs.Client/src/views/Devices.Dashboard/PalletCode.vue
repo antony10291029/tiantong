@@ -1,10 +1,11 @@
 <template>
-  <span
+  <a
     v-if="hasPalletCode"
     :class="`tag is-${color}`"
+    style="cursor: pinter"
   >
     {{code}}
-  </span>
+  </a>
   <span v-else
     class="tag"
   >

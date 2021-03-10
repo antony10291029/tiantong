@@ -38,30 +38,37 @@ namespace Namei.Wcs.Api
 
   public class LifterState
   {
-    public bool IsWorking { get; set; }
+    public bool IsConnected { get; set; } = true;
 
-    public bool IsAlerting { get; set; }
+    public bool IsWorking { get; set; } = false;
 
-    public string PalletCodeA { get; set; }
+    public bool IsAlerting { get; set; } = false;
 
-    public string PalletCodeB { get; set; }
+    public string PalletCodeA { get; set; } = "";
+
+    public string PalletCodeB { get; set; } = "";
 
     public List<LifterFloorState> Floors { get; set; }
+      = Enumerable.Range(1, 4)
+        .Select(floor => new LifterFloorState() { Index = floor.ToString() })
+        .ToList();
   }
 
   public class LifterFloorState
   {
+    public string Index { get; set; }
+
     // A 段托盘码
-    public string PalletCodeA { get; set; }
+    public string PalletCodeA { get; set; } = "";
 
     // B 段托盘码
-    public string PalletCodeB { get; set; }
+    public string PalletCodeB { get; set; } = "";
 
     // 允许放货
-    public bool IsImportAllowed { get; set; }
+    public bool IsImportAllowed { get; set; } = false;
 
     // 请求取货
-    public bool IsExported { get; set; }
+    public bool IsExported { get; set; } = false;
   }
 
   public abstract class LifterService
@@ -181,20 +188,26 @@ namespace Namei.Wcs.Api
 
     public override LifterState GetStates()
     {
-      var states = _plc.GetValues();
+      var result = new LifterState();
 
-      return new LifterState() {
-        IsWorking = states["升降平台状态"] != "0",
-        IsAlerting = states["故障代码"] != "0",
-        PalletCodeA = states["货梯 - A 段 - 托盘码"],
-        PalletCodeB = states["货梯 - B 段 - 托盘码"],
-        Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
-          PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
-          PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],
-          IsImportAllowed = GetIsImportAllowed(states[$"{floor}F - A 段 - 输送机"]),
-          IsExported = MelsecStateHelper.GetBit(states[$"{floor}F - A 段 - 输送机"], 7),
-        }).ToList()
-      };
+      try {
+        var states = _plc.GetValues();
+
+        result.IsWorking = states["升降平台状态"] != "0";
+        result.IsAlerting = states["故障代码"] != "0";
+        result.PalletCodeA = states["货梯 - A 段 - 托盘码"];
+        result.PalletCodeB = states["货梯 - B 段 - 托盘码"];
+        result.Floors.ForEach(floor => {
+          floor.PalletCodeA = states[$"{floor.Index}F - A 段 - 托盘码"];
+          floor.PalletCodeB = states[$"{floor.Index}F - B 段 - 托盘码"];
+          floor.IsImportAllowed = GetIsImportAllowed(states[$"{floor.Index}F - A 段 - 输送机"]);
+          floor.IsExported = MelsecStateHelper.GetBit(states[$"{floor.Index}F - A 段 - 输送机"], 7);
+        });
+      } catch {
+        result.IsConnected = false;
+      }
+
+      return result;
     }
   }
 
@@ -233,20 +246,26 @@ namespace Namei.Wcs.Api
 
     public override LifterState GetStates()
     {
-      var states = _plc.GetValues();
+      var result = new LifterState();
 
-      return new LifterState() {
-        IsWorking = states["升降平台状态"] != "0",
-        IsAlerting = states["故障代码"] != "1",
-        PalletCodeA = states["平台内托盘码"],
-        PalletCodeB = "0",
-        Floors = Enumerable.Range(1, 4).Select(floor => new LifterFloorState {
-          PalletCodeA = states[$"{floor}F - A 段 - 托盘码"],
-          PalletCodeB = states[$"{floor}F - B 段 - 托盘码"],
-          IsImportAllowed = states[$"{floor}F - A 段 - 工位状态"] == "2",
-          IsExported = states[$"{floor}F - A 段 - 工位状态"] == "3",
-        }).ToList()
-      };
+      try {
+        var states = _plc.GetValues();
+        
+        result.IsWorking = states["升降平台状态"] != "0";
+        result.IsAlerting = states["故障代码"] != "1";
+        result.PalletCodeA = states["平台内托盘码"];
+        result.PalletCodeB = "0";
+        result.Floors.ForEach(floor => {
+          floor.PalletCodeA = states[$"{floor.Index}F - A 段 - 托盘码"];
+          floor.PalletCodeB = states[$"{floor.Index}F - B 段 - 托盘码"];
+          floor.IsImportAllowed = states[$"{floor.Index}F - A 段 - 工位状态"] == "2";
+          floor.IsExported = states[$"{floor.Index}F - A 段 - 工位状态"] == "3";
+        });
+      } catch {
+        result.IsConnected = false;
+      }
+
+      return result;
     }
   }
 
