@@ -47,6 +47,28 @@ namespace Namei.Wcs.Api
       return NotifyResult.FromVoid().Success("手动发送放货完成指令");
     }
 
+    [HttpPost("/lifters/scanned")]
+    public object Scan([FromBody] Params param)
+    {
+      _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent(
+        floor: param.Floor,
+        lifterId: param.LifterId
+      ));
+
+      return NotifyResult.FromVoid().Success("手动发送请求取货指令");
+    }
+
+    [HttpPost("/lifters/exported")]
+    public object Export([FromBody] Params param)
+    {
+      _cap.Publish(LifterTaskExported.Message, LifterTaskExported.From(
+        floor: param.Floor,
+        lifterId: param.LifterId
+      ));
+
+      return NotifyResult.FromVoid().Success("手动发送请求取货指令");
+    }
+
     [HttpPost("/lifters/taken")]
     public object Taken([FromBody] Params param)
     {

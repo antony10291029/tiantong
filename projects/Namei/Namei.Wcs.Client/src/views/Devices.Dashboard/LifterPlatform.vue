@@ -6,7 +6,7 @@
     <div class="is-flex-auto"></div>
 
     <div class="is-flex is-centered">
-      <PalletCode :code="code" />
+      <PalletCode :code="code" @barcode-click="$emit('barcode-click')" />
     </div>
 
     <div

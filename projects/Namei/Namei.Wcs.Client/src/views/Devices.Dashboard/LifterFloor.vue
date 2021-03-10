@@ -11,6 +11,7 @@
     <LifterPlatform
       :code="floorState.palletCodeA"
       text="A 段"
+      @barcode-click="handleBarcodeClick"
     />
 
     <div class="is-flex is-flex-column">
@@ -136,6 +137,38 @@ export default defineComponent({
       });
     }
 
+    function handleExported() {
+      confirm.open({
+        title: "请求取货",
+        content: "发送请求取货指令",
+        handler: () => http.post("/lifters/exported", {
+          lifterId: props.lifterId,
+          floor: props.floor.toString()
+        })
+      });
+    }
+
+    function handleScanned() {
+      confirm.open({
+        title: "任务查询",
+        content: "重新查询电梯任务并写入电梯中",
+        handler: () => http.post("/lifters/scanned", {
+          lifterId: props.lifterId,
+          floor: props.floor.toString()
+        })
+      });
+    }
+
+    function handleBarcodeClick() {
+      console.log(props.floor);
+      console.log(props.floorState.destination);
+      if (props.floorState.destination === props.floor.toString()) {
+        handleExported();
+      } else {
+        handleScanned();
+      }
+    }
+
     return {
       isAgcRequesting,
       isImportAllowed,
@@ -143,6 +176,7 @@ export default defineComponent({
       handleOpenDoor,
       handleImported,
       handleTaken,
+      handleBarcodeClick
     };
   },
 });
