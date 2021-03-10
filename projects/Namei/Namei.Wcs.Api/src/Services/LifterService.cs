@@ -233,10 +233,10 @@ namespace Namei.Wcs.Api
       => _plc.Set($"{floor}F - A 段 - 任务托盘码", code);
 
     public override void SetDestination(string from, string to)
-      => _plc.Set($"{from}F - A 段 - 目标楼层", to);
+      => _plc.Set($"{from}F - A 段 - 目的楼层", to);
 
     public override string GetDestination(string floor)
-      => _plc.Get($"{floor}F - A 段 - 目标楼层");
+      => _plc.Get($"{floor}F - A 段 - 目的楼层");
 
     public override bool IsImportAllowed(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "2";
