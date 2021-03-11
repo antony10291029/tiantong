@@ -46,28 +46,19 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useMidosCenterHttp } from "../../services/midos-center-http";
+import { useMidosCenterApi } from "../../services/midos-center-api";
 
 export default defineComponent({
   name: "Apps",
 
   setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const http = useMidosCenterHttp();
+    const api = useMidosCenterApi();
     const apps = ref<any[]>([]);
 
     async function getApps() {
-      const result = await http.dataArray("/midos/apps/search", {});
+      const result = await api.getApps();
 
       apps.value = result;
-      if (route.params.id === undefined && result.length !== 0) {
-        router.push({
-          name: "MidosCenterAppsApp",
-          params: { id: result[0].id }
-        });
-      }
     }
 
     return {

@@ -46,17 +46,17 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useMidosCenterHttp } from "../../services/midos-center-http";
+import { useMidosCenterApi } from "../../services/midos-center-api";
 
 export default defineComponent({
   name: "Configs",
 
   setup() {
-    const http = useMidosCenterHttp();
+    const api = useMidosCenterApi();
     const configs = ref<any[]>([]);
 
     async function getConfigs() {
-      const result = await http.dataArray("/midos/configs");
+      const result = await api.getConfigs();
 
       configs.value = result;
     }

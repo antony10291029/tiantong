@@ -1,2 +1,3 @@
 export { MidosCenter } from "./src/app-midos-center";
-export { MidosCenterHttp } from "./src/services/midos-center-http";
+export { MidosCenterApi, useMidosCenterApi } from "./src/services/midos-center-api";
+export { MidosCenterHttp, useMidosCenterHttp } from "./src/services/midos-center-http";
