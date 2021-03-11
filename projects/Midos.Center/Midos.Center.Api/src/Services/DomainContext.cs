@@ -8,6 +8,8 @@ namespace Midos.Center
   {
     private AppConfig _config;
 
+    public DbSet<App> Apps { get; set; }
+
     public DbSet<Config> Configs { get; set; }
 
     public DomainContext(AppConfig config)

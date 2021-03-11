@@ -32,6 +32,7 @@ export default defineComponent({
   setup() {
     return {
       menus: [
+        { text: "应用管理", route: "MidosCenterApps", icon: "apps" },
         { text: "配置中心", route: "MidosCenterConfigs", icon: "configs" },
       ]
     };
