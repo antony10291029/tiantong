@@ -1,6 +1,8 @@
+using System.Reflection.Metadata.Ecma335;
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
@@ -34,13 +36,32 @@ namespace Namei.Wcs.Api
     {
       var lifter = _lifters.Get(param.LifterId);
 
-      if (param.LifterId == "1") {
-        lifter.Import(floor: param.Floor);
-      } else {
-        lifter.Import(
+      try {
+        if (param.LifterId == "1") {
+          lifter.Import(floor: param.Floor);
+        } else {
+          lifter.Import(
+            floor: param.Floor,
+            destination: param.Destination,
+            barcode: param.Barcode
+          );
+        }
+
+        _logger.FromLifter(
+          operation: "command.imported",
+          lifterId: param.LifterId,
           floor: param.Floor,
-          destination: param.Destination,
-          barcode: param.Barcode
+          message: "放货完成执行完毕",
+          useLevel: Log.UseSuccess()
+        );
+      } catch (Exception e) {
+        _logger.FromLifter(
+          operation: "command.imported",
+          lifterId: param.LifterId,
+          floor: param.Floor,
+          message: "放货完成执行失败",
+          useLevel: Log.UseDanger(),
+          data: e.Message
         );
       }
     }
@@ -48,6 +69,13 @@ namespace Namei.Wcs.Api
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
     public void HandleTaskScanned(LifterTaskScannedEvent param)
     {
+      _logger.FromLifter(
+        operation: "scanned",
+        lifterId: param.LifterId,
+        floor: param.Floor,
+        message: $"收到扫码完成指令"
+      );
+
       var lifter = _lifters.Get(param.LifterId);
 
       if (lifter.GetDestination(param.Floor) != "0") {
@@ -67,18 +95,19 @@ namespace Namei.Wcs.Api
           operation: "task.search",
           lifterId: param.LifterId,
           floor: param.Floor,
-          message: $"托盘任务查询成功, 目的楼层: {destination}, TaskCode {taskCode}"
+          message: $"托盘任务查询成功, 目的楼层: {destination}, TaskCode {taskCode}",
+          useLevel: Log.UseSuccess(),
+          data: JsonSerializer.Serialize(info)
         );
       } catch (Exception e) {
         _logger.FromLifter(
           operation: "task.search",
           lifterId: param.LifterId,
           floor: param.Floor,
-          message: $"托盘任务查询失败（WMS）: {e.Message}",
-          useLevel: Log.UseDanger()
+          message: $"托盘任务查询失败",
+          useLevel: Log.UseDanger(),
+          data: e.Message
         );
-
-        throw e;
       }
     }
 
@@ -119,14 +148,14 @@ namespace Namei.Wcs.Api
 
       try {
         var taskId = _wms.GetPalletInfo(barcode).TaskId;
-
-        _wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
+        var result =_wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
 
         _logger.FromLifter(
           operation: "notify.wms.pick",
           lifterId: param.LifterId,
           floor: param.Floor,
-          message: "通知 WMS 取货成功",
+          message: $"通知 WMS 取货成功, 托盘码: {barcode}",
+          data: result,
           useLevel: Log.UseSuccess()
         );
       } catch (Exception e) {
@@ -134,11 +163,10 @@ namespace Namei.Wcs.Api
           operation: "notify.wms.pick",
           lifterId: param.LifterId,
           floor: param.Floor,
-          message: $"通知 WMS 取货失败: {e.Message}",
-          useLevel: Log.UseDanger()
+          message: $"取货指令处理失败，托盘码: {barcode}",
+          useLevel: Log.UseDanger(),
+          data: e.Message
         );
-        
-        throw e;
       }
     }
 
@@ -149,7 +177,7 @@ namespace Namei.Wcs.Api
         operation: "taken",
         lifterId: param.LifterId,
         floor: param.Floor,
-        message: $"收到 WMS 取货完成指令",
+        message: $"收到取货完成指令",
         useLevel: Log.UseInfo()
       );
 
@@ -175,11 +203,10 @@ namespace Namei.Wcs.Api
           operation: "plc.taken",
           lifterId: param.LifterId,
           floor: param.Floor,
-          message: $"取货完成指令处理失败: {e.Message}",
-          useLevel: Log.UseDanger()
+          message: $"取货完成指令处理失败",
+          useLevel: Log.UseDanger(),
+          data: e.Message
         );
-
-        throw e;
       }
     }
   }

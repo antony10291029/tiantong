@@ -1,6 +1,6 @@
 {
   "name": "@midos/app-midos-center",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "license": "MIT",
   "main": "index.ts",
   "files": [

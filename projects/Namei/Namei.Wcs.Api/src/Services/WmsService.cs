@@ -25,9 +25,12 @@ namespace Namei.Wcs.Api
 
     private HttpClient _client;
 
-    public WmsService(ICapPublisher cap, IHttpClientFactory factory)
+    private LifterLogger _logger;
+
+    public WmsService(ICapPublisher cap, IHttpClientFactory factory, LifterLogger logger)
     {
       _cap = cap;
+      _logger = logger;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
       _client.BaseAddress = new System.Uri("http://172.16.2.52:8086");
@@ -67,7 +70,7 @@ namespace Namei.Wcs.Api
       };
     }
 
-    public void RequestPicking(string lifterId, string floor, string barcode, string taskId)
+    public string RequestPicking(string lifterId, string floor, string barcode, string taskId)
     {
       var json = JsonSerializer.Serialize(new {
         method = "FinishReport",
@@ -80,6 +83,8 @@ namespace Namei.Wcs.Api
       var content = new StringContent(json, Encoding.UTF8);
       var response = _client.PostAsync("/namei_wms/wcsCallback/request", content).GetAwaiter().GetResult();
       var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+      return result;
     }
   }
 }

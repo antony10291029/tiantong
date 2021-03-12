@@ -8,14 +8,14 @@ namespace Namei.Wcs.Api
   {
     private ICapPublisher _cap;
 
-    private Logger _logger;
+    private LifterLogger _logger;
 
     private WmsService _wms;
 
     public LifterTaskCommand(
       ICapPublisher cap,
       WmsService wms,
-      Logger logger
+      LifterLogger logger
     ) {
       _cap = cap;
       _logger = logger;
@@ -73,16 +73,14 @@ namespace Namei.Wcs.Api
         ));
       }
 
-      var json = System.Text.Json.JsonSerializer.Serialize(param);
-
-      _logger.Save(Log.From(
-        Log.UseClass("wms.api"),
-        Log.UseOperation("finish"),
-        Log.UseIndex("0"),
-        Log.UseMessage("收到 WMS 指令"),
-        Log.UseData(json),
-        Log.UseInfo()
-      ));
+      _logger.FromLifter(
+        operation: "command.finish",
+        lifterId: param.LiftCode,
+        floor: param.Floor,
+        message: ($"收到 {param.Operator} 放、取货指令"),
+        data: System.Text.Json.JsonSerializer.Serialize(param),
+        useLevel: Log.UseInfo()
+      );
 
       var result = new {
         message = message,
