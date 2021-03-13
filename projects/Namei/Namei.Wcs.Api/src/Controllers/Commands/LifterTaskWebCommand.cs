@@ -36,7 +36,7 @@ namespace Namei.Wcs.Api
 
       public string Destination { get; set; }
 
-      public string Operator { get; set; } = "wms";
+      public string Operator { get; set; } = "WMS";
     }
 
     [Route("/finish")]
