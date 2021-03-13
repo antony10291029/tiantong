@@ -25,12 +25,9 @@ namespace Namei.Wcs.Api
 
     private HttpClient _client;
 
-    private LifterLogger _logger;
-
-    public WmsService(ICapPublisher cap, IHttpClientFactory factory, LifterLogger logger)
+    public WmsService(ICapPublisher cap, IHttpClientFactory factory)
     {
       _cap = cap;
-      _logger = logger;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
       _client.BaseAddress = new System.Uri("http://172.16.2.52:8086");
