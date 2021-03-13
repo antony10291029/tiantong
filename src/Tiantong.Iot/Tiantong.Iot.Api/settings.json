@@ -1,12 +1,4 @@
 {
-  "urls": "http://*:5101",
-  "app_name": "Tiantong IOT",
-  "app_version": "0.1.0",
-  "app_key": "base64:t3gsHNNsDml4Y36IdR1C9IJ5LQTFbGQy6ecnLWzqsXo=",
-  "stmp": {
-    "host": "smtpdm.aliyun.com",
-    "port": 80,
-    "address": "postman@mail.iot.als-yuchuan.com",
-    "password": "TiantongWms9217"
-  }
+  "app_name": "Midos.IOT",
+  "app_version": "0.1.0"
 }
