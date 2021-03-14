@@ -12,6 +12,14 @@ namespace Midos.Center
 
     public DbSet<Config> Configs { get; set; }
 
+    public DbSet<TaskType> TaskTypes { get; set; }
+
+    public DbSet<SubtaskType> SubtaskTypes { get; set; }
+
+    public DbSet<TaskOrder> TaskOrders { get; set; }
+
+    public DbSet<SubtaskOrder> SubtaskOrders { get; set; }
+
     public DomainContext(AppConfig config)
     {
       _config = config;
