@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  rabbit:
+    image: rabbitmq:management-alpine
+    environment:
+      RABBITMQ_DEFAULT_VHOST: "midos.cap"
+      RABBITMQ_DEFAULT_USER: "midos"
+      RABBITMQ_DEFAULT_PASS: "midos_9217"
+    ports:
+      - 5672:5672
+      - 15672:15672

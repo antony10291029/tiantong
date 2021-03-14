@@ -6,12 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
-    <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
-    <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
+    <PackageReference Include="DotNetCore.Cap" Version="3.1.2" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.1.2" />
+    <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
+    <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
     <ProjectReference Include="../Midos.Center.Database/Midos.Center.Database.csproj" />
   </ItemGroup>
 </Project>
