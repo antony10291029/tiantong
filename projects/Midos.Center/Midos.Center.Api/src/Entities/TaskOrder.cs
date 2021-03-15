@@ -31,10 +31,10 @@ namespace Midos.Center.Entities
     [Column("closed_at")]
     public DateTime ClosedAt { get; set; }
 
-    public static TaskOrder From(long typeId, string data)
+    public static TaskOrder From(TaskType type, string data)
     {
       return new TaskOrder {
-        TypeId = typeId,
+        TypeId = type.Id,
         Status = TaskOrderStatus.Created,
         Data = data,
         CreatedAt = DateTime.Now,
