@@ -16,7 +16,21 @@ namespace Midos.Center.Entities
     [Column("order_id")]
     public long OrderId { get; private set; }
 
+    [ForeignKey("Suborder")]
     [Column("suborder_id")]
     public long SuborderId { get; private set; }
+
+    public TaskOrder Suborder { get; private set; }
+
+    private SubtaskOrder() {}
+
+    public static SubtaskOrder From(SubtaskType type, TaskOrder order, TaskOrder suborder)
+    {
+      return new SubtaskOrder {
+        Index = type.Index,
+        OrderId = order.Id,
+        Suborder = suborder
+      };
+    }
   }
 }

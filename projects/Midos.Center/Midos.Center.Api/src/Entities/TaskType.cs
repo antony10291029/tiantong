@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CreateParams = Midos.Center.Controllers.TaskTypeController.CreateParams;
+using UpdateParams = Midos.Center.Controllers.TaskTypeController.UpdateParams;
 
 namespace Midos.Center.Entities
 {
@@ -22,6 +24,23 @@ namespace Midos.Center.Entities
     [Column("comment")]
     public string Comment { get; private set; }
 
-    public TaskType() {}
+    private TaskType() {}
+
+    public void UpdateFromRequest(UpdateParams param)
+    {
+      Name = param.Name;
+      Data = param.Data;
+      Comment = param.Comment;
+    }
+
+    public static TaskType FromRequest(CreateParams param)
+    {
+      return new TaskType {
+        Key = param.Key,
+        Name = param.Name,
+        Data = param.Data,
+        Comment = param.Comment
+      };
+    }
   }
 }

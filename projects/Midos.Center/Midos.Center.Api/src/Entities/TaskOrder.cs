@@ -1,14 +1,16 @@
+using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Midos.Center.Entities
 {
+
   [Table("task_orders")]
   public class TaskOrder
   {
     [Key]
-    [Column("Id")]
+    [Column("id")]
     public long Id { get; set; }
 
     [Column("type_id")]
@@ -28,5 +30,17 @@ namespace Midos.Center.Entities
 
     [Column("closed_at")]
     public DateTime ClosedAt { get; set; }
+
+    public static TaskOrder From(long typeId, string data)
+    {
+      return new TaskOrder {
+        TypeId = typeId,
+        Status = TaskOrderStatus.Created,
+        Data = data,
+        CreatedAt = DateTime.Now,
+        StartedAt = DateTime.MinValue,
+        ClosedAt = DateTime.MinValue
+      };
+    }
   }
 }
