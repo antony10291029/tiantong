@@ -4,9 +4,11 @@ namespace Midos.Center.Events
 {
   public class TaskOrderCreated
   {
-    public const string Message = "task.order.created";
+    public const string Message = "tasks.created";
 
-    public long OrderId { get; private set; }
+    public string Key { get; init; }
+
+    public long OrderId { get; init; }
 
     private TaskOrderCreated() {}
 
@@ -15,9 +17,10 @@ namespace Midos.Center.Events
       return $"{Message}.{type.Key}";
     }
 
-    public static TaskOrderCreated From(TaskOrder order)
+    public static TaskOrderCreated From(TaskType type, TaskOrder order)
     {
-      return new TaskOrderCreated {
+      return new TaskOrderCreated() {
+        Key = type.Key,
         OrderId = order.Id
       };
     }

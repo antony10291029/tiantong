@@ -29,13 +29,15 @@ namespace Midos.Center.Controllers
       var type = _domain.TaskTypes.First(type => type.Key == param.Key);
       var order = TaskOrder.From(type, param.Data);
 
-      _domain.Add(order);
-      _domain.SaveChanges();
+      _domain.UseTransaction(() => {
+        _domain.Add(order);
+        _domain.SaveChanges();
 
-      var message = TaskOrderCreated.MessageFrom(type);
-      var data = TaskOrderCreated.From(order);
-
-      _cap.Publish(message, TaskOrderCreated.From(order));
+        _cap.Publish(
+          TaskOrderCreated.MessageFrom(type),
+          TaskOrderCreated.From(type, order)
+        );
+      });
     }
   }
 }
