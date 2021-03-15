@@ -4,7 +4,7 @@ namespace Midos.Center.Events
 {
   public class TaskOrderCreate
   {
-    public const string Message = "midos.tasks.create";
+    public const string Message = "tasks.create";
 
     public string Key { get; init; }
 

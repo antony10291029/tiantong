@@ -6,6 +6,8 @@ namespace Midos.Center.Entities
 
     public const string Started = "started";
 
-    public const string Closed = "closed";
+    public const string Finished = "finished";
+
+    public const string Cancelled = "cancelled";
   }
 }

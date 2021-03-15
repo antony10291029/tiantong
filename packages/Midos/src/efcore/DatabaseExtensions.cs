@@ -18,5 +18,15 @@ namespace Microsoft.EntityFrameworkCore
         throw e;
       }
     }
+
+    public static void SaveChanges(this DbContext dbContext, Action handler, Action<Exception> error = null)
+      => UseTransaction(
+        dbContext,
+        () => {
+          dbContext.SaveChanges();
+          handler();
+        },
+        error
+      );
   }
 }

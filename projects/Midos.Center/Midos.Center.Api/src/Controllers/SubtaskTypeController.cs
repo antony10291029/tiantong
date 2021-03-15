@@ -42,6 +42,10 @@ namespace Midos.Center.Controllers
         return NotifyResult
           .From(result)
           .Danger("子任务类型编号已存在");
+      } else if (subtype.Id == param.TypeId) {
+        return NotifyResult
+          .From(result)
+          .Danger("无法将自己设置为子任务");
       } else {
         subtype = SubtaskType.FromRequest(param);
       }

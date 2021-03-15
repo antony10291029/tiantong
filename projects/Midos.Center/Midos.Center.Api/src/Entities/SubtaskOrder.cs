@@ -1,3 +1,4 @@
+using Midos.Center.Events;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,8 +11,7 @@ namespace Midos.Center.Entities
     [Column("id")]
     public long Id { get; private set; }
 
-    [Column("index")]
-    public int Index { get; private set; }
+    public long SubtypeId { get; private set; }
 
     [Column("order_id")]
     public long OrderId { get; private set; }
@@ -24,12 +24,12 @@ namespace Midos.Center.Entities
 
     private SubtaskOrder() {}
 
-    public static SubtaskOrder From(SubtaskType type, TaskOrder order, TaskOrder suborder)
+    public static SubtaskOrder From(SubtaskType subtype, TaskOrder order, TaskOrder suborder)
     {
       return new SubtaskOrder {
-        Index = type.Index,
+        SubtypeId = subtype.Id,
         OrderId = order.Id,
-        Suborder = suborder
+        SuborderId = suborder.Id
       };
     }
   }
