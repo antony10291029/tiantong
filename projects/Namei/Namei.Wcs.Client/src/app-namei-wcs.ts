@@ -13,6 +13,7 @@ import Doors from "./views/Doors/index.vue";
 import DoorsStates from "./views/Doors.Logs/index.vue";
 import DoorCommands from "./views/Doors.Commands/index.vue";
 import RcsMap from "./views/Rcs.Map/index.vue";
+import Logs from "./views/Logs/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
@@ -26,7 +27,7 @@ export class NameiWcs extends VueApp {
 
   public icon = "icon-namei-wcs icon-namei-wcs-logo";
 
-  public iconfont = "font_1966999_bsswdv33j7p";
+  public iconfont = "font_1966999_cr7xr0l0ib8";
 
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
@@ -34,6 +35,11 @@ export class NameiWcs extends VueApp {
     redirect: { name: "NameiWcsDevices" },
     component: App,
     children: [
+      {
+        path: "logs",
+        name: "NameiWcsLogs",
+        component: Logs
+      },
       {
         path: "devices",
         name: "NameiWcsDevices",

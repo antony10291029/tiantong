@@ -36,7 +36,11 @@ namespace Namei.Wcs.Api
       }
 
       foreach (var query in param.Query) {
-        queryBuilder = queryBuilder.Where(log => log.Message.Contains(query));
+        queryBuilder = queryBuilder.Where(log =>
+          log.Message.Contains(query) ||
+          log.Data.Contains(query) ||
+          log.Operation.Contains(query)
+        );
       }
 
       return queryBuilder
