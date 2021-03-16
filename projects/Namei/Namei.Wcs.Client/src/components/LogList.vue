@@ -18,7 +18,7 @@
         <th>操作</th>
         <th>对象</th>
         <th>消息</th>
-        <th>数据</th>
+        <th style="text-align: left">数据</th>
       </thead>
       <tbody>
         <tr v-for="log in logs.data" :key="log.id">
@@ -33,7 +33,7 @@
           <td>{{log.operation}}</td>
           <td>{{log.index}}</td>
           <td class="has-text-left">{{log.message}}</td>
-          <td>{{log.data}}</td>
+          <td style="text-align: left">{{log.data}}</td>
         </tr>
       </tbody>
     </table>
