@@ -25,12 +25,12 @@ namespace Namei.Wcs.Api
 
     private HttpClient _client;
 
-    public WmsService(ICapPublisher cap, IHttpClientFactory factory)
+    public WmsService(ICapPublisher cap, IHttpClientFactory factory, Config config)
     {
       _cap = cap;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
-      _client.BaseAddress = new System.Uri("http://172.16.2.52:8086");
+      _client.BaseAddress = new System.Uri(config.WmsUrl);
       _client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
       );

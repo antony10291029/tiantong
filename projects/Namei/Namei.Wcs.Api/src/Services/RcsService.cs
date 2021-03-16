@@ -14,12 +14,12 @@ namespace Namei.Wcs.Api
 
     private ICapPublisher _cap;
 
-    public RcsService(IHttpClientFactory factory, ICapPublisher cap)
+    public RcsService(IHttpClientFactory factory, ICapPublisher cap, Config config)
     {
       _cap = cap;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
-      _client.BaseAddress = new System.Uri("http://172.16.2.230:80");
+      _client.BaseAddress = new System.Uri(config.RcsUrl);
       _client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
       );
