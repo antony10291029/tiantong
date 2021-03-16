@@ -83,6 +83,8 @@ namespace Namei.Wcs.Api
     public static Action<Log> UseData(string data)
       => log => log.Data = data;
 
+    public static Action<Log> UseData(object data)
+      => log => log.Data = System.Text.Json.JsonSerializer.Serialize(data);
     public static Action<Log> UseMessage(string message)
       => log => log.Message = message;
   }
