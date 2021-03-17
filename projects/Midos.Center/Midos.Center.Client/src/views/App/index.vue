@@ -19,7 +19,7 @@
       </ul>
     </aside>
 
-    <router-view class="is-flex-auto" style="overflow-y: auto"/>
+    <router-view class="is-flex-auto" style="overflow: auto" />
   </div>
 </template>
 
@@ -32,6 +32,7 @@ export default defineComponent({
   setup() {
     return {
       menus: [
+        { text: "作业单", route: "MidosCenterTasTypes", icon: "tasks" },
         { text: "应用管理", route: "MidosCenterApps", icon: "apps" },
         { text: "配置中心", route: "MidosCenterConfigs", icon: "configs" },
       ]

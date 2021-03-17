@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CreateParams = Midos.Center.Controllers.SubtaskTypeController.CreateParams;
-using UpdateParams = Midos.Center.Controllers.SubtaskTypeController.UpdateParams;
+using SubtaskTypeParams = Midos.Center.Controllers.TaskTypeController.SubtaskTypeParams;
 
 namespace Midos.Center.Entities
 {
@@ -12,6 +11,7 @@ namespace Midos.Center.Entities
     [Column("id")]
     public long Id { get; private set; }
 
+    [Column("key")]
     public string Key { get; private set; }
 
     [Column("index")]
@@ -28,20 +28,33 @@ namespace Midos.Center.Entities
 
     private SubtaskType() {}
 
-    public void UpdateFromRequest(UpdateParams param)
+    public SubtaskType Update(SubtaskTypeParams param)
     {
+      Key = param.Key;
       Index = param.Index;
       SubtypeId = param.SubtypeId;
+
+      return this;
     }
 
-    public static SubtaskType FromRequest(CreateParams param)
-    {
-      return new SubtaskType {
-        Key = param.Key,
-        Index = param.Index,
-        TypeId = param.SubtypeId,
-        SubtypeId = param.SubtypeId,
-      };
-    }
+    public static SubtaskType From(
+      string key,
+      int index,
+      long typeId,
+      long subtypeId
+    ) => new SubtaskType {
+      Key = key,
+      Index = index,
+      TypeId = typeId,
+      SubtypeId = subtypeId
+    };
+
+    public static SubtaskType From(SubtaskTypeParams param)
+      => From(
+        key: param.Key,
+        index: param.Index,
+        typeId: param.TypeId,
+        subtypeId: param.SubtypeId
+      );
   }
 }
