@@ -12,18 +12,14 @@ namespace Namei.Wcs.Api
       string message,
       Action<Log> useLevel = null,
       string data = ""
-    ) {
-      var log = Log.From(
-        useLevel ?? Log.UseInfo(),
-        Log.UseClass("wcs.lifter"),
-        Log.UseOperation(operation),
-        Log.UseIndex(task.Id.ToString()),
-        Log.UseData(data),
-        Log.UseMessage($"{task.LifterId} 号梯，{task.Floor} 楼，{message}")
-      );
-
-      Save(log);
-    }
+    ) => Save(
+      level: useLevel ?? Log.UseInfo(),
+      klass: "wcs.lifter",
+      operation: operation,
+      index: task.Id.ToString(),
+      data: data,
+      message: $"{task.LifterId} 号梯，{task.Floor} 楼，{message}"
+    );
 
     public void FromLifter(
       string operation,
@@ -32,17 +28,13 @@ namespace Namei.Wcs.Api
       string message,
       Action<Log> useLevel = null,
       string data = ""
-    ) {
-      var log = Log.From(
-        useLevel ?? Log.UseInfo(),
-        Log.UseClass("wcs.lifter"),
-        Log.UseOperation(operation),
-        Log.UseIndex(lifterId),
-        Log.UseData(data),
-        Log.UseMessage($"{lifterId} 号梯, {floor} 楼, {message}")
-      );
-
-      Save(log);
-    }
+    ) => Save(
+      level: useLevel ?? Log.UseInfo(),
+      klass: "wcs.lifter",
+      operation: operation,
+      index: lifterId,
+      data: data,
+      message: $"{lifterId} 号梯, {floor} 楼, {message}"
+    );
   }
 }

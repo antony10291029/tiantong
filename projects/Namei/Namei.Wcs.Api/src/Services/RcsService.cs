@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics.X86;
 using System.Reflection.Metadata;
 using System.Net.Cache;
 using System.Collections.Generic;
@@ -51,13 +52,13 @@ namespace Namei.Wcs.Api
 
   public class RcsTaskCreateResult
   {
-    public string code { get; set; }
+    public string code { get; set; } = "0";
 
-    public string message { get; set; }
+    public string message { get; set; } = "";
 
     public string reqCode { get; set; }
 
-    public string data { get; set; }
+    public string data { get; set; } = "";
   }
 
   public class RcsTaskCancelParams
@@ -108,50 +109,34 @@ namespace Namei.Wcs.Api
         param.reqCode = System.Guid.NewGuid().ToString();
       }
 
+      var scope = _logger.UseScope(
+        klass: "rcs.tasks",
+        operation: "create",
+        index: "0"
+      );
       var json = JsonSerializer.Serialize(param);
       var content = new StringContent(json, Encoding.UTF8);
+      var result = new RcsTaskCreateResult() {
+        reqCode = param.reqCode
+      };
 
-      _logger.Save(Log.From(
-        Log.UseClass("rcs.tasks"),
-        Log.UseOperation("create"),
-        Log.UseIndex("0"),
-        Log.UseMessage("收到 RCS 任务"),
-        Log.UseData(json),
-        Log.UseInfo()
-      ));
+      scope.Info("收到 RCS 任务", json);
 
       try {
         var response = _client.PostAsync("/rcs/services/rest/hikRpcService/genAgvSchedulingTask", content)
           .GetAwaiter().GetResult();
-        var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        _logger.Save(Log.From(
-          Log.UseClass("rcs.tasks"),
-          Log.UseOperation("create"),
-          Log.UseIndex("0"),
-          Log.UseMessage("RCS 任务创建成功"),
-          Log.UseData(result),
-          Log.UseSuccess()
-        ));
+        scope.Success("RCS 任务创建成功", json);
 
-        return JsonSerializer.Deserialize<RcsTaskCreateResult>(result);
+        result = JsonSerializer.Deserialize<RcsTaskCreateResult>(json);
       } catch (Exception e) {
-        _logger.Save(Log.From(
-          Log.UseClass("rcs.tasks"),
-          Log.UseOperation("create"),
-          Log.UseIndex("0"),
-          Log.UseMessage("RCS 任务创建失败"),
-          Log.UseData(e.Message),
-          Log.UseDanger()
-        ));
+        scope.Danger("RCS 任务创建失败", e.Message);
 
-        return new RcsTaskCreateResult() {
-          code = "0",
-          message = e.Message,
-          reqCode = param.reqCode,
-          data = "null"
-        };
+        result.message = e.Message;
       }
+
+      return result;
     }
 
     public RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param)
@@ -162,48 +147,32 @@ namespace Namei.Wcs.Api
 
       var json = JsonSerializer.Serialize(param);
       var content = new StringContent(json, Encoding.UTF8);
+      var scope = _logger.UseScope(
+        klass: "rcs.tasks",
+        operation: "continue",
+        index: "0"
+      );
+      var result = new RcsTaskCreateResult() {
+        reqCode = param.reqCode
+      };
 
-      _logger.Save(Log.From(
-        Log.UseClass("rcs.tasks"),
-        Log.UseOperation("continue"),
-        Log.UseIndex("0"),
-        Log.UseMessage("收到 RCS 触发任务"),
-        Log.UseData(json),
-        Log.UseInfo()
-      ));
+      scope.Info("收到 RCS 触发任务", json);
 
       try {
         var response = _client.PostAsync("/rcs/services/rest/hikRpcService/continueTask", content)
           .GetAwaiter().GetResult();
-        var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        _logger.Save(Log.From(
-          Log.UseClass("rcs.tasks"),
-          Log.UseOperation("continue"),
-          Log.UseIndex("0"),
-          Log.UseMessage("RCS 触发创建成功"),
-          Log.UseData(result),
-          Log.UseSuccess()
-        ));
+        scope.Success("RCS 触发创建成功", json);
 
-        return JsonSerializer.Deserialize<RcsTaskCreateResult>(result);
+        result = JsonSerializer.Deserialize<RcsTaskCreateResult>(json);
       } catch (Exception e) {
-        _logger.Save(Log.From(
-          Log.UseClass("rcs.tasks"),
-          Log.UseOperation("continue"),
-          Log.UseIndex("0"),
-          Log.UseMessage("RCS 任务触发失败"),
-          Log.UseData(e.Message),
-          Log.UseDanger()
-        ));
+        scope.Danger("RCS 任务触发失败", e.Message);
 
-        return new RcsTaskCreateResult() {
-          code = "0",
-          message = e.Message,
-          reqCode = param.reqCode,
-          data = "null"
-        };
+        result.message = e.Message;
       }
+
+      return result;
     }
 
     public RcsTaskCancelResult CancelTask(RcsTaskCancelParams param)
@@ -214,47 +183,32 @@ namespace Namei.Wcs.Api
 
       var json = JsonSerializer.Serialize(param);
       var content = new StringContent(json, Encoding.UTF8);
+      var scope = _logger.UseScope(
+        klass: "rcs.tasks",
+        operation: "cancel",
+        index: "0"
+      );
+      var result = new RcsTaskCancelResult() {
+        reqCode = param.reqCode
+      };
 
-      _logger.Save(Log.From(
-        Log.UseClass("rcs.tasks"),
-        Log.UseOperation("cancel"),
-        Log.UseIndex("0"),
-        Log.UseMessage("收到 RCS 取消任务"),
-        Log.UseData(json),
-        Log.UseInfo()
-      ));
+      scope.Info("收到 RCS 取消任务", json);
 
       try {
         var response = _client.PostAsync("/rcs/services/rest/hikRpcService/cancelTask", content)
           .GetAwaiter().GetResult();
-        var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        _logger.Save(Log.From(
-          Log.UseClass("rcs.tasks"),
-          Log.UseOperation("cancel"),
-          Log.UseIndex("0"),
-          Log.UseMessage("RCS 任务取消成功"),
-          Log.UseData(result),
-          Log.UseSuccess()
-        ));
+        scope.Success("RCS 任务取消成功", json);
 
-        return JsonSerializer.Deserialize<RcsTaskCancelResult>(result);
+        return JsonSerializer.Deserialize<RcsTaskCancelResult>(json);
       } catch (Exception e) {
-        _logger.Save(Log.From(
-          Log.UseClass("rcs.tasks"),
-          Log.UseOperation("cancel"),
-          Log.UseIndex("0"),
-          Log.UseMessage("RCS 任务取消失败"),
-          Log.UseData(e.Message),
-          Log.UseDanger()
-        ));
+        scope.Danger("RCS 任务取消失败", e.Message);
 
-        return new RcsTaskCancelResult() {
-          code = "0",
-          message = e.Message,
-          reqCode = param.reqCode,
-        };
+        result.message = e.Message;
       }
+
+      return result;
     }
 
     private void NotifyDoorTask(string doorId, string uuid, string action)

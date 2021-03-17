@@ -115,7 +115,7 @@ export default defineComponent({
       taskCode: "",
       nextPositionCode: {
         positionCode: "",
-        type: "01"
+        type: "00"
       },
     });
 

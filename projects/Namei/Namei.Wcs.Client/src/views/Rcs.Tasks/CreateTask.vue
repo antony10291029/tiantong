@@ -21,7 +21,7 @@
       style="padding: 0.75rem 0"
     >
       <label class="label" style="width: 120px; align-self: start">
-        位置参数
+        参数
       </label>
 
       <div
