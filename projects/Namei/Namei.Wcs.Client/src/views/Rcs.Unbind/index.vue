@@ -2,7 +2,7 @@
   <div>
     <div class="box" style="margin: 1.25rem">
       <p class="title is-4">
-        地图绑定
+        货架管理
       </p>
 
       <hr>
@@ -83,7 +83,6 @@
             v-model:value="params.podCode"
             style="max-width: 400px"
           />
-
         </div>
       </template>
 

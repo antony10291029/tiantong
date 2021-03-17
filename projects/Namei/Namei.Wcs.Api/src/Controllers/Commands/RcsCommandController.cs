@@ -10,10 +10,16 @@ namespace Namei.Wcs.Api
 
     private Logger _logger;
 
-    public RcsServiceController(ICapPublisher cap, Logger logger)
-    {
+    private RcsService _rcs;
+
+    public RcsServiceController(
+      ICapPublisher cap,
+      Logger logger,
+      RcsService rcs
+    ) {
       _cap = cap;
       _logger = logger;
+      _rcs = rcs;
     }
 
     public class DoorParams
@@ -51,6 +57,24 @@ namespace Namei.Wcs.Api
         code = 0,
         message = message
       };
+    }
+
+    [HttpPost("/rcs/tasks/create")]
+    public RcsTaskCreateResult HandleTaskCreate([FromBody] RcsTaskCreateParams param)
+    {
+      return _rcs.CreateTask(param);
+    }
+
+    [HttpPost("/rcs/tasks/continue")]
+    public RcsTaskCreateResult HandleTaskContinue([FromBody] RcsTaskContinueParams param)
+    {
+      return _rcs.ContinueTask(param);
+    }
+
+    [HttpPost("/rcs/tasks/cancel")]
+    public RcsTaskCancelResult HandleTaskCancel([FromBody] RcsTaskCancelParams param)
+    {
+      return _rcs.CancelTask(param);
     }
   }
 }

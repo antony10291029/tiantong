@@ -28,8 +28,8 @@ namespace Namei.Wcs.Api
       services.AddSingleton<ThirdLifterService>();
       services.AddSingleton<LifterServiceManager>();
       services.AddSingleton<WmsService>();
-      services.AddSingleton<RcsService>();
       services.AddDbContext<DomainContext>();
+      services.AddScoped<RcsService>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<LifterLogger>();
       services.AddScoped<MigratorProvider>();

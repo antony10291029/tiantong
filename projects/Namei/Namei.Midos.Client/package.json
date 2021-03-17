@@ -10,7 +10,7 @@
   "dependencies": {
     "@midos/app-iot": "0.0.13",
     "@midos/app-midos-center": "^0.0.1-alpha.3",
-    "@midos/app-namei-wcs": "0.0.27"
+    "@midos/app-namei-wcs": "0.0.28"
   },
   "devDependencies": {
     "@midos/core": "^0.0.1-alpha.36",

@@ -1,4 +1,6 @@
 using DotNetCore.CAP;
+using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel.Design;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace Namei.Wcs.Api
   {
     private ICapPublisher _cap;
 
-    private RcsService _rcs;
+    private IServiceProvider _service;
 
     public IDoorService Door { get; }
 
@@ -19,11 +21,20 @@ namespace Namei.Wcs.Api
 
     public List<string> RequestingTasks = new List<string>();
 
-    public DoorTask(IDoorService door, ICapPublisher cap, RcsService rcs)
+    public DoorTask(IDoorService door, ICapPublisher cap, IServiceProvider service)
     {
       _cap = cap;
-      _rcs = rcs;
       Door = door;
+      _service = service;
+    }
+
+    private void useRcs(Action<RcsService> handler)
+    {
+      using (var scope = _service.CreateScope()) {
+        var rcs = scope.ServiceProvider.GetService<RcsService>();
+
+        handler(rcs);
+      }
     }
 
     public void Request(string taskId)
@@ -56,13 +67,13 @@ namespace Namei.Wcs.Api
 
       foreach (var taskId in taskIds) {
         EnteringTasks.Add(DateTime.Now);
-        _rcs.NotifyDoorOpened(Door.Id, taskId);
+        useRcs(rcs => rcs.NotifyDoorOpened(Door.Id, taskId));
       }
     }
 
     public void Leave(string taskId)
     {
-      _rcs.NotifyDoorClosing(Door.Id, taskId);
+      useRcs(rcs => rcs.NotifyDoorClosing(Door.Id, taskId));
 
       try {
         EnteringTasks.Remove(EnteringTasks.First());
@@ -84,9 +95,9 @@ namespace Namei.Wcs.Api
   {
     public Dictionary<string, DoorTask> Tasks { get; private set; } = new Dictionary<string, DoorTask>();
 
-    public DoorTaskManager(DoorServiceManager doors, ICapPublisher cap, RcsService rcs)
+    public DoorTaskManager(DoorServiceManager doors, ICapPublisher cap, IServiceProvider service)
     {
-      Tasks = doors.All().ToDictionary(door => door.Id, door => new DoorTask(door, cap, rcs));
+      Tasks = doors.All().ToDictionary(door => door.Id, door => new DoorTask(door, cap, service));
     }
   }
 
