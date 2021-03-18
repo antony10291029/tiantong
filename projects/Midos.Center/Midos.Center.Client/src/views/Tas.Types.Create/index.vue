@@ -43,7 +43,7 @@ export default defineComponent({
       id: 0,
       key: "",
       name: "",
-      data: "{}",
+      data: {},
       comment: "",
       subtypes: []
     });

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using TaskTypeParams = Midos.Center.Controllers.TaskTypeController.TaskTypeParams;
 
 namespace Midos.Center.Entities
@@ -19,14 +21,22 @@ namespace Midos.Center.Entities
     [Column("name")]
     public string Name { get; private set; }
 
+    [JsonIgnore]
     [Column("data")]
-    public string Data { get; private set; }
+    public string _data { get; private set; }
 
     [Column("comment")]
     public string Comment { get; private set; }
 
     [ForeignKey("TypeId")]
     public List<SubtaskType> Subtypes { get; private set; }
+
+    [NotMapped]
+    public object Data
+    {
+      get => FromData(_data);
+      private set => _data = ToData(value);
+    }
 
     private TaskType() {}
 
@@ -57,18 +67,20 @@ namespace Midos.Center.Entities
       return removedSubtypes;
     }
 
+    //
+
     public static TaskType From(
       string key,
       string name,
-      string data,
       string comment,
+      object data,
       List<SubtaskType> subtypes = null
     ) => new TaskType {
       Key = key,
       Name = name,
-      Data = data,
       Comment = comment,
       Subtypes = subtypes,
+      Data = data,
     };
 
     public static TaskType From(TaskTypeParams param)
@@ -84,5 +96,24 @@ namespace Midos.Center.Entities
           subtypeId: type.SubtypeId
         )).ToList()
       );
+
+    //
+
+    public static string ToData(object data)
+      => data == null ? "{}": JsonSerializer.Serialize(data);
+
+    public static object FromData(string data)
+      => JsonSerializer.Deserialize<object>(data ?? "{}");
+
+    public static string MergeData(string data, object newData)
+    {
+      var tmp = JsonSerializer.Deserialize<Dictionary<string, string>>(data);
+
+      JsonSerializer.Deserialize<Dictionary<string, string>>(ToData(newData))
+        .ToList()
+        .ForEach(kv => tmp[kv.Key] = kv.Value);
+
+      return JsonSerializer.Serialize(tmp);
+    }
   }
 }

@@ -37,6 +37,7 @@
 
       <router-view
         class="column"
+        :key="typeId"
         :typeId="typeId"
         :taskType="taskType"
         :taskTypes="types"

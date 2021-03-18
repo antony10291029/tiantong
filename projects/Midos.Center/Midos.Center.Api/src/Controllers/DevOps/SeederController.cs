@@ -62,7 +62,7 @@ namespace Midos.Center.Controllers
         .Select(key => TaskType.From(
           key: $"type_key_{key}",
           name: $"type_name_{key}",
-          data: $"type_data_{key}",
+          data: null,
           comment: $"type_comment_{key}"
         )).ToArray();
 
@@ -70,7 +70,7 @@ namespace Midos.Center.Controllers
         .Select(key => TaskType.From(
           key: $"subtype_key_{key}",
           name: $"subtype_name_{key}",
-          data: $"subtype_data_{key}",
+          data: null,
           comment: $"subtype_comment_{key}"
         )).ToArray();
 
