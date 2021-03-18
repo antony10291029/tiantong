@@ -37,6 +37,7 @@ namespace Midos.Center
         });
 
         cap.UseDashboard();
+        cap.FailedRetryCount = 0;
       });
     }
 

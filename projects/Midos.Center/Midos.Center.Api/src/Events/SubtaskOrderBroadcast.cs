@@ -10,7 +10,9 @@ namespace Midos.Center.Events
 
     public long SuborderId { get; init; }
 
-    public string Data { get; init; }
+    public object Data { get; init; }
+
+    public object Subdata { get; init; }
 
     private SubtaskOrderBroadcast() {}
 
@@ -29,14 +31,15 @@ namespace Midos.Center.Events
     public static string Cancelled(string key, string subkey)
       => Message("cancelled", key, subkey);
 
-    public static SubtaskOrderBroadcast From(long orderId, long suborderId, string data)
-      => new SubtaskOrderBroadcast {
-        OrderId = orderId,
+    public static SubtaskOrderBroadcast From(
+      TaskOrder order,
+      long suborderId,
+      object subdata
+    ) => new SubtaskOrderBroadcast {
+        OrderId = order.Id,
+        Data = order.Data,
         SuborderId = suborderId,
-        Data = data
+        Subdata = subdata
       };
-
-    public static SubtaskOrderBroadcast From(SubtaskOrder suborder, string data)
-      => From(suborder.OrderId, suborder.SuborderId, data);
   }
 }

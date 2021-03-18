@@ -1,5 +1,6 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Midos.Center.Events;
 using System;
 using System.Linq;
@@ -24,8 +25,8 @@ namespace Midos.Center.Controllers
       _domain = domain;
     }
 
-    [CapSubscribe(TaskOrderCreated.Message, Group = Group)]
-    public void HandleTaskOrderCreated(TaskOrderCreated param)
+    [CapSubscribe(TaskOrderChanged.Created, Group = Group)]
+    public void HandleTaskOrderCreated(TaskOrderChanged param)
     {
       _cap.Publish(
         name: TaskOrderBroadcast.Created(param.Key),
@@ -33,8 +34,8 @@ namespace Midos.Center.Controllers
       );
     }
 
-    [CapSubscribe(TaskOrderStarted.Message, Group = Group)]
-    public void HandleTaskOrderStarted(TaskOrderStarted param)
+    [CapSubscribe(TaskOrderChanged.Started, Group = Group)]
+    public void HandleTaskOrderStarted(TaskOrderChanged param)
     {
       _cap.Publish(
         name: TaskOrderBroadcast.Started(param.Key),
@@ -42,8 +43,8 @@ namespace Midos.Center.Controllers
       );
     }
 
-    [CapSubscribe(TaskOrderFinished.Message, Group = Group)]
-    public void HandleTaskOrderFinished(TaskOrderFinish param)
+    [CapSubscribe(TaskOrderChanged.Finished, Group = Group)]
+    public void HandleTaskOrderFinished(TaskOrderChanged param)
     {
       _cap.Publish(
         name: TaskOrderBroadcast.Finished(param.Key),
@@ -51,8 +52,8 @@ namespace Midos.Center.Controllers
       );
     }
 
-    [CapSubscribe(TaskOrderCancelled.Message, Group = Group)]
-    public void HandleTaskOrderCancelled(TaskOrderCancelled param)
+    [CapSubscribe(TaskOrderChanged.Cancelled, Group = Group)]
+    public void HandleTaskOrderCancelled(TaskOrderChanged param)
     {
       _cap.Publish(
         name: TaskOrderBroadcast.Cancelled(param.Key),
@@ -60,63 +61,59 @@ namespace Midos.Center.Controllers
       );
     }
 
-    [CapSubscribe(SubtaskOrderCreated.Message, Group = Group)]
-    public void HandleSubtaskOrderCreated(SubtaskOrderCreated param)
-    {
-      _cap.Publish(
-        name: SubtaskOrderBroadcast.Created(param.Key, param.Subkey),
-        contentObj: SubtaskOrderBroadcast.From(param.OrderId, param.SuborderId, param.Data)
-      );
-    }
+    //
 
     private void BroadcastSubtask(
-      string key,
-      long orderId,
-      string data,
+      long suborderId,
+      object subdata,
       Func<string, string, string> useStatus
     ) {
       var suborder = _domain.SubtaskOrders
-        .FirstOrDefault(so => so.SuborderId == orderId);
+        .Include(so => so.Order)
+          .ThenInclude(so => so.Type)
+        .Include(so => so.Subtype)
+        .FirstOrDefault(so => so.SuborderId == suborderId);
 
       if (suborder != null) {
-        var subtype = _domain.SubtaskTypes.Find(suborder.SubtypeId);
+        var order = suborder.Order;
+        var type = order.Type;
+        var subtype = suborder.Subtype;
 
         _cap.Publish(
-          name: useStatus(key, subtype.Key),
-          contentObj: SubtaskOrderBroadcast.From(suborder, data)
+          name: useStatus(type.Key, subtype.Key),
+          contentObj: SubtaskOrderBroadcast.From(order, suborderId, subdata)
         );
       }
     }
 
-    [CapSubscribe(TaskOrderStarted.Message, Group = SubGroup)]
-    public void HandleSubtaskOrderStarted(TaskOrderStarted param)
+    //
+
+    [CapSubscribe(TaskOrderChanged.Started, Group = SubGroup)]
+    public void HandleSubtaskOrderStarted(TaskOrderChange param)
     {
       BroadcastSubtask(
-        key: param.Key,
-        orderId: param.OrderId,
-        data: param.Data,
+        suborderId: param.OrderId,
+        subdata: param.Data,
         useStatus: SubtaskOrderBroadcast.Started
       );
     }
 
-    [CapSubscribe(TaskOrderFinished.Message, Group = SubGroup)]
-    public void HandleSubtaskOrderFinished(TaskOrderFinished param)
+    [CapSubscribe(TaskOrderChanged.Finished, Group = SubGroup)]
+    public void HandleSubtaskOrderFinished(TaskOrderChanged param)
     {
       BroadcastSubtask(
-        key: param.Key,
-        orderId: param.OrderId,
-        data: param.Data,
+        suborderId: param.OrderId,
+        subdata: param.Data,
         useStatus: SubtaskOrderBroadcast.Finished
       );
     }
 
-    [CapSubscribe(TaskOrderCancelled.Message, Group = SubGroup)]
-    public void HandleSubtaskOrderCancelled(TaskOrderCancelled param)
+    [CapSubscribe(TaskOrderChanged.Cancelled, Group = SubGroup)]
+    public void HandleSubtaskOrderCancelled(TaskOrderChanged param)
     {
       BroadcastSubtask(
-        key: param.Key,
-        orderId: param.OrderId,
-        data: param.Data,
+        suborderId: param.OrderId,
+        subdata: param.Data,
         useStatus: SubtaskOrderBroadcast.Cancelled
       );
     }

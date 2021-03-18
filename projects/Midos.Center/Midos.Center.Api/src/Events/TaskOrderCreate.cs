@@ -8,11 +8,11 @@ namespace Midos.Center.Events
 
     public string Key { get; init; }
 
-    public string Data { get; init; }
+    public TaskData Data { get; init; }
 
     private TaskOrderCreate() {}
 
-    public static TaskOrderCreate From(string key, string data)
+    public static TaskOrderCreate From(string key, TaskData data)
     {
       return new TaskOrderCreate {
         Key = key,

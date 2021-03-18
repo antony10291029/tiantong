@@ -8,6 +8,8 @@ using TaskTypeParams = Midos.Center.Controllers.TaskTypeController.TaskTypeParam
 
 namespace Midos.Center.Entities
 {
+  public class TaskData: Dictionary<string, string> {}
+
   [Table("task_types")]
   public class TaskType
   {
@@ -32,7 +34,7 @@ namespace Midos.Center.Entities
     public List<SubtaskType> Subtypes { get; private set; }
 
     [NotMapped]
-    public object Data
+    public TaskData Data
     {
       get => FromData(_data);
       private set => _data = ToData(value);
@@ -42,6 +44,7 @@ namespace Midos.Center.Entities
 
     public List<SubtaskType> Update(TaskTypeParams param)
     {
+      Key = param.Key;
       Name = param.Name;
       Data = param.Data;
       Comment = param.Comment;
@@ -73,7 +76,7 @@ namespace Midos.Center.Entities
       string key,
       string name,
       string comment,
-      object data,
+      TaskData data,
       List<SubtaskType> subtypes = null
     ) => new TaskType {
       Key = key,
@@ -99,19 +102,17 @@ namespace Midos.Center.Entities
 
     //
 
-    public static string ToData(object data)
+    public static string ToData(TaskData data)
       => data == null ? "{}": JsonSerializer.Serialize(data);
 
-    public static object FromData(string data)
-      => JsonSerializer.Deserialize<object>(data ?? "{}");
+    public static TaskData FromData(string data)
+      => JsonSerializer.Deserialize<TaskData>(data ?? "{}");
 
-    public static string MergeData(string data, object newData)
+    public static string MergeData(string data, TaskData newData)
     {
       var tmp = JsonSerializer.Deserialize<Dictionary<string, string>>(data);
 
-      JsonSerializer.Deserialize<Dictionary<string, string>>(ToData(newData))
-        .ToList()
-        .ForEach(kv => tmp[kv.Key] = kv.Value);
+      newData.ToList().ForEach(kv => tmp[kv.Key] = kv.Value);
 
       return JsonSerializer.Serialize(tmp);
     }

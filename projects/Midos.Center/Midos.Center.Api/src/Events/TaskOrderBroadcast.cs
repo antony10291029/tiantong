@@ -6,7 +6,7 @@ namespace Midos.Center.Events
 
     public long OrderId { get; init; }
 
-    public string Data { get; init; }
+    public object Data { get; init; }
 
     private TaskOrderBroadcast() {}
 
@@ -25,7 +25,7 @@ namespace Midos.Center.Events
     public static string Cancelled(string key)
       => Message("cancelled", key);
 
-    public static TaskOrderBroadcast From(long orderId, string data)
+    public static TaskOrderBroadcast From(long orderId, object data)
       => new TaskOrderBroadcast {
         OrderId = orderId,
         Data = data

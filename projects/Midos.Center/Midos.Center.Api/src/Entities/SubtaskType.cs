@@ -24,7 +24,7 @@ namespace Midos.Center.Entities
     [Column("subtype_id")]
     public long SubtypeId { get; private set; }
 
-    public TaskType Subtype { get; }
+    public TaskType Subtype { get; private set; }
 
     private SubtaskType() {}
 

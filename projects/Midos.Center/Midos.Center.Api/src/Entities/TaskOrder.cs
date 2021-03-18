@@ -11,25 +11,34 @@ namespace Midos.Center.Entities
   {
     [Key]
     [Column("id")]
-    public long Id { get; set; }
+    public long Id { get; private set; }
 
     [Column("type_id")]
-    public long TypeId { get; set; }
+    public long TypeId { get; private set; }
 
     [Column("status")]
-    public string Status { get; set; }
+    public string Status { get; private set; }
 
     [Column("data")]
-    public string Data { get; set; }
+    public string _data { get; private set; }
 
     [Column("created_at")]
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; private set; }
 
     [Column("started_at")]
-    public DateTime StartedAt { get; set; }
+    public DateTime StartedAt { get; private set; }
 
     [Column("closed_at")]
-    public DateTime ClosedAt { get; set; }
+    public DateTime ClosedAt { get; private set; }
+
+    public TaskType Type { get; private set; }
+
+    [NotMapped]
+    public TaskData Data
+    {
+      get => TaskType.FromData(_data);
+      set => _data = TaskType.ToData(value);
+    }
 
     public bool IsCreated()
       => Status == TaskOrderStatus.Created;
@@ -46,23 +55,26 @@ namespace Midos.Center.Entities
     public bool IsClosed()
       => IsFinished() || IsCancelled();
 
-    public void Start(string data)
+    public void UseData(TaskData data)
+      => _data = TaskType.MergeData(_data, data);
+
+    public void Start(TaskData data)
     {
-      Data = data;
+      UseData(data);
       StartedAt = DateTime.Now;
       Status = TaskOrderStatus.Started;
     }
 
-    public void Cancell(string data)
+    public void Cancel(TaskData data)
     {
-      Data = data;
+      UseData(data);
       ClosedAt = DateTime.Now;
       Status = TaskOrderStatus.Cancelled;
     }
 
-    public void Finish(string data)
+    public void Finish(TaskData data)
     {
-      Data = data;
+      UseData(data);
       ClosedAt = DateTime.Now;
       Status = TaskOrderStatus.Finished;
     }
@@ -72,7 +84,7 @@ namespace Midos.Center.Entities
       return new TaskOrder {
         TypeId = type.Id,
         Status = TaskOrderStatus.Created,
-        Data = param.Data,
+        _data = TaskType.MergeData(type._data, param.Data),
         CreatedAt = DateTime.Now,
         StartedAt = DateTime.MinValue,
         ClosedAt = DateTime.MinValue
@@ -84,7 +96,7 @@ namespace Midos.Center.Entities
       return new TaskOrder {
         TypeId = type.Id,
         Status = TaskOrderStatus.Created,
-        Data = param.Data,
+        _data = TaskType.MergeData(type._data, param.Data),
         CreatedAt = DateTime.Now,
         StartedAt = DateTime.MinValue,
         ClosedAt = DateTime.MinValue

@@ -24,6 +24,70 @@ namespace Midos.Center.Controllers
       _domain = domain;
     }
 
+    public class TaskOrderParams
+    {
+      public string Key { get; set; }
+
+      public TaskData Data { get; set; }
+    }
+
+    [HttpPost("/midos/tasks/create")]
+    public INotifyResult<IMessageObject> CreateTaskOrder([FromBody] TaskOrderParams param)
+    {
+      var result = NotifyResult.FromVoid();
+
+      _cap.Publish(
+        TaskOrderCreate.Message,
+        TaskOrderCreate.From(param.Key, param.Data)
+      );
+
+      return result.Success("任务已创建");
+    }
+
+    public class SubTaskOrderParams
+    {
+      public long OrderId { get; set; }
+
+      public string Subkey { get; set; }
+
+      public TaskData Data { get; set; }
+    }
+
+    [HttpPost("/midos/subtasks/create")]
+    public INotifyResult<IMessageObject> CreateSubtaskOrder([FromBody] SubTaskOrderParams param)
+    {
+      var result = NotifyResult.FromVoid();
+
+      _cap.Publish(
+        SubtaskOrderCreate.Message,
+        SubtaskOrderCreate.From(param.OrderId, param.Subkey, param.Data)
+      );
+
+      return result.Success("子任务已创建");
+    }
+
+    public class TaskOrderChangeParams
+    {
+      public string Method { get; set; }
+
+      public long OrderId { get; set; }
+
+      public TaskData Data { get; set; }
+    }
+
+    [HttpPost("/midos/tasks/change")]
+    public INotifyResult<IMessageObject> ChangeTaskOrder([FromBody] TaskOrderChangeParams param)
+    {
+      var result = NotifyResult.FromVoid();
+
+      _cap.Publish(
+        TaskOrderChange.Message(param.Method),
+        TaskOrderChange.From(param.OrderId, param.Data)
+      );
+
+      return result.Success("订单状态已修改");
+    }
+
     [CapSubscribe(TaskOrderCreate.Message, Group = Group)]
     public void HandleTaskOrderCreate(TaskOrderCreate param)
     {
@@ -34,8 +98,8 @@ namespace Midos.Center.Controllers
 
       _domain.SaveChanges(() => {
         _cap.Publish(
-          name: TaskOrderCreated.Message,
-          contentObj: TaskOrderCreated.From(type, order)
+          name: TaskOrderChanged.Created,
+          contentObj: TaskOrderChanged.From(type, order)
         );
       });
     }
@@ -54,35 +118,36 @@ namespace Midos.Center.Controllers
 
       _domain.SaveChanges(() => {
         _cap.Publish(
-          name: SubtaskOrderCreated.Message,
-          contentObj: SubtaskOrderCreated.From(type, subtype, order, suborder)
+          name: TaskOrderChanged.Created,
+          contentObj: TaskOrderChanged.From(subtype.Subtype, suborder)
         );        
       });
     }
 
-    [CapSubscribe(TaskOrderCreated.Message, Group = Group)]
-    public void HandleSubtaskOrderCreated(TaskOrderCreated param)
+    [CapSubscribe(TaskOrderChanged.Created, Group = Group)]
+    public void HandleTaskOrderCreated(TaskOrderChanged param)
     {
       _cap.Publish(
-        name: TaskOrderStart.Message,
-        contentObj: TaskOrderStart.From(param.OrderId, param.Data)
+        name: TaskOrderChange.Start,
+        contentObj: TaskOrderChange.From(param.OrderId, new TaskData())
       );
     }
 
-    [CapSubscribe(SubtaskOrderCreated.Message, Group = Group)]
-    public void HandleSubtaskOrderCreated(SubtaskOrderCreated param)
+    [CapSubscribe(TaskOrderChange.Update, Group = Group)]
+    public void HandleTaskOrderUpdate(TaskOrderChange param)
     {
-      _cap.Publish(
-        name: TaskOrderCreated.Message,
-        contentObj: TaskOrderCreated.From(param)
-      );
+      var order = _domain.TaskOrders.Find(param.OrderId);
+
+      order.UseData(param.Data);
+      _domain.SaveChanges();
     }
+
+    //
 
     private void PubilshTaskStatus(
       long orderId,
       Action<TaskOrder> useOrder,
-      string message,
-      Func<TaskType, TaskOrder, object> useEvent
+      string message
     ) {
       var order = _domain.TaskOrders.Find(orderId);
       var type = _domain.TaskTypes.Find(order.TypeId);
@@ -92,41 +157,40 @@ namespace Midos.Center.Controllers
       _domain.SaveChanges(() => {
         _cap.Publish(
           name: message,
-          contentObj: useEvent(type, order)
+          contentObj: TaskOrderChanged.From(type, order)
         );
       });
     }
 
-    [CapSubscribe(TaskOrderStart.Message, Group = Group)]
-    public void HandleTaskOrderStart(TaskOrderStart param)
+    //
+
+    [CapSubscribe(TaskOrderChange.Start, Group = Group)]
+    public void HandleTaskOrderStart(TaskOrderChange param)
     {
       PubilshTaskStatus(
         orderId: param.OrderId,
         useOrder: order => order.Start(param.Data),
-        message: TaskOrderStarted.Message,
-        useEvent: TaskOrderStarted.From
+        message: TaskOrderChanged.Started
       );
     }
 
-    [CapSubscribe(TaskOrderFinish.Message, Group = Group)]
-    public void HandleTaskOrderFinish(TaskOrderFinish param)
+    [CapSubscribe(TaskOrderChange.Finish, Group = Group)]
+    public void HandleTaskOrderFinish(TaskOrderChange param)
     {
       PubilshTaskStatus(
         orderId: param.OrderId,
         useOrder: order => order.Finish(param.Data),
-        message: TaskOrderFinished.Message,
-        useEvent: TaskOrderFinished.From
+        message: TaskOrderChanged.Finished
       );
     }
 
-    [CapSubscribe(TaskOrderCancell.Message, Group = Group)]
-    public void HandleTaskOrderCancell(TaskOrderCancell param)
+    [CapSubscribe(TaskOrderChange.Cancel, Group = Group)]
+    public void HandleTaskOrderCancell(TaskOrderChange param)
     {
       PubilshTaskStatus(
         orderId: param.OrderId,
-        useOrder: order => order.Cancell(param.Data),
-        message: TaskOrderCancelled.Message,
-        useEvent: TaskOrderCancelled.From
+        useOrder: order => order.Cancel(param.Data),
+        message: TaskOrderChanged.Cancelled
       );
     }
   }
