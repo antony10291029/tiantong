@@ -103,6 +103,8 @@ namespace Namei.Wcs.Api
 
     public abstract string GetDestination(string floor);
 
+    public abstract string GetTaskDestination(string floor);
+
     // 设置托盘码
     public abstract void SetPalletCode(string floor, string code);
 
@@ -158,14 +160,17 @@ namespace Namei.Wcs.Api
     public override void SetPickuped(string floor, bool value)
       => _plc.Set($"{floor}F - 取货完成", value ? "1" : "0");
 
+    public override void SetDestination(string from, string to)
+      => _plc.Set($"{from}F - 目的楼层", to);
+
     public override string GetPalletCode(string floor)
       => _plc.Get($"{floor}F - A 段 - 托盘码");
 
     public override string GetDestination(string floor)
-      => _plc.Get($"{floor}F - A 段 - 目的楼层");
+      => _plc.Get($"{floor}F - 目的楼层");
 
-    public override void SetDestination(string from, string to)
-      => _plc.Set($"{from}F - 目的楼层", to);
+    public override string GetTaskDestination(string floor)
+      => _plc.Get($"{floor}F - A 段 - 目的楼层");
 
     public override bool IsImportAllowed(string floor)
     {
@@ -232,8 +237,11 @@ namespace Namei.Wcs.Api
     public override void SetDestination(string from, string to)
       => _plc.Set($"{from}F - 目的楼层", to);
 
-    public override string GetDestination(string floor)
+    public override string GetTaskDestination(string floor)
       => _plc.Get($"{floor}F - A 段 - 任务路径").Last().ToString();
+
+    public override string GetDestination(string floor)
+      => _plc.Get($"{floor}F - 目的楼层");
 
     public override bool IsImportAllowed(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "2";
