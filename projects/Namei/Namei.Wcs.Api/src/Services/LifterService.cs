@@ -87,15 +87,9 @@ namespace Namei.Wcs.Api
       string destination = null,
       string barcode = null
     ) {
+      SetDestination(floor, destination ?? "0");
+      SetPalletCode(floor, barcode ?? "0");
       SetImported(floor, true);
-
-      if (destination != null) {
-        SetPalletCode(floor, barcode);
-      }
-
-      if (barcode != null) {
-        SetDestination(floor, destination);
-      }
     }
 
     // 放货完成
