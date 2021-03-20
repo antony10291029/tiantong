@@ -1,6 +1,7 @@
 import { injectable } from "@midos/core";
-import { VueApp } from "@midos/vue-ui";
+import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
+import { components } from "./components";
 import App from "./views/App/index.vue";
 import Apps from "./views/Midos.Apps/index.vue";
 import AppsApp from "./views/Midos.Apps.App/index.vue";
@@ -11,6 +12,9 @@ import ConfigsConfig from "./views/Configs.Config/index.vue";
 import TasTypes from "./views/Tas.Types/index.vue";
 import TasTypesType from "./views/Tas.Types.Type/index.vue";
 import TasTypesCreate from "./views/Tas.Types.Create/index.vue";
+import TasTasks from "./views/Tas.Tasks/index.vue";
+import TasOrders from "./views/Tas.Tasks.Orders/index.vue";
+import TasOrderDetail from "./views/Tas.Tasks.Orders.Detail/index.vue";
 
 @injectable()
 export class MidosCenter extends VueApp {
@@ -20,12 +24,20 @@ export class MidosCenter extends VueApp {
 
   public icon = "icon-midos-center icon-midos-center-logo";
 
-  public iconfont = "font_2390325_ppgyq8wxc5l";
+  public iconfont = "font_2390325_xs0h8tnm5ts";
+
+  public constructor(private ui: VueUI) {
+    super();
+  }
+
+  public configure(): void {
+    this.ui.app.use(components);
+  }
 
   public route: RouteRecordRaw = {
     path: "/midos-center",
     name: "MidosCenter",
-    redirect: { name: "MidosCenterApps" },
+    redirect: { name: "MidosCenterTasTasks" },
     component: App,
     children: [
       {
@@ -42,6 +54,25 @@ export class MidosCenter extends VueApp {
             path: ":typeId",
             name: "MidosCenterTasTypesType",
             component: TasTypesType
+          }
+        ]
+      },
+      {
+        path: "tas/tasks",
+        name: "MidosCenterTasTasks",
+        component: TasTasks,
+        children: [
+          {
+            path: ":typeId",
+            name: "TasOrders",
+            component: TasOrders,
+            children: [
+              {
+                path: ":orderId",
+                name: "TasOrderDetail",
+                component: TasOrderDetail
+              }
+            ]
           }
         ]
       },

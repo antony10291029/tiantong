@@ -88,6 +88,38 @@ namespace Midos.Center.Controllers
       return result.Success("订单状态已修改");
     }
 
+    public class SearchParams
+    {
+      public int Page { get; set; }
+
+      public int PageSize { get; set; }
+
+      public long typeId { get; set; }
+
+      public string Query { get; set; }
+    }
+
+    [HttpPost("/midos/tasks/orders/search")]
+    public Pagination<TaskOrder> Search([FromBody] SearchParams param)
+    {
+      var query = _domain.TaskOrders.AsQueryable();
+
+      if (param.typeId != 0) {
+        query = query.Where(order => order.TypeId == param.typeId);
+      }
+
+      if (param.Query != "") {
+        query = query.Where(order => order._data.Contains(param.Query));
+      }
+
+      return query
+        .OrderByDescending(order => order.CreatedAt)
+        .ThenByDescending(order => order.Id)
+        .Paginate(param.Page, param.PageSize);
+    }
+
+    //
+
     [CapSubscribe(TaskOrderCreate.Message, Group = Group)]
     public void HandleTaskOrderCreate(TaskOrderCreate param)
     {
