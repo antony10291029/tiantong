@@ -41,17 +41,23 @@ namespace Namei.Wcs.Api
       public string From { get; set; } = "RCS";
     }
 
+    public class NotifyTaskResult: MessageObject
+    {
+      public int code = 0;
+    }
+
     [HttpPost]
     [Route("/REV_AGC/NotifyTaskInfo")]
-    public object HandleRequestOpen([FromBody] DoorParams param)
+    public IResult<object> HandleRequestOpen([FromBody] DoorParams param)
     {
-      var message = "指令未识别";
+      var data = new NotifyTaskResult();
+      var result = Result.FromObject(data).StatusCode(201);
 
       if (param.actionTask == "applyLock") {
-        message = "正在处理开门指令";
+        data.Message = "收到开门任务";
         _cap.Publish(DoorTaskRequestOpenEvent.Message, new DoorTaskRequestOpenEvent(param.deviceIndex, param.uuid));
       } else if (param.actionTask == "releaseDevice") {
-        message = "正在处理关门指令";
+        data.Message = "收到关门任务";
         _cap.Publish(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.deviceIndex, param.uuid));
       }
 
@@ -64,10 +70,7 @@ namespace Namei.Wcs.Api
         data: param
       );
 
-      return new {
-        code = 0,
-        message = message
-      };
+      return result;
     }
 
     [HttpPost("/rcs/tasks/create")]

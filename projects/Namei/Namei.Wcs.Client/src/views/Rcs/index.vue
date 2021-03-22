@@ -34,6 +34,7 @@ export default defineComponent({
   setup() {
     return {
       tabs: [
+        { text: "任务通知", route: "NameiWcsNotifyTask" },
         { text: "货架管理", route: "NameiWcsRcsUnbind" },
         { text: "任务管理", route: "NameiWcsRcsTasks" },
       ]

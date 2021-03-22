@@ -15,6 +15,7 @@ import DoorCommands from "./views/Doors.Commands/index.vue";
 import Rcs from "./views/Rcs/index.vue";
 import RcsUnbind from "./views/Rcs.Unbind/index.vue";
 import RcsTasks from "./views/Rcs.Tasks/index.vue";
+import RcsNotifyTask from "./views/Rcs.NotifyTask/index.vue";
 import Logs from "./views/Logs/index.vue";
 
 @injectable()
@@ -116,6 +117,11 @@ export class NameiWcs extends VueApp {
             path: "tasks",
             name: "NameiWcsRcsTasks",
             component: RcsTasks
+          },
+          {
+            path: "notify-task",
+            name: "NameiWcsNotifyTask",
+            component: RcsNotifyTask
           }
         ]
       }
