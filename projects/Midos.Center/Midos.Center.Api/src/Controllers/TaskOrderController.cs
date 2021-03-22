@@ -5,6 +5,7 @@ using Midos.Center.Entities;
 using Midos.Center.Events;
 using System;
 using System.Linq;
+using Midos.Center.Utils;
 
 namespace Midos.Center.Controllers
 {
@@ -16,12 +17,16 @@ namespace Midos.Center.Controllers
 
     private DomainContext _domain;
 
+    private TaskService _tasks;
+
     public TaskOrderInternalController(
       DomainContext domain,
-      ICapPublisher cap
+      ICapPublisher cap,
+      TaskService tasks
     ) {
       _cap = cap;
       _domain = domain;
+      _tasks = tasks;
     }
 
     public class TaskOrderParams
@@ -36,9 +41,9 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      _cap.Publish(
-        TaskOrderCreate.Message,
-        TaskOrderCreate.From(param.Key, param.Data)
+      _tasks.Create(
+        key: param.Key,
+        data: param.Data
       );
 
       return result.Success("任务已创建");
@@ -58,9 +63,10 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      _cap.Publish(
-        SubtaskOrderCreate.Message,
-        SubtaskOrderCreate.From(param.OrderId, param.Subkey, param.Data)
+      _tasks.Create(
+        orderId: param.OrderId,
+        subkey: param.Subkey,
+        data: param.Data
       );
 
       return result.Success("子任务已创建");
@@ -80,9 +86,10 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      _cap.Publish(
-        TaskOrderChange.Message(param.Method),
-        TaskOrderChange.From(param.OrderId, param.Data)
+      _tasks.Change(
+        method: param.Method,
+        orderId: param.OrderId,
+        data: param.Data
       );
 
       return result.Success("订单状态已修改");
@@ -152,7 +159,7 @@ namespace Midos.Center.Controllers
         _cap.Publish(
           name: TaskOrderChanged.Created,
           contentObj: TaskOrderChanged.From(subtype.Subtype, suborder)
-        );        
+        );
       });
     }
 

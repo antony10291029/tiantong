@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Midos.Center.Utils;
 
 namespace Midos.Center
 {
@@ -39,6 +40,7 @@ namespace Midos.Center
         cap.UseDashboard();
         cap.FailedRetryCount = 0;
       });
+      services.AddScoped<TaskService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
