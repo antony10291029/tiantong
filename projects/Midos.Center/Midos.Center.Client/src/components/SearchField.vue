@@ -26,7 +26,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "SearchFeidl",
@@ -49,9 +50,21 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const value = ref("");
+    const route = useRoute();
+    const router = useRouter();
+    const value = ref(route.query.search ?? "");
 
     function handleSearch () {
+      if (value.value) {
+        router.replace({
+          query: { search: value.value }
+        });
+      } else {
+        router.replace({
+          query: {}
+        });
+      }
+
       emit("search", value.value);
     }
 
@@ -59,6 +72,8 @@ export default defineComponent({
       value.value = event.target.value;
       handleSearch();
     }
+
+    onMounted(handleSearch);
 
     return {
       value,

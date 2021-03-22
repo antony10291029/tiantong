@@ -1,5 +1,5 @@
 <template>
-  <AsyncLoader :handler="getOrders">
+  <div>
     <div class="box">
       <div class="is-flex">
         <SearchField @search="handleSearch"/>
@@ -69,7 +69,7 @@
       :taskType="taskType"
       :taskOrder="taskOrder"
     />
-  </AsyncLoader>
+  </div>
 </template>
 
 <script lang="ts">
