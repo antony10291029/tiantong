@@ -36,7 +36,9 @@ namespace Namei.Wcs.Api
 
       public string Src { get; set; }
 
-      public string Dst { get; set; } 
+      public string Dst { get; set; }
+
+      public string From { get; set; } = "RCS";
     }
 
     [HttpPost]
@@ -52,6 +54,15 @@ namespace Namei.Wcs.Api
         message = "正在处理关门指令";
         _cap.Publish(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.deviceIndex, param.uuid));
       }
+
+      _logger.Save(
+        level: Log.UseInfo(),
+        klass: "rcs.door",
+        operation: "command",
+        message: $"收到 {param.From} 自动门指令",
+        index: param.uuid,
+        data: param
+      );
 
       return new {
         code = 0,

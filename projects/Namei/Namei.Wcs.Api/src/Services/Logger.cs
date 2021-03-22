@@ -27,6 +27,22 @@ namespace Namei.Wcs.Api
       Log.UseMessage(message)
     ));
 
+    public void Save(
+      Action<Log> level,
+      string klass,
+      string operation,
+      string message,
+      object data,
+      string index = ""
+    ) => Save(Log.From(
+      level,
+      Log.UseClass(klass),
+      Log.UseOperation(operation),
+      Log.UseIndex(index),
+      Log.UseData(data),
+      Log.UseMessage(message)
+    ));
+
     public ScopedLogger UseScope(
       string klass,
       string operation,
