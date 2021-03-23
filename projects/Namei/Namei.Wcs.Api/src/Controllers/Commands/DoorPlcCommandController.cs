@@ -26,10 +26,10 @@ namespace Namei.Wcs.Api
 
       if (param.value == "12") {
         message = "正在处理开门完成指令";
-        _cap.Publish(DoorOpenedEvent.Message, new DoorOpenedEvent(param.door_id));
+        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(param.door_id));
       } else if (param.value == "22") {
         message = "正在处理关门完成指令";
-        _cap.Publish(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
+        _cap.Publish(WcsDoorEvent.Closed, WcsDoorEvent.From(param.door_id));
       }
 
       return NotifyResult.FromVoid()

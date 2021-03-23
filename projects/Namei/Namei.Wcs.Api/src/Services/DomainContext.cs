@@ -14,11 +14,15 @@ namespace Namei.Wcs.Api
 
     public DbSet<Device> Devices { get; set; }
 
+    public DbSet<RcsDoorTask> RcsDoorTasks { get; set; }
+
     public DbSet<DeviceError> DeviceErrors { get; set; }
 
     public DbSet<DeviceState> DeviceStates { get; set; }
 
     public DbSet<LifterTask> LifterTasks { get; set; }
+
+    public DbSet<WcsDoorPassport> WcsDoorPassports { get; set; }
 
     public DomainContext(Config config)
     {

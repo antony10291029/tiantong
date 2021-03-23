@@ -76,9 +76,21 @@ namespace Namei.Wcs.Api
     public object PublishDoorsMessage([FromBody] PublishDoorsMessageParams param)
     {
       if (param.message == "requested.open") {
-        _cap.PublishAsync(DoorTaskRequestOpenEvent.Message, new DoorTaskRequestOpenEvent(param.door_id, "A0001"));
+        _cap.PublishAsync(
+          RcsDoorEvent.Request,
+          RcsDoorEvent.From(
+            uuid: "A0001",
+            doorId: param.door_id
+          )
+        );
       } else if (param.message  == "requested.close") {
-        _cap.PublishAsync(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.door_id, "A0001"));
+        _cap.PublishAsync(
+          RcsDoorEvent.Leave,
+          RcsDoorEvent.From(
+            uuid: "A0001",
+            doorId: param.door_id
+          )
+        );
       } else if (param.message == "opened") {
         _cap.PublishAsync(DoorOpenedEvent.Message, new DoorOpenedEvent(param.door_id));
       } else if (param.message == "closed") {

@@ -55,10 +55,22 @@ namespace Namei.Wcs.Api
 
       if (param.actionTask == "applyLock") {
         data.Message = "收到开门任务";
-        _cap.Publish(DoorTaskRequestOpenEvent.Message, new DoorTaskRequestOpenEvent(param.deviceIndex, param.uuid));
+        _cap.Publish(
+          RcsDoorEvent.Request,
+          RcsDoorEvent.From(
+            uuid: param.uuid,
+            doorId: param.deviceIndex
+          )
+        );
       } else if (param.actionTask == "releaseDevice") {
         data.Message = "收到关门任务";
-        _cap.Publish(DoorTaskRequestCloseEvent.Message, new DoorTaskRequestCloseEvent(param.deviceIndex, param.uuid));
+        _cap.Publish(
+          RcsDoorEvent.Leave,
+          RcsDoorEvent.From(
+            uuid: param.uuid,
+            doorId: param.deviceIndex
+          )
+        );
       }
 
       _logger.Save(

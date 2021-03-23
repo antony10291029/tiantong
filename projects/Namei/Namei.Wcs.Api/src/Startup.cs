@@ -34,6 +34,7 @@ namespace Namei.Wcs.Api
       services.AddScoped<LifterLogger>();
       services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
+      services.AddScoped<WcsDoorFactory>();
       services.AddCap(cap => {
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();
