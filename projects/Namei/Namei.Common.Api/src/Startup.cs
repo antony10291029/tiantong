@@ -13,6 +13,7 @@ namespace Namei.Common.Api
       services.AddSingleton<Config>();
       services.AddDbContext<RcsContext>();
       services.AddSingleton<RcsHttpService>();
+      services.AddDbContext<SapContext>();
     }
 
     public void Configure(IApplicationBuilder app)
