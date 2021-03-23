@@ -105,7 +105,7 @@ export class NameiWcs extends VueApp {
       {
         path: "rcs",
         name: "NameiWcsRcs",
-        redirect: { name: "NameiWcsRcsUnbind" },
+        redirect: { name: "NameiWcsNotifyTask" },
         component: Rcs,
         children: [
           {
