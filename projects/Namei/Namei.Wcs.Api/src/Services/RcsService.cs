@@ -1,9 +1,6 @@
-using System.Runtime.Intrinsics.X86;
-using System.Reflection.Metadata;
-using System.Net.Cache;
-using System.Collections.Generic;
 using DotNetCore.CAP;
 using System;
+using System.Collections.Generic;
 using System.Net.Mime;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -224,14 +221,21 @@ namespace Namei.Wcs.Api
         uuid = uuid,
       });
       var content = new StringContent(json, Encoding.UTF8);
+      var scope = _logger.UseScope(
+        klass: "wcs.door",
+        operation: "notify",
+        index: uuid
+      );
+
+      scope.Info("正在通知 RCS 任务完成", json);
 
       try {
         var response = _client.PostAsync("/rcs/services/rest/liftCtlService/notifyExcuteResultInfo", content).GetAwaiter().GetResult();
         var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        scope.Success("已通知 RCS 任务完成", result);
 
-        _cap.Publish(RcsNotifiedEvent.Message, new RcsNotifiedEvent(doorId, action, uuid, result));
       } catch (Exception e) {
-        _cap.Publish(RcsNotifiedFailedEvent.Message, new RcsNotifiedFailedEvent(doorId, action, uuid, e.Message));
+        scope.Danger("通知 RCS 任务完成失败", e.Message);
       }
     }
 

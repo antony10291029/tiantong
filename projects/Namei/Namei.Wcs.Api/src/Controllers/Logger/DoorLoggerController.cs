@@ -15,12 +15,12 @@ namespace Namei.Wcs.Api
       _logger = logger;
     }
 
-    private void Info(string doorId, string operation, string message)
+    private void Info(string doorId, string operation, string message, object data = null)
     {
       var doorType = AutomatedDoor.Enumerate().Contains(doorId) ? DoorType.Automatic : DoorType.Crash;
       var doorTypeText = doorType == DoorType.Automatic ? "自动门" : "防撞门";
 
-      message = $"{doorId}号{doorTypeText}，{message}";
+      message = $"{doorTypeText}: {doorId}, {message}";
 
       var log = Log.From(
         Log.UseInfo(),
@@ -28,42 +28,52 @@ namespace Namei.Wcs.Api
         Log.UseOperation(operation),
         Log.UseIndex(doorId),
         Log.UseMessage(message),
-        Log.UseData("")
+        Log.UseData(data)
       );
 
       _logger.Save(log);
     }
 
-    [CapSubscribe(DoorTaskRequestOpenEvent.Message, Group = Group)]
-    public void RequestedOpen(DoorTaskRequestOpenEvent param)
-      => Info(param.DoorId, "requested.open", $"正在请求开门, 任务 Id: {param.TaskId}");
+    [CapSubscribe(RcsDoorEvent.Request, Group = Group)]
+    public void RequestedOpen(RcsDoorEvent param)
+      => Info(
+        doorId: param.DoorId,
+        operation: "requested.open",
+        message: $"正在请求开门",
+        data: param
+      );
 
-    [CapSubscribe(DoorTaskRequestCloseEvent.Message, Group = Group)]
-    public void RequestedClose(DoorTaskRequestCloseEvent param)
-      => Info(param.DoorId, "request.close", $"正在请求关门, 任务 Id: {param.TaskId}");
+    [CapSubscribe(RcsDoorEvent.Leave, Group = Group)]
+    public void RequestedClose(RcsDoorEvent param)
+      => Info(
+        doorId: param.DoorId,
+        operation: "request.close",
+        message: $"AGC 已通过，正在请求关门",
+        data: param
+      );
 
-    [CapSubscribe(DoorOpenedEvent.Message, Group = Group)]
-    public void Opened(DoorOpenedEvent param)
-      => Info(param.DoorId, "opened", "门已打开");
+    [CapSubscribe(RcsDoorEvent.Retry, Group = Group)]
+    public void Retry(RcsDoorEvent param)
+      => Info(
+        doorId: param.DoorId,
+        operation: "retry",
+        message: "检测到 agc 未离开封锁点，正在重新发送请求...."
+      );
 
-    [CapSubscribe(DoorClosedEvent.Message, Group = Group)]
-    public void Closed(DoorClosedEvent param)
-      => Info(param.DoorId, "closed", "门已关闭");
+    [CapSubscribe(WcsDoorEvent.Opened, Group = Group)]
+    public void Opened(WcsDoorEvent param)
+      => Info(
+        doorId: param.DoorId,
+        operation: "opened",
+        message: "门已打开"
+      );
 
-    [CapSubscribe(DoorTaskHandleEvent.Message, Group = Group)]
-    public void Handle(DoorTaskHandleEvent param)
-      => Info(param.DoorId, "handle", "正在处理开门请求");
-
-    [CapSubscribe(RcsNotifiedEvent.Message, Group = Group)]
-    public void RcsNotified(RcsNotifiedEvent param)
-      => Info(param.DoorId, "rcs.notified", $"已通知 RCS 操作完成，action: {param.Action}, uuid: {param.Uuid}, result: {param.Result}");
-
-    [CapSubscribe(RcsNotifiedFailedEvent.Message, Group = Group)]
-    public void RcsNotifiedFailed(RcsNotifiedFailedEvent param)
-      => Info(param.DoorId, "rcs.notified.failed", $"通知 RCS 操作完成失败, action: {param.Action}, uuid: {param.Uuid}, result: {param.Result}");
-
-    [CapSubscribe(RcsCommandReceivedEvent.Message, Group = Group)]
-    public void RcsCommandReceived(RcsCommandReceivedEvent param)
-      => Info(param.DoorId, "rcs.received", $"收到 RCS 任务, action: {param.Action}, uuid: {param.Uuid}");
+    [CapSubscribe(WcsDoorEvent.Closed, Group = Group)]
+    public void Closed(WcsDoorEvent param)
+      => Info(
+        doorId: param.DoorId,
+        operation: "closed",
+        message: "门已关闭"
+      );
   }
 }

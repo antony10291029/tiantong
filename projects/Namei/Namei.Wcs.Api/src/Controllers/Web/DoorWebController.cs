@@ -9,19 +9,16 @@ namespace Namei.Wcs.Api
   {
     private DomainContext _domain;
 
-    private DoorServiceManager _doors;
-
-    private DoorTaskManager _taskManager;
+    private WcsDoorFactory _doors;
 
     public DoorWebController(
       DomainContext domain,
-      DoorServiceManager doors,
-      DoorTaskManager taskManager,
+      WcsDoorFactory doors,
+      DoorServiceManager taskManager,
       RcsService rcs
     ) {
       _domain = domain;
       _doors = doors;
-      _taskManager = taskManager;
     }
 
     public class ClearLogsParams
@@ -46,16 +43,19 @@ namespace Namei.Wcs.Api
     {
       return AutomatedDoor.Enumerate().Concat(CrashDoor.Enumerate()).Select(id => {
         var door = _doors.Get(id);
-        var task = _taskManager.Tasks[id];
+        var tasks = _domain.RcsDoorTasks
+          .Where(task => task.DoorId == door.DoorId)
+          .Where(task => task.Status == RcsDoorTaskStatus.Requested)
+          .ToArray();
 
         return new {
-          id = door.Id,
+          id = door.DoorId,
           type = door.Type,
           IsError = door.IsError,
           IsOpened = door.IsOpened,
-          IsForceOpened = door.IsForceOpened,
-          RequestingTasks = task.RequestingTasks,
-          EnteringTasksCount = task.EnteringTasks.Count,
+          IsForceOpened = door.HasPassport,
+          RequestingTasks = tasks,
+          EnteringTasksCount = tasks.Length,
         };
       }).ToDictionary(door => door.id, door => door);
     }
@@ -70,7 +70,20 @@ namespace Namei.Wcs.Api
     [HttpPost("/doors/force-opened/set")]
     public object SetForceOpened([FromBody] SetForceOpenedParams param)
     {
-      _doors.Get(param.doorId).IsForceOpened = param.value;
+      var passport = _domain.Set<WcsDoorPassport>()
+        .Find(param.doorId);
+
+      if (passport == null) {
+        _domain.Add(passport = WcsDoorPassport.From(param.doorId, 0));
+      }
+
+      if (param.value) {
+        passport.SetNeverExpired();
+      } else {
+        passport.SetExpired();
+      }
+
+      _domain.SaveChanges();
 
       return NotifyResult.FromVoid().Success("设置完毕");
     }

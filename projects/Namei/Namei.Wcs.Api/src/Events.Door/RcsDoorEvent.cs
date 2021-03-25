@@ -14,6 +14,8 @@ namespace Namei.Wcs.Api
 
     public const string Left = "rcs.door.left";
 
+    public const string Retry = "rcs.door.retry";
+
     public string Uuid { get; init; }
 
     public string DoorId { get; init; }

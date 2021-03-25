@@ -84,7 +84,8 @@ namespace Namei.Wcs.Api
       => log => log.Data = data;
 
     public static Action<Log> UseData(object data)
-      => log => log.Data = System.Text.Json.JsonSerializer.Serialize(data);
+      => log => log.Data = System.Text.Json.JsonSerializer.Serialize(data ?? new {});
+
     public static Action<Log> UseMessage(string message)
       => log => log.Message = message;
   }

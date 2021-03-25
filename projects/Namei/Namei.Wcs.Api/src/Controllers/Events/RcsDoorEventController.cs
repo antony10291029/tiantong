@@ -46,6 +46,7 @@ namespace Namei.Wcs.Api
       );
     }
 
+    [CapSubscribe(RcsDoorEvent.Retry, Group = Group)]
     [CapSubscribe(RcsDoorEvent.Requested, Group = Group)]
     public void HandleDoorTaskRequested(RcsDoorEvent param)
     {

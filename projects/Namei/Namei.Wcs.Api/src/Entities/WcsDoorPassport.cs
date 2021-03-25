@@ -17,6 +17,16 @@ namespace Namei.Wcs.Api
       ExpiredAt = time;
     }
 
+    public void SetExpired()
+    {
+      ExpiredAt = DateTime.MinValue;
+    }
+
+    public void SetNeverExpired()
+    {
+      ExpiredAt = DateTime.MaxValue.AddYears(-1);
+    }
+
     public void AddMilliseconds(int time)
     {
       ExpiredAt = DateTime.Now.AddMilliseconds(time);

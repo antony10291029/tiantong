@@ -1,3 +1,4 @@
+using DotNetCore.CAP;
 using System;
 using System.Linq;
 using Tiantong.Iot.Utils;
@@ -8,6 +9,8 @@ namespace Namei.Wcs.Api
   {
     private Config _config;
 
+    private ICapPublisher _cap;
+
     private DomainContext _domain;
 
     private LifterServiceManager _lifters;
@@ -16,10 +19,12 @@ namespace Namei.Wcs.Api
 
     public WcsDoorFactory(
       Config config,
+      ICapPublisher cap,
       DomainContext domain,
       LifterServiceManager lifters,
       PlcStateServiceProvider plc
     ) {
+      _cap = cap;
       _config = config;
       _domain = domain;
       _lifters = lifters;
@@ -34,7 +39,7 @@ namespace Namei.Wcs.Api
         plc.Configure(_config.PlcUrl, DoorType.GetPlcName(doorId));
         return new WcsAutomaticDoorService(doorId, _domain, plc);
       } else if (DoorType.Map[doorId] == DoorType.Crash) {
-        return new WcsLifterDoorService(doorId, _domain, _lifters);
+        return new WcsLifterDoorService(doorId, _cap, _domain, _lifters);
       } else {
         throw KnownException.Error($"自动门类型不存在: {doorId}");
       }
@@ -92,9 +97,7 @@ namespace Namei.Wcs.Api
 
     public bool HasPassport
     {
-      get => _domain.WcsDoorPassports.Any(
-        door => door.Id == DoorId && door.ExpiredAt >= DateTime.Now
-      );
+      get => _domain.WcsDoorPassports.Find(DoorId)?.ExpiredAt < DateTime.Now;
     }
 
     public void Open()
@@ -109,6 +112,8 @@ namespace Namei.Wcs.Api
 
   public class WcsLifterDoorService: IWcsDoorService
   {
+    private ICapPublisher _cap;
+
     private DomainContext _domain;
 
     private LifterService _lifter;
@@ -119,9 +124,11 @@ namespace Namei.Wcs.Api
 
     public WcsLifterDoorService(
       string doorId,
+      ICapPublisher cap,
       DomainContext domain,
       LifterServiceManager lifters
     ) {
+      _cap = cap;
       DoorId = doorId;
       _domain = domain;
       _lifter = lifters.Get(DoorType.GetLifterId(doorId));
@@ -139,24 +146,30 @@ namespace Namei.Wcs.Api
 
     public bool IsOpened
     {
-      get => _lifter.IsImportAllowed(_floor) || _lifter.IsRequestingPickup(_floor);
+      get => false;
     }
 
     public bool HasPassport
     {
-      get => _domain.WcsDoorPassports.Any(
-        door => door.Id == DoorId && door.ExpiredAt >= DateTime.Now
-      );
+      get => _domain.WcsDoorPassports.Find(DoorId)?.ExpiredAt < DateTime.Now;
     }
 
     public void Open()
     {
-
+      if (_lifter.IsImportAllowed(_floor) || _lifter.IsRequestingPickup(_floor)) {
+        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(DoorId));
+      }
     }
 
     public void Close()
     {
+      var passport = _domain.WcsDoorPassports
+        .FirstOrDefault(door => DoorId == DoorId);
 
+      if (passport != null) {
+        passport.SetExpired();
+        _domain.SaveChanges();
+      }
     }
 
     public void Clear()

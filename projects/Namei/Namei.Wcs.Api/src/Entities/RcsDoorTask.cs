@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,8 @@ namespace Namei.Wcs.Api
 
     public string Status { get; private set; }
 
+    public int RetryCount { get; private set; }
+
     public DateTime RequestedAt { get; private set; }
 
     public DateTime EnteredAt { get; private set; }
@@ -31,6 +34,7 @@ namespace Namei.Wcs.Api
 
     public void Request(string doorId)
     {
+      RetryCount = 0;
       DoorId = doorId;
       Status = RcsDoorTaskStatus.Requested;
       RequestedAt = DateTime.Now;
@@ -50,6 +54,14 @@ namespace Namei.Wcs.Api
       LeftAt = DateTime.Now;
     }
 
+    public void Retry()
+    {
+      RetryCount++;
+      Status = RcsDoorTaskStatus.Requested;
+      EnteredAt = DateTime.MinValue;
+      LeftAt = DateTime.MinValue;
+    }
+
     public static RcsDoorTask From(string uuid, string doorId)
       => new RcsDoorTask {
         Uuid = uuid,
@@ -57,7 +69,8 @@ namespace Namei.Wcs.Api
         Status = RcsDoorTaskStatus.Requested,
         RequestedAt = DateTime.Now,
         EnteredAt = DateTime.MinValue,
-        LeftAt = DateTime.MinValue
+        LeftAt = DateTime.MinValue,
+        RetryCount = 0,
       };
 
     public static RcsDoorTask From(RcsDoorEvent param)

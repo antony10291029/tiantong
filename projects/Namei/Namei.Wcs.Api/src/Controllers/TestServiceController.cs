@@ -92,9 +92,15 @@ namespace Namei.Wcs.Api
           )
         );
       } else if (param.message == "opened") {
-        _cap.PublishAsync(DoorOpenedEvent.Message, new DoorOpenedEvent(param.door_id));
+        _cap.PublishAsync(
+          WcsDoorEvent.Opened,
+          WcsDoorEvent.From(param.door_id)
+        );
       } else if (param.message == "closed") {
-        _cap.PublishAsync(DoorClosedEvent.Message, new DoorClosedEvent(param.door_id));
+        _cap.PublishAsync(
+          WcsDoorEvent.Opened,
+          WcsDoorEvent.From(param.door_id)
+        );
       }
 
       return NotifyResult.FromVoid().Success("指令已发送");

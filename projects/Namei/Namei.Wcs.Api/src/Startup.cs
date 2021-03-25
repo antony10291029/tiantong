@@ -17,7 +17,6 @@ namespace Namei.Wcs.Api
       services.AddHttpContextAccessor();
       services.AddHttpContextAccessor();
       services.AddHttpContextAccessor();
-      services.AddSingleton<DoorTaskManager>();
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
       services.AddSingleton<PlcStateServiceProvider>();
