@@ -97,7 +97,7 @@ namespace Namei.Wcs.Api
 
     public bool HasPassport
     {
-      get => _domain.WcsDoorPassports.Find(DoorId)?.ExpiredAt < DateTime.Now;
+      get => _domain.WcsDoorPassports.Find(DoorId)?.ExpiredAt > DateTime.Now;
     }
 
     public void Open()
@@ -151,7 +151,7 @@ namespace Namei.Wcs.Api
 
     public bool HasPassport
     {
-      get => _domain.WcsDoorPassports.Find(DoorId)?.ExpiredAt < DateTime.Now;
+      get => _domain.WcsDoorPassports.Find(DoorId)?.ExpiredAt > DateTime.Now;
     }
 
     public void Open()
