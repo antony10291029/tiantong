@@ -1,3 +1,4 @@
+using System.Reflection;
 using DotNetCore.CAP;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -32,6 +33,17 @@ namespace Namei.Wcs.Api
       }
     }
 
+    private void UseContext(Action<DomainContext, WcsDoorFactory> callback)
+    {
+      using (var scope = _services.CreateScope())
+      {
+        var domain = scope.ServiceProvider.GetService<DomainContext>();
+        var doors = scope.ServiceProvider.GetService<WcsDoorFactory>();
+
+        callback(domain, doors);
+      }
+    }
+
     private void HandleRcsTasks(DomainContext domain)
     {
       var expiredAt = DateTime.Now.AddSeconds(-10);
@@ -39,18 +51,20 @@ namespace Namei.Wcs.Api
       var tasks = domain.Set<RcsDoorTask>()
         .Where(task => task.Status == RcsDoorTaskStatus.Entered)
         .Where(task => task.EnteredAt < expiredAt)
-        .Where(task => task.RetryCount <= 3)
         .ToArray();
 
       foreach (var task in tasks) {
-        task.Retry();
-        _cap.Publish(
-          RcsDoorEvent.Retry,
-          RcsDoorEvent.From(
-            uuid: task.Uuid,
-            doorId: task.DoorId
-          )
+        var @event = RcsDoorEvent.From(
+          uuid: task.Uuid,
+          doorId: task.DoorId
         );
+
+        if (task.RetryCount < 2) {
+          task.Retry();
+          _cap.Publish(RcsDoorEvent.Retry, @event);
+        } else {
+          _cap.Publish(RcsDoorEvent.Leave, @event);
+        }
       }
 
       if (tasks.Count() > 0) {
@@ -58,9 +72,15 @@ namespace Namei.Wcs.Api
       }
     }
 
+    private void HandleReadyJobs(DomainContext domain, WcsDoorFactory doors)
+    {
+
+    }
+
     protected override Task HandleJob(CancellationToken token)
     {
       UseDomainContext(HandleRcsTasks);
+      UseContext(HandleReadyJobs);
 
       return Task.CompletedTask;
     }

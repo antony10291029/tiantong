@@ -64,7 +64,7 @@ namespace Namei.Wcs.Api
       if (isImportedAllowed || isRequestingPickup) {
         var doorId = CrashDoor.GetDoorIdFromLifter(param.floor, "1");
 
-        _cap.Publish(DoorTaskHandleEvent.Message, new DoorTaskHandleEvent(doorId));
+        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
       }
 
       return new { message };
@@ -119,7 +119,7 @@ namespace Namei.Wcs.Api
       if (param.value == "2" || param.value == "3") {
         var doorId =  CrashDoor.GetDoorIdFromLifter(param.floor, param.lifter_id);
 
-        _cap.Publish(DoorTaskHandleEvent.Message, new DoorTaskHandleEvent(doorId));
+        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
       }
 
       return NotifyResult.FromVoid()

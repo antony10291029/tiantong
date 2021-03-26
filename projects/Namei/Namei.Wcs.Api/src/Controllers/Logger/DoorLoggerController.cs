@@ -57,7 +57,8 @@ namespace Namei.Wcs.Api
       => Info(
         doorId: param.DoorId,
         operation: "retry",
-        message: "检测到 agc 未离开封锁点，正在重新发送请求...."
+        message: "检测到 agc 未离开封锁点，正在重新发送请求....",
+        data: param
       );
 
     [CapSubscribe(WcsDoorEvent.Opened, Group = Group)]
