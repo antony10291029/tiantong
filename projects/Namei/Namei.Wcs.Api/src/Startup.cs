@@ -35,6 +35,7 @@ namespace Namei.Wcs.Api
       services.AddScoped<Logger>();
       services.AddScoped<WcsDoorFactory>();
       services.AddCap(cap => {
+        cap.ConsumerThreadCount = 10;
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();
         cap.FailedRetryCount = 0;
