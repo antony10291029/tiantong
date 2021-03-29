@@ -5,7 +5,7 @@
     style="padding: 1.25rem; overflow: auto"
     v-slot="{ isLoading }"
   >
-    <template v-if="!isLoading">
+    <template class="box" v-if="!isLoading">
       <div class="columns is-multiline" style="flex: 1 1 0px">
         <div
           class="column is-narrow-fullhd is-half-desktop is-12-tablet"

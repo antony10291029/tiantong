@@ -2,8 +2,7 @@
   <a
     v-if="hasPalletCode"
     :class="`tag is-${color}`"
-    style="cursor: pinter"
-    @click="$emit('barcode-click')"
+    @click.right.prevent="$emit('barcode-click')"
   >
     {{code}}
   </a>

@@ -2,7 +2,6 @@ import { injectable } from "@midos/core";
 import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
 import App from "./views/App/index.vue";
-import Devices from "./views/Devices/index.vue";
 import DevicesDashboard from "./views/Devices.Dashboard/index.vue";
 import DevicesLifterTasks from "./views/Devices.Lifter.Tasks/index.vue";
 import System from "./views/System/index.vue";
@@ -44,22 +43,14 @@ export class NameiWcs extends VueApp {
         component: Logs
       },
       {
-        path: "devices",
-        name: "NameiWcsDevices",
-        redirect: { name: "NameiWcsDevicesDashboard" },
-        component: Devices,
-        children: [
-          {
-            path: "dashboard",
-            name: "NameiWcsDevicesDashboard",
-            component: DevicesDashboard,
-          },
-          {
-            path: "lifter-tasks",
-            name: "NameiWcsDevicesLifterTasks",
-            component: DevicesLifterTasks,
-          },
-        ]
+        path: "dashboard",
+        name: "NameiWcsDevicesDashboard",
+        component: DevicesDashboard,
+      },
+      {
+        path: "lifter-tasks",
+        name: "NameiWcsDevicesLifterTasks",
+        component: DevicesLifterTasks,
       },
       {
         path: "system",

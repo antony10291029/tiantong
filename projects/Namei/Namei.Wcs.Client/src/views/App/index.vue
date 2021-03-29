@@ -32,7 +32,7 @@ export default defineComponent({
   setup() {
     return {
       menus: [
-        { text: "设备管理", route: "NameiWcsDevices", icon: "dashboard" },
+        { text: "设备管理", route: "NameiWcsDevicesDashboard", icon: "dashboard" },
         { text: "提升机日志", route: "NameiWcsLifters", icon: "lifter" },
         { text: "自动门日志", route: "NameiWcsDoors", icon: "lifter" },
         { text: "地图管理", route: "NameiWcsRcs", icon: "map-unbind" },
