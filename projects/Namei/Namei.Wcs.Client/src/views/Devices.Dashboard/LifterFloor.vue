@@ -160,8 +160,6 @@ export default defineComponent({
     }
 
     function handleBarcodeClick() {
-      console.log(props.floor);
-      console.log(props.floorState.destination);
       if (props.floorState.destination === props.floor.toString()) {
         handleExported();
       } else {

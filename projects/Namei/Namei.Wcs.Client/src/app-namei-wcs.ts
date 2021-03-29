@@ -5,9 +5,7 @@ import App from "./views/App/index.vue";
 import DevicesDashboard from "./views/Devices.Dashboard/index.vue";
 import DevicesLifterTasks from "./views/Devices.Lifter.Tasks/index.vue";
 import System from "./views/System/index.vue";
-import Lifters from "./views/Lifters/index.vue";
 import LifterLogs from "./views/Lifters.Logs/index.vue";
-import LifterCommands from "./views/Lifters.Commands/index.vue";
 import Doors from "./views/Doors/index.vue";
 import DoorsStates from "./views/Doors.Logs/index.vue";
 import DoorCommands from "./views/Doors.Commands/index.vue";
@@ -34,7 +32,7 @@ export class NameiWcs extends VueApp {
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
     name: "NameiWcs",
-    redirect: { name: "NameiWcsDevices" },
+    redirect: { name: "NameiWcsDevicesDashboard" },
     component: App,
     children: [
       {
@@ -58,22 +56,9 @@ export class NameiWcs extends VueApp {
         component: System
       },
       {
-        path: "lifters",
-        name: "NameiWcsLifters",
-        redirect: { name: "NameiWcsLifterLogs" },
-        component: Lifters,
-        children: [
-          {
-            path: "logs",
-            name: "NameiWcsLifterLogs",
-            component: LifterLogs
-          },
-          {
-            path: "commands",
-            name: "NameiWcsLifterCommands",
-            component: LifterCommands
-          }
-        ]
+        path: "lifter-logs",
+        name: "NameiWcsLifterLogs",
+        component: LifterLogs
       },
       {
         path: "doors",
