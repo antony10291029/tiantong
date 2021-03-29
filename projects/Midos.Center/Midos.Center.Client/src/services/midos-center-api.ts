@@ -13,13 +13,13 @@ export class MidosCenterApi extends Service {
   }
 
   public async getApps(klass = "default") {
-    return await this.http.dataArray("/midos/apps/search", {
+    return await this.http.getDataArray("/midos/apps/search", {
       klass
     });
   }
 
   public async getConfigs() {
-    return await this.http.dataArray("/midos/configs");
+    return await this.http.getDataArray("/midos/configs");
   }
 }
 

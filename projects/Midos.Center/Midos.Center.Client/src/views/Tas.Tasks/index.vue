@@ -12,7 +12,7 @@
 
           <router-link
             class="panel-block"
-            v-for="id in types.result" :key="id"
+            v-for="id in types.keys" :key="id"
             style="padding: 0.25rem 0.75rem"
             :to="{
               name: 'TasOrders',
@@ -43,6 +43,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
+import { DataMap } from "@midos/core";
 import { useMidosCenterHttp } from "../../services/midos-center-http";
 
 export default defineComponent({
@@ -51,15 +52,14 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const http = useMidosCenterHttp();
-    const types = ref<any>({
-      result: [] as string[],
-      entities: {} as { [ key: string ]: any }
-    });
+    const types = ref(new DataMap());
     const typeId = computed(() => +route.params.typeId);
     const taskType = computed(() => types.value.entities[typeId.value]);
 
     async function getTypes() {
-      const result = await http.post("/midos/tas/types/search");
+      const result = await http.getDataMap<any>("/midos/tas/types/search");
+
+      console.log(result.entities);
 
       types.value = result;
     }

@@ -1,3 +1,4 @@
+using Midos.Domain;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace Midos.Center.Entities
   public class TaskData: Dictionary<string, string> {}
 
   [Table("task_types")]
-  public class TaskType
+  public class TaskType: IEntity
   {
     [Key]
     [Column("id")]

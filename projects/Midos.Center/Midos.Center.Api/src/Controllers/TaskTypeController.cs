@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Midos.Center.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using Midos.Domain;
 
 namespace Midos.Center.Controllers
 {
@@ -118,20 +119,12 @@ namespace Midos.Center.Controllers
     }
 
     [HttpPost("/midos/tas/types/search")]
-    public object All()
+    public IDataMap<TaskType> All()
     {
-      var data = _domain.TaskTypes
+      return _domain.Set<TaskType>()
         .Include(type => type.Subtypes)
         .OrderByDescending(type => type.Id)
-        .ToArray();
-
-      return new {
-        result = data.Select(item => item.Id),
-        entities = data.ToDictionary(
-          item => item.Id.ToString(),
-          item => item
-        )
-      };
+        .ToDataMap();
     }
   }
 }
