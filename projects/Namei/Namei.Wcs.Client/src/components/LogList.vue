@@ -21,27 +21,31 @@
         <th style="text-align: left">数据</th>
       </thead>
       <tbody>
-        <tr v-for="log in logs.data" :key="log.id">
+        <DataSetIterator
+          tag="tr"
+          :dataSet="logs"
+          v-slot="{ entity }"
+        >
           <td class="is-centered">
-            <span :class="`icon has-text-${log.level}`">
-              <i :class="`icon-midos icon-midos-${log.level}`"
+            <span :class="`icon has-text-${entity.level}`">
+              <i :class="`icon-midos icon-midos-${entity.level}`"
               style="font-size: 1.25rem"></i>
             </span>
           </td>
-          <td>{{log.createdAt.split('T').join(' ')}}</td>
-          <td>{{log.class}}</td>
-          <td>{{log.operation}}</td>
-          <td>{{log.index}}</td>
-          <td class="has-text-left">{{log.message}}</td>
-          <td style="text-align: left">{{log.data}}</td>
-        </tr>
+          <td>{{entity.createdAt.split('T').join(' ')}}</td>
+          <td>{{entity.class}}</td>
+          <td>{{entity.operation}}</td>
+          <td>{{entity.index}}</td>
+          <td class="has-text-left">{{entity.message}}</td>
+          <td style="text-align: left">{{entity.data}}</td>
+        </DataSetIterator>
       </tbody>
     </table>
 
     <div style="height: 1.5rem"></div>
 
     <Pagination
-      v-bind="logs.meta"
+      v-bind="logs"
       @change="getDataSource"
     />
   </div>
@@ -49,6 +53,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from "vue";
+import { Pagination } from "@midos/core";
 import { useInterval } from "@midos/vue-ui";
 import { useWcsHttp } from "../services/wcs-http";
 import SearchField from "./SearchField.vue";
@@ -72,14 +77,7 @@ export default defineComponent({
 
     const query = ref("");
     const isPending = ref(false);
-    const logs = ref({
-      data: [] as any[],
-      meta: {
-        page: 1,
-        pageSize: 15,
-        total: 1
-      }
-    });
+    const logs = ref(new Pagination<any>());
 
     async function getDataSource (page = 1) {
       const result = await http.post("/logs/search", {
@@ -101,7 +99,7 @@ export default defineComponent({
       }
     }
 
-    useInterval(getDataSource, computed(() => logs.value.meta.page === 1));
+    useInterval(getDataSource, computed(() => logs.value.page === 1));
     getDataSource();
 
     return {

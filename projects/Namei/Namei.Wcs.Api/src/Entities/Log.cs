@@ -1,16 +1,16 @@
-using System.Reflection.Emit;
-using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Midos.Domain;
 
 namespace Namei.Wcs.Api
 {
   [Table("logs")]
-  public class Log
+  public class Log: IEntity
   {
     [Key]
     [Column("id")]
-    public int Id { get; private set; }
+    public long Id { get; private set; }
 
     // todo rename
     [Column("type")]

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Midos.Domain;
 
 namespace Namei.Wcs.Api
 {
@@ -27,7 +28,7 @@ namespace Namei.Wcs.Api
 
     [HttpPost]
     [Route("/logs/search")]
-    public object Search([FromBody] SearchParams param)
+    public IPagination<Log> Search([FromBody] SearchParams param)
     {
       var queryBuilder = _domain.Logs.AsQueryable();
 
@@ -46,7 +47,7 @@ namespace Namei.Wcs.Api
       return queryBuilder
         .OrderByDescending(log => log.CreatedAt)
         .ThenByDescending(log => log.Id)
-        .Paginate(param.Page, param.PageSize);
+        .PaginateNext(param.Page, param.PageSize);
     }
   }
 }

@@ -1,6 +1,7 @@
 import { injectable } from "@midos/core";
 import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
+import plugin from "./plugin";
 import RouteTab from "./components/RouteTab.vue";
 import App from "./views/App/index.vue";
 import DevicesDashboard from "./views/Devices.Dashboard/index.vue";
@@ -18,6 +19,10 @@ import Logs from "./views/Logs/index.vue";
 export class NameiWcs extends VueApp {
   public constructor(private ui: VueUI) {
     super();
+  }
+
+  public configure() {
+    this.ui.app.use(plugin);
   }
 
   public key = "namei-wcs";
