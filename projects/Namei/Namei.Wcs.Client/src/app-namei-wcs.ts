@@ -1,15 +1,14 @@
 import { injectable } from "@midos/core";
 import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
+import RouteTab from "./components/RouteTab.vue";
 import App from "./views/App/index.vue";
 import DevicesDashboard from "./views/Devices.Dashboard/index.vue";
 import DevicesLifterTasks from "./views/Devices.Lifter.Tasks/index.vue";
 import System from "./views/System/index.vue";
 import LifterLogs from "./views/Lifters.Logs/index.vue";
-import Doors from "./views/Doors/index.vue";
 import DoorsStates from "./views/Doors.Logs/index.vue";
 import DoorCommands from "./views/Doors.Commands/index.vue";
-import Rcs from "./views/Rcs/index.vue";
 import RcsUnbind from "./views/Rcs.Unbind/index.vue";
 import RcsTasks from "./views/Rcs.Tasks/index.vue";
 import RcsNotifyTask from "./views/Rcs.NotifyTask/index.vue";
@@ -27,7 +26,7 @@ export class NameiWcs extends VueApp {
 
   public icon = "icon-namei-wcs icon-namei-wcs-logo";
 
-  public iconfont = "font_1966999_e6niplqg6ug";
+  public iconfont = "font_1966999_p96j2xvf5bl";
 
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
@@ -56,15 +55,34 @@ export class NameiWcs extends VueApp {
         component: System
       },
       {
-        path: "lifter-logs",
-        name: "NameiWcsLifterLogs",
-        component: LifterLogs
+        path: "lifters",
+        name: "NameiWcsLifters",
+        redirect: { name: "NameiWcsLifterLogs" },
+        component: RouteTab,
+        props: () => ({
+          tabs: [
+            { text: "运行日志", route: "NameiWcsLifterLogs" },
+          ]
+        }),
+        children: [
+          {
+            path: "logs",
+            name: "NameiWcsLifterLogs",
+            component: LifterLogs
+          },
+        ]
       },
       {
         path: "doors",
         name: "NameiWcsDoors",
         redirect: { name: "NameiWcsDoorsLogs" },
-        component: Doors,
+        component: RouteTab,
+        props: () => ({
+          tabs: [
+            { text: "运行日志", route: "NameiWcsDoorsLogs" },
+            { text: "控制指令", route: "NameiWcsDoorsCommands" },
+          ]
+        }),
         children: [
           {
             path: "logs",
@@ -82,7 +100,14 @@ export class NameiWcs extends VueApp {
         path: "rcs",
         name: "NameiWcsRcs",
         redirect: { name: "NameiWcsNotifyTask" },
-        component: Rcs,
+        props: () => ({
+          tabs: [
+            { text: "任务通知", route: "NameiWcsNotifyTask" },
+            { text: "地图绑定", route: "NameiWcsRcsUnbind" },
+            { text: "任务调度", route: "NameiWcsRcsTasks" },
+          ],
+        }),
+        component: RouteTab,
         children: [
           {
             path: "rcs-unbind",

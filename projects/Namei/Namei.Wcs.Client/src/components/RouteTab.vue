@@ -21,7 +21,7 @@
       </ul>
     </div>
 
-    <router-view />
+    <router-view class="is-flex-auto" />
   </div>
 </template>
 
@@ -29,16 +29,10 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Rcs",
+  name: "Lifters",
 
-  setup() {
-    return {
-      tabs: [
-        { text: "任务通知", route: "NameiWcsNotifyTask" },
-        { text: "货架管理", route: "NameiWcsRcsUnbind" },
-        { text: "任务管理", route: "NameiWcsRcsTasks" },
-      ]
-    };
-  }
+  props: {
+    tabs: Array
+  },
 });
 </script>
