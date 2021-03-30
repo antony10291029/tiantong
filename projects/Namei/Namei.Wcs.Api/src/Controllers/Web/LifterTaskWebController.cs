@@ -41,7 +41,7 @@ namespace Namei.Wcs.Api
 
       return query
         .OrderByDescending(task => task.Status == LifterTaskStatus.Exported)
-        .OrderByDescending(task => task.Status == LifterTaskStatus.Imported)
+        .ThenByDescending(task => task.Status == LifterTaskStatus.Imported)
         .ThenByDescending(task => task.ImportedAt)
         .Paginate(param);
     }
