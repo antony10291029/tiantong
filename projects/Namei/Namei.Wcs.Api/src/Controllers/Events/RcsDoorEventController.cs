@@ -86,7 +86,7 @@ namespace Namei.Wcs.Api
         _cap.Publish(
           RcsDoorEvent.Enter,
           RcsDoorEvent.From(
-            uuid: task.Uuid,
+            uuid: task.Id,
             doorId: task.DoorId
           )
         );

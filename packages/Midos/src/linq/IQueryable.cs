@@ -21,6 +21,10 @@ namespace System.Linq
       );
     }
 
+    public static IPagination<TEntity, TKey> Paginate<TEntity, TKey>(this IQueryable<TEntity> query, IQueryParams param)
+      where TEntity: IEntity<TKey>
+      => Paginate<TEntity, TKey>(query, param.Page, param.PageSize);
+
     public static IPagination<TEntity> PaginateNext<TEntity>(this IQueryable<TEntity> query, int page, int pageSize)
       where TEntity: IEntity<long>
     {

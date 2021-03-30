@@ -9,7 +9,8 @@ import DevicesLifterTasks from "./views/Devices.Lifter.Tasks/index.vue";
 import System from "./views/System/index.vue";
 import LifterLogs from "./views/Lifters.Logs/index.vue";
 import LifterTasks from "./views/Lifters.Tasks/index.vue";
-import DoorsStates from "./views/Doors.Logs/index.vue";
+import DoorLogs from "./views/Doors.Logs/index.vue";
+import DoorTasks from "./views/Doors.Tasks/index.vue";
 import DoorCommands from "./views/Doors.Commands/index.vue";
 import RcsUnbind from "./views/Rcs.Unbind/index.vue";
 import RcsTasks from "./views/Rcs.Tasks/index.vue";
@@ -87,19 +88,25 @@ export class NameiWcs extends VueApp {
       {
         path: "doors",
         name: "NameiWcsDoors",
-        redirect: { name: "NameiWcsDoorsLogs" },
+        redirect: { name: "NameiWcsDoorTasks" },
         component: RouteTab,
         props: () => ({
           tabs: [
+            { text: "任务列表", route: "NameiWcsDoorTasks" },
             { text: "运行日志", route: "NameiWcsDoorsLogs" },
             { text: "控制指令", route: "NameiWcsDoorsCommands" },
           ]
         }),
         children: [
           {
+            path: "tasks",
+            name: "NameiWcsDoorTasks",
+            component: DoorTasks
+          },
+          {
             path: "logs",
             name: "NameiWcsDoorsLogs",
-            component: DoorsStates
+            component: DoorLogs
           },
           {
             path: "commands",

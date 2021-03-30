@@ -55,7 +55,7 @@ namespace Namei.Wcs.Api
 
       foreach (var task in tasks) {
         var @event = RcsDoorEvent.From(
-          uuid: task.Uuid,
+          uuid: task.Id,
           doorId: task.DoorId
         );
 

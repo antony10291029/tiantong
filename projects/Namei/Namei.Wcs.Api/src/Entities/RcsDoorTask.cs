@@ -1,6 +1,7 @@
-using System.Net.Http.Headers;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Midos.Domain;
 
 namespace Namei.Wcs.Api
 {
@@ -13,10 +14,11 @@ namespace Namei.Wcs.Api
     public const string Left = "left";
   }
 
-  public class RcsDoorTask
+  public class RcsDoorTask: IEntity<string>
   {
     [Key]
-    public string Uuid { get; private set; }
+    [Column("Uuid")]
+    public string Id { get; private set; }
 
     public string DoorId { get; private set; }
 
@@ -64,7 +66,7 @@ namespace Namei.Wcs.Api
 
     public static RcsDoorTask From(string uuid, string doorId)
       => new RcsDoorTask {
-        Uuid = uuid,
+        Id = uuid,
         DoorId = doorId,
         Status = RcsDoorTaskStatus.Requested,
         RequestedAt = DateTime.Now,
