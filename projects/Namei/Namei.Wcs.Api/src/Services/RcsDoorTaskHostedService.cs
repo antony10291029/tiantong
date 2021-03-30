@@ -15,8 +15,6 @@ namespace Namei.Wcs.Api
 
     private IServiceProvider _services;
 
-    private Action<DomainContext> _useDomainContext;
-
     public DoorTaskHostedService(ICapPublisher cap, IServiceProvider services)
     {
       _cap = cap;
