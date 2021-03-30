@@ -7,3 +7,4 @@ publish/
 release/
 .ionide/
 log.txt
+*.db-journal
