@@ -34,7 +34,7 @@ export default defineComponent({
       menus: [
         { text: "设备监控", route: "NameiWcsDevicesDashboard", icon: "monitor" },
         { text: "提升机", route: "NameiWcsLifters", icon: "lifter" },
-        { text: "自动门日志", route: "NameiWcsDoors", icon: "door" },
+        { text: "自动门", route: "NameiWcsDoors", icon: "door" },
         { text: "地图管理", route: "NameiWcsRcs", icon: "map-unbind" },
         { text: "系统日志", route: "NameiWcsLogs", icon: "log" },
         { text: "系统功能", route: "NameiWcsSystem", icon: "settings" },

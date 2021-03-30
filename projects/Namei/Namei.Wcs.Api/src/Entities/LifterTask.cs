@@ -1,15 +1,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Midos.Domain;
 
 namespace Namei.Wcs.Api
 {
   [Table("lifter_tasks")]
-  public class LifterTask
+  public class LifterTask: IEntity
   {
     [Key]
     [Column("id")]
-    public int Id { get; private set; }
+    public long Id { get; private set; }
 
     [Column("lifter_id")]
     public string LifterId { get; private set; }

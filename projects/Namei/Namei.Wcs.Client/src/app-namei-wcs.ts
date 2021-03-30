@@ -8,6 +8,7 @@ import DevicesDashboard from "./views/Devices.Dashboard/index.vue";
 import DevicesLifterTasks from "./views/Devices.Lifter.Tasks/index.vue";
 import System from "./views/System/index.vue";
 import LifterLogs from "./views/Lifters.Logs/index.vue";
+import LifterTasks from "./views/Lifters.Tasks/index.vue";
 import DoorsStates from "./views/Doors.Logs/index.vue";
 import DoorCommands from "./views/Doors.Commands/index.vue";
 import RcsUnbind from "./views/Rcs.Unbind/index.vue";
@@ -62,10 +63,11 @@ export class NameiWcs extends VueApp {
       {
         path: "lifters",
         name: "NameiWcsLifters",
-        redirect: { name: "NameiWcsLifterLogs" },
+        redirect: { name: "NameiWcsLifterTasks" },
         component: RouteTab,
         props: () => ({
           tabs: [
+            { text: "任务列表", route: "NameiWcsLifterTasks" },
             { text: "运行日志", route: "NameiWcsLifterLogs" },
           ]
         }),
@@ -75,6 +77,11 @@ export class NameiWcs extends VueApp {
             name: "NameiWcsLifterLogs",
             component: LifterLogs
           },
+          {
+            path: "tasks",
+            name: "NameiWcsLifterTasks",
+            component: LifterTasks
+          }
         ]
       },
       {
