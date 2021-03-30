@@ -24,13 +24,13 @@ export default defineComponent({
     },
     code: {
       type: String,
-      required: true
+      required: false
     }
   },
 
   computed: {
     hasPalletCode (): boolean {
-      return !!parseInt(this.code) && (this.code as any).length === 6;
+      return !!parseInt(this.code ?? "0") && (this.code as any).length === 6;
     }
   }
 });

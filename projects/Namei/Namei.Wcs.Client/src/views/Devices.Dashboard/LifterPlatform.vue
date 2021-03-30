@@ -32,7 +32,6 @@ export default defineComponent({
   props: {
     code: {
       type: String,
-      required: true
     },
     text: {
       type: String,
@@ -42,7 +41,7 @@ export default defineComponent({
 
   setup(props) {
     const hasPalletCode = computed(() => {
-      return parseInt(props.code, 10) && (props.code as any).length === 6;
+      return parseInt(props.code ?? "0") && (props.code as any).length === 6;
     });
 
     return {
