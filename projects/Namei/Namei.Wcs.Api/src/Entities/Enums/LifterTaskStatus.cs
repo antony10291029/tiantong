@@ -6,5 +6,7 @@ namespace Namei.Wcs.Api
     public const string Exported = "exported";
 
     public const string Taken = "taken";
+
+    public const string Closed = "closed";
   }
 }

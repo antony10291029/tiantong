@@ -27,6 +27,28 @@ namespace Namei.Wcs.Api
       _wms = wms;
     }
 
+    public class CloseParams
+    {
+      public long Id { get; set; }
+    }
+
+    [HttpPost("/lifter-tasks/close")]
+    public INotifyResult<IMessageObject> UpdateStatus([FromBody] CloseParams param)
+    {
+      var task = _domain.Set<LifterTask>().Find(param.Id);
+      var result = NotifyResult.FromVoid();
+
+      if (task == null) {
+        result.Danger("任务 Id 不存在");
+      } else {
+        task.Close();
+        _domain.SaveChanges();
+        result.Success("任务已关闭");
+      }
+
+      return result;
+    }
+
     [HttpPost("/lifter-tasks/search")]
     public IPagination<LifterTask> SearchTasks([FromBody] QueryParams param)
     {

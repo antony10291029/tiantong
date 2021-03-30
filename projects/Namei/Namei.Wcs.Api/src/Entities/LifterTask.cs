@@ -70,6 +70,11 @@ namespace Namei.Wcs.Api
       return this;
     }
 
+    public void Close()
+    {
+      Status = LifterTaskStatus.Closed;
+    }
+
     public static LifterTask FromImportedEvent(LifterTaskImported param)
     {
       return new LifterTask {

@@ -13,6 +13,7 @@
           <th>放货完成</th>
           <th>请求取货</th>
           <th>取货完成</th>
+          <th></th>
         </thead>
         <tbody>
           <DataMapIterator
@@ -28,6 +29,11 @@
             <td>{{entity.importedAt.split('T').join(' ')}}</td>
             <td>{{entity.exportedAt.split('T').join(' ')}}</td>
             <td>{{entity.takenAt.split('T').join(' ')}}</td>
+            <td>
+              <a @click="handleClose(entity.id)">
+                关闭
+              </a>
+            </td>
           </DataMapIterator>
         </tbody>
       </table>
@@ -41,6 +47,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useConfirm } from "@midos/vue-ui";
 import { usePagination } from "../../hooks/use-pagination";
 import { useQuery } from "../../hooks/use-query";
 import { useWcsHttp } from "../../services/wcs-http";
@@ -56,6 +63,7 @@ export default defineComponent({
   },
 
   setup() {
+    const confirm = useConfirm();
     const http = useWcsHttp();
     const tasks = usePagination();
     const params = useQuery();
@@ -78,11 +86,23 @@ export default defineComponent({
       return getTasks();
     }
 
+    function handleClose(id: number) {
+      confirm.open({
+        title: "关闭任务",
+        content: "关闭后将改变任务状态",
+        handler: async () => {
+          await http.post("/lifter-tasks/close", { id });
+          await getTasks();
+        }
+      });
+    }
+
     return {
       tasks,
       getTasks,
       changePage,
-      handleSearch
+      handleSearch,
+      handleClose,
     };
   }
 });

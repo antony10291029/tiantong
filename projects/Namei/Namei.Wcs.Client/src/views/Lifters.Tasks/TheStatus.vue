@@ -27,6 +27,8 @@ export default defineComponent({
           return { text: "取货中", type: "primary" };
         case "taken":
           return { text: "已取货", type: "success" };
+        case "closed":
+          return { text: "已关闭", type: "warning" };
         default:
           return { text: `未知状态 (${props.value})`, type: "danger" };
       }
