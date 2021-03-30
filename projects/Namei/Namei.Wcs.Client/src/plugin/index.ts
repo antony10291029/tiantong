@@ -1,8 +1,8 @@
 import { Plugin } from "vue";
-import DataSetIterator from "./DataSetIterator.vue";
+import DataMapIterator from "./DataMapIterator.vue";
 
 export default {
   install(app) {
-    app.component("DataSetIterator", DataSetIterator);
+    app.component("DataMapIterator", DataMapIterator);
   }
 } as Plugin;

@@ -21,9 +21,9 @@
         <th style="text-align: left">数据</th>
       </thead>
       <tbody>
-        <DataSetIterator
+        <DataMapIterator
           tag="tr"
-          :dataSet="logs"
+          :dataMap="logs"
           v-slot="{ entity }"
         >
           <td class="is-centered">
@@ -38,7 +38,7 @@
           <td>{{entity.index}}</td>
           <td class="has-text-left">{{entity.message}}</td>
           <td style="text-align: left">{{entity.data}}</td>
-        </DataSetIterator>
+        </DataMapIterator>
       </tbody>
     </table>
 
