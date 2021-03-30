@@ -30,10 +30,7 @@ namespace Namei.Wcs.Api
     [HttpPost("/lifter-tasks/search")]
     public IPagination<LifterTask> SearchTasks([FromBody] QueryParams param)
     {
-      var query =  _domain.Set<LifterTask>()
-        .OrderByDescending(task => task.ImportedAt)
-        .ThenByDescending(task => task.Id)
-        .AsQueryable();
+      var query =  _domain.Set<LifterTask>().AsQueryable();
 
       if (param.Query != null && param.Query != "") {
         query = query.Where(task =>
@@ -42,7 +39,11 @@ namespace Namei.Wcs.Api
         );
       }
 
-      return query.Paginate(param);
+      return query
+        .OrderByDescending(task => task.Status == LifterTaskStatus.Exported)
+        .OrderByDescending(task => task.Status == LifterTaskStatus.Imported)
+        .ThenByDescending(task => task.ImportedAt)
+        .Paginate(param);
     }
 
     public class LifterNotify
