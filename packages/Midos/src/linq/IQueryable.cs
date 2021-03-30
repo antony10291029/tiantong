@@ -36,6 +36,10 @@ namespace System.Linq
       );
     }
 
+    public static IPagination<TEntity> Paginate<TEntity>(this IQueryable<TEntity> query, IQueryParams param)
+      where TEntity: IEntity<long>
+      => PaginateNext(query, param.Page, param.PageSize);
+
     public static IDataMap<TEntity, TKey> ToDataMap<TEntity, TKey>(this IQueryable<TEntity> query)
       where TEntity: IEntity<TKey>
     {
