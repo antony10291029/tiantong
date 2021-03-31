@@ -28,6 +28,7 @@ namespace Namei.Wcs.Api
       return query
         .OrderByDescending(task => task.Status == RcsDoorTaskStatus.Requested)
         .ThenByDescending(task => task.Status == RcsDoorTaskStatus.Entered)
+        .ThenByDescending(task => task.RequestedAt)
         .ThenByDescending(task => task.Id)
         .Paginate<RcsDoorTask, string>(param);
     }
