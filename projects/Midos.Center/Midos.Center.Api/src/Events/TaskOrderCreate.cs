@@ -2,15 +2,13 @@ using Midos.Center.Entities;
 
 namespace Midos.Center.Events
 {
-  public class TaskOrderCreate
+  public struct TaskOrderCreate
   {
     public const string Message = "tasks.create";
 
     public string Key { get; init; }
 
     public TaskData Data { get; init; }
-
-    private TaskOrderCreate() {}
 
     public static TaskOrderCreate From(string key, TaskData data)
     {

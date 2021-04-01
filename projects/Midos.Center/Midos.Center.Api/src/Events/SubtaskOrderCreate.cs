@@ -2,7 +2,7 @@ using Midos.Center.Entities;
 
 namespace Midos.Center.Events
 {
-  public class SubtaskOrderCreate
+  public struct SubtaskOrderCreate
   {
     public const string Message = "subtasks.create";
 
@@ -11,8 +11,6 @@ namespace Midos.Center.Events
     public string Subkey { get; init; }
 
     public TaskData Data { get; init; }
-
-    private SubtaskOrderCreate() {}
 
     public static SubtaskOrderCreate From(
       long orderId,

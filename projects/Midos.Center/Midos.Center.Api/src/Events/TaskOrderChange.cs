@@ -2,7 +2,7 @@ using Midos.Center.Entities;
 
 namespace Midos.Center.Events
 {
-  public class TaskOrderChange
+  public struct TaskOrderChange
   {
     public const string Update = "$tasks.update";
 
@@ -18,8 +18,6 @@ namespace Midos.Center.Events
 
     public static string Message(string message)
       => $"$tasks.{message}";
-
-    private TaskOrderChange() {}
 
     public static TaskOrderChange From(long orderId, TaskData data)
       => new TaskOrderChange {

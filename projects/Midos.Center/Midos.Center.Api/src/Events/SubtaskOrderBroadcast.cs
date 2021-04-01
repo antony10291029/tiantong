@@ -2,7 +2,7 @@ using Midos.Center.Entities;
 
 namespace Midos.Center.Events
 {
-  public class SubtaskOrderBroadcast
+  public struct SubtaskOrderBroadcast
   {
     private const string _message = "tasks";
 
@@ -13,8 +13,6 @@ namespace Midos.Center.Events
     public object Data { get; init; }
 
     public object Subdata { get; init; }
-
-    private SubtaskOrderBroadcast() {}
 
     public static string Message(string status, string key, string subkey)
       => $"{_message}.{status}.{key}.{subkey}";

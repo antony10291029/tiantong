@@ -2,7 +2,7 @@ using Midos.Center.Entities;
 
 namespace Midos.Center.Events
 {
-  public class TaskOrderChanged
+  public struct TaskOrderChanged
   {
     public const string Created = "$tasks.created";
 
@@ -17,8 +17,6 @@ namespace Midos.Center.Events
     public long OrderId { get; init; }
 
     public object Data { get; init; }
-
-    private TaskOrderChanged() {}
 
     public static TaskOrderChanged From(TaskType type, TaskOrder order)
       => new TaskOrderChanged {

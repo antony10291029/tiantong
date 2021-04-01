@@ -1,14 +1,12 @@
 namespace Midos.Center.Events
 {
-  public class TaskOrderBroadcast
+  public struct TaskOrderBroadcast
   {
     private const string _message = "tasks";
 
     public long OrderId { get; init; }
 
     public object Data { get; init; }
-
-    private TaskOrderBroadcast() {}
 
     public static string Message(string status, string key)
       => $"{_message}.{status}.{key}";
