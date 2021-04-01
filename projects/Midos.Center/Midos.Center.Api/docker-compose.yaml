@@ -2,7 +2,7 @@ version: '3'
 
 services:
   rabbit:
-    image: rabbitmq:management-alpine
+    image: rabbitmq:3-management-alpine
     environment:
       RABBITMQ_DEFAULT_VHOST: "midos.cap"
       RABBITMQ_DEFAULT_USER: "midos"
@@ -10,3 +10,6 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    volumes:
+      - ./rabbitmq-data/:/var/lib/rabbitmq
+      - ./rabbitmq-log/:/var/log/rabbitmq
