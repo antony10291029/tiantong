@@ -27,7 +27,7 @@ namespace Midos.Center.Utils
 
     public void Change(string method, long orderId, Record data)
       => _cap.Publish(
-        TaskOrderChange.Message(method),
+        method,
         TaskOrderChange.From(orderId, data)
       );
 

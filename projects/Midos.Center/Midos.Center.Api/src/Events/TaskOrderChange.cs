@@ -16,9 +16,6 @@ namespace Midos.Center.Events
 
     public Record Data { get; init; }
 
-    public static string Message(string message)
-      => $"$tasks.{message}";
-
     public static TaskOrderChange From(long orderId, Record data)
       => new TaskOrderChange {
         OrderId = orderId,

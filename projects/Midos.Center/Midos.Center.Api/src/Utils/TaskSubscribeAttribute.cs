@@ -18,7 +18,7 @@ namespace Midos.Center.Utils
   {
     public TaskCreatedAttribute(string key): base(
       Utils.TaskChanged(
-        status: TaskOrderChanged.Created,
+        status: "created",
         key: key
       )
     ) {}
@@ -28,7 +28,7 @@ namespace Midos.Center.Utils
   {
     public TaskStartedAttribute(string key): base(
       Utils.TaskChanged(
-        status: TaskOrderChanged.Started,
+        status: "started",
         key: key
       )
     ) {}
@@ -38,7 +38,7 @@ namespace Midos.Center.Utils
   {
     public TaskFinishedAttribute(string key): base(
       Utils.TaskChanged(
-        status: TaskOrderChanged.Finished,
+        status: "finished",
         key: key
       )
     ) {}
@@ -48,7 +48,7 @@ namespace Midos.Center.Utils
   {
     public TaskCancelledAttribute(string key): base(
       Utils.TaskChanged(
-        status: TaskOrderChanged.Finished,
+        status: "cancelled",
         key: key)
     ) {}
   }

@@ -1,4 +1,5 @@
 using Midos.Center.Entities;
+using Midos.Domain;
 
 namespace Midos.Center.Events
 {
@@ -16,7 +17,7 @@ namespace Midos.Center.Events
 
     public long OrderId { get; init; }
 
-    public object Data { get; init; }
+    public Record Data { get; init; }
 
     public static TaskOrderChanged From(TaskType type, TaskOrder order)
       => new TaskOrderChanged {

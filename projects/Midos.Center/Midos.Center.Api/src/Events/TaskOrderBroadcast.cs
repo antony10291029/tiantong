@@ -1,3 +1,5 @@
+using Midos.Domain;
+
 namespace Midos.Center.Events
 {
   public struct TaskOrderBroadcast
@@ -6,7 +8,7 @@ namespace Midos.Center.Events
 
     public long OrderId { get; init; }
 
-    public object Data { get; init; }
+    public Record Data { get; init; }
 
     public static string Message(string status, string key)
       => $"{_message}.{status}.{key}";
@@ -23,7 +25,7 @@ namespace Midos.Center.Events
     public static string Cancelled(string key)
       => Message("cancelled", key);
 
-    public static TaskOrderBroadcast From(long orderId, object data)
+    public static TaskOrderBroadcast From(long orderId, Record data)
       => new TaskOrderBroadcast {
         OrderId = orderId,
         Data = data
