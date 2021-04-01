@@ -1,4 +1,4 @@
-using Midos.Center.Entities;
+using Midos.Domain;
 
 namespace Midos.Center.Events
 {
@@ -14,12 +14,12 @@ namespace Midos.Center.Events
 
     public long OrderId { get; init; }
 
-    public TaskData Data { get; init; }
+    public Record Data { get; init; }
 
     public static string Message(string message)
       => $"$tasks.{message}";
 
-    public static TaskOrderChange From(long orderId, TaskData data)
+    public static TaskOrderChange From(long orderId, Record data)
       => new TaskOrderChange {
         OrderId = orderId,
         Data = data

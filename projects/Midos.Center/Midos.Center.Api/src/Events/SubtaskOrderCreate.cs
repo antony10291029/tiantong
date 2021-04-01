@@ -1,4 +1,4 @@
-using Midos.Center.Entities;
+using Midos.Domain;
 
 namespace Midos.Center.Events
 {
@@ -10,14 +10,14 @@ namespace Midos.Center.Events
 
     public string Subkey { get; init; }
 
-    public TaskData Data { get; init; }
+    public Record Data { get; init; }
 
     public string Code { get; init; }
 
     public static SubtaskOrderCreate From(
       long orderId,
       string subkey,
-      TaskData data,
+      Record data,
       string code = null
     ) {
       return new SubtaskOrderCreate {

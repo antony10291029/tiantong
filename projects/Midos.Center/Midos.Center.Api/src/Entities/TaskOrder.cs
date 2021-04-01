@@ -31,7 +31,7 @@ namespace Midos.Center.Entities
     public TaskType Type { get; private set; }
 
     [NotMapped]
-    public TaskData Data
+    public Record Data
     {
       get => TaskType.FromData(_data);
       set => _data = TaskType.ToData(value);
@@ -52,24 +52,24 @@ namespace Midos.Center.Entities
     public bool IsClosed()
       => IsFinished() || IsCancelled();
 
-    public void UseData(TaskData data)
+    public void UseData(Record data)
       => _data = TaskType.MergeData(_data, data);
 
-    public void Start(TaskData data)
+    public void Start(Record data)
     {
       UseData(data);
       StartedAt = DateTime.Now;
       Status = TaskOrderStatus.Started;
     }
 
-    public void Cancel(TaskData data)
+    public void Cancel(Record data)
     {
       UseData(data);
       ClosedAt = DateTime.Now;
       Status = TaskOrderStatus.Cancelled;
     }
 
-    public void Finish(TaskData data)
+    public void Finish(Record data)
     {
       UseData(data);
       ClosedAt = DateTime.Now;

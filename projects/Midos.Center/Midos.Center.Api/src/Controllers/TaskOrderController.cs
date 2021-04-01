@@ -56,7 +56,7 @@ namespace Midos.Center.Controllers
 
       public long OrderId { get; set; }
 
-      public TaskData Data { get; set; }
+      public Record Data { get; set; }
     }
 
     [HttpPost("/midos/tasks/change")]
@@ -140,7 +140,7 @@ namespace Midos.Center.Controllers
     {
       _cap.Publish(
         name: TaskOrderChange.Start,
-        contentObj: TaskOrderChange.From(param.OrderId, new TaskData())
+        contentObj: TaskOrderChange.From(param.OrderId, new Record())
       );
     }
 

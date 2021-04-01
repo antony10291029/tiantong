@@ -9,8 +9,6 @@ using TaskTypeParams = Midos.Center.Controllers.TaskTypeController.TaskTypeParam
 
 namespace Midos.Center.Entities
 {
-  public class TaskData: Dictionary<string, string> {}
-
   public class TaskType: IEntity
   {
     [Key]
@@ -32,7 +30,7 @@ namespace Midos.Center.Entities
     public List<SubtaskType> Subtypes { get; private set; }
 
     [NotMapped]
-    public TaskData Data
+    public Record Data
     {
       get => FromData(_data);
       private set => _data = ToData(value);
@@ -76,7 +74,7 @@ namespace Midos.Center.Entities
       string name,
       bool hasCode,
       string comment,
-      TaskData data,
+      Record data,
       List<SubtaskType> subtypes = null
     ) => new TaskType {
       Key = key,
@@ -104,13 +102,13 @@ namespace Midos.Center.Entities
 
     //
 
-    public static string ToData(TaskData data)
+    public static string ToData(Record data)
       => data == null ? "{}": JsonSerializer.Serialize(data);
 
-    public static TaskData FromData(string data)
-      => JsonSerializer.Deserialize<TaskData>(data ?? "{}");
+    public static Record FromData(string data)
+      => JsonSerializer.Deserialize<Record>(data ?? "{}");
 
-    public static string MergeData(string data, TaskData newData)
+    public static string MergeData(string data, Record newData)
     {
       var tmp = JsonSerializer.Deserialize<Dictionary<string, string>>(data);
 

@@ -26,7 +26,7 @@ namespace Midos.Center.Controllers
 
       public bool HasCode { get; set; }
 
-      public TaskData Data { get; set; }
+      public Record Data { get; set; }
 
       public string Comment { get; set; }
 
