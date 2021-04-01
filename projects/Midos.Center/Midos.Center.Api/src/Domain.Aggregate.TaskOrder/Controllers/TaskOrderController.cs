@@ -26,7 +26,10 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      CreateTaskOrder(param);
+      HandleTaskOrderCreate(TaskOrderCreate.From(
+        key: param.Key,
+        data: param.Data
+      ));
 
       return result.Success("任务已创建");
     }
