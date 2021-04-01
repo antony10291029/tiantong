@@ -23,6 +23,9 @@ namespace Midos.Center
       services.AddDbContext<DomainContext>();
       services.AddScoped<MigratorProvider>();
       services.AddCap(cap => {
+        cap.ConsumerThreadCount = 5;
+        cap.FailedRetryCount = 0;
+
         cap.UsePostgreSql(p => {
           p.ConnectionString = _conf.GetValue<string>("postgres");
           p.Schema = _conf.GetValue<string>("cap.postgres.schema");
@@ -38,7 +41,6 @@ namespace Midos.Center
         });
 
         cap.UseDashboard();
-        cap.FailedRetryCount = 0;
       });
       services.AddScoped<TaskService>();
     }
