@@ -1,8 +1,8 @@
-create table if not exists subtask_types (
-  "id" bigserial not null,
-  "key" varchar(255) not null,
-  "index" int not null,
-  "type_id" bigint not null,
-  "subtype_id" bigint not null,
-  unique("key", "type_id")
+create table if not exists "SubtaskTypes" (
+  "Id" bigserial not null primary key,
+  "Key" varchar(255) not null,
+  "Index" int not null,
+  "TypeId" bigint not null,
+  "SubtypeId" bigint not null,
+  unique("Key", "TypeId")
 );

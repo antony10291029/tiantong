@@ -1,7 +1,7 @@
-create table if not exists task_types (
-  "id" bigserial not null primary key,
-  "key" varchar(255) not null unique,
-  "name" varchar(255) not null,
-  "data" text not null,
-  "comment" varchar(255) not null
+create table if not exists "TaskTypes" (
+  "Id" bigserial not null primary key,
+  "Key" varchar(255) not null unique,
+  "Name" varchar(255) not null,
+  "Data" text not null,
+  "Comment" varchar(255) not null
 );

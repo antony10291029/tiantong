@@ -11,7 +11,7 @@ namespace Midos.Center.Database
 
     public void Down(DbContext db)
     {
-      db.ExecuteSql("drop table if exists subtask_types");
+      db.ExecuteSql("drop table if exists \"SubtaskTypes\"");
     }
   }
 }

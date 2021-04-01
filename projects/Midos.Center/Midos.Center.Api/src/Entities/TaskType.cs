@@ -11,24 +11,19 @@ namespace Midos.Center.Entities
 {
   public class TaskData: Dictionary<string, string> {}
 
-  [Table("task_types")]
   public class TaskType: IEntity
   {
     [Key]
-    [Column("id")]
     public long Id { get; private set; }
 
-    [Column("key")]
     public string Key { get; private set; }
 
-    [Column("name")]
     public string Name { get; private set; }
 
     [JsonIgnore]
-    [Column("data")]
+    [Column("Data")]
     public string _data { get; private set; }
 
-    [Column("comment")]
     public string Comment { get; private set; }
 
     [ForeignKey("TypeId")]

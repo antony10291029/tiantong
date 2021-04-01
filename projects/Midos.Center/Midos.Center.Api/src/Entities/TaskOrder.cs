@@ -2,33 +2,27 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Midos.Center.Events;
+using System.Text.Json.Serialization;
 
 namespace Midos.Center.Entities
 {
-
-  [Table("task_orders")]
   public class TaskOrder
   {
     [Key]
-    [Column("id")]
     public long Id { get; private set; }
 
-    [Column("type_id")]
     public long TypeId { get; private set; }
 
-    [Column("status")]
     public string Status { get; private set; }
 
-    [Column("data")]
+    [JsonIgnore]
+    [Column("Data")]
     public string _data { get; private set; }
 
-    [Column("created_at")]
     public DateTime CreatedAt { get; private set; }
 
-    [Column("started_at")]
     public DateTime StartedAt { get; private set; }
 
-    [Column("closed_at")]
     public DateTime ClosedAt { get; private set; }
 
     public TaskType Type { get; private set; }

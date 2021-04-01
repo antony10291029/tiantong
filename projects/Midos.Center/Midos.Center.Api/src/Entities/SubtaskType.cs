@@ -4,24 +4,18 @@ using SubtaskTypeParams = Midos.Center.Controllers.TaskTypeController.SubtaskTyp
 
 namespace Midos.Center.Entities
 {
-  [Table("subtask_types")]
   public class SubtaskType
   {
     [Key]
-    [Column("id")]
     public long Id { get; private set; }
 
-    [Column("key")]
     public string Key { get; private set; }
 
-    [Column("index")]
     public int Index { get; private set; }
 
-    [Column("type_id")]
     public long TypeId { get; private set; }
 
     [ForeignKey("Subtype")]
-    [Column("subtype_id")]
     public long SubtypeId { get; private set; }
 
     public TaskType Subtype { get; private set; }
