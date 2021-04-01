@@ -12,15 +12,19 @@ namespace Midos.Center.Events
 
     public TaskData Data { get; init; }
 
+    public string Code { get; init; }
+
     public static SubtaskOrderCreate From(
       long orderId,
       string subkey,
-      TaskData data
+      TaskData data,
+      string code = null
     ) {
       return new SubtaskOrderCreate {
         OrderId = orderId,
         Subkey = subkey,
         Data = data,
+        Code = code,
       };
     }
   }

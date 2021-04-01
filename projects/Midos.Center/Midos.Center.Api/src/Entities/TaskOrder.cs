@@ -14,6 +14,8 @@ namespace Midos.Center.Entities
 
     public long TypeId { get; private set; }
 
+    public string Code { get; private set; }
+
     public string Status { get; private set; }
 
     [JsonIgnore]
@@ -78,6 +80,7 @@ namespace Midos.Center.Entities
     {
       return new TaskOrder {
         TypeId = type.Id,
+        Code = param.Code,
         Status = TaskOrderStatus.Created,
         _data = TaskType.MergeData(type._data, param.Data),
         CreatedAt = DateTime.Now,
@@ -90,6 +93,7 @@ namespace Midos.Center.Entities
     {
       return new TaskOrder {
         TypeId = type.Id,
+        Code = param.Code,
         Status = TaskOrderStatus.Created,
         _data = TaskType.MergeData(type._data, param.Data),
         CreatedAt = DateTime.Now,

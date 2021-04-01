@@ -20,6 +20,8 @@ namespace Midos.Center.Entities
 
     public string Name { get; private set; }
 
+    public bool HasCode { get; private set; }
+
     [JsonIgnore]
     [Column("Data")]
     public string _data { get; private set; }
@@ -44,6 +46,7 @@ namespace Midos.Center.Entities
       Name = param.Name;
       Data = param.Data;
       Comment = param.Comment;
+      HasCode = param.HasCode;
 
       var ids = param.Subtypes.Select(subtype => subtype.Id);
       var removedSubtypes = Subtypes
@@ -71,12 +74,14 @@ namespace Midos.Center.Entities
     public static TaskType From(
       string key,
       string name,
+      bool hasCode,
       string comment,
       TaskData data,
       List<SubtaskType> subtypes = null
     ) => new TaskType {
       Key = key,
       Name = name,
+      HasCode = hasCode,
       Comment = comment,
       Subtypes = subtypes,
       Data = data,
@@ -87,6 +92,7 @@ namespace Midos.Center.Entities
         key: param.Key,
         name: param.Name,
         data: param.Data,
+        hasCode: param.HasCode,
         comment: param.Comment,
         subtypes: param.Subtypes.Select(type => SubtaskType.From(
           key: type.Key,

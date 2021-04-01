@@ -10,10 +10,16 @@ namespace Midos.Center.Events
 
     public TaskData Data { get; init; }
 
-    public static TaskOrderCreate From(string key, TaskData data)
-    {
+    public string Code { get; init; }
+
+    public static TaskOrderCreate From(
+      string key,
+      TaskData data,
+      string code = null
+    ) {
       return new TaskOrderCreate {
         Key = key,
+        Code = code,
         Data = data,
       };
     }

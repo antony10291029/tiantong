@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Midos.Center.Entities;
+using Midos.Domain;
 using System.Collections.Generic;
 using System.Linq;
-using Midos.Domain;
 
 namespace Midos.Center.Controllers
 {
@@ -23,6 +23,8 @@ namespace Midos.Center.Controllers
       public string Key { get; set; }
 
       public string Name { get; set; }
+
+      public bool HasCode { get; set; }
 
       public TaskData Data { get; set; }
 

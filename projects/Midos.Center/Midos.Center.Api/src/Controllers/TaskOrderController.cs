@@ -30,45 +30,22 @@ namespace Midos.Center.Controllers
       _tasks = tasks;
     }
 
-    public class TaskOrderParams
-    {
-      public string Key { get; set; }
-
-      public TaskData Data { get; set; }
-    }
-
     [HttpPost("/midos/tasks/create")]
-    public INotifyResult<IMessageObject> CreateTaskOrder([FromBody] TaskOrderParams param)
+    public INotifyResult<IMessageObject> CreateTaskOrder([FromBody] TaskOrderCreate param)
     {
       var result = NotifyResult.FromVoid();
 
-      _tasks.Create(
-        key: param.Key,
-        data: param.Data
-      );
+      HandleTaskOrderCreate(param);
 
       return result.Success("任务已创建");
     }
 
-    public class SubTaskOrderParams
-    {
-      public long OrderId { get; set; }
-
-      public string Subkey { get; set; }
-
-      public TaskData Data { get; set; }
-    }
-
     [HttpPost("/midos/subtasks/create")]
-    public INotifyResult<IMessageObject> CreateSubtaskOrder([FromBody] SubTaskOrderParams param)
+    public INotifyResult<IMessageObject> CreateSubtaskOrder([FromBody] SubtaskOrderCreate param)
     {
       var result = NotifyResult.FromVoid();
 
-      _tasks.Create(
-        orderId: param.OrderId,
-        subkey: param.Subkey,
-        data: param.Data
-      );
+      HandleSubtaskOrderCreate(param);
 
       return result.Success("子任务已创建");
     }
