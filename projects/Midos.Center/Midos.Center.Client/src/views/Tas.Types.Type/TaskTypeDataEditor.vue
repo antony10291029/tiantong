@@ -2,7 +2,7 @@
   <div>
     <table class="table is-bordered is-fullwidth">
       <thead>
-        <th style="width: 200px">Key</th>
+        <th style="width: 120px">Key</th>
         <th>Value</th>
         <th style="width: 1px">
           <a @click="addItem">
@@ -14,7 +14,10 @@
       </thead>
       <tbody v-if="list.length">
         <tr v-for="(item, index) in list" :key="index">
-          <EditableCell v-model:value="item.key" />
+          <EditableCell
+            :readonly="type === 'order'"
+            v-model:value="item.key"
+          />
           <EditableCell v-model:value="item.value" />
           <td>
           <a @click="removeItem(index)">
@@ -44,6 +47,11 @@ export default defineComponent({
   },
 
   props: {
+    type: {
+      type: String,
+      default: "type"
+    },
+
     value: {
       type: Object,
       required: true

@@ -40,7 +40,6 @@
       </div>
 
       <router-view
-        v-if="typeId"
         class="column"
         :key="typeId"
         :typeId="typeId"
@@ -66,7 +65,7 @@ export default defineComponent({
     const router = useRouter();
     const http = useMidosCenterHttp();
     const types = ref(new DataMap());
-    const typeId = computed(() => +route.params.typeId);
+    const typeId = computed(() => +(route.params.typeId ?? 0));
     const taskType = computed(() => types.value.entities[typeId.value]);
 
     async function getTypes() {

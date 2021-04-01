@@ -21,33 +21,24 @@
           </p>
         </div>
         <div class="modal-card-body">
-          <div
-            class="is-flex is-vcentered"
-            style="padding: 1.25rem 0"
-          >
-            <label class="label" style="width: 100px">
-              任务名
-            </label>
-
-            <p class="is-flex-auto">
-              <Input :value="taskType.name" readonly/>
-            </p>
+          <div class="field">
+            <label class="label">任务名</label>
+            <div class="control">
+              <Input :value="taskType.key" readonly />
+            </div>
           </div>
 
-          <div
-            class="is-flex is-vcentered"
-            style="padding: 1.25rem 0"
-            v-for="(value, key) in params.data" :key="key"
-          >
-            <label class="label" style="width: 100px">
-              {{key}}
-            </label>
-
-            <p class="is-flex-auto">
-              <Input v-model:value="params.data[key]" />
-            </p>
+          <div class="field">
+            <label class="label">数据</label>
+            <div class="control">
+              <TaskTypeDataEditor
+                type="order"
+                v-model:value="params.data"
+              />
+            </div>
           </div>
         </div>
+
         <div class="modal-card-foot">
           <AsyncButton
             class="button is-info is-small"
@@ -65,9 +56,14 @@
 import { defineComponent, ref } from "vue";
 import { cloneDeep } from "lodash";
 import { useMidosCenterHttp } from "../../services/midos-center-http";
+import TaskTypeDataEditor from "../Tas.Types.Type/TaskTypeDataEditor.vue";
 
 export default defineComponent({
   name: "Create",
+
+  components: {
+    TaskTypeDataEditor
+  },
 
   props: {
     taskType: {
