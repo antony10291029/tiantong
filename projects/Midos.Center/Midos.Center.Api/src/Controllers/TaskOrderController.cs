@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Midos.Center.Entities;
 using Midos.Center.Events;
+using Midos.Domain;
 using System;
 using System.Linq;
 using Midos.Center.Utils;
@@ -95,21 +96,15 @@ namespace Midos.Center.Controllers
       return result.Success("订单状态已修改");
     }
 
-    public class SearchParams
+    public class SearchParams: QueryParams
     {
-      public int Page { get; set; }
-
-      public int PageSize { get; set; }
-
       public long typeId { get; set; }
-
-      public string Query { get; set; }
     }
 
     [HttpPost("/midos/tasks/orders/search")]
-    public Pagination<TaskOrder> Search([FromBody] SearchParams param)
+    public IPagination<TaskOrder> Search([FromBody] SearchParams param)
     {
-      var query = _domain.TaskOrders.AsQueryable();
+      var query = _domain.Set<TaskOrder>().AsQueryable();
 
       if (param.typeId != 0) {
         query = query.Where(order => order.TypeId == param.typeId);
@@ -122,7 +117,7 @@ namespace Midos.Center.Controllers
       return query
         .OrderByDescending(order => order.CreatedAt)
         .ThenByDescending(order => order.Id)
-        .Paginate(param.Page, param.PageSize);
+        .Paginate(param);
     }
 
     //

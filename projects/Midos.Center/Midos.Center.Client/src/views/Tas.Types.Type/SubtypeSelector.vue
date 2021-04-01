@@ -40,24 +40,26 @@
               </th>
             </thead>
             <tbody>
-              <tr
-                v-for="type in types" :key="type.id"
-                @click="currentType = type"
+              <DataMapIterator
+                :dataMap="taskTypes"
+                v-slot="{ entity: type }"
               >
-                <td>{{type.key}}</td>
-                <td>{{type.name}}</td>
-                <td
-                  class="is-centered is-vcentered"
-                  style="padding: 0"
-                >
-                  <span
-                    v-if="currentType.id === type.id"
-                    class="icon has-text-success"
+                <tr @click="currentType = type">
+                  <td>{{type.key}}</td>
+                  <td>{{type.name}}</td>
+                  <td
+                    class="is-centered is-vcentered"
+                    style="padding: 0"
                   >
-                    <i class="icon-midos-center icon-midos-center-tick" />
-                  </span>
-                </td>
-              </tr>
+                    <span
+                      v-if="currentType.id === type.id"
+                      class="icon has-text-success"
+                    >
+                      <i class="icon-midos-center icon-midos-center-tick" />
+                    </span>
+                  </td>
+                </tr>
+              </DataMapIterator>
             </tbody>
           </table>
         </div>
@@ -101,11 +103,6 @@ export default defineComponent({
     const text = computed(() => (
       props.value === 0 ? undefined : (props.taskTypes.entities[props.value] as any).name)
     );
-    const types = computed(() =>
-      props.taskTypes.result
-        .map((id: number) => props.taskTypes.entities[id])
-        .filter((type: any) => type.id !== props.typeId)
-    );
 
     function handleSubmit() {
       isShow.value = false;
@@ -115,7 +112,6 @@ export default defineComponent({
     return {
       isShow,
       text,
-      types,
       currentType,
       handleSubmit
     };

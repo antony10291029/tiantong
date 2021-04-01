@@ -1,12 +1,13 @@
+using Midos.Center.Events;
+using Midos.Domain;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Midos.Center.Events;
 using System.Text.Json.Serialization;
 
 namespace Midos.Center.Entities
 {
-  public class TaskOrder
+  public class TaskOrder: IEntity
   {
     [Key]
     public long Id { get; private set; }

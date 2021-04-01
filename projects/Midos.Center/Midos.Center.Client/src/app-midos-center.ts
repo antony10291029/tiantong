@@ -2,6 +2,7 @@ import { injectable } from "@midos/core";
 import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
 import { components } from "./components";
+import plugin from "./plugins";
 import App from "./views/App/index.vue";
 import Apps from "./views/Midos.Apps/index.vue";
 import AppsApp from "./views/Midos.Apps.App/index.vue";
@@ -32,6 +33,7 @@ export class MidosCenter extends VueApp {
 
   public configure(): void {
     this.ui.app.use(components);
+    this.ui.app.use(plugin);
   }
 
   public route: RouteRecordRaw = {

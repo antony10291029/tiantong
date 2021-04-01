@@ -31,6 +31,7 @@
 
       <router-view
         class="column"
+        v-if="typeId"
         :key="typeId"
         :typeId="typeId"
         :taskType="taskType"
@@ -58,8 +59,6 @@ export default defineComponent({
 
     async function getTypes() {
       const result = await http.getDataMap<any>("/midos/tas/types/search");
-
-      console.log(result.entities);
 
       types.value = result;
     }

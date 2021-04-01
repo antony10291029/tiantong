@@ -25,8 +25,12 @@
           <th>结束日期</th>
           <th></th>
         </thead>
-        <tbody v-if="orders.data.length">
-          <tr v-for="order in orders.data" :key="order.id">
+        <tbody v-if="orders.keys.length">
+          <DataMapIterator
+            tag="tr"
+            :dataMap="orders"
+            v-slot="{ entity: order }"
+          >
             <td>
               {{order.id}}
             </td>
@@ -50,7 +54,7 @@
                 详情
               </router-link>
             </td>
-          </tr>
+          </DataMapIterator>
         </tbody>
         <tbody v-else>
           <td class="is-centered" colspan="8">
@@ -61,7 +65,7 @@
 
       <div style="height: 1.25rem"></div>
 
-      <Pagination v-bind="orders.meta" @change="getOrders" />
+      <Pagination v-bind="orders" @change="getOrders" />
     </div>
 
     <router-view
@@ -75,7 +79,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
+import { Pagination } from "@midos/core";
 import { useMidosCenterHttp } from "../../services/midos-center-http";
+import { useQuery } from "../../hooks/use-query";
 import CreateTask from "./Create.vue";
 
 export default defineComponent({
@@ -95,23 +101,14 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const http = useMidosCenterHttp();
-    const orders = ref({
-      meta: {} as any,
-      data: [] as any[]
-    });
-    const params = ref({
-      page: 1,
-      pageSize: 15,
-      query: "",
-    });
+    const orders = ref(new Pagination());
+    const params = useQuery();
     const orderId = computed(() => +route.params.orderId);
-    const taskOrder = computed(() => orders.value.data.find(
-      order => order.id === orderId.value
-    ));
+    const taskOrder = computed(() => orders.value.entities[orderId.value]);
 
     async function getOrders(page = 1) {
       params.value.page = page;
-      orders.value = await http.paginateArray("/midos/tasks/orders/search", {
+      orders.value = await http.paginate("/midos/tasks/orders/search", {
         ...params.value,
         typeId: props.taskType.id,
       });

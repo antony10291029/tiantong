@@ -16,26 +16,31 @@
             </router-link>
           </p>
 
-          <router-link
-            class="panel-block"
-            v-for="id in types.result" :key="id"
-            style="padding: 0.25rem 0.75rem"
-            :to="{
-              name: 'MidosCenterTasTypesType',
-              params: { typeId: id }
-            }"
+          <DataMapIterator
+            :dataMap="types"
+            v-slot="{ entity: taskType }"
           >
-            <div
-              class="is-flex is-flex-column"
-              style="padding: 0.25rem"
+            <router-link
+              class="panel-block"
+              style="padding: 0.25rem 0.75rem"
+              :to="{
+                name: 'MidosCenterTasTypesType',
+                params: { typeId: taskType.id }
+              }"
             >
-              <span>{{types.entities[id].name}}</span>
-            </div>
-          </router-link>
+              <div
+                class="is-flex is-flex-column"
+                style="padding: 0.25rem"
+              >
+                <span>{{taskType.name}}</span>
+              </div>
+            </router-link>
+          </DataMapIterator>
         </nav>
       </div>
 
       <router-view
+        v-if="typeId"
         class="column"
         :key="typeId"
         :typeId="typeId"
@@ -48,6 +53,7 @@
 </template>
 
 <script lang="ts">
+import { DataMap } from "@midos/core";
 import { defineComponent, ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useMidosCenterHttp } from "../../services/midos-center-http";
@@ -59,17 +65,12 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const http = useMidosCenterHttp();
-    const types = ref<any>({
-      result: [] as string[],
-      entities: {} as { [ key: string ]: any }
-    });
+    const types = ref(new DataMap());
     const typeId = computed(() => +route.params.typeId);
     const taskType = computed(() => types.value.entities[typeId.value]);
 
     async function getTypes() {
-      const result = await http.post("/midos/tas/types/search");
-
-      types.value = result;
+      types.value = await http.post("/midos/tas/types/search");
     }
 
     async function refresh(id: number) {
