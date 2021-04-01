@@ -24,9 +24,11 @@ module.exports = {
     "function-paren-newline": ["off"],
     "implicit-arrow-linebreak": ["off"],
     "import/prefer-default-export": ["off"],
+    "max-len": ["off"],
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-multi-assign": ["off"],
+    "no-nested-ternary": ["off"],
     "no-param-reassign": "off",
     "no-plusplus": ["off"],
     "no-return-assign": ["off"],
@@ -40,5 +42,16 @@ module.exports = {
     "quotes": ["error", "double"],
     "space-before-function-paren": ["off"],
     "vue/no-mutating-props": ["off"],
-  }
+  },
+  overrides: [
+    {
+      files: [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)",
+      ],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };
