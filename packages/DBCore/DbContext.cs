@@ -80,40 +80,5 @@ namespace DBCore
     {
       Database.ExecuteSqlRaw(sql);
     }
-
-    public bool HasTransaction()
-    {
-      return _transaction != null;
-    }
-
-    public void BeginTransaction()
-    {
-      if (_transaction != null) {
-        throw new Exception("transaction has been started");
-      }
-
-      _transaction = Database.BeginTransaction();
-    }
-
-    public void Commit()
-    {
-      if (_transaction == null) {
-        throw new Exception("transaction is not started");
-      }
-
-      _transaction.Commit();
-      _transaction = null;
-    }
-
-    public void Rollback()
-    {
-      if (_transaction == null) {
-        throw new Exception("transaction is not started");
-      }
-
-      _transaction.Rollback();
-      _transaction = null;
-    }
-
   }
 }
