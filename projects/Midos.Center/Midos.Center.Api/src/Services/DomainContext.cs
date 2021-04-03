@@ -4,23 +4,23 @@ using Midos.Center.Entities;
 
 namespace Midos.Center
 {
-  public class DomainContext: PostgresContext
+  public class ServiceContext: PostgresContext
   {
     private AppConfig _config;
 
-    public DbSet<App> Apps { get; set; }
+    private DbSet<App> Apps { get; set; }
 
-    public DbSet<Config> Configs { get; set; }
+    private DbSet<Config> Configs { get; set; }
 
-    public DbSet<TaskType> TaskTypes { get; set; }
+    private DbSet<TaskType> TaskTypes { get; set; }
 
-    public DbSet<SubtaskType> SubtaskTypes { get; set; }
+    private DbSet<SubtaskType> SubtaskTypes { get; set; }
 
-    public DbSet<TaskOrder> TaskOrders { get; set; }
+    private DbSet<TaskOrder> TaskOrders { get; set; }
 
-    public DbSet<SubtaskOrder> SubtaskOrders { get; set; }
+    private DbSet<SubtaskOrder> SubtaskOrders { get; set; }
 
-    public DomainContext(AppConfig config)
+    public ServiceContext(AppConfig config)
     {
       _config = config;
     }

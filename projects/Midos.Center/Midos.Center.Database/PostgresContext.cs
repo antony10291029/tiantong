@@ -1,6 +1,8 @@
+using Midos.Domain;
+
 namespace Midos.Center.Database
 {
-  public class PostgresContext: DBCore.DbContext
+  public class PostgresContext: DomainContext
   {
     public PostgresContext()
     {

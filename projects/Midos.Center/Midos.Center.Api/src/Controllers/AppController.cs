@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Midos.Center.Entities;
 using System.Linq;
+using Midos.Domain;
 
 namespace Midos.Center.Controllers
 {
@@ -40,7 +41,7 @@ namespace Midos.Center.Controllers
         url: param.Url
       );
 
-      _domain.Apps.Add(app);
+      _domain.Set<App>().Add(app);
       _domain.SaveChanges();
 
       return NotifyResult
@@ -63,7 +64,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/apps/update")]
     public INotifyResult<IMessageObject> Update([FromBody] UpdateParams param)
     {
-      var app = _domain.Apps.Find(param.Id);
+      var app = _domain.Set<App>().Find(param.Id);
 
       app.Update(
         key: param.Key,
@@ -85,7 +86,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/apps/delete")]
     public INotifyResult<IMessageObject> Update([FromBody] DeleteParams param)
     {
-      var app = _domain.Apps.Find(param.Id);
+      var app = _domain.Set<App>().Find(param.Id);
 
       _domain.Remove(app);
       _domain.SaveChanges();
@@ -103,7 +104,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/apps/search")]
     public IResult<App[]> All([FromBody] SearchParams param)
     {
-      return Result.From(_domain.Apps
+      return Result.From(_domain.Set<App>()
         .Where(app => app.Class == param.Class)
         .ToArray()
       );

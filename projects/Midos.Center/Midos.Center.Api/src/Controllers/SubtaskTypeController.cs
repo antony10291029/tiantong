@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Midos.Center.Entities;
+using Microsoft.EntityFrameworkCore;
+using Midos.Domain;
 using System.Linq;
 
 namespace Midos.Center.Controllers
@@ -22,7 +23,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/tas/subtypes/delete")]
     public INotifyResult<IMessageObject> Delete([FromBody] DeleteParams param)
     {
-      var subtask = _domain.SubtaskTypes.Find(param.Id);
+      var subtask = _domain.Find<SubtaskType>(param.Id);
 
       _domain.Remove(subtask);
       _domain.SaveChanges();
@@ -40,7 +41,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/tas/subtypes/search")]
     public SubtaskType[] Search([FromBody] SearchParams param)
     {
-      var subtypes = _domain.SubtaskTypes
+      var subtypes = _domain.Set<SubtaskType>()
         .Include(st => st.Subtype)
         .Where(st => st.TypeId == param.TaskTypeId)
         .ToArray();

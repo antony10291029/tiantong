@@ -70,7 +70,7 @@ namespace Midos.Center.Controllers
         return result.Danger("子任务类型编号不可重复");
       }
 
-      if (_domain.TaskTypes.Any(tp => tp.Key == type.Key)) {
+      if (_domain.Set<TaskType>().Any(tp => tp.Key == type.Key)) {
         return result.Danger("任务类型编号已存在");
       }
 
@@ -86,7 +86,7 @@ namespace Midos.Center.Controllers
     public INotifyResult<IMessageObject> Update([FromBody] TaskTypeParams param)
     {
       var result = NotifyResult.FromVoid();
-      var type = _domain.TaskTypes
+      var type = _domain.Set<TaskType>()
         .Include(type => type.Subtypes)
         .First(type => type.Id == param.Id);
 
@@ -110,7 +110,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/tas/types/delete")]
     public INotifyResult<IMessageObject> Delete([FromBody] DeleteParams param)
     {
-      var type = _domain.TaskTypes
+      var type = _domain.Set<TaskType>()
         .Include(type => type.Subtypes)
         .First(type => type.Id == param.Id);
 

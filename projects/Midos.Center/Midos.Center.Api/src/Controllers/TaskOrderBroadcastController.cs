@@ -1,7 +1,9 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Midos.Center.Entities;
 using Midos.Center.Events;
+using Midos.Domain;
 using System;
 using System.Linq;
 
@@ -68,7 +70,7 @@ namespace Midos.Center.Controllers
       object subdata,
       Func<string, string, string> useStatus
     ) {
-      var suborder = _domain.SubtaskOrders
+      var suborder = _domain.Set<SubtaskOrder>()
         .Include(so => so.Order)
           .ThenInclude(so => so.Type)
         .Include(so => so.Subtype)

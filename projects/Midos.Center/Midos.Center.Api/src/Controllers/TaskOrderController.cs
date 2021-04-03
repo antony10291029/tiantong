@@ -102,7 +102,7 @@ namespace Midos.Center.Controllers
     [CapSubscribe(TaskOrderCreate.Message, Group = Group)]
     public void HandleTaskOrderCreate(TaskOrderCreate param)
     {
-      var type = _domain.TaskTypes.First(type => type.Key == param.Key);
+      var type = _domain.Set<TaskType>().First(type => type.Key == param.Key);
       var order = TaskOrder.From(type, param);
 
       _domain.Add(order);
@@ -118,9 +118,9 @@ namespace Midos.Center.Controllers
     [CapSubscribe(SubtaskOrderCreate.Message, Group = Group)]
     public void HandleSubtaskOrderCreate(SubtaskOrderCreate param)
     {
-      var order = _domain.TaskOrders.Find(param.OrderId);
-      var type = _domain.TaskTypes.Find(order.TypeId);
-      var subtype = _domain.SubtaskTypes
+      var order = _domain.Find<TaskOrder>(param.OrderId);
+      var type = _domain.Find<TaskType>(order.TypeId);
+      var subtype = _domain.Set<SubtaskType>()
         .Include(st => st.Subtype)
         .First(st => st.TypeId == order.TypeId && st.Key == param.Subkey);
       var suborder = TaskOrder.From(subtype.Subtype, param);
@@ -147,7 +147,7 @@ namespace Midos.Center.Controllers
     [CapSubscribe(TaskOrderChange.Update, Group = Group)]
     public void HandleTaskOrderUpdate(TaskOrderChange param)
     {
-      var order = _domain.TaskOrders.Find(param.OrderId);
+      var order = _domain.Find<TaskOrder>(param.OrderId);
 
       order.UseData(param.Data);
       _domain.SaveChanges();
@@ -160,8 +160,8 @@ namespace Midos.Center.Controllers
       Action<TaskOrder> useOrder,
       string message
     ) {
-      var order = _domain.TaskOrders.Find(orderId);
-      var type = _domain.TaskTypes.Find(order.TypeId);
+      var order = _domain.Find<TaskOrder>(orderId);
+      var type = _domain.Find<TaskType>(order.TypeId);
 
       useOrder(order);
 

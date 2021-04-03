@@ -1,4 +1,5 @@
 using Midos.Center.Database;
+using Midos.Domain;
 
 namespace Midos.Center
 {

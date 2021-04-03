@@ -3,6 +3,7 @@ using System;
 using DBCore;
 using Microsoft.AspNetCore.Mvc;
 using Midos.Center.Entities;
+using Midos.Domain;
 
 namespace Midos.Center.Controllers
 {
@@ -33,7 +34,7 @@ namespace Midos.Center.Controllers
 
     private void SeedConfigs()
     {
-      _domain.Configs.AddRange(new Config[] {
+      _domain.Set<Config>().AddRange(new Config[] {
         new Config { Key = "midos.key1", Value = "midos.value1", UpdatedAt = DateTime.Now },
         new Config { Key = "midos.key2", Value = "midos.value2", UpdatedAt = DateTime.Now },
       });
@@ -43,7 +44,7 @@ namespace Midos.Center.Controllers
 
     private void SeedApps()
     {
-      _domain.Apps.AddRange(
+      _domain.Set<App>().AddRange(
         Enumerable.Range(1, 10)
           .Select(index => App.From(
             klass: "default",

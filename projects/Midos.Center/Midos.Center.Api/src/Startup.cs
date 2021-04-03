@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Midos.Center.Utils;
+using Midos.Domain;
 
 namespace Midos.Center
 {
@@ -20,7 +21,8 @@ namespace Midos.Center
       services.AddExceptionHandler();
       services.AddControllers();
       services.AddSingleton<AppConfig>();
-      services.AddDbContext<DomainContext>();
+      services.AddDbContext<DomainContext, ServiceContext>();
+      services.AddScoped<ServiceContext>();
       services.AddScoped<MigratorProvider>();
       services.AddCap(cap => {
         cap.ConsumerThreadCount = 5;

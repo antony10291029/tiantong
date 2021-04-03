@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Midos.Center.Entities;
 using System.Linq;
+using Midos.Domain;
 
 namespace Midos.Center.Controllers
 {
@@ -17,7 +18,7 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/configs")]
     public IResult<Config[]> Configs()
     {
-      var configs = _domain.Configs
+      var configs = _domain.Set<Config>()
         .OrderBy(config => config.Key)
         .ToArray();
 
@@ -34,11 +35,13 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/configs/create")]
     public INotifyResult<IMessageObject> Create([FromBody] ConfigParams[] param)
     {
-      _domain.Configs.AddRange(param.Select(item => new Config {
-        Key = item.Key,
-        Value = item.Value,
-        UpdatedAt = DateTime.Now
-      }));
+      _domain.Set<Config>().AddRange(
+        param.Select(item => new Config {
+          Key = item.Key,
+          Value = item.Value,
+          UpdatedAt = DateTime.Now
+        })
+      );
 
       _domain.SaveChanges();
 
@@ -48,11 +51,13 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/configs/update")]
     public INotifyResult<IMessageObject> Update([FromBody] ConfigParams[] param)
     {
-      _domain.Configs.UpdateRange(param.Select(item => new Config {
-        Key = item.Key,
-        Value = item.Value,
-        UpdatedAt = DateTime.Now,
-      }));
+      _domain.Set<Config>().UpdateRange(
+        param.Select(item => new Config {
+          Key = item.Key,
+          Value = item.Value,
+          UpdatedAt = DateTime.Now,
+        })
+      );
       _domain.SaveChanges();
 
       return NotifyResult.FromVoid().Success("配置已更新");
@@ -66,11 +71,11 @@ namespace Midos.Center.Controllers
     [HttpPost("/midos/configs/delete")]
     public INotifyResult<IMessageObject> Remove([FromBody] RemoveParams param)
     {
-      var items = _domain.Configs
+      var items = _domain.Set<Config>()
         .Where(config => param.Keys.Contains(config.Key))
         .ToArray();
 
-      _domain.Configs.RemoveRange(items);
+      _domain.RemoveRange(items);
       _domain.SaveChanges();
 
       return NotifyResult.FromVoid().Success("配置已删除");

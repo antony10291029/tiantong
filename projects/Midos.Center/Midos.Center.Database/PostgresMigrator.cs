@@ -1,10 +1,11 @@
 using DBCore.Postgres;
+using Midos.Domain;
 
 namespace Midos.Center.Database
 {
   public class PostgresMigrator: Migrator
   {
-    public PostgresMigrator(PostgresContext context): base(context)
+    public PostgresMigrator(DomainContext context): base(context)
     {
       UseAssembly(typeof(PostgresMigrator).Assembly);
     }
