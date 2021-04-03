@@ -8,19 +8,22 @@ namespace Midos.Center.Controllers
 {
   public class TasTestController: BaseController
   {
-    private TaskService _tasks;
+    private ICapPublisher _cap;
 
-    public TasTestController(TaskService tasks)
+    public TasTestController(ICapPublisher cap)
     {
-      _tasks = tasks;
+      _cap = cap;
     }
 
     [TaskStarted("$tas.test", Group = "tas.test")]
     public void HandleTaskCreated(TaskOrderChanged param)
     {
-      _tasks.Finish(param.OrderId, new Record() {
-        { "message", "Hello World" }
-      });
+      _cap.Publish(TaskOrderChange.Finish, TaskOrderChange.From(
+        orderId: param.OrderId,
+        data: new Record() {
+          { "message", "Hello World" }
+        }
+      ));
     }
   }
 }

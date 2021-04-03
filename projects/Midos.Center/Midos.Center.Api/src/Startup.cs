@@ -22,6 +22,7 @@ namespace Midos.Center
       services.AddControllers();
       services.AddSingleton<AppConfig>();
       services.AddDbContext<DomainContext, ServiceContext>();
+      services.AddScoped<IRepositoryFactory, RepositoryFactory>();
       services.AddScoped<ServiceContext>();
       services.AddScoped<MigratorProvider>();
       services.AddCap(cap => {
@@ -44,7 +45,6 @@ namespace Midos.Center
 
         cap.UseDashboard();
       });
-      services.AddScoped<TaskService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

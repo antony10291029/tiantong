@@ -1,4 +1,3 @@
-using Midos.Center.Events;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

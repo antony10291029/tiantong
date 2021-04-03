@@ -12,6 +12,9 @@ namespace Midos.Center.Events
 
     public const string Cancel = "$tasks.cancel";
 
+    public static string Message(string method)
+      => $"$tasks.{method}";
+
     public long OrderId { get; init; }
 
     public Record Data { get; init; }

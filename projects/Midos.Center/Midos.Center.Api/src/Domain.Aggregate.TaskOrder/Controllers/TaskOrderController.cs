@@ -18,16 +18,12 @@ namespace Midos.Center.Controllers
 
     private DomainContext _domain;
 
-    private TaskService _tasks;
-
     public TaskOrderInternalController(
-      DomainContext domain,
       ICapPublisher cap,
-      TaskService tasks
+      DomainContext domain
     ) {
       _cap = cap;
       _domain = domain;
-      _tasks = tasks;
     }
 
     [HttpPost("/midos/tasks/create")]
@@ -64,11 +60,10 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      _tasks.Change(
-        method: param.Method,
+      _cap.Publish(param.Method, TaskOrderChange.From(
         orderId: param.OrderId,
         data: param.Data
-      );
+      ));
 
       return result.Success("订单状态已修改");
     }
