@@ -1,12 +1,17 @@
+using System.Linq;
 namespace Midos.Domain
 {
   public interface IRepository<TEntity, TKey> where TEntity: class, IEntity<TKey>
   {
     IUnitOfWork UnitOfWork { get; }
 
+    IQueryable<TEntity> Query();
+
     TEntity Add(TEntity entity);
 
     TEntity Remove(TKey key);
+
+    TEntity Remove(TEntity entity);
 
     TEntity Update(TEntity entity);
 

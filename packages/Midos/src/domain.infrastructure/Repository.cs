@@ -12,6 +12,8 @@ namespace Midos.Domain
       DomainContext = domain;
     }
 
+    public IQueryable<TEntity> Query() => DomainContext.Set<TEntity>();
+
     public IUnitOfWork UnitOfWork { get => DomainContext; }
 
     public TEntity Add(TEntity entity) => DomainContext.Add(entity).Entity;
@@ -19,6 +21,8 @@ namespace Midos.Domain
     public TEntity Update(TEntity entity) => DomainContext.Update(entity).Entity;
 
     public TEntity Remove(TKey key) => DomainContext.Remove(Find(key)).Entity;
+
+    public TEntity Remove(TEntity entity) => DomainContext.Remove(entity).Entity;
 
     public TEntity Find(TKey id) => DomainContext.Find<TEntity>(id);
 
