@@ -1,9 +1,15 @@
+using System;
 using System.Linq;
+
 namespace Midos.Domain
 {
   public interface IRepository<TEntity, TKey> where TEntity: class, IEntity<TKey>
   {
-    IUnitOfWork UnitOfWork { get; }
+    void SaveChanges();
+
+    void SaveChanges(Action handler, Action<Exception> error = null);
+
+    void Publish(string name, object data);
 
     IQueryable<TEntity> Query();
 

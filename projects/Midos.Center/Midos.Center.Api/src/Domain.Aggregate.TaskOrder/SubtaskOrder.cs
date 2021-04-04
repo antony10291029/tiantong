@@ -1,9 +1,10 @@
+using Midos.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Midos.Center.Aggregates
 {
-  public class SubtaskOrder
+  public class SubtaskOrder: IEntity, IAggregateRoot
   {
     [Key]
     public long Id { get; private set; }

@@ -1,4 +1,3 @@
-using System;
 using Midos.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -43,6 +42,16 @@ namespace Midos.Center.Aggregates
       Index = index,
       TypeId = typeId,
       SubtypeId = subtypeId
+    };
+
+    public static SubtaskType From(
+      string key,
+      int index,
+      TaskType subtype
+    ) => new SubtaskType {
+      Key = key,
+      Index = index,
+      Subtype = subtype
     };
 
     public static SubtaskType From(SubtaskTypeParams param)

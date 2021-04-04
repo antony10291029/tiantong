@@ -13,15 +13,11 @@ namespace Midos.Center.Controllers
   {
     private const string Group = "midos.tas.tasks";
 
-    private ICapPublisher _cap;
-
     private DomainContext _domain;
 
     public TaskOrderController(
-      ICapPublisher cap,
       DomainContext domain
     ) {
-      _cap = cap;
       _domain = domain;
     }
 
@@ -59,7 +55,7 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      _cap.Publish(param.Method, TaskOrderChange.From(
+      _domain.Publish(param.Method, TaskOrderChange.From(
         orderId: param.OrderId,
         data: param.Data
       ));
@@ -102,9 +98,9 @@ namespace Midos.Center.Controllers
       _domain.Add(order);
 
       _domain.SaveChanges(() => {
-        _cap.Publish(
+        _domain.Publish(
           name: TaskOrderChanged.Created,
-          contentObj: TaskOrderChanged.From(type, order)
+          data: TaskOrderChanged.From(type, order)
         );
       });
     }
@@ -122,9 +118,9 @@ namespace Midos.Center.Controllers
       _domain.Add(SubtaskOrder.From(subtype, order, suborder));
 
       _domain.SaveChanges(() => {
-        _cap.Publish(
+        _domain.Publish(
           name: TaskOrderChanged.Created,
-          contentObj: TaskOrderChanged.From(subtype.Subtype, suborder)
+          data: TaskOrderChanged.From(subtype.Subtype, suborder)
         );
       });
     }
@@ -132,9 +128,9 @@ namespace Midos.Center.Controllers
     [CapSubscribe(TaskOrderChanged.Created, Group = Group)]
     public void CreateTaskOrderd(TaskOrderChanged param)
     {
-      _cap.Publish(
+      _domain.Publish(
         name: TaskOrderChange.Start,
-        contentObj: TaskOrderChange.From(param.OrderId, new Record())
+        data: TaskOrderChange.From(param.OrderId, new Record())
       );
     }
 
@@ -160,9 +156,9 @@ namespace Midos.Center.Controllers
       useOrder(order);
 
       _domain.SaveChanges(() => {
-        _cap.Publish(
+        _domain.Publish(
           name: message,
-          contentObj: TaskOrderChanged.From(type, order)
+          data: TaskOrderChanged.From(type, order)
         );
       });
     }

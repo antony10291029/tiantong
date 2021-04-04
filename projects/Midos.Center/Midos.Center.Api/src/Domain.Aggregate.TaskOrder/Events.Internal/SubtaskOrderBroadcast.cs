@@ -4,8 +4,6 @@ namespace Midos.Center.Events
 {
   public struct SubtaskOrderBroadcast
   {
-    private const string _message = "tasks";
-
     public long OrderId { get; init; }
 
     public long SuborderId { get; init; }
@@ -15,7 +13,7 @@ namespace Midos.Center.Events
     public object Subdata { get; init; }
 
     public static string Message(string status, string key, string subkey)
-      => $"{_message}.{status}.{key}.{subkey}";
+      => $"subtasks.{status}.{key}.{subkey}";
 
     public static string Created(string key, string subkey)
       => Message("created", key, subkey);

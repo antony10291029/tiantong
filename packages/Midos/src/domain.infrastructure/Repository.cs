@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Midos.Domain
 {
@@ -12,9 +14,16 @@ namespace Midos.Domain
       DomainContext = domain;
     }
 
-    public IQueryable<TEntity> Query() => DomainContext.Set<TEntity>();
+    public void SaveChanges()
+      => DomainContext.SaveChanges();
 
-    public IUnitOfWork UnitOfWork { get => DomainContext; }
+    public void SaveChanges(Action handler, Action<Exception> error = null)
+      => DomainContext.SaveChanges(handler, error);
+
+    public void Publish(string name, object data)
+      => DomainContext.Publish(name, data);
+
+    public IQueryable<TEntity> Query() => DomainContext.Set<TEntity>();
 
     public TEntity Add(TEntity entity) => DomainContext.Add(entity).Entity;
 

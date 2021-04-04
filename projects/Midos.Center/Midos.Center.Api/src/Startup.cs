@@ -25,7 +25,6 @@ namespace Midos.Center
       services.AddScoped<IRepositoryFactory, RepositoryFactory>();
       services.AddScoped<ServiceContext>();
       services.AddScoped<MigratorProvider>();
-      services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
       services.AddCap(cap => {
         cap.ConsumerThreadCount = 5;
         cap.FailedRetryCount = 0;

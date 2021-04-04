@@ -66,31 +66,22 @@ namespace Midos.Center.Controllers
           name: $"type_name_{key}",
           hasCode: false,
           data: null,
-          comment: $"type_comment_{key}"
-        )).ToArray();
-
-      var subtypes = Enumerable.Range(1, 20)
-        .Select(key => TaskType.From(
-          key: $"subtype_key_{key}",
-          name: $"subtype_name_{key}",
-          hasCode: false,
-          data: null,
-          comment: $"subtype_comment_{key}"
+          comment: $"type_comment_{key}",
+          subtypes: Enumerable.Range(1, 5)
+            .Select(i => SubtaskType.From(
+              key: $"subtype_key_{key}_{i}",
+              index: i,
+              subtype: TaskType.From(
+                key: $"subtype_key_{key}_{i}",
+                name: $"subtype_name_{i}",
+                hasCode: false,
+                comment: $"subtype_comment_{i}",
+                data: null
+              )
+            )).ToList()
         )).ToArray();
 
       _domain.AddRange(types);
-      _domain.AddRange(subtypes);
-      _domain.SaveChanges();
-
-      var relations = Enumerable.Range(1, 5)
-        .Select(index => SubtaskType.From(
-          key: $"test_subkey_{index}",
-          index: index,
-          typeId: types[index].Id,
-          subtypeId: subtypes[index].Id
-        ));
-      
-      _domain.AddRange(relations);
       _domain.SaveChanges();
     }
   }
