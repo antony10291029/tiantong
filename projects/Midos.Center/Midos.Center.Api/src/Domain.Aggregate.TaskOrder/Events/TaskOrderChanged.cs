@@ -1,5 +1,5 @@
-using Midos.Center.Entities;
 using Midos.Domain;
+using Midos.Center.Aggregates;
 
 namespace Midos.Center.Events
 {

@@ -4,6 +4,7 @@ using DBCore;
 using Microsoft.AspNetCore.Mvc;
 using Midos.Center.Entities;
 using Midos.Domain;
+using Midos.Center.Aggregates;
 
 namespace Midos.Center.Controllers
 {

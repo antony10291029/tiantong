@@ -1,10 +1,12 @@
+using System;
+using Midos.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SubtaskTypeParams = Midos.Center.Controllers.TaskTypeController.SubtaskTypeParams;
 
-namespace Midos.Center.Entities
+namespace Midos.Center.Aggregates
 {
-  public class SubtaskType
+  public class SubtaskType: IEntity, IAggregateRoot
   {
     [Key]
     public long Id { get; private set; }

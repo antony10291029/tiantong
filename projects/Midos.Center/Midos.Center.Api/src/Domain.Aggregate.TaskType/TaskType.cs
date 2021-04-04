@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using TaskTypeParams = Midos.Center.Controllers.TaskTypeController.TaskTypeParams;
 
-namespace Midos.Center.Entities
+namespace Midos.Center.Aggregates
 {
   public class TaskType: IEntity
   {

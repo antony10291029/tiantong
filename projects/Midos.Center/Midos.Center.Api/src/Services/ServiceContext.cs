@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Midos.Center.Database;
 using Midos.Center.Entities;
+using Midos.Center.Aggregates;
 
 namespace Midos.Center
 {

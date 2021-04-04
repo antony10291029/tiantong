@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Midos.Center.Entities
+namespace Midos.Center.Aggregates
 {
   public class TaskOrder: IEntity
   {

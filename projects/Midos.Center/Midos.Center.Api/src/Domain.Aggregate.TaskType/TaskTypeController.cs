@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Midos.Center.Entities;
+using Midos.Center.Aggregates;
 using Midos.Domain;
 using System.Collections.Generic;
 using System.Linq;

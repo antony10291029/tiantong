@@ -1,16 +1,15 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Midos.Center.Entities;
+using Midos.Center.Aggregates;
 using Midos.Center.Events;
 using Midos.Domain;
 using System;
 using System.Linq;
-using Midos.Center.Utils;
 
 namespace Midos.Center.Controllers
 {
-  public class TaskOrderInternalController: BaseController
+  public class TaskOrderController: BaseController
   {
     private const string Group = "midos.tas.tasks";
 
@@ -18,7 +17,7 @@ namespace Midos.Center.Controllers
 
     private DomainContext _domain;
 
-    public TaskOrderInternalController(
+    public TaskOrderController(
       ICapPublisher cap,
       DomainContext domain
     ) {
@@ -27,11 +26,11 @@ namespace Midos.Center.Controllers
     }
 
     [HttpPost("/midos/tasks/create")]
-    public INotifyResult<IMessageObject> CreateTaskOrder([FromBody] TaskOrderCreate param)
+    public INotifyResult<IMessageObject> HandleTaskOrderCreate([FromBody] TaskOrderCreate param)
     {
       var result = NotifyResult.FromVoid();
 
-      HandleTaskOrderCreate(param);
+      CreateTaskOrder(param);
 
       return result.Success("任务已创建");
     }
@@ -95,9 +94,9 @@ namespace Midos.Center.Controllers
     //
 
     [CapSubscribe(TaskOrderCreate.Message, Group = Group)]
-    public void HandleTaskOrderCreate(TaskOrderCreate param)
+    public void CreateTaskOrder(TaskOrderCreate param)
     {
-      var type = _domain.Set<TaskType>().First(type => type.Key == param.Key);
+      var type = _domain.First<TaskType>(type => type.Key == param.Key);
       var order = TaskOrder.From(type, param);
 
       _domain.Add(order);
@@ -131,7 +130,7 @@ namespace Midos.Center.Controllers
     }
 
     [CapSubscribe(TaskOrderChanged.Created, Group = Group)]
-    public void HandleTaskOrderCreated(TaskOrderChanged param)
+    public void CreateTaskOrderd(TaskOrderChanged param)
     {
       _cap.Publish(
         name: TaskOrderChange.Start,

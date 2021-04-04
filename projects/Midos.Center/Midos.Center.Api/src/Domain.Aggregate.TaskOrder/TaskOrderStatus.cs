@@ -1,4 +1,4 @@
-namespace Midos.Center.Entities
+namespace Midos.Center.Aggregates
 {
   public class TaskOrderStatus
   {

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Midos.Center.Entities;
+using Midos.Center.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using System.Linq;

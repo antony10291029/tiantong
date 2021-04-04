@@ -1,7 +1,7 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Midos.Center.Entities;
+using Midos.Center.Aggregates;
 using Midos.Center.Events;
 using Midos.Domain;
 using System;
