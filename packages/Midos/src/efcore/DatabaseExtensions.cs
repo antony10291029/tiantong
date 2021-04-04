@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Microsoft.EntityFrameworkCore
 {
@@ -28,5 +30,9 @@ namespace Microsoft.EntityFrameworkCore
         },
         error
       );
+
+    public static TEntity First<TEntity>(this DbContext dbContext, Expression<Func<TEntity, bool>> predicate)
+      where TEntity: class
+      => dbContext.Set<TEntity>().First(predicate);
   }
 }
