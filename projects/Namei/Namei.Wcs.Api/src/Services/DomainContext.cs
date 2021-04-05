@@ -1,10 +1,10 @@
-using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using DotNetCore.CAP;
 using Namei.Wcs.Database;
 
 namespace Namei.Wcs.Api
 {
-  public class DomainContext: PostgresContext
+  public class DomainContext: Midos.Domain.DomainContext
   {
     private Config _config;
 
@@ -24,9 +24,10 @@ namespace Namei.Wcs.Api
 
     public DbSet<WcsDoorPassport> WcsDoorPassports { get; set; }
 
-    public DomainContext(Config config)
+    public DomainContext(Config config, ICapPublisher cap): base(cap)
     {
       _config = config;
+      UseAssembly(typeof(PostgresMigrator).Assembly);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
