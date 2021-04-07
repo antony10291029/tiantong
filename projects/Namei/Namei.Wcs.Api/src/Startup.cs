@@ -1,7 +1,9 @@
+using System.IO.Pipes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
+using Namei.Wcs.Aggregates;
 
 namespace Namei.Wcs.Api
 {
@@ -12,10 +14,6 @@ namespace Namei.Wcs.Api
       services.AddExceptionHandler();
       services.AddControllers();
       services.AddHttpClient();
-      services.AddHttpContextAccessor();
-      services.AddHttpContextAccessor();
-      services.AddHttpContextAccessor();
-      services.AddHttpContextAccessor();
       services.AddHttpContextAccessor();
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
@@ -29,6 +27,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<WmsService>();
       services.AddDbContext<DomainContext>();
       services.AddScoped<RcsService>();
+      services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<LifterLogger>();
       services.AddScoped<MigratorProvider>();

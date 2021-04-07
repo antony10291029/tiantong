@@ -1,6 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using DotNetCore.CAP;
+using Microsoft.EntityFrameworkCore;
 using Namei.Wcs.Database;
+using Namei.Wcs.Aggregates;
 
 namespace Namei.Wcs.Api
 {
@@ -13,6 +14,8 @@ namespace Namei.Wcs.Api
     public DbSet<Log> Logs { get; set; }
 
     public DbSet<Device> Devices { get; set; }
+
+    public DbSet<RcsAgcTask> RcsAgcTasks { get; set; }
 
     public DbSet<RcsDoorTask> RcsDoorTasks { get; set; }
 
