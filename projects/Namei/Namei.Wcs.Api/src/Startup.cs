@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Midos.Domain;
 using Namei.Wcs.Aggregates;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
@@ -26,6 +27,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<LifterServiceManager>();
       services.AddSingleton<WmsService>();
       services.AddDbContext<DomainContext>();
+      services.AddScoped<IEventPublisher, EventPublisher>();
       services.AddScoped<RcsService>();
       services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
       services.AddScoped<DeviceErrorService>();

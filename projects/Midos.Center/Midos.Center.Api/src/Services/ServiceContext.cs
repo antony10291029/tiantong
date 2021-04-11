@@ -1,4 +1,3 @@
-using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Midos.Center.Entities;
 using Midos.Center.Aggregates;
@@ -23,7 +22,7 @@ namespace Midos.Center
 
     protected DbSet<SubtaskOrder> SubtaskOrders { get; set; }
 
-    public ServiceContext(AppConfig config, ICapPublisher cap): base(cap)
+    public ServiceContext(AppConfig config, IEventPublisher publisher): base(publisher)
     {
       _config = config;
       UseAssembly(typeof(PostgresMigrator).Assembly);

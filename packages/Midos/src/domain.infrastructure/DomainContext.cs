@@ -1,19 +1,18 @@
 using System;
 using DBCore;
-using DotNetCore.CAP;
 
 namespace Midos.Domain
 {
   public class DomainContext: DbContext
   {
-    protected ICapPublisher Cap;
+    protected IEventPublisher Publisher;
 
-    public DomainContext(ICapPublisher cap)
+    public DomainContext(IEventPublisher publisher)
     {
-      Cap = cap;
+      Publisher = publisher;
     }
 
     public void Publish(string name, object data)
-      => Cap.Publish(name, data);
+      => Publisher.Publish(name, data);
   }
 }

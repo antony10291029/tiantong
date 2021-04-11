@@ -1,5 +1,6 @@
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
+using Midos.Domain;
 using Namei.Wcs.Database;
 using Namei.Wcs.Aggregates;
 
@@ -27,7 +28,7 @@ namespace Namei.Wcs.Api
 
     public DbSet<WcsDoorPassport> WcsDoorPassports { get; set; }
 
-    public DomainContext(IAppConfig config, ICapPublisher cap): base(cap)
+    public DomainContext(IAppConfig config, IEventPublisher publisher): base(publisher)
     {
       _config = config;
       UseAssembly(typeof(PostgresMigrator).Assembly);
