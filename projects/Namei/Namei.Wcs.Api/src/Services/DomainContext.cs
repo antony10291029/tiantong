@@ -1,4 +1,3 @@
-using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using Namei.Wcs.Database;
@@ -8,8 +7,6 @@ namespace Namei.Wcs.Api
 {
   public class DomainContext: Midos.Domain.DomainContext
   {
-    private IAppConfig _config;
-
     public DbSet<Job> Jobs { get; set; }
 
     public DbSet<Log> Logs { get; set; }
@@ -28,15 +25,10 @@ namespace Namei.Wcs.Api
 
     public DbSet<WcsDoorPassport> WcsDoorPassports { get; set; }
 
-    public DomainContext(IAppConfig config, IEventPublisher publisher): base(publisher)
+    public DomainContext(IDomainContextOptions<DomainContext> options, IEventPublisher publisher)
+      : base(options, publisher)
     {
-      _config = config;
       UseAssembly(typeof(PostgresMigrator).Assembly);
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-      options.UseNpgsql(_config.Postgres);
     }
   }
 }

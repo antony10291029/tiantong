@@ -21,6 +21,7 @@ namespace Midos.Center
       services.AddExceptionHandler();
       services.AddControllers();
       services.AddSingleton<AppConfig>();
+      services.AddSingleton<IDomainContextOptions<DomainContext>, ServiceOptions>();
       services.AddDbContext<DomainContext, ServiceContext>();
       services.AddScoped<IRepositoryFactory, RepositoryFactory>();
       services.AddScoped<ServiceContext>();

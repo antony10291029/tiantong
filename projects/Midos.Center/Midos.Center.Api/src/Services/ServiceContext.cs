@@ -8,8 +8,6 @@ namespace Midos.Center
 {
   public class ServiceContext: DomainContext
   {
-    private AppConfig _config;
-
     protected DbSet<App> Apps { get; set; }
 
     protected DbSet<Config> Configs { get; set; }
@@ -22,15 +20,10 @@ namespace Midos.Center
 
     protected DbSet<SubtaskOrder> SubtaskOrders { get; set; }
 
-    public ServiceContext(AppConfig config, IEventPublisher publisher): base(publisher)
+    public ServiceContext(IDomainContextOptions<DomainContext> options, IEventPublisher publisher)
+      : base(options, publisher)
     {
-      _config = config;
       UseAssembly(typeof(PostgresMigrator).Assembly);
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
-    {
-      builder.UseNpgsql(_config.Postgres);
     }
   }
 }

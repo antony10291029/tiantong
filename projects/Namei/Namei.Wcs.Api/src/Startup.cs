@@ -18,6 +18,7 @@ namespace Namei.Wcs.Api
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
       services.AddSingleton<IAppConfig, Config>();
+      services.AddSingleton<IDomainContextOptions<DomainContext>, DomainOptions>();
       services.AddSingleton<PlcStateServiceProvider>();
       services.AddSingleton<DoorServiceManager>();
       services.AddTransient<PlcStateService>();
