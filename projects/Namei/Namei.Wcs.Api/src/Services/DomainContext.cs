@@ -7,7 +7,7 @@ namespace Namei.Wcs.Api
 {
   public class DomainContext: Midos.Domain.DomainContext
   {
-    private Config _config;
+    private IAppConfig _config;
 
     public DbSet<Job> Jobs { get; set; }
 
@@ -27,7 +27,7 @@ namespace Namei.Wcs.Api
 
     public DbSet<WcsDoorPassport> WcsDoorPassports { get; set; }
 
-    public DomainContext(Config config, ICapPublisher cap): base(cap)
+    public DomainContext(IAppConfig config, ICapPublisher cap): base(cap)
     {
       _config = config;
       UseAssembly(typeof(PostgresMigrator).Assembly);

@@ -3,27 +3,50 @@ using Microsoft.Extensions.Configuration;
 
 namespace Namei.Wcs.Api
 {
-  public class Config
+  public interface IAppConfig
   {
-    public readonly string Env;
+    string Env { get; }
+
+    bool IsProduction { get; }
+
+    bool IsDevelopment { get; }
+
+    string AppName { get; }
+
+    string AppKey { get; }
+
+    string AppVersion { get; }
+
+    string Postgres { get; }
+
+    string PlcUrl { get; }
+
+    string WmsUrl { get; }
+
+    string RcsUrl { get; }
+  }
+
+  public class Config: IAppConfig
+  {
+    public string Env { get; }
 
     public bool IsProduction { get => Env == "Production"; }
 
     public bool IsDevelopment { get => Env == "Development"; }
 
-    public readonly string AppName;
+    public string AppName { get; }
 
-    public readonly string AppKey;
+    public string AppKey { get; }
 
-    public readonly string AppVersion;
+    public string AppVersion { get; }
 
-    public readonly string Postgres;
+    public string Postgres { get; }
 
-    public readonly string PlcUrl;
+    public string PlcUrl { get; }
 
-    public readonly string WmsUrl;
+    public string WmsUrl { get; }
 
-    public readonly string RcsUrl;
+    public string RcsUrl { get; }
 
     public Config(IConfiguration config, IHostEnvironment env)
     {

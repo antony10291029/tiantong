@@ -1,9 +1,8 @@
-using System.IO.Pipes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Namei.Wcs.Aggregates;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
-using Namei.Wcs.Aggregates;
 
 namespace Namei.Wcs.Api
 {
@@ -17,6 +16,7 @@ namespace Namei.Wcs.Api
       services.AddHttpContextAccessor();
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
+      services.AddSingleton<IAppConfig, Config>();
       services.AddSingleton<PlcStateServiceProvider>();
       services.AddSingleton<DoorServiceManager>();
       services.AddTransient<PlcStateService>();
