@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace DBCore.Postgres
 {
   public class Migrator : DBCore.Migrator

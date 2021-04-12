@@ -1,8 +1,8 @@
-using DBCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Midos.Domain
 {
-  public class DomainContext: DbContext
+  public class DomainContext: EFContext
   {
     protected IEventPublisher Publisher;
 

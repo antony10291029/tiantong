@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace DBCore.Sqlite
 {
   public class Migrator : DBCore.Migrator
