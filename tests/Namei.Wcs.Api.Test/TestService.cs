@@ -1,14 +1,29 @@
-using NUnit.Framework;
+using Namei.Wcs.Aggregates;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Namei.Wcs.Api.Test
 {
-  [TestFixture]
+  [TestClass]
   public class TestService
   {
-    [TestCase]
+    [TestMethod]
     public void Test()
     {
-      Assert.IsTrue(true);
+      using var domain = Utils.GetDomain();
+
+      for (var i = 0; i < 10; i++) {
+        domain.Add(RcsAgcTask.From(
+          taskType: "asdf",
+          position: "asdf",
+          destination: "fasdf",
+          podCode: "asdf",
+          comment: "asdf",
+          orderType: "asdf",
+          orderId: 100
+        ));
+      }
+
+      domain.SaveChanges();
     }
   }
 }
