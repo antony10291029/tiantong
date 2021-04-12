@@ -8,9 +8,9 @@
 
     <table class="table is-fullwidth is-bordered is-centered is-nowrap">
       <thead>
-        <th>任务代码</th>
-        <th>创建日期</th>
-        <th>捡货单号</th>
+        <th>编号</th>
+        <th>日期</th>
+        <th>捡货单</th>
         <th>货码</th>
         <th>托盘码</th>
         <th>货名</th>
@@ -25,7 +25,7 @@
           tag="tr"
         >
           <td>{{entity.id}}</td>
-          <td>{{entity.createdAt}}</td>
+          <TimeWrapper :value="entity.createdAt" tag="td" />
           <td>{{entity.orderNumber}}</td>
           <td>{{entity.itemCode}}</td>
           <td>{{entity.barcode}}</td>
