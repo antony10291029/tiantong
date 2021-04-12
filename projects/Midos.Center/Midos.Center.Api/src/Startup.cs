@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Midos.Domain;
-using Midos.Center.Aggregates;
+using Midos.Center.Database;
+using DBCore;
+using Savorboard.CAP.InMemoryMessageQueue;
 
 namespace Midos.Center
 {
@@ -23,28 +25,15 @@ namespace Midos.Center
       services.AddSingleton<AppConfig>();
       services.AddSingleton<IDomainContextOptions<DomainContext>, ServiceOptions>();
       services.AddDbContext<DomainContext, ServiceContext>();
-      services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+      services.AddScoped<IMigrator, PostgresMigrator>();
       services.AddScoped<ServiceContext>();
-      services.AddScoped<MigratorProvider>();
+      services.AddScoped<IRepositoryFactory, RepositoryFactory>();
       services.AddScoped<IEventPublisher, EventPublisher>();
       services.AddCap(cap => {
         cap.ConsumerThreadCount = 5;
         cap.FailedRetryCount = 0;
-
-        cap.UsePostgreSql(p => {
-          p.ConnectionString = _conf.GetValue<string>("postgres");
-          p.Schema = _conf.GetValue<string>("cap.postgres.schema");
-        });
-
-        cap.UseRabbitMQ(mq => {
-          mq.ExchangeName = "midos.cap";
-          mq.VirtualHost = "midos.cap";
-          mq.HostName = _conf.GetValue<string>("cap.rabbitmq:host");
-          mq.Port = _conf.GetValue<int>("cap.rabbitmq:port");
-          mq.UserName = _conf.GetValue<string>("cap.rabbitmq:username");
-          mq.Password = _conf.GetValue<string>("cap.rabbitmq:password");
-        });
-
+        cap.UseInMemoryMessageQueue();
+        cap.UseInMemoryStorage();
         cap.UseDashboard();
       });
     }

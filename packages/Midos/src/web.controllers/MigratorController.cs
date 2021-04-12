@@ -4,7 +4,12 @@ namespace Microsoft.AspNetCore.Mvc
 {
   public abstract class MigratorControllerBase: Controller
   {
-    protected abstract IMigrator _migrator { get; set; }
+    protected IMigrator _migrator { get; set; }
+
+    public MigratorControllerBase(IMigrator migrator)
+    {
+      _migrator = migrator;
+    }
 
     public class ResponseParams: MessageObject
     {

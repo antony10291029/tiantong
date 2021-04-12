@@ -14,10 +14,10 @@ namespace Midos.Center.Controllers
 
     private IMigrator _migrator;
 
-    public SeederController(DomainContext domain, MigratorProvider _migratorProvider)
+    public SeederController(DomainContext domain, IMigrator migrator)
     {
       _domain = domain;
-      _migrator = _migratorProvider.Migrator;
+      _migrator = migrator;
     }
 
     protected override void Seed()

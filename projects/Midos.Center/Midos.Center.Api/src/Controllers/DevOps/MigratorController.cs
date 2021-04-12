@@ -5,11 +5,9 @@ namespace Midos.Center.Controllers
 {
   public class MigratorController: MigratorControllerBase
   {
-    protected override IMigrator _migrator { get; set; }
-
-    public MigratorController(MigratorProvider _migratorProvider)
+    public MigratorController(IMigrator migrator): base(migrator)
     {
-      _migrator = _migratorProvider.Migrator;
+
     }
   }
 }
