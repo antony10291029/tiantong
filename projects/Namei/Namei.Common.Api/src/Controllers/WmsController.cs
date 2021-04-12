@@ -1,6 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Midos.Domain;
 using Namei.Common.Entities;
 using System.Linq;
 
@@ -50,6 +50,67 @@ namespace Namei.Common.Api
       }
 
       return query.ToArray();
+    }
+
+    [HttpPost("/wms/pick-ticket-tasks/search")]
+    public object SearchPickTicketTasks([FromBody] QueryParams param)
+    {
+      var asns = _wms.Set<WmsAsn>()
+        .Where(asn => asn.FromName.Contains("总装车间"))
+        .ToArray()
+        .ToDictionary(asn => asn.CUSTOMER_BILL, asn => asn);
+
+      var asnIds = asns.Values.Select(asn => asn.CUSTOMER_BILL);
+
+      var tickets = _wms.Set<WmsPickTicket>()
+        .Where(ticket => asnIds.Contains(ticket.RelatedBill1))
+        .OrderByDescending(ticket => ticket.Id)
+        .ToDataMap();
+
+      var ticketIds = tickets.Entities.Values.Select(ticket => ticket.Id as long?);
+
+      var moveDocs = _wms.Set<WmsMoveDoc>()
+        .Where(doc => ticketIds.Contains(doc.RelatedBillId))
+        .ToDataMap();
+
+      var moveDocIds = moveDocs.Entities.Values.Select(doc => doc.Id as long?);
+
+      var tasks = _wms.Set<WmsTask>()
+        .Include(task => task.Item)
+        .Include(task => task.ItemKey)
+        .Include(task => task.Location)
+        .Where(task => moveDocIds.Contains(task.MoveDocId))
+        .OrderByDescending(task => task.CreatedAt)
+          .ThenByDescending(task => task.Id)
+        .Paginate(param);
+
+      return new {
+        page = tasks.Page,
+        pageSize = tasks.PageSize,
+        total = tasks.Total,
+        keys = tasks.Keys,
+        entities = tasks.Entities.ToDictionary(
+          task => task.Key,
+          data => {
+            var task = data.Value;
+            var moveDoc = task.MoveDocId is null ? null : moveDocs.Entities[(long) task.MoveDocId];
+            var ticket = moveDoc is null ? null : moveDoc.RelatedBillId is null ? null : tickets.Entities[(long) moveDoc.RelatedBillId];
+            var asn = ticket is null ? null : ticket.RelatedBill1 is null ? null : asns[ticket.RelatedBill1];
+
+            return new {
+              id = task.Id,
+              createdAt = task.CreatedAt,
+              orderNumber = ticket.Code,
+              itemCode = task.Item.Code,
+              itemName = task.Item.Name,
+              barcode = task.MoveToolPalletNo,
+              pickedQuantity = task.PickedQty,
+              locationCode = task.Location.Code,
+              fromName = asn.FromName
+            };
+          }
+        )
+      };
     }
   }
 }

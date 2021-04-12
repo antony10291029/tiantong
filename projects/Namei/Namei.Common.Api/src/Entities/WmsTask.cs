@@ -1,6 +1,5 @@
 using Midos.Domain;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,7 +23,11 @@ namespace Namei.Common.Entities
 
     [ForeignKey("Item")]
     [Column("SKU_ITEM_ID")]
-    public long? SkuItemId { get; set; }
+    public long SkuItemId { get; set; }
+
+    [ForeignKey("ItemKey")]
+    [Column("SKU_ITEM_KEY_ID")]
+    public long SkuItemKeyId { get; set; }
 
     [ForeignKey("Location")]
     [Column("FROM_LOC_ID")]
@@ -35,9 +38,8 @@ namespace Namei.Common.Entities
 
     public WmsItem Item { get; set; }
 
-    public WmsLocation Location { get; set; }
+    public WmsItemKey ItemKey { get; set; }
 
-    [NotMapped]
-    public List<WmsInventory> Inventories { get; set; }
+    public WmsLocation Location { get; set; }
   }
 }

@@ -35,42 +35,11 @@ namespace Namei.Common.Api
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
       options.UseMySQL(_config.WmsUrl);
-      options.LogTo(_logStream.WriteLine);
     }
 
     protected override void OnModelCreating(ModelBuilder model)
     {
-      model.Entity<WmsAsn>()
-        .HasMany(asn => asn.PickTickets)
-        .WithOne()
-        .HasForeignKey(ticket => ticket.RelatedBill1)
-        .HasPrincipalKey(asn => asn.CUSTOMER_BILL);
 
-      model.Entity<WmsPickTicket>()
-        .HasMany(ticket => ticket.MoveDocs)
-        .WithOne()
-        .HasForeignKey(moveDoc => moveDoc.RelatedBillId)
-        .HasPrincipalKey(ticket => ticket.Id);
-
-      model.Entity<WmsMoveDoc>()
-        .HasMany(moveDoc => moveDoc.Tasks)
-        .WithOne()
-        .HasForeignKey(task => task.MoveDocId)
-        .HasPrincipalKey(moveDoc => moveDoc.Id);
     }
-
-private readonly StreamWriter _logStream = new StreamWriter("sql.txt", append: true);
-
-public override void Dispose()
-{
-    base.Dispose();
-    _logStream.Dispose();
-}
-
-public override async ValueTask DisposeAsync()
-{
-    await base.DisposeAsync();
-    await _logStream.DisposeAsync();
-}
   }
 }

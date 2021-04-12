@@ -1,3 +1,4 @@
+using Midos.Domain;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -5,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Namei.Common.Entities
 {
   [Table("wms_location")]
-  public class WmsLocation
+  public class WmsLocation: IEntity
   {
     [Key]
     [Column("ID")]

@@ -20,7 +20,5 @@ namespace Namei.Common.Entities
     [ForeignKey("Item")]
     [Column("SKU_ITEM_ID")]
     public long? SkuItemId { get; private set; }
-
-    public WmsItemKey ItemKey { get; private set; }
   }
 }

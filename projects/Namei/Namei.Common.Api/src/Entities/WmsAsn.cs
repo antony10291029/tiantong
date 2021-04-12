@@ -20,7 +20,5 @@ namespace Namei.Common.Entities
 
     [Column("BILL_TYPE_ID")]
     public long BillTypeId { get; private set; }
-
-    public List<WmsPickTicket> PickTickets { get; private set; }
   }
 }
