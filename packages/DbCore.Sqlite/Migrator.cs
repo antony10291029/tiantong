@@ -11,14 +11,10 @@ namespace DBCore.Sqlite
 
     protected override void Initialize()
     {
-      var dir = DbContext.SqlDirectory();
-      DbContext.UseSqlDirectory("Sql");
-      DbContext.UseAssembly(typeof(Migrator).Assembly);
-      UseAssembly(Assembly.GetExecutingAssembly());
-      DbContext.ExecuteFromSql("CreateMigrationsTable");
-      UseAssembly(GetType().Assembly);
-      DbContext.UseAssembly(GetType().Assembly);
-      DbContext.UseSqlDirectory(dir);
+      DbContext.ExecuteFromSql(
+        name: "CreateMigrationsTable",
+        assembly: typeof(Migrator).Assembly
+      );
     }
   }
 }

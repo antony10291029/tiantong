@@ -13,8 +13,6 @@ namespace DBCore
 
     public DbSet<Migration> Migrations { get; set; }
 
-    private IDbContextTransaction _transaction;
-
     private string _sqlDirectory = "Sql";
 
     public DbContext()
@@ -52,11 +50,28 @@ namespace DBCore
       var set = this.Set<T>();
 
       try {
-        set.ToList();
+        set.FirstOrDefault();
         return true;
       } catch {
         return false;
       }
+    }
+
+    public void ExecuteFromSql(string name, Assembly assembly)
+    {
+      var assemblyName = assembly.GetName().Name;
+      var fileName = $"{assemblyName}.{_sqlDirectory}.{name}.sql";
+      var stream = assembly.GetManifestResourceStream(fileName);
+
+      if (stream == null) {
+        throw new Exception($"Sql file not found: {fileName}");
+      }
+
+      var sreader = new StreamReader(stream);
+
+      var sql = sreader.ReadToEnd();
+
+      Database.ExecuteSqlRaw(sql);
     }
 
     public void ExecuteFromSql(string name)

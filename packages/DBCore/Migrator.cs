@@ -14,14 +14,13 @@ namespace DBCore
 
     private Migrations _migrationInstances { get; set; }
 
-    private Assembly _assembly;
+    private Assembly _assembly { get => GetType().Assembly; }
 
     protected DbContext DbContext;
 
     public Migrator(DbContext db)
     {
       DbContext = db;
-      _assembly = GetType().Assembly;
       _migrationInstances = GetMigrationInstances();
     }
 
@@ -94,11 +93,6 @@ namespace DBCore
       }
 
       return dict;
-    }
-
-    protected virtual void UseAssembly(Assembly assembly)
-    {
-      _assembly = assembly;
     }
 
     public Migrator UseMigrationDirectory(string directory)
