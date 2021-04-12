@@ -28,7 +28,7 @@ namespace Namei.Wcs.Api
     public DomainContext(IDomainContextOptions<DomainContext> options, IEventPublisher publisher)
       : base(options, publisher)
     {
-      UseAssembly(typeof(PostgresMigrator).Assembly);
+
     }
   }
 }

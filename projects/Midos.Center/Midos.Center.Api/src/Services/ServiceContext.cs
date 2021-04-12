@@ -23,7 +23,7 @@ namespace Midos.Center
     public ServiceContext(IDomainContextOptions<DomainContext> options, IEventPublisher publisher)
       : base(options, publisher)
     {
-      UseAssembly(typeof(PostgresMigrator).Assembly);
+
     }
   }
 }

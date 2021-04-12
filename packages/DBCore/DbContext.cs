@@ -3,22 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DBCore
 {
   public class DbContext : Microsoft.EntityFrameworkCore.DbContext
   {
-    private Assembly _assembly;
-
     public DbSet<Migration> Migrations { get; set; }
 
     private string _sqlDirectory = "Sql";
-
-    public DbContext()
-    {
-      _assembly = GetType().Assembly;
-    }
 
     public bool HasTable(string table)
     {
@@ -40,11 +32,6 @@ namespace DBCore
       _sqlDirectory = dir;
     }
 
-    public void UseAssembly(Assembly assembly)
-    {
-      _assembly = assembly;
-    }
-
     public bool HasTable<T>() where T : class
     {
       var set = this.Set<T>();
@@ -57,28 +44,15 @@ namespace DBCore
       }
     }
 
-    public void ExecuteFromSql(string name, Assembly assembly)
+    public void ExecuteFromSql(string name, Assembly assembly = null)
     {
+      if (assembly is null) {
+        assembly = Assembly.GetCallingAssembly();
+      }
+
       var assemblyName = assembly.GetName().Name;
       var fileName = $"{assemblyName}.{_sqlDirectory}.{name}.sql";
       var stream = assembly.GetManifestResourceStream(fileName);
-
-      if (stream == null) {
-        throw new Exception($"Sql file not found: {fileName}");
-      }
-
-      var sreader = new StreamReader(stream);
-
-      var sql = sreader.ReadToEnd();
-
-      Database.ExecuteSqlRaw(sql);
-    }
-
-    public void ExecuteFromSql(string name)
-    {
-      var assemblyName = _assembly.GetName().Name;
-      var fileName = $"{assemblyName}.{_sqlDirectory}.{name}.sql";
-      var stream = _assembly.GetManifestResourceStream(fileName);
 
       if (stream == null) {
         throw new Exception($"Sql file not found: {fileName}");
