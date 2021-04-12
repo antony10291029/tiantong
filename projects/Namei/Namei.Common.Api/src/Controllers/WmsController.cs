@@ -62,8 +62,14 @@ namespace Namei.Common.Api
 
       var asnIds = asns.Values.Select(asn => asn.CUSTOMER_BILL);
 
-      var tickets = _wms.Set<WmsPickTicket>()
-        .Where(ticket => asnIds.Contains(ticket.RelatedBill1))
+      var ticketQuery = _wms.Set<WmsPickTicket>()
+        .Where(ticket => asnIds.Contains(ticket.RelatedBill1));
+
+      if (param.Query != "" && param.Query != null) {
+        ticketQuery = ticketQuery.Where(ticket => ticket.Code.Contains(param.Query));
+      }
+
+      var tickets = ticketQuery
         .OrderByDescending(ticket => ticket.Id)
         .ToDataMap();
 

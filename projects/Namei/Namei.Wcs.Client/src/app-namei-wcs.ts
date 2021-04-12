@@ -16,6 +16,7 @@ import RcsUnbind from "./views/Rcs.Unbind/index.vue";
 import RcsTasks from "./views/Rcs.Tasks/index.vue";
 import RcsNotifyTask from "./views/Rcs.NotifyTask/index.vue";
 import Logs from "./views/Logs/index.vue";
+import WmsPickTicketTasks from "./views/Wms.PickTicketTasks/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
@@ -33,7 +34,7 @@ export class NameiWcs extends VueApp {
 
   public icon = "icon-namei-wcs icon-namei-wcs-logo";
 
-  public iconfont = "font_1966999_p96j2xvf5bl";
+  public iconfont = "font_1966999_2h6nrreb7vd";
 
   public route: RouteRecordRaw = {
     path: "/namei-wcs",
@@ -144,6 +145,11 @@ export class NameiWcs extends VueApp {
             component: RcsNotifyTask
           }
         ]
+      },
+      {
+        path: "/wms/pick-ticket-tasks",
+        name: "NameiWcsWmsPickTicketTasks",
+        component: WmsPickTicketTasks
       }
     ]
   };
