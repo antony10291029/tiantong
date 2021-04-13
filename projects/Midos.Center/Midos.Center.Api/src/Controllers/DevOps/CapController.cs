@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using DotNetCore.CAP;
+using Midos.Domain;
 
 namespace Midos.Server.Controllers
 {
@@ -7,9 +8,12 @@ namespace Midos.Server.Controllers
   {
     private ICapPublisher _cap;
 
-    public DevController(ICapPublisher cap)
+    private DomainContext _domain;
+
+    public DevController(ICapPublisher cap, DomainContext domain)
     {
       _cap = cap;
+      _domain = domain;
     }
 
     public class TestMessage
@@ -24,7 +28,7 @@ namespace Midos.Server.Controllers
     [HttpPost("/midos/cap/test")]
     public INotifyResult<IMessageObject> Test()
     {
-      _cap.Publish("midos.test", new TestMessage {
+      _domain.Publish("midos.test", new TestMessage {
         Id = 1000,
         Key = "test.key",
         Value = "test.value"
