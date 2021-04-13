@@ -26,7 +26,7 @@ namespace Midos.Center.Controllers
     {
       var result = NotifyResult.FromVoid();
 
-      HandleTaskOrderCreate(TaskOrderCreate.From(
+      CreateTaskOrder(TaskOrderCreate.From(
         key: param.Key,
         data: param.Data
       ));
@@ -35,11 +35,11 @@ namespace Midos.Center.Controllers
     }
 
     [HttpPost("/midos/subtasks/create")]
-    public INotifyResult<IMessageObject> CreateSubtaskOrder([FromBody] SubtaskOrderCreate param)
+    public INotifyResult<IMessageObject> HandleSubtaskOrderCreate([FromBody] SubtaskOrderCreate param)
     {
       var result = NotifyResult.FromVoid();
 
-      HandleSubtaskOrderCreate(param);
+      CreateSubtaskOrder(param);
 
       return result.Success("子任务已创建");
     }
@@ -109,7 +109,7 @@ namespace Midos.Center.Controllers
     }
 
     [CapSubscribe(SubtaskOrderCreate.Message, Group = Group)]
-    public void HandleSubtaskOrderCreate(SubtaskOrderCreate param)
+    public void CreateSubtaskOrder(SubtaskOrderCreate param)
     {
       var order = _domain.Find<TaskOrder>(param.OrderId);
       var type = _domain.Find<TaskType>(order.TypeId);
