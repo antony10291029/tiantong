@@ -1,7 +1,9 @@
+using DBCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Midos.Domain;
 using Namei.Wcs.Aggregates;
+using Namei.Wcs.Database;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
 
@@ -28,12 +30,13 @@ namespace Namei.Wcs.Api
       services.AddSingleton<LifterServiceManager>();
       services.AddSingleton<WmsService>();
       services.AddDbContext<DomainContext>();
+      services.AddDbContext<Midos.Domain.DomainContext, DomainContext>();
+      services.AddScoped<IMigrator, PostgresMigrator>();
       services.AddScoped<IEventPublisher, EventPublisher>();
       services.AddScoped<RcsService>();
       services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<LifterLogger>();
-      services.AddScoped<MigratorProvider>();
       services.AddScoped<Logger>();
       services.AddScoped<WcsDoorFactory>();
       services.AddCap(cap => {

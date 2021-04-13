@@ -1,10 +1,17 @@
+using DBCore;
+
 namespace Microsoft.AspNetCore.Mvc
 {
   public abstract class SeederControllerBase
   {
-    protected abstract void Seed();
+    private IMigrator _migrator;
 
-    protected abstract void Reseed();
+    public SeederControllerBase(IMigrator migrator)
+    {
+      _migrator = migrator;
+    }
+
+    protected abstract void Seed();
 
     [HttpPost("/midos/seeder/seed")]
     public INotifyResult<IMessageObject> HandleSeed()
@@ -19,7 +26,7 @@ namespace Microsoft.AspNetCore.Mvc
     [HttpPost("/midos/seeder/reseed")]
     public INotifyResult<IMessageObject> HandleReseed()
     {
-      Reseed();
+      _migrator.Refresh();
 
       return NotifyResult
         .FromVoid()

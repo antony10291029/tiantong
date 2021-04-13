@@ -1,10 +1,10 @@
-using System.Linq;
-using System;
 using DBCore;
 using Microsoft.AspNetCore.Mvc;
+using Midos.Center.Aggregates;
 using Midos.Center.Entities;
 using Midos.Domain;
-using Midos.Center.Aggregates;
+using System;
+using System.Linq;
 
 namespace Midos.Center.Controllers
 {
@@ -12,12 +12,9 @@ namespace Midos.Center.Controllers
   {
     private DomainContext _domain;
 
-    private IMigrator _migrator;
-
-    public SeederController(DomainContext domain, IMigrator migrator)
+    public SeederController(DomainContext domain, IMigrator migrator): base(migrator)
     {
       _domain = domain;
-      _migrator = migrator;
     }
 
     protected override void Seed()
@@ -25,12 +22,6 @@ namespace Midos.Center.Controllers
       SeedConfigs();
       SeedApps();
       SeedTaskTypes();
-    }
-
-    protected override void Reseed()
-    {
-      _migrator.Refresh();
-      Seed();
     }
 
     private void SeedConfigs()
