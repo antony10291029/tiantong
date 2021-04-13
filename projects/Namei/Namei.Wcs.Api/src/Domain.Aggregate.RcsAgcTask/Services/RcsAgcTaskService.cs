@@ -38,11 +38,10 @@ namespace Namei.Wcs.Aggregates
     public void Create(RcsAgcTaskCreate param)
     {
       _domain.Add(RcsAgcTask.From(param));
-      _domain.SaveChanges(() => {
-        _domain.Publish(RcsAgcTaskCreated.Message, RcsAgcTaskCreated.From(
-          id: param.OrderId
-        ));
-      });
+      _domain.SaveChanges();
+      _domain.Publish(RcsAgcTaskCreated.Message, RcsAgcTaskCreated.From(
+        id: param.OrderId
+      ));
     }
 
     public void Start(RcsAgcTaskStart param)
@@ -107,12 +106,11 @@ namespace Namei.Wcs.Aggregates
       var task = _domain.Find<RcsAgcTask>(param.Id);
 
       task.Finish(param.AgcCode);
-      _domain.SaveChanges(() => {
-        _domain.Publish(RcsAgcTaskFinished.Message, RcsAgcTaskFinished.From(
-          id: param.Id,
-          agcCode: param.AgcCode
-        ));
-      });
+      _domain.SaveChanges();
+      _domain.Publish(RcsAgcTaskFinished.Message, RcsAgcTaskFinished.From(
+        id: param.Id,
+        agcCode: param.AgcCode
+      ));
     }
 
     public IPagination<RcsAgcTask> Search(IQueryParams param)

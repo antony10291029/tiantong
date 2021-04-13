@@ -20,8 +20,6 @@ namespace Namei.Wcs.Api
 
     public string DoorId { get; init; }
 
-    private RcsDoorEvent() {}
-
     public static RcsDoorEvent From(string uuid, string doorId)
       => new RcsDoorEvent {
         Uuid = uuid,

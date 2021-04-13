@@ -14,8 +14,6 @@ namespace Namei.Wcs.Api
 
     public string Destination { get; init; }
 
-    private LifterTaskImported() {}
-
     public static LifterTaskImported From(
       string lifterId,
       string floor,

@@ -6,7 +6,7 @@ namespace Namei.Wcs.Api
 {
   public class DoorLoggerController: BaseController
   {
-    private const string Group = "logger";
+    private const string Group = "DoorLoggerController";
 
     private Logger _logger;
 

@@ -49,7 +49,7 @@ namespace Namei.Wcs.Api
         );
       } else if (param.message == "closed") {
         _cap.PublishAsync(
-          WcsDoorEvent.Opened,
+          WcsDoorEvent.Closed,
           WcsDoorEvent.From(param.door_id)
         );
       }

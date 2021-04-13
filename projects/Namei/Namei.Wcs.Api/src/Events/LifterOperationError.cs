@@ -14,11 +14,6 @@ namespace Namei.Wcs.Api
 
     public string Level { get; init; }
 
-    private LifterOperationError()
-    {
-
-    }
-
     public static LifterOperationError From(
       string lifterId,
       string operation,

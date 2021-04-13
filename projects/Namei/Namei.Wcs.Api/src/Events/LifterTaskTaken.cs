@@ -8,8 +8,6 @@ namespace Namei.Wcs.Api
 
     public string Floor { get; init; }
 
-    private LifterTaskTaken() {}
-
     public static LifterTaskTaken From(string floor, string lifterId)
       => new LifterTaskTaken() {
         Floor = floor,

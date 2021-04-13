@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Namei.Wcs.Api
 {
   public class WcsDoorEvent
@@ -11,8 +13,6 @@ namespace Namei.Wcs.Api
     public const string Closed = "wcs.door.closed";
 
     public string DoorId { get; init; }
-
-    private WcsDoorEvent() {}
 
     public static WcsDoorEvent From(string doorId)
       => new WcsDoorEvent { DoorId = doorId };

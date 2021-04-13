@@ -1,6 +1,6 @@
-using System;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Data;
 using System.Linq;
 
@@ -10,8 +10,6 @@ namespace Namei.Wcs.Api
   {
     public const string Group = "RcsDoorController";
 
-    private ICapPublisher _cap;
-
     private DomainContext _domain;
 
     private WcsDoorFactory _doors;
@@ -19,13 +17,10 @@ namespace Namei.Wcs.Api
     private RcsService _rcs;
 
     public RcsDoorEventController(
-      ICapPublisher cap,
       DomainContext domain,
       WcsDoorFactory doors,
       RcsService rcs
-    )
-    {
-      _cap = cap;
+    ) {
       _domain = domain;
       _doors = doors;
       _rcs = rcs;
@@ -36,18 +31,14 @@ namespace Namei.Wcs.Api
     {
       var task = _domain.RcsDoorTasks.Find(param.Uuid);
 
-      if (task == null)
-      {
+      if (task == null) {
         _domain.Add(task = RcsDoorTask.From(param));
-      }
-      else
-      {
+      } else {
         task.Request(param.DoorId);
       }
 
-      _domain.SaveChanges(
-        () => _cap.Publish(RcsDoorEvent.Requested, param)
-      );
+      _domain.SaveChanges();
+      _domain.Publish(RcsDoorEvent.Requested, param);
     }
 
     [CapSubscribe(RcsDoorEvent.Retry, Group = Group)]
@@ -56,13 +47,10 @@ namespace Namei.Wcs.Api
     {
       var door = _doors.Get(param.DoorId);
 
-      if (door.HasPassport)
-      {
-        _cap.Publish(RcsDoorEvent.Enter, param);
-      }
-      else
-      {
-        _cap.Publish(
+      if (door.HasPassport) {
+        _domain.Publish(RcsDoorEvent.Enter, param);
+      } else {
+        _domain.Publish(
           WcsDoorEvent.Open,
           WcsDoorEvent.From(param)
         );
@@ -74,9 +62,8 @@ namespace Namei.Wcs.Api
     {
       var door = _doors.Get(param.DoorId);
 
-      if (door.IsOpened)
-      {
-        _cap.Publish(WcsDoorEvent.Opened, param);
+      if (door.IsOpened) {
+        _domain.Publish(WcsDoorEvent.Opened, param);
       }
 
       door.Open();
@@ -90,9 +77,8 @@ namespace Namei.Wcs.Api
         .Where(task => task.Status == RcsDoorTaskStatus.Requested)
         .ToArray();
 
-      foreach (var task in tasks)
-      {
-        _cap.Publish(
+      foreach (var task in tasks) {
+        _domain.Publish(
           RcsDoorEvent.Enter,
           RcsDoorEvent.From(
             uuid: task.Id,
@@ -109,15 +95,14 @@ namespace Namei.Wcs.Api
 
       task.Enter();
 
-      if (DoorType.Map[param.DoorId] == DoorType.Crash)
-      {
-        _domain.WcsDoorPassports.Find(param.DoorId)
+      if (DoorType.Map[param.DoorId] == DoorType.Crash) {
+        _domain.WcsDoorPassports
+          .Find(param.DoorId)
           ?.SetExpiredAt(DateTime.MinValue);
       }
 
-      _domain.SaveChanges(
-        () => _cap.Publish(RcsDoorEvent.Entered, param)
-      );
+      _domain.SaveChanges();
+      _domain.Publish(RcsDoorEvent.Entered, param);
     }
 
     [CapSubscribe(RcsDoorEvent.Entered, Group = Group)]
@@ -133,9 +118,8 @@ namespace Namei.Wcs.Api
 
       task.Leave();
 
-      _domain.SaveChanges(
-        () => _cap.Publish(RcsDoorEvent.Left, param)
-      );
+      _domain.SaveChanges();
+      _domain.Publish(RcsDoorEvent.Left, param);
     }
 
     [CapSubscribe(RcsDoorEvent.Left, Group = Group)]
@@ -146,9 +130,8 @@ namespace Namei.Wcs.Api
         .Where(task => task.Status != RcsDoorTaskStatus.Left)
         .Count();
 
-      if (count == 0)
-      {
-        _cap.Publish(
+      if (count == 0) {
+        _domain.Publish(
           WcsDoorEvent.Close,
           WcsDoorEvent.From(param.DoorId)
         );
@@ -172,22 +155,17 @@ namespace Namei.Wcs.Api
 
       var passport = _domain.WcsDoorPassports.Find(doorId);
 
-      if (passport == null)
-      {
+      if (passport == null) {
         _domain.Add(passport = WcsDoorPassport.From(doorId, 15000));
-      }
-      else
-      {
+      } else {
         passport.AddMilliseconds(15000);
       }
 
-      _domain.SaveChanges(() =>
-      {
-        _cap.Publish(
-          WcsDoorEvent.Opened,
-          WcsDoorEvent.From(doorId)
-        );
-      });
+      _domain.SaveChanges();
+      _domain.Publish(
+        WcsDoorEvent.Opened,
+        WcsDoorEvent.From(doorId)
+      );
     }
   }
 }
