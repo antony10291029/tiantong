@@ -1,7 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Midos.Domain.Test
+namespace Midos.Domain.Test.EventPublisher
 {
   [TestClass]
   public class EventPublisherTest
