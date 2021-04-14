@@ -1048,24 +1048,24 @@
   resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.3.tgz#d78d7c7700048a36aa617abfb316e267696d18f3"
   integrity sha512-H0i2J22LHmjnQ26TI8UkA0jmD+/Aro520gX6hMAcYBEwMgge1zJ5dg3gCNOj5dVEt5nwbx3y4S5jG29MKzXJlw==
 
-"@midos/app-namei-wcs@0.0.36":
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.36.tgz#9827060ad9363758bb0a9ba53fb7b94ac1cd5d46"
-  integrity sha512-AJTgPXDm0aEYql/b/2LTXH9liGCs5baDNoMdklmB9Wr4nZPHI2YYd5wmLD3nUZlDIoQf1YncN4pCdzH6co12gQ==
+"@midos/app-namei-wcs@0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.37.tgz#b44b35c935c194c46357d7317b6ecee5a36fb4d7"
+  integrity sha512-+YAMuNBrW6rcQPhEbGvrH/5siTSxgh73ypJaiR8hYKp1MaYiagxMzipEbek6sfxPdIegVNSrmzzLpg3iYEztgw==
 
-"@midos/core@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@midos/core/-/core-0.0.9.tgz#8143395b4c8e6f1c435e9f4949414d04e8a79f54"
-  integrity sha512-1cizZYbW2tgudDPjqYwNkyPIdXd0WD7REOdPwczA4LhgKg1OKEZQmuTs5kqHX3XWpfL6d1VzwNYzAjjzu1fSEw==
+"@midos/core@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.12.tgz#cf38bb71a84dba7f77431c9a3ebde6a024447b18"
+  integrity sha512-Mijjn5bAKz0FIV/Ci7V+nCZBW8ZMze2Wr+n5dk65oN/wSPdhECOj6xKoxsTJVNr56s3NoHsyXNXVUxUZjUrC4g==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
     tsyringe "^4.4.0"
 
-"@midos/vue-ui@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@midos/vue-ui/-/vue-ui-0.0.9.tgz#becc3a6ad37a6ba301501acaf8d82260b1593319"
-  integrity sha512-+evzVwHe4XkAbRmSZTtdo5ANDRIYDd0m15png/D/FzAmIwNwV0OJufTaSpXy4ABTDsVOw0daFS3WuzYC6Rs0Lg==
+"@midos/vue-ui@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.12.tgz#085954c142732406a78a99e3ae84d8d4dc5c8e75"
+  integrity sha512-R/iZ2xF5PidJDb81jSvwDwB5p6MHz1H4FhbXYMupIXnAv+D3DFAsbRUnM+JzuYbNeHmK8tS0lIqdUHj6GAo//g==
   dependencies:
     bulma "^0.9.2"
 

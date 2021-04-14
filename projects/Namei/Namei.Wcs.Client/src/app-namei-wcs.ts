@@ -17,6 +17,9 @@ import RcsTasks from "./views/Rcs.Tasks/index.vue";
 import RcsNotifyTask from "./views/Rcs.NotifyTask/index.vue";
 import Logs from "./views/Logs/index.vue";
 import WmsPickTicketTasks from "./views/Wms.PickTicketTasks/index.vue";
+import RcsAgcTasks from "./views/Rcs.Agc.Tasks/index.vue";
+import RcsAgcTaskCreate from "./views/Rcs.Agc.Tasks.Create/index.vue";
+import RcsAgcTaskLogs from "./views/Rcs.Agc.Tasks.Logs/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
@@ -150,7 +153,38 @@ export class NameiWcs extends VueApp {
         path: "/wms/pick-ticket-tasks",
         name: "NameiWcsWmsPickTicketTasks",
         component: WmsPickTicketTasks
-      }
+      },
+      {
+        path: "/rcs/agc-tasks",
+        name: "NameiWcsRcsAgcTasks",
+        redirect: { name: "NameiWcsRcsAgcTasksSearch" },
+        component: RouteTab,
+        props: () => ({
+          tabs: [
+            { text: "任务列表", route: "NameiWcsRcsAgcTasksSearch" },
+            { text: "运行日志", route: "NameiWcsRcsAgcTasksLogs" },
+          ]
+        }),
+        children: [
+          {
+            path: "search",
+            name: "NameiWcsRcsAgcTasksSearch",
+            component: RcsAgcTasks,
+            children: [
+              {
+                path: "create",
+                name: "NameiWcsRcsAgcTasksCreate",
+                component: RcsAgcTaskCreate
+              }
+            ]
+          },
+          {
+            path: "logs",
+            name: "NameiWcsRcsAgcTasksLogs",
+            component: RcsAgcTaskLogs
+          }
+        ]
+      },
     ]
   };
 }

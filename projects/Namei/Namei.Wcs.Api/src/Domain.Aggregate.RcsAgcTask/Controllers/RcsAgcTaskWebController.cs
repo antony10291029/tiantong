@@ -52,7 +52,7 @@ namespace Namei.Wcs.Aggregates
     }
 
     [HttpPost("/rcs/agc-tasks/search")]
-    public IPagination<RcsAgcTask> Search([FromBody] IQueryParams param)
+    public IPagination<RcsAgcTask> Search([FromBody] QueryParams param)
     {
       return _rcsTaskService.Search(param);
     }

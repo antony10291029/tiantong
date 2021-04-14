@@ -10,11 +10,11 @@
   "dependencies": {
     "@midos/app-iot": "0.0.13",
     "@midos/app-midos-center": "^0.0.3",
-    "@midos/app-namei-wcs": "0.0.36"
+    "@midos/app-namei-wcs": "0.0.37"
   },
   "devDependencies": {
-    "@midos/core": "^0.0.9",
-    "@midos/vue-ui": "^0.0.9",
+    "@midos/core": "^0.0.12",
+    "@midos/vue-ui": "^0.0.12",
     "@types/jest": "^24.0.19",
     "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^2.33.0",

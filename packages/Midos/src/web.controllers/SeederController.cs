@@ -28,6 +28,8 @@ namespace Microsoft.AspNetCore.Mvc
     {
       _migrator.Refresh();
 
+      Seed();
+
       return NotifyResult
         .FromVoid()
         .Success("数据已重新插入");

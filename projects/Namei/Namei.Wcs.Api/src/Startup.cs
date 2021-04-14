@@ -2,6 +2,7 @@ using DBCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Midos.Domain;
+using Midos.Utils;
 using Namei.Wcs.Aggregates;
 using Namei.Wcs.Database;
 using Savorboard.CAP.InMemoryMessageQueue;
@@ -30,6 +31,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<LifterServiceManager>();
       services.AddSingleton<WmsService>();
       services.AddDbContext<DomainContext>();
+      services.AddSingleton<IRandom, Random>();
       services.AddDbContext<Midos.Domain.DomainContext, DomainContext>();
       services.AddScoped<IMigrator, PostgresMigrator>();
       services.AddScoped<IEventPublisher, EventPublisher>();

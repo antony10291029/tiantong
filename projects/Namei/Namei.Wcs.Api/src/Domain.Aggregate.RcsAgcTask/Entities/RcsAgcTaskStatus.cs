@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Namei.Wcs.Aggregates
 {
   public class RcsAgcTaskStatus
@@ -10,5 +12,12 @@ namespace Namei.Wcs.Aggregates
 
     public static string Closed = "closed";
 
+    public static IEnumerable<string> Enumerate()
+    {
+      yield return Created;
+      yield return Started;
+      yield return Finished;
+      yield return Closed;
+    }
   }
 }

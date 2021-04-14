@@ -37,10 +37,12 @@ namespace Namei.Wcs.Aggregates
 
     public void Create(RcsAgcTaskCreate param)
     {
-      _domain.Add(RcsAgcTask.From(param));
+      var task = RcsAgcTask.From(param);
+
+      _domain.Add(task);
       _domain.SaveChanges();
       _domain.Publish(RcsAgcTaskCreated.Message, RcsAgcTaskCreated.From(
-        id: param.OrderId
+        id: task.Id
       ));
     }
 
