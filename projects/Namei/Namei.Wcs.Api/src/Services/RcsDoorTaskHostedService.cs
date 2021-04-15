@@ -44,7 +44,7 @@ namespace Namei.Wcs.Api
 
     private void HandleRcsTasks(DomainContext domain)
     {
-      var expiredAt = DateTime.Now.AddSeconds(-10);
+      var expiredAt = DateTime.Now.AddSeconds(-20);
 
       var tasks = domain.Set<RcsDoorTask>()
         .Where(task => task.Status == RcsDoorTaskStatus.Entered)

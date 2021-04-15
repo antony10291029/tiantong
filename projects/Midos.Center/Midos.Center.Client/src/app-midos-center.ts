@@ -39,7 +39,7 @@ export class MidosCenter extends VueApp {
   public route: RouteRecordRaw = {
     path: "/midos-center",
     name: "MidosCenter",
-    redirect: { name: "MidosCenterTasTasks" },
+    redirect: { name: "MidosCenterApps" },
     component: App,
     children: [
       {
