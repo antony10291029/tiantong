@@ -5,6 +5,8 @@ namespace Midos.Domain
   public interface IEventPublisher
   {
     void Publish(string msg, object data);
+
+    void Publish<T>(string msg, T data) where T: DomainEvent;
   }
 
   public class EventPublisher: IEventPublisher
@@ -17,6 +19,9 @@ namespace Midos.Domain
     }
 
     public void Publish(string msg, object data)
+      => _cap.Publish(msg, data);
+
+    public void Publish<T>(string msg, T data) where T: DomainEvent
       => _cap.Publish(msg, data);
   }
 }

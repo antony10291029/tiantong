@@ -1,5 +1,5 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Midos.Domain.Test.EventPublisher
 {
@@ -23,6 +23,43 @@ namespace Midos.Domain.Test.EventPublisher
         AssertHelper.HasEvent("test");
         Assert.Fail("HasEvent should fail when the event does not existed");
       } catch (Exception) {}
+    }
+
+    record TestEvent: DomainEvent
+    {
+      public string Id { get; init; }
+
+      public string Name { get; init; }
+    }
+
+    [TestMethod]
+    public void GetEvent()
+    {
+      var publisher = new TestEventPublisher();
+      var @event = new TestEvent {
+        Id = "01",
+        Name = "foo"
+      };
+
+      publisher.Publish("test", @event);
+
+      var res = AssertHelper.GetEvent<TestEvent>("test");
+
+      Assert.AreEqual(@event, res);
+    }
+
+    [TestMethod]
+    public void TestHasEvent()
+    {
+      var publisher = new TestEventPublisher();
+      var @event = new TestEvent {
+        Id = "01",
+        Name = "foo"
+      };
+
+      publisher.Publish("test", @event);
+
+      AssertHelper.HasEvent("test", @event);
     }
   }
 }

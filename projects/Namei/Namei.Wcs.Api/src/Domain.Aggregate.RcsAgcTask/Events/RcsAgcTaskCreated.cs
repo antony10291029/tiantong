@@ -1,6 +1,8 @@
+using Midos.Domain;
+
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskCreated
+  public record RcsAgcTaskCreated: DomainEvent
   {
     public const string Message = "rcs.agc.tasks.created";
 

@@ -1,6 +1,8 @@
+using Midos.Domain;
+
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskStart
+  public record RcsAgcTaskStart: DomainEvent
   {
     public const string Message = "rcs.agc.tasks.start";
 

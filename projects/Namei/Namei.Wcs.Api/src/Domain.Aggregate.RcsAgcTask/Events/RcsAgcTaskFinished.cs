@@ -1,17 +1,16 @@
+using Midos.Domain;
+
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskFinished
+  public record RcsAgcTaskFinished: DomainEvent
   {
     public const string Message = "rcs.agc.tasks.finished";
 
     public long Id { get; init; }
 
-    public string AgcCode { get; init; }
-
-    public static RcsAgcTaskFinished From(long id, string agcCode)
+    public static RcsAgcTaskFinished From(long id)
       => new RcsAgcTaskFinished {
         Id = id,
-        AgcCode = agcCode,
       };
 
   }

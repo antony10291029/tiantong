@@ -8,8 +8,9 @@ namespace Midos.Domain.Test
       = new Dictionary<string, object>();
 
     public void Publish(string name, object data)
-    {
-      events.Add(name, data);
-    }
+      => events[name] = data;
+
+    public void Publish<T>(string name, T data) where T: DomainEvent
+      => events[name] = data;
   }
 }

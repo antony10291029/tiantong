@@ -1,8 +1,9 @@
 using DotNetCore.CAP;
+using Midos.Domain;
 
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskOrderFinished
+  public record RcsAgcTaskOrderFinished: DomainEvent
   {
     public static string Message(string orderType)
       => $"rcs.agc.tasks.{orderType}.finished";
@@ -27,7 +28,7 @@ namespace Namei.Wcs.Aggregates
 
 namespace Namei.Wcs.Aggregates.Utils
 {
-  public class RcsAgcTaskOrderFinished: Aggregates.RcsAgcTaskOrderFinished
+  public record RcsAgcTaskOrderFinished: Aggregates.RcsAgcTaskOrderFinished
   {
 
   }

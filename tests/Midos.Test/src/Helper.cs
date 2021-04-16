@@ -21,11 +21,21 @@ namespace Midos.Domain.Test
 
   public class AssertHelper
   {
+    public static T GetEvent<T>(string name)
+      => (T) TestEventPublisher.events[name];
+
     public static void HasEvent(string name)
     {
       if (!TestEventPublisher.events.ContainsKey(name)) {
         Assert.Fail($"event is not found: {name}");
       }
     }
+
+    public static void HasEvent<T>(string name, T data) where T: DomainEvent
+    {
+      HasEvent(name);
+      Assert.AreEqual(data, GetEvent<T>(name));
+    }
+
   }
 }
