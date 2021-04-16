@@ -30,7 +30,8 @@ namespace Namei.Wcs.Api
       services.AddSingleton<ThirdLifterService>();
       services.AddSingleton<LifterServiceManager>();
       services.AddSingleton<WmsService>();
-      services.AddDbContext<DomainContext>();
+      services.AddDbContext<DomainContext>(); // todo remove
+      services.AddDbContext<WcsContext>();
       services.AddSingleton<IRandom, Random>();
       services.AddDbContext<Midos.Domain.DomainContext, DomainContext>();
       services.AddScoped<IMigrator, PostgresMigrator>();
@@ -42,7 +43,6 @@ namespace Namei.Wcs.Api
       services.AddScoped<Logger>();
       services.AddScoped<WcsDoorFactory>();
       services.AddCap(cap => {
-        cap.ConsumerThreadCount = 10;
         cap.FailedRetryCount = 0;
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();

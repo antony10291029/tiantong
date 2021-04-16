@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using Namei.Wcs.Api;
 using System.Collections.Generic;
@@ -20,16 +19,18 @@ namespace Namei.Wcs.Aggregates
 
     void Finished(RcsAgcTaskFinished param);
 
+    RcsAgcTask FindByTaskCode(string taskCode);
+
     IPagination<RcsAgcTask> Search(IQueryParams param);
   }
 
   public class RcsAgcTaskService: IRcsAgcTaskService
   {
-    private Namei.Wcs.Api.DomainContext _domain;
+    private WcsContext _domain;
 
     private RcsService _rcs;
 
-    public RcsAgcTaskService(Namei.Wcs.Api.DomainContext domain, RcsService rcs)
+    public RcsAgcTaskService(WcsContext domain, RcsService rcs)
     {
       _domain = domain;
       _rcs = rcs;
@@ -65,7 +66,7 @@ namespace Namei.Wcs.Aggregates
 
       _domain.Publish(RcsAgcTaskStarted.Message, RcsAgcTaskStarted.From(
         id: param.Id,
-        taskCode: result.code
+        taskCode: result.data
       ));
     }
 
@@ -113,6 +114,12 @@ namespace Namei.Wcs.Aggregates
         id: param.Id,
         agcCode: param.AgcCode
       ));
+    }
+
+
+    public RcsAgcTask FindByTaskCode(string taskCode)
+    {
+      return _domain.Set<RcsAgcTask>().FirstOrDefault(task => task.TaskCode == taskCode);
     }
 
     public IPagination<RcsAgcTask> Search(IQueryParams param)

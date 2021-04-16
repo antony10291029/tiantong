@@ -1,10 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
-using Namei.Wcs.Database;
 using Namei.Wcs.Aggregates;
 
 namespace Namei.Wcs.Api
 {
+  public class WcsContext: DomainContext
+  {
+    public WcsContext(IDomainContextOptions<DomainContext> options, IEventPublisher publisher)
+      : base(options, publisher)
+    {
+
+    }
+  }
+
   public class DomainContext: Midos.Domain.DomainContext
   {
     public DbSet<Job> Jobs { get; set; }

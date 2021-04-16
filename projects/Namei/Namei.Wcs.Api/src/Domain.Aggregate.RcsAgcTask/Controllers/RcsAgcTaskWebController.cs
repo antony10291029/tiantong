@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Midos.Domain;
+using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -7,8 +8,14 @@ namespace Namei.Wcs.Aggregates
   {
     private IRcsAgcTaskService _rcsTaskService;
 
-    public RcsAgcTaskController(IRcsAgcTaskService rcsTaskService) {
+    private Logger _logger;
+
+    public RcsAgcTaskController(
+      IRcsAgcTaskService rcsTaskService,
+      Logger logger
+    ) {
       _rcsTaskService = rcsTaskService;
+      _logger = logger;
     }
 
     [HttpPost("/rcs/agc-tasks/create")]
