@@ -31,12 +31,12 @@ namespace Namei.Wcs.Api
       }
     }
 
-    private void UseContext(Action<DomainContext, WcsDoorFactory> callback)
+    private void UseContext(Action<DomainContext, IWcsDoorFactory> callback)
     {
       using (var scope = _services.CreateScope())
       {
         var domain = scope.ServiceProvider.GetService<DomainContext>();
-        var doors = scope.ServiceProvider.GetService<WcsDoorFactory>();
+        var doors = scope.ServiceProvider.GetService<IWcsDoorFactory>();
 
         callback(domain, doors);
       }
@@ -70,7 +70,7 @@ namespace Namei.Wcs.Api
       }
     }
 
-    private void HandleReadyJobs(DomainContext domain, WcsDoorFactory doors)
+    private void HandleReadyJobs(DomainContext domain, IWcsDoorFactory doors)
     {
 
     }

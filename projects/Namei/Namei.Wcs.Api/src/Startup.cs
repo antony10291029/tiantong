@@ -38,10 +38,10 @@ namespace Namei.Wcs.Api
       services.AddScoped<RcsService>(); // todo remove
       services.AddScoped<IRcsService, RcsService>();
       services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
+      services.AddScoped<IWcsDoorFactory, WcsDoorFactory>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<LifterLogger>();
       services.AddScoped<Logger>();
-      services.AddScoped<WcsDoorFactory>();
       services.AddCap(cap => {
         cap.FailedRetryCount = 0;
         cap.UseInMemoryStorage();

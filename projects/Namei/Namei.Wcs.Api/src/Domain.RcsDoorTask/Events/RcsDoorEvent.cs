@@ -1,6 +1,8 @@
+using Midos.Domain;
+
 namespace Namei.Wcs.Api
 {
-  public class RcsDoorEvent
+  public record RcsDoorEvent: DomainEvent
   {
     public const string Request = "rcs.door.request";
 

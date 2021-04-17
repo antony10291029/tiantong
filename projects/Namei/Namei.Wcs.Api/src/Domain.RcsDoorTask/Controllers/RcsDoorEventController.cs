@@ -11,14 +11,14 @@ namespace Namei.Wcs.Api
 
     private DomainContext _domain;
 
-    private WcsDoorFactory _doors;
+    private IWcsDoorFactory _doors;
 
-    private RcsService _rcs;
+    private IRcsService _rcs;
 
     public RcsDoorEventController(
       DomainContext domain,
-      WcsDoorFactory doors,
-      RcsService rcs
+      IWcsDoorFactory doors,
+      IRcsService rcs
     ) {
       _domain = domain;
       _doors = doors;

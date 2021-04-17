@@ -1,6 +1,5 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace Namei.Wcs.Api
 {
@@ -8,14 +7,14 @@ namespace Namei.Wcs.Api
   {
     private ICapPublisher _cap;
 
-    private Logger _logger;
+    private IRcsService _rcs;
 
-    private RcsService _rcs;
+    private Logger _logger;
 
     public RcsServiceController(
       ICapPublisher cap,
       Logger logger,
-      RcsService rcs
+      IRcsService rcs
     ) {
       _cap = cap;
       _logger = logger;
@@ -83,24 +82,6 @@ namespace Namei.Wcs.Api
       );
 
       return result;
-    }
-
-    [HttpPost("/rcs/tasks/create")]
-    public RcsTaskCreateResult HandleTaskCreate([FromBody] RcsTaskCreateParams param)
-    {
-      return _rcs.CreateTask(param);
-    }
-
-    [HttpPost("/rcs/tasks/continue")]
-    public RcsTaskCreateResult HandleTaskContinue([FromBody] RcsTaskContinueParams param)
-    {
-      return _rcs.ContinueTask(param);
-    }
-
-    [HttpPost("/rcs/tasks/cancel")]
-    public RcsTaskCancelResult HandleTaskCancel([FromBody] RcsTaskCancelParams param)
-    {
-      return _rcs.CancelTask(param);
     }
   }
 }

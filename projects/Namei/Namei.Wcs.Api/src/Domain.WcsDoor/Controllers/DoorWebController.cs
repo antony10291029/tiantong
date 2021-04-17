@@ -9,11 +9,11 @@ namespace Namei.Wcs.Api
   {
     private DomainContext _domain;
 
-    private WcsDoorFactory _doors;
+    private IWcsDoorFactory _doors;
 
     public DoorWebController(
       DomainContext domain,
-      WcsDoorFactory doors
+      IWcsDoorFactory doors
     ) {
       _domain = domain;
       _doors = doors;
