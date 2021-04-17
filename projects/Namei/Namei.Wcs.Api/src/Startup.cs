@@ -23,7 +23,6 @@ namespace Namei.Wcs.Api
       services.AddSingleton<IAppConfig, Config>();
       services.AddSingleton<IDomainContextOptions<DomainContext>, DomainOptions>();
       services.AddSingleton<PlcStateServiceProvider>();
-      services.AddSingleton<DoorServiceManager>();
       services.AddTransient<PlcStateService>();
       services.AddSingleton<FirstLifterService>();
       services.AddSingleton<SecondLifterService>();

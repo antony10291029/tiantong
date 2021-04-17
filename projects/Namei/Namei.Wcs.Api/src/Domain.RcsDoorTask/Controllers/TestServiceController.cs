@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Namei.Wcs.Api
 {
-  public class TestServiceController: BaseController
+  public class DoorTaskTestController: BaseController
   {
     private ICapPublisher _cap;
     
     private LifterServiceManager _lifters;
 
-    public TestServiceController(LifterServiceManager lifters, ICapPublisher cap)
+    public DoorTaskTestController(LifterServiceManager lifters, ICapPublisher cap)
     {
       _cap = cap;
       _lifters = lifters;

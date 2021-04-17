@@ -1,5 +1,4 @@
 using DotNetCore.CAP;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data;
 using System.Linq;

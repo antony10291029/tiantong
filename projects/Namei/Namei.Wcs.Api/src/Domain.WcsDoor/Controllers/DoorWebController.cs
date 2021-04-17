@@ -13,9 +13,7 @@ namespace Namei.Wcs.Api
 
     public DoorWebController(
       DomainContext domain,
-      WcsDoorFactory doors,
-      DoorServiceManager taskManager,
-      RcsService rcs
+      WcsDoorFactory doors
     ) {
       _domain = domain;
       _doors = doors;

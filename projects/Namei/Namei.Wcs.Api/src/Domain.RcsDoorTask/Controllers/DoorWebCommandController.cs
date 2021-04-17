@@ -4,9 +4,9 @@ namespace Namei.Wcs.Api
 {
   public class DoorWebCommandController: BaseController
   {
-    private DoorServiceManager _doors;
+    private WcsDoorFactory _doors;
 
-    public DoorWebCommandController(DoorServiceManager doors)
+    public DoorWebCommandController(WcsDoorFactory doors)
     {
       _doors = doors;
     }
