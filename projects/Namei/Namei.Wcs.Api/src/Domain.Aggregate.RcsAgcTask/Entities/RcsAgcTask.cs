@@ -27,6 +27,8 @@ namespace Namei.Wcs.Aggregates
 
     public string Status { get; private set; }
 
+    public string Priority { get; private set; }
+
     public DateTime CreatedAt { get; private set; }
 
     public DateTime StartedAt { get; private set; }
@@ -37,6 +39,7 @@ namespace Namei.Wcs.Aggregates
       string taskType,
       string position,
       string destination,
+      string priority = "",
       string podCode = "",
       string comment = "",
       string orderType = "",
@@ -46,6 +49,7 @@ namespace Namei.Wcs.Aggregates
       Position = position,
       Destination = destination,
       PodCode = podCode,
+      Priority = priority,
       TaskCode = "",
       AgcCode = "",
       Comment = comment,

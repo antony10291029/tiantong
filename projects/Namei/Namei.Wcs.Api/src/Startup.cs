@@ -36,7 +36,8 @@ namespace Namei.Wcs.Api
       services.AddDbContext<Midos.Domain.DomainContext, DomainContext>();
       services.AddScoped<IMigrator, PostgresMigrator>();
       services.AddScoped<IEventPublisher, EventPublisher>();
-      services.AddScoped<RcsService>();
+      services.AddScoped<RcsService>(); // todo remove
+      services.AddScoped<IRcsService, RcsService>();
       services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<LifterLogger>();

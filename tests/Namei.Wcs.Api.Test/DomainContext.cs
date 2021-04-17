@@ -4,11 +4,11 @@ namespace Namei.Wcs.Api.Test
 {
   public class Utils
   {
-    public static DomainContext GetDomain()
+    public static WcsContext GetDomain()
       => new TestDomainContext();
   }
 
-  class TestDomainContext: DomainContext
+  class TestDomainContext: WcsContext
   {
     public TestDomainContext(): base(
       new PostgresDomainOptions<DomainContext>(),

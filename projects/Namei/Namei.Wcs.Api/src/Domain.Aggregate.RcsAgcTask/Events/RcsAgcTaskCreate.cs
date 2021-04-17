@@ -12,6 +12,8 @@ namespace Namei.Wcs.Aggregates
 
     public string Destination { get; init; }
 
+    public string Priority { get; init; }
+
     public string PodCode { get; init; }
 
     public string Comment { get; init; }
@@ -24,6 +26,7 @@ namespace Namei.Wcs.Aggregates
       string taskType,
       string position,
       string destination,
+      string priority = "",
       string podCode = "",
       string comment = "",
       string orderType = "",

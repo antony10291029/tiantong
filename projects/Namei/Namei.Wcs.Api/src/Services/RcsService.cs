@@ -76,7 +76,21 @@ namespace Namei.Wcs.Api
     public string reqCode { get; set; }
   }
 
-  public class RcsService
+  public interface IRcsService
+  {
+    RcsTaskCreateResult CreateTask(RcsTaskCreateParams param);
+
+    RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param);
+
+    RcsTaskCancelResult CancelTask(RcsTaskCancelParams param);
+
+    void NotifyDoorOpened(string doorId, string uuid);
+
+    void NotifyDoorClosing(string doorId, string uuid);
+
+  }
+
+  public class RcsService: IRcsService
   {
     private HttpClient _client;
 
