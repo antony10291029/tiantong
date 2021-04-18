@@ -32,15 +32,11 @@ namespace Namei.Wcs.Api
       var lifter = _lifters.Get(param.LifterId);
 
       try {
-        if (param.LifterId == "1") {
-          lifter.Import(floor: param.Floor);
-        } else {
-          lifter.Import(
-            floor: param.Floor,
-            destination: param.Destination,
-            barcode: param.Barcode
-          );
-        }
+        lifter.Import(
+          floor: param.Floor,
+          destination: param.Destination,
+          barcode: param.Barcode
+        );
 
         _logger.FromLifter(
           operation: "command.imported",

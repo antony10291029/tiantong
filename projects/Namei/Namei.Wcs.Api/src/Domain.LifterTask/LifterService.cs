@@ -84,7 +84,7 @@ namespace Namei.Wcs.Api
   {
     Dictionary<string, DateTime> ExportedAt { get; }
 
-    void Import(string floor, string destination = null, string barcode = null);
+    void Import(string floor, string destination, string barcode);
 
     void SetImported(string floor, bool value);
 
@@ -119,15 +119,7 @@ namespace Namei.Wcs.Api
       };
     }
 
-    public void Import(
-      string floor,
-      string destination = null,
-      string barcode = null
-    ) {
-      SetDestination(floor, destination ?? "0");
-      SetPalletCode(floor, barcode ?? "0");
-      SetImported(floor, true);
-    }
+    public abstract void Import(string floor, string destination, string barcode);
 
     // 放货完成
     public abstract void SetImported(string floor, bool value);
@@ -216,6 +208,13 @@ namespace Namei.Wcs.Api
       return GetIsImportAllowed(state);
     }
 
+    public override void Import(string floor, string destination, string barcode)
+    {
+      // SetDestination(floor, destination ?? "0");
+      // SetPalletCode(floor, barcode ?? "0");
+      SetImported(floor, true);
+    }
+
     public override void SetPalletCode(string floor, string code)
     {
       // @Todo: Waiting
@@ -285,6 +284,13 @@ namespace Namei.Wcs.Api
 
     public override bool IsRequestingPickup(string floor)
       => _plc.Get($"{floor}F - A 段 - 工位状态") == "3";
+
+    public override void Import(string floor, string destination, string barcode)
+    {
+      SetDestination(floor, destination ?? "0");
+      SetPalletCode(floor, barcode ?? "0");
+      SetImported(floor, true);
+    }
 
     public override LifterState GetStates()
     {
