@@ -15,14 +15,14 @@ namespace Namei.Wcs.Api
 
     private LifterLogger _logger;
 
-    private LifterServiceManager _lifters;
+    private ILifterServiceFactory _lifters;
 
     private WmsService _wms;
 
     public LifterEventController(
       ICapPublisher cap,
       LifterLogger logger,
-      LifterServiceManager lifters,
+      ILifterServiceFactory lifters,
       WmsService wms
     ) {
       _cap = cap;

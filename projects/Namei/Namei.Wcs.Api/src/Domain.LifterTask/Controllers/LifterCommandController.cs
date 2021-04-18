@@ -5,7 +5,7 @@ namespace Namei.Wcs.Api
 {
   public class LifterCommandController: BaseController
   {
-    private LifterServiceManager _lifters;
+    private ILifterServiceFactory _lifters;
 
     private ICapPublisher _cap;
 
@@ -13,7 +13,7 @@ namespace Namei.Wcs.Api
 
     public LifterCommandController(
       ICapPublisher cap,
-      LifterServiceManager lifters,
+      ILifterServiceFactory lifters,
       WmsService wms
     ) {
       _cap = cap;

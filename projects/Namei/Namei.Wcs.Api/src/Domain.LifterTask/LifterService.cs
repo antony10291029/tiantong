@@ -6,9 +6,16 @@ using Tiantong.Iot.Utils;
 
 namespace Namei.Wcs.Api
 {
-  public class LifterServiceManager
+  public interface ILifterServiceFactory
   {
-    private Dictionary<string, LifterService> _lifters = new Dictionary<string, LifterService>();
+    ILifterService Get(string id);
+
+    Dictionary<string, ILifterService> All();
+  }
+
+  public class LifterServiceManager: ILifterServiceFactory
+  {
+    private Dictionary<string, ILifterService> _lifters = new Dictionary<string, ILifterService>();
 
     private ICapPublisher _cap;
 
@@ -24,7 +31,7 @@ namespace Namei.Wcs.Api
       _lifters.Add("3", thirdLifter);
     }
 
-    public LifterService Get(string id)
+    public ILifterService Get(string id)
     {
       if (!_lifters.ContainsKey(id)) {
         throw KnownException.Error($"lifter_id: {id} 设备不存在", 400);
@@ -33,7 +40,7 @@ namespace Namei.Wcs.Api
       return _lifters[id];
     }
 
-    public Dictionary<string, LifterService> All() => _lifters;
+    public Dictionary<string, ILifterService> All() => _lifters;
   }
 
   public class LifterState
@@ -73,14 +80,44 @@ namespace Namei.Wcs.Api
     public bool IsExported { get; set; } = false;
   }
 
-  public abstract class LifterService
+  public interface ILifterService
   {
-    public Dictionary<string, DateTime> ExportedAt = new Dictionary<string, DateTime>() {
-      { "1", DateTime.MinValue },
-      { "2", DateTime.MinValue },
-      { "3", DateTime.MinValue },
-      { "4", DateTime.MinValue },
-    };
+    Dictionary<string, DateTime> ExportedAt { get; }
+
+    void Import(string floor, string destination = null, string barcode = null);
+
+    void SetImported(string floor, bool value);
+
+    void SetPickuped(string floor, bool value);
+
+    string GetPalletCode(string floor);
+
+    string GetDestination(string floor);
+
+    string GetTaskDestination(string floor);
+
+    void SetPalletCode(string floor, string code);
+
+    void SetDestination(string from, string to);
+
+    bool IsImportAllowed(string floor);
+
+    bool IsRequestingPickup(string floor);
+
+    LifterState GetStates();
+  }
+
+  public abstract class LifterService: ILifterService
+  {
+    public Dictionary<string, DateTime> ExportedAt
+    {
+      get => new Dictionary<string, DateTime>() {
+        { "1", DateTime.MinValue },
+        { "2", DateTime.MinValue },
+        { "3", DateTime.MinValue },
+        { "4", DateTime.MinValue },
+      };
+    }
 
     public void Import(
       string floor,

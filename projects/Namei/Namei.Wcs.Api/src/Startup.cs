@@ -27,7 +27,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<FirstLifterService>();
       services.AddSingleton<SecondLifterService>();
       services.AddSingleton<ThirdLifterService>();
-      services.AddSingleton<LifterServiceManager>();
+      services.AddSingleton<ILifterServiceFactory, LifterServiceManager>();
       services.AddSingleton<WmsService>();
       services.AddDbContext<DomainContext>(); // todo remove
       services.AddDbContext<WcsContext>();

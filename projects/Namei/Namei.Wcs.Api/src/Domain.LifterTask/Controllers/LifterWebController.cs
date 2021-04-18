@@ -8,13 +8,13 @@ namespace Namei.Wcs.Api
   {
     private ICapPublisher _cap;
 
-    private LifterServiceManager _lifters;
+    private ILifterServiceFactory _lifters;
 
     private DeviceErrorService _deviceErrorService;
 
     public LifterWebController(
       ICapPublisher cap,
-      LifterServiceManager lifters,
+      ILifterServiceFactory lifters,
       DeviceErrorService deviceErrorService
     ) {
       _cap = cap;

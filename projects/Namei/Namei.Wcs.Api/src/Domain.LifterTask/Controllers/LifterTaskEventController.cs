@@ -10,11 +10,11 @@ namespace Namei.Wcs.Api
 
     private DomainContext _domain;
 
-    private LifterServiceManager _lifters;
+    private ILifterServiceFactory _lifters;
 
     public LifterTaskController(
       DomainContext domain,
-      LifterServiceManager lifters
+      ILifterServiceFactory lifters
     ) {
       _domain = domain;
       _lifters = lifters;

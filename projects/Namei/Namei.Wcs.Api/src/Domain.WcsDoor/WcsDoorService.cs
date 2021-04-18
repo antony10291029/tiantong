@@ -15,14 +15,14 @@ namespace Namei.Wcs.Api
 
     private DomainContext _domain;
 
-    private LifterServiceManager _lifters;
+    private ILifterServiceFactory _lifters;
 
     private PlcStateServiceProvider _plc;
 
     public WcsDoorFactory(
       Config config,
       DomainContext domain,
-      LifterServiceManager lifters,
+      ILifterServiceFactory lifters,
       PlcStateServiceProvider plc
     ) {
       _config = config;
@@ -114,7 +114,7 @@ namespace Namei.Wcs.Api
   {
     private DomainContext _domain;
 
-    private LifterService _lifter;
+    private ILifterService _lifter;
 
     public string DoorId { get; }
 
@@ -123,7 +123,7 @@ namespace Namei.Wcs.Api
     public WcsLifterDoorService(
       string doorId,
       DomainContext domain,
-      LifterServiceManager lifters
+      ILifterServiceFactory lifters
     ) {
       DoorId = doorId;
       _domain = domain;
