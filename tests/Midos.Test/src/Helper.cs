@@ -45,5 +45,16 @@ namespace Midos.Domain.Test
       }
     }
 
+    public static void HasNotEvent<T>(string name, T data) where T: DomainEvent
+    {
+      if (TestEventPublisher.events.ContainsKey(name)) {
+        var events = GetEvents<T>(name);
+
+        if (events.Any(@event => @event == data)) {
+          Assert.Fail($"event should not be found: {name}, {data}");
+        }
+      }
+    }
+
   }
 }

@@ -1,6 +1,8 @@
+using Midos.Domain;
+
 namespace Namei.Wcs.Api
 {
-  public class LifterTaskTaken
+  public record LifterTaskTaken: DomainEvent
   {
     public const string Message = "lifter.task.taken";
 

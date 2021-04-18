@@ -1,8 +1,8 @@
-using System.Text.Json.Serialization;
+using Midos.Domain;
 
 namespace Namei.Wcs.Api
 {
-  public class WcsDoorEvent
+  public record WcsDoorEvent: DomainEvent
   {
     public const string Open = "wcs.door.open";
 

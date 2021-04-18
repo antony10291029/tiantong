@@ -151,7 +151,6 @@ namespace Namei.Wcs.Api
         floor: param.Floor,
         lifterId: param.LifterId
       );
-
       var passport = _domain.WcsDoorPassports.Find(doorId);
 
       if (passport == null) {

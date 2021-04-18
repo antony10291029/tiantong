@@ -50,5 +50,30 @@ namespace Midos.Domain.Test.EventPublisher
 
       AssertHelper.HasEvent("test", @event);
     }
+
+    [TestMethod]
+    public void TestHasNoEvent()
+    {
+      var param = new TestEvent {};
+
+      AssertHelper.HasNotEvent("test", param);
+    }
+
+    [TestMethod]
+    public void TestHasNoEventError()
+    {
+      var param = new TestEvent {
+        Id = "01",
+        Name = "foo"
+      };
+      var publisher = new TestEventPublisher();
+
+      publisher.Publish("test", param);
+
+      try {
+        AssertHelper.HasNotEvent("test", param);
+        Assert.Fail("expect exception when event has been found");
+      } catch {}
+    }
   }
 }
