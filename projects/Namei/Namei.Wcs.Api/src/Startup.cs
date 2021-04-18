@@ -28,7 +28,7 @@ namespace Namei.Wcs.Api
       services.AddSingleton<SecondLifterService>();
       services.AddSingleton<ThirdLifterService>();
       services.AddSingleton<ILifterServiceFactory, LifterServiceManager>();
-      services.AddSingleton<WmsService>();
+      services.AddSingleton<IWmsService, WmsService>();
       services.AddDbContext<DomainContext>(); // todo remove
       services.AddDbContext<WcsContext>();
       services.AddSingleton<IRandom, Random>();
@@ -40,7 +40,7 @@ namespace Namei.Wcs.Api
       services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
       services.AddScoped<IWcsDoorFactory, WcsDoorFactory>();
       services.AddScoped<DeviceErrorService>();
-      services.AddScoped<LifterLogger>();
+      services.AddScoped<ILifterLogger, LifterLogger>();
       services.AddScoped<Logger>();
       services.AddCap(cap => {
         cap.FailedRetryCount = 0;

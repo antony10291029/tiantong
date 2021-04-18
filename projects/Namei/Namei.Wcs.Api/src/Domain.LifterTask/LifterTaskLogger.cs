@@ -2,7 +2,19 @@ using System;
 
 namespace Namei.Wcs.Api
 {
-  public class LifterLogger: Logger
+  public interface ILifterLogger
+  {
+    void FromLifter(
+      string operation,
+      string lifterId,
+      string floor,
+      string message,
+      Action<Log> useLevel = null,
+      string data = ""
+    );
+  }
+
+  public class LifterLogger: Logger, ILifterLogger
   {
     public LifterLogger(DomainContext domain): base(domain) {}
 

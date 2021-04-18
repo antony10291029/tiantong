@@ -8,6 +8,13 @@ using System.Text.Json;
 
 namespace Namei.Wcs.Api
 {
+  public interface IWmsService
+  {
+    PalletInfo GetPalletInfo(string barcode);
+
+    string RequestPicking(string lifterId, string floor, string barcode, string taskId);
+  }
+
   public class PalletInfo
   {
     public string Destination { get; set; } = "2";
@@ -17,7 +24,7 @@ namespace Namei.Wcs.Api
     public string Barcode { get; set; }
   }
 
-  public class WmsService
+  public class WmsService: IWmsService
   {
     public static string Destination = "1";
 

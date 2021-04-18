@@ -9,12 +9,12 @@ namespace Namei.Wcs.Api
 
     private ICapPublisher _cap;
 
-    private WmsService _wms;
+    private IWmsService _wms;
 
     public LifterCommandController(
       ICapPublisher cap,
       ILifterServiceFactory lifters,
-      WmsService wms
+      IWmsService wms
     ) {
       _cap = cap;
       _lifters = lifters;

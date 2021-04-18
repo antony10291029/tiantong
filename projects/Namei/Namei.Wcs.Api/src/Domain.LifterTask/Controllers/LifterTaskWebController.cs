@@ -7,21 +7,17 @@ namespace Namei.Wcs.Api
 {
   public class LifterTaskWebController: BaseController
   {
-    private ICapPublisher _cap;
-
     private DomainContext _domain;
 
-    private LifterLogger _logger;
+    private ILifterLogger _logger;
 
-    private WmsService _wms;
+    private IWmsService _wms;
 
     public LifterTaskWebController(
-      ICapPublisher cap,
       DomainContext domain,
-      WmsService wms,
-      LifterLogger logger
+      IWmsService wms,
+      ILifterLogger logger
     ) {
-      _cap = cap;
       _domain = domain;
       _logger = logger;
       _wms = wms;
@@ -94,7 +90,7 @@ namespace Namei.Wcs.Api
       if (param.Method == "deliver") {
         message = "收到创建提升机任务指令";
 
-        _cap.Publish(LifterTaskImported.Message, LifterTaskImported.From(
+        _domain.Publish(LifterTaskImported.Message, LifterTaskImported.From(
           lifterId: param.LiftCode,
           floor: param.Floor,
           taskCode: param.TaskCode.ToString(),
@@ -104,14 +100,14 @@ namespace Namei.Wcs.Api
       } else if (param.Method == "pick") {
         message = "收到取货完成指令";
 
-        _cap.Publish(LifterTaskTaken.Message, LifterTaskTaken.From(
+        _domain.Publish(LifterTaskTaken.Message, LifterTaskTaken.From(
           lifterId: param.LiftCode,
           floor: param.Floor
         ));
       } else {
         message = $"指令未识别：{param.Method}";
 
-        _cap.Publish(LifterOperationError.Message, LifterOperationError.From(
+        _domain.Publish(LifterOperationError.Message, LifterOperationError.From(
           lifterId: param.LiftCode,
           floor: param.Floor,
           operation: "wms.finish",

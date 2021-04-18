@@ -1,4 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,21 +10,17 @@ namespace Namei.Wcs.Api
   {
     public const string Group = "lifter";
 
-    private ICapPublisher _cap;
-
-    private LifterLogger _logger;
+    private ILifterLogger _logger;
 
     private ILifterServiceFactory _lifters;
 
-    private WmsService _wms;
+    private IWmsService _wms;
 
     public LifterEventController(
-      ICapPublisher cap,
-      LifterLogger logger,
+      ILifterLogger logger,
       ILifterServiceFactory lifters,
-      WmsService wms
+      IWmsService wms
     ) {
-      _cap = cap;
       _logger = logger;
       _lifters = lifters;
       _wms = wms;
