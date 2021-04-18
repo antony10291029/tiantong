@@ -1,6 +1,7 @@
-using System;
-using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Linq;
 
 namespace Midos.Domain.Test
 {
@@ -21,8 +22,10 @@ namespace Midos.Domain.Test
 
   public class AssertHelper
   {
-    public static T GetEvent<T>(string name)
-      => (T) TestEventPublisher.events[name];
+    private static T[] GetEvents<T>(string name) where T: DomainEvent
+      => TestEventPublisher.events[name]
+        .Select(data => data as T)
+        .ToArray();
 
     public static void HasEvent(string name)
     {
@@ -34,7 +37,12 @@ namespace Midos.Domain.Test
     public static void HasEvent<T>(string name, T data) where T: DomainEvent
     {
       HasEvent(name);
-      Assert.AreEqual(data, GetEvent<T>(name));
+
+      var events = GetEvents<T>(name);
+
+      if (!events.Any(@event => @event == data)) {
+        Assert.Fail($"event is not found: {name}, {data}");
+      }
     }
 
   }

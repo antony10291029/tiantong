@@ -6,12 +6,17 @@ namespace Midos.Domain.Test.EventPublisher
   [TestClass]
   public class EventPublisherTest
   {
+    public record Event: DomainEvent
+    {
+
+    }
+
     [TestMethod]
     public void HasEvent_Success()
     {
       var publisher = new TestEventPublisher();
       
-      publisher.Publish("test", new {});
+      publisher.Publish("test", new Event());
 
       AssertHelper.HasEvent("test");
     }
@@ -30,22 +35,6 @@ namespace Midos.Domain.Test.EventPublisher
       public string Id { get; init; }
 
       public string Name { get; init; }
-    }
-
-    [TestMethod]
-    public void GetEvent()
-    {
-      var publisher = new TestEventPublisher();
-      var @event = new TestEvent {
-        Id = "01",
-        Name = "foo"
-      };
-
-      publisher.Publish("test", @event);
-
-      var res = AssertHelper.GetEvent<TestEvent>("test");
-
-      Assert.AreEqual(@event, res);
     }
 
     [TestMethod]

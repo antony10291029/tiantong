@@ -17,6 +17,9 @@ namespace Midos.Domain
     public void Publish(string name, object data)
       => Publisher.Publish(name, data);
 
+    public void Publish<T>(string name, T data) where T: DomainEvent
+      => Publisher.Publish(name, data);
+
     protected override void OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder builder)
       => Options.OnConfiguring(builder);
   }

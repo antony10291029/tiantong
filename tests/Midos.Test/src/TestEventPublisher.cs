@@ -4,13 +4,22 @@ namespace Midos.Domain.Test
 {
   public class TestEventPublisher: IEventPublisher
   {
-    public static Dictionary<string, object> events
-      = new Dictionary<string, object>();
+    public static Dictionary<string, List<DomainEvent>> events
+      = new Dictionary<string, List<DomainEvent>>();
 
     public void Publish(string name, object data)
-      => events[name] = data;
+    {
+      throw new System.Exception("Not completed");
+    }
 
     public void Publish<T>(string name, T data) where T: DomainEvent
-      => events[name] = data;
+    {
+      if (!events.ContainsKey(name)) {
+        events[name] = new List<DomainEvent>();
+      }
+
+      events[name].Add((DomainEvent )data);
+    }
+
   }
 }
