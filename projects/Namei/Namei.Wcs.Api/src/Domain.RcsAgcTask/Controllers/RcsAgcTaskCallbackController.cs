@@ -1,19 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
-using Midos.Domain;
 using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {
   public class RcsAgcTaskCallbackController: BaseController
   {
-    private IRcsAgcTaskService _rcsTaskService;
+    private IRcsAgcTaskService _rcs;
 
     private Logger _logger;
 
     public RcsAgcTaskCallbackController(
-      IRcsAgcTaskService rcsTaskService,
+      IRcsAgcTaskService rcs,
       Logger logger
     ) {
+      _rcs = rcs;
       _logger = logger;
     }
 
@@ -46,11 +46,19 @@ namespace Namei.Wcs.Aggregates
       public string taskCode { get; set; }
 
       public string wbCode { get; set; }
+    }
 
+    public struct RcsCallbackResult
+    {
+      public string Code { get; set; }
+
+      public string Message { get; set; }
+
+      public string ReqCode { get; set; }
     }
 
     [HttpPost("/rcs/agc-callback")]
-    public object RcsCallback([FromBody] AgcCallbackParams param)
+    public IResult<RcsCallbackResult> RcsCallback([FromBody] AgcCallbackParams param)
     {
       _logger.Save(Log.From(
         Log.UseInfo(),
@@ -61,19 +69,29 @@ namespace Namei.Wcs.Aggregates
         Log.UseData(param)
       ));
 
-      if (param.method == "finish") {
-        var task = _rcsTaskService.FindByTaskCode(param.taskCode);
+      var result = new RcsCallbackResult {
+        Code = "0",
+        ReqCode = param.reqCode
+      };
 
-        _rcsTaskService.Finish(RcsAgcTaskFinish.From(
-          id: task.Id,
-          agcCode: param.robotCode
-        ));
+      if (param.method == "finish") {
+        var task = _rcs.FindByTaskCode(param.taskCode);
+
+        if (task == null) {
+          result.Message = "任务编号不存在";
+        } else if (task.Status == RcsAgcTaskStatus.Started) {
+          _rcs.Finish(RcsAgcTaskFinish.From(
+            id: task.Id,
+            agcCode: param.robotCode
+          ));
+
+          result.Message = "任务状态已更新";
+        }
+      } else {
+        result.Message = "操作无须处理";
       }
 
-      return new {
-        code = "0",
-        message = "信息已接受"
-      };
+      return Result.From(result);
     }
   }
 }
