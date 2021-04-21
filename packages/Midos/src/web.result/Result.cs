@@ -9,6 +9,10 @@ namespace Microsoft.AspNetCore.Mvc
 
     public Result(object data): base(data) {}
 
+    public int? GetStatusCode() => base.StatusCode;
+
+    public string GetHeader(string key) => _headers[key];
+
     public IResult<T> Header(string key, string value)
     {
       _headers.Add(key, value);

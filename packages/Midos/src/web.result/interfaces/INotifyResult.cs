@@ -1,10 +1,10 @@
 namespace Microsoft.AspNetCore.Mvc
 {
-  public interface INotifyResult<T>
+  public interface INotifyResult<T>: IResult<T>
   {
-    INotifyResult<T> StatusCode(int code);
+    new INotifyResult<T> StatusCode(int code);
 
-    INotifyResult<T> Header(string key, string value);
+    new INotifyResult<T> Header(string key, string value);
 
     INotifyResult<T> Success(string message);
 
