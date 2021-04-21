@@ -9,7 +9,11 @@ namespace Namei.Wcs.Api.Test
     public static void Up(TestContext context)
     {
       using var domain = Utils.GetDomain();
+
       domain.Database.EnsureCreated();
+
+      domain.Add(LifterAgcTaskControllerTest.TestType);
+      domain.SaveChanges();
     }
 
     [AssemblyCleanup]
