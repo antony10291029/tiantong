@@ -33,6 +33,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<WcsDoorPassport> WcsDoorPassports { get; set; }
 
+    public DbSet<LifterAgcTaskType> LifterAgcTaskTypes { get; set; }
+
     public DomainContext(IDomainContextOptions<DomainContext> options, IEventPublisher publisher)
       : base(options, publisher)
     {
