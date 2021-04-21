@@ -11,10 +11,10 @@ namespace Midos.Domain
 
   public class QueryParams: IQueryParams
   {
-    public int Page { get; init; }
+    public int Page { get; init; } = 1;
 
-    public int PageSize { get; init; }
+    public int PageSize { get; init; } = 15;
 
-    public string Query { get; init; }
+    public string Query { get; init; } = "";
   }
 }
