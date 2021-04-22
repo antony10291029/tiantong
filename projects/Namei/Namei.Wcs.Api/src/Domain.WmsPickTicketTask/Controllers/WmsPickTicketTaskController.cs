@@ -12,17 +12,25 @@ namespace Namei.Wcs.Aggregates
 
     private WcsContext _context;
 
-    private IAppConfig _config;
+    private string _url;
 
     public WmsPickTicketTaskController(IAppConfig config, WcsContext context)
     {
-      _config = config;
+      var url = "http://localhost:5300";
+
+      if (config.IsProduction) {
+        url = "http://172.16.2.64:5300";
+      } else if (!config.IsDevelopment) {
+        url = "http://172.16.2.74:5300";
+      }
+
+      _url = url;
       _context = context;
     }
 
     public struct StartParams
     {
-      public long TaskId { get; set; }
+      public long Id { get; set; }
 
       public string Position { get; set; }
 
@@ -31,8 +39,8 @@ namespace Namei.Wcs.Aggregates
       public string PalletCode { get; set; }
     }
 
-    [HttpPost("/wms-pick-ticket-tasks/start")]
-    public void Start([FromBody] StartParams param)
+    [HttpPost("/wms/pick-ticket-tasks/start")]
+    public object Start([FromBody] StartParams param)
     {
       _context.Publish(
         name: RcsAgcTaskCreate.Message,
@@ -42,35 +50,40 @@ namespace Namei.Wcs.Aggregates
           destination: param.Destination,
           podCode: param.PalletCode,
           orderType: OrderType,
-          orderId: param.TaskId
+          orderId: param.Id
         )
       );
+      _context.Publish(
+        name: WebHookPost.Message,
+        data: new WebHookPost(
+          url: $"{_url}/wms/pick-ticket-tasks/start",
+          data: new { Id = param.Id }
+        )
+      );
+
+      return NotifyResult
+        .FromVoid()
+        .Success("任务已下发");
     }
 
-    [HttpPost("/wms-pick-ticket-tasks/finish")]
-    public object HandleFinish(RcsAgcTaskOrderFinished param)
+    [HttpPost("/wms/pick-ticket-tasks/finish")]
+    public object HandleFinish([FromBody] RcsAgcTaskOrderFinished param)
     {
       Finished(param);
 
-      return new { message = "任务已完成" };
+      return NotifyResult
+        .FromVoid()
+        .Success("任务已完成");
     }
 
     [RcsAgcTaskOrderFinished(OrderType, Group = Group)]
     public void Finished(RcsAgcTaskOrderFinished param)
     {
-      var url = "http://localhost:5300/";
-
-      if (_config.IsProduction) {
-        url = "http://172.16.2.64:5300/";
-      } else if (!_config.IsDevelopment) {
-        url = "http://172.16.2.74:5300/";
-      }
-
       _context.Publish(
         name: WebHookPost.Message,
         data: new WebHookPost(
-          url: $"{url}/pick-ticket-task/finish",
-          data: JsonSerializer.Serialize(new { TaskId = param.OrderId })
+          url: $"{_url}/wms/pick-ticket-tasks/finish",
+          data: JsonSerializer.Serialize(new { Id = param.OrderId })
         )
       );
     }

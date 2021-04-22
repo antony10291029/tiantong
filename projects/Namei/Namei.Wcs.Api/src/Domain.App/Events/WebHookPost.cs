@@ -1,4 +1,5 @@
 using Midos.Domain;
+using System.Text.Json;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -10,10 +11,18 @@ namespace Namei.Wcs.Aggregates
 
     public string Data { get; init; }
 
+    public WebHookPost() {}
+
     public WebHookPost(string url, string data)
     {
       Url = url;
       Data = data;
+    }
+
+    public WebHookPost(string url, object data)
+    {
+      Url = url;
+      Data = JsonSerializer.Serialize(data);
     }
   }
 }

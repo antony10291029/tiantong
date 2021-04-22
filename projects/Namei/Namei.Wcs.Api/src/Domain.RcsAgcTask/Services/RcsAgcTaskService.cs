@@ -60,6 +60,8 @@ namespace Namei.Wcs.Aggregates
       var result = _rcs.CreateTask(new RcsTaskCreateParams {
         taskTyp = task.TaskType,
         agvCode = task.AgcCode,
+        podCode = task.PodCode,
+        priority = task.Priority,
         positionCodePath = new List<PositionCodePath> {
           new PositionCodePath { positionCode = task.Position, type = "00" },
           new PositionCodePath { positionCode = task.Destination, type = "00" },

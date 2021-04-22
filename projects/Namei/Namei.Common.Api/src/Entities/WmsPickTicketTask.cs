@@ -19,9 +19,13 @@ namespace Namei.Common.Api
 
     public string PickedQuantity { get; private set; }
 
+    public string RestQuantity { get; private set; }
+
     public string FromName { get; private set; }
 
     public string LocationCode { get; private set; }
+
+    public string Status { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
   }

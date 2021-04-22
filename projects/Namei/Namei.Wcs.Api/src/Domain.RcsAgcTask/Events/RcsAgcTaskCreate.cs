@@ -35,6 +35,7 @@ namespace Namei.Wcs.Aggregates
       TaskType = taskType,
       Position = position,
       Destination = destination,
+      Priority = priority,
       PodCode = podCode,
       Comment = comment,
       OrderType = orderType,

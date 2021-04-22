@@ -1,45 +1,48 @@
 using Midos.Domain;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Namei.Common.Entities
 {
+  public static class WmsTaskStatus
+  {
+    public const string Created = null;
+
+    public const string Closed = "closed";
+
+    public const string Started = "started";
+
+    public const string Finished = "finished";
+  }
+
   [Table("wms_task")]
   public class WmsTask: IEntity
   {
     [Key]
     [Column("ID")]
-    public long Id { get; set; }
+    public long Id { get; private set; }
 
-    [Column("CREATED_TIME")]
-    public DateTime? CreatedAt { get; set; }
+    [Column("WORK_STATUS")]
+    public string WorkStatus { get; private set; }
 
-    [Column("MOVE_TOOL_PALLET_NO")]
-    public string MoveToolPalletNo { get; set; }
+    public void Close()
+    {
+      WorkStatus = WmsTaskStatus.Closed;
+    }
 
-    [Column("PICKED_QTY")]
-    public double? PickedQty { get; set; }
+    public void Reset()
+    {
+      WorkStatus = WmsTaskStatus.Created;
+    }
 
-    [ForeignKey("Item")]
-    [Column("SKU_ITEM_ID")]
-    public long SkuItemId { get; set; }
+    public void Start()
+    {
+      WorkStatus = WmsTaskStatus.Started;
+    }
 
-    [ForeignKey("ItemKey")]
-    [Column("SKU_ITEM_KEY_ID")]
-    public long SkuItemKeyId { get; set; }
-
-    [ForeignKey("Location")]
-    [Column("FROM_LOC_ID")]
-    public long? FromLocationId { get; set; }
-
-    [Column("MOVE_DOC_ID")]
-    public long? MoveDocId { get; set; }
-
-    public WmsItem Item { get; set; }
-
-    public WmsItemKey ItemKey { get; set; }
-
-    public WmsLocation Location { get; set; }
+    public void Finish()
+    {
+      WorkStatus = WmsTaskStatus.Finished;
+    }
   }
 }

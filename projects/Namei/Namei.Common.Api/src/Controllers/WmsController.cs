@@ -57,7 +57,66 @@ namespace Namei.Common.Api
     {
       return _wms.Set<WmsPickTicketTask>()
         .OrderByDescending(task => task.Id)
+        .ThenByDescending(task => task.FromName)
+        .ThenByDescending(task => task.RestQuantity)
         .Paginate(param);
+    }
+
+    public struct StartParams
+    {
+      public long Id { get; set; }
+    }
+
+    [HttpPost("/wms/pick-ticket-tasks/start")]
+    public object Start([FromBody] StartParams param)
+    {
+      var task = _wms.Find<WmsTask>(param.Id);
+
+      task.Start();
+      _wms.SaveChanges();
+
+      return NotifyResult
+        .FromVoid()
+        .Success("任务已下发");
+    }
+
+    [HttpPost("/wms/pick-ticket-tasks/finish")]
+    public object Finish([FromBody] StartParams param)
+    {
+      var task = _wms.Find<WmsTask>(param.Id);
+
+      task.Finish();
+      _wms.SaveChanges();
+
+      return NotifyResult
+        .FromVoid()
+        .Success("任务已完成");
+    }
+
+    [HttpPost("/wms/pick-ticket-tasks/close")]
+    public object Close([FromBody] StartParams param)
+    {
+      var task = _wms.Find<WmsTask>(param.Id);
+
+      task.Close();
+      _wms.SaveChanges();
+
+      return NotifyResult
+        .FromVoid()
+        .Success("任务已关闭");
+    }
+
+    [HttpPost("/wms/pick-ticket-tasks/reset")]
+    public object Reset([FromBody] StartParams param)
+    {
+      var task = _wms.Find<WmsTask>(param.Id);
+
+      task.Reset();
+      _wms.SaveChanges();
+
+      return NotifyResult
+        .FromVoid()
+        .Success("任务已重制");
     }
   }
 }
