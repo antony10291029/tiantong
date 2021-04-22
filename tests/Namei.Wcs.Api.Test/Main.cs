@@ -1,7 +1,18 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Namei.Wcs.Aggregates;
 
 namespace Namei.Wcs.Api.Test
 {
+  public static class TestData
+  {
+    public static LifterAgcTaskType LifterAgcTaskType
+      = new LifterAgcTaskType(
+        key: "test",
+        name: "name",
+        webHook: "webhook"
+      );
+  }
+
   [TestClass]
   public class Main
   {
@@ -12,7 +23,7 @@ namespace Namei.Wcs.Api.Test
 
       domain.Database.EnsureCreated();
 
-      domain.Add(LifterAgcTaskControllerTest.TestType);
+      domain.Add(TestData.LifterAgcTaskType);
       domain.SaveChanges();
     }
 

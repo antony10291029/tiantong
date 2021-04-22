@@ -8,12 +8,6 @@ namespace Namei.Wcs.Api.Test
   [TestClass]
   public class LifterAgcTaskControllerTest
   {
-    public static LifterAgcTaskType TestType = new LifterAgcTaskType(
-      key: "test.lifter.agc.tasks",
-      name: "name",
-      webHook: "webhook"
-    );
-
     public WcsContext _context = Utils.GetDomain();
 
     private LifterAgcTaskController UseController()
@@ -24,18 +18,18 @@ namespace Namei.Wcs.Api.Test
     {
       var param = new LifterAgcTaskController
         .CreateParams {
-          OrderId = "test.create",
+          OrderId = 100,
           Position = "000001",
           Destination = "100000",
           LifterId = "1",
-          Type = TestType.Key
+          Type = TestData.LifterAgcTaskType.Key
         };
       var controller = UseController();
       var result = controller.Create(param);
       var data = _context.Set<LifterAgcTask>()
         .FirstOrDefault(task => task.OrderId == param.OrderId);
 
-      Assert.AreEqual(data.TypeId, TestType.Id);
+      Assert.AreEqual(data.TypeId, TestData.LifterAgcTaskType.Id);
       Assert.AreEqual(data.OrderId, param.OrderId);
       Assert.AreEqual(data.Position, param.Position);
       Assert.AreEqual(data.Destination, param.Destination);
@@ -51,8 +45,8 @@ namespace Namei.Wcs.Api.Test
     public void Test_Close()
     {
       var task = LifterAgcTask.From(
-        type: TestType,
-        orderId: "test.close",
+        type: TestData.LifterAgcTaskType,
+        orderId: 200,
         palletCode: "000001",
         position: "100000",
         destination: "200000",

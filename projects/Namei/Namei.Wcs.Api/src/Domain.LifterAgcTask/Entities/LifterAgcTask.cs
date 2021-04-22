@@ -11,7 +11,7 @@ namespace Namei.Wcs.Aggregates
     [ForeignKey("Type")]
     public long TypeId { get; private set; }
 
-    public string OrderId { get; private set; }
+    public long OrderId { get; private set; }
 
     public string PalletCode { get; private set; }
 
@@ -31,8 +31,6 @@ namespace Namei.Wcs.Aggregates
 
     public DateTime ExportedAt { get; private set; }
 
-    public DateTime FinishedAt { get; private set; }
-
     public DateTime ClosedAt { get; private set; }
 
     public LifterAgcTaskType Type { get; private set; }
@@ -41,7 +39,7 @@ namespace Namei.Wcs.Aggregates
 
     public static LifterAgcTask From(
       LifterAgcTaskType type,
-      string orderId,
+      long orderId,
       string palletCode,
       string position,
       string destination,
@@ -60,6 +58,24 @@ namespace Namei.Wcs.Aggregates
       ExportedAt = DateTime.MinValue,
       ClosedAt = DateTime.MinValue,
     };
+
+    public void Start()
+    {
+      StartedAt = DateTime.Now;
+      Status = LifterAgcTaskStatus.Started;
+    }
+
+    public void Export()
+    {
+      ExportedAt = DateTime.Now;
+      Status = LifterAgcTaskStatus.Exported;
+    }
+
+    public void Finish()
+    {
+      ClosedAt = DateTime.Now;
+      Status = LifterAgcTaskStatus.Finished;
+    }
 
     public void Close()
     {

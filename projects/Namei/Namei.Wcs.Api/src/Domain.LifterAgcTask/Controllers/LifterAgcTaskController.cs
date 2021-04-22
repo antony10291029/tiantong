@@ -17,7 +17,7 @@ namespace Namei.Wcs.Aggregates
     {
       public string Type { get; set; }
 
-      public string OrderId { get; set; }
+      public long OrderId { get; set; }
 
       public string PalletCode { get; set; }
 

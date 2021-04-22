@@ -3,6 +3,15 @@ using Midos.Domain;
 
 namespace Namei.Wcs.Aggregates
 {
+  public class RcsAgcTaskOrderFinishedAttribute: CapSubscribeAttribute
+  {
+    public RcsAgcTaskOrderFinishedAttribute(
+      string orderType
+    ): base($"rcs.agc.tasks.{orderType}.finished") {
+
+    }
+  }
+
   public record RcsAgcTaskOrderFinished: DomainEvent
   {
     public static string Message(string orderType)
@@ -27,22 +36,5 @@ namespace Namei.Wcs.Aggregates
       AgcCode = agcCode,
       PodCode = podCode,
     };
-  }
-}
-
-namespace Namei.Wcs.Aggregates.Utils
-{
-  public record RcsAgcTaskOrderFinished: Aggregates.RcsAgcTaskOrderFinished
-  {
-
-  }
-
-  public class RcsAgcTaskOrderFinishedAttribute: CapSubscribeAttribute
-  {
-    public RcsAgcTaskOrderFinishedAttribute(
-      string orderType
-    ): base($"rcs.agc.tasks.{orderType}.finished") {
-
-    }
   }
 }
