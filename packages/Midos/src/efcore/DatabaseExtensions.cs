@@ -17,7 +17,7 @@ namespace Microsoft.EntityFrameworkCore
           error(e);
         }
 
-        throw e;
+        throw;
       }
     }
 

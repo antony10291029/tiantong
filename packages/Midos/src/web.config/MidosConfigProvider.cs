@@ -37,8 +37,8 @@ namespace Midos.Web.Config
         Data = configs.ToDictionary(config => config.key, config => config.value);
       } catch (TaskCanceledException) {
         throw KnownException.Error($"Fail to load config from midos server: \"{uri + path}\"");
-      } catch(Exception e) {
-        throw e;
+      } catch(Exception) {
+        throw;
       }
     }
 
