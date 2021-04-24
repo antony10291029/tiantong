@@ -38,7 +38,7 @@ namespace Midos.Domain.Test.EventPublisher
     }
 
     [TestMethod]
-    public void TestHasEvent()
+    public void Test_Has_Event()
     {
       var publisher = new TestEventPublisher();
       var @event = new TestEvent {
@@ -52,7 +52,7 @@ namespace Midos.Domain.Test.EventPublisher
     }
 
     [TestMethod]
-    public void TestHasNoEvent()
+    public void Test_Has_No_Event()
     {
       var param = new TestEvent {};
 
@@ -60,7 +60,7 @@ namespace Midos.Domain.Test.EventPublisher
     }
 
     [TestMethod]
-    public void TestHasNoEventError()
+    public void Test_Has_No_Event_Error()
     {
       var param = new TestEvent {
         Id = "01",

@@ -55,6 +55,5 @@ namespace Midos.Domain.Test
         }
       }
     }
-
   }
 }
