@@ -2,7 +2,7 @@ using Midos.Domain;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Namei.Common.Api
+namespace Namei.Common.Entities
 {
   [Table("wms_pick_ticket_task")]
   public class WmsPickTicketTask: IEntity

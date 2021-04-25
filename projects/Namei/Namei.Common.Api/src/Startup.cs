@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Midos.Services.Http;
 
 namespace Namei.Common.Api
 {
@@ -11,6 +12,7 @@ namespace Namei.Common.Api
       services.AddControllers();
       services.AddHttpClient();
       services.AddSingleton<Config>();
+      services.AddSingleton<IHttpService, HttpService>();
       services.AddDbContext<RcsContext>();
       services.AddSingleton<RcsHttpService>();
       services.AddDbContext<SapContext>();

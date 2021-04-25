@@ -110,7 +110,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useConfirm } from "@midos/vue-ui";
-import { useWcsHttp } from "../../services/wcs-http";
 import { useRcsExtHttp } from "../../services/rcs-ext-http";
 
 export default defineComponent({
@@ -125,11 +124,10 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const confirm = useConfirm();
-    const http = useWcsHttp();
-    const extApi = useRcsExtHttp();
+    const http = useRcsExtHttp();
     const isShow = ref(false);
     const params = ref({
-      id: props.entity.id,
+      taskId: props.entity.id,
       position: props.entity.locationCode,
       destination: "",
       palletCode: props.entity.palletCode,
@@ -146,7 +144,7 @@ export default defineComponent({
         title: "关闭任务",
         content: "确定后任务将被关闭",
         handler: async () => {
-          await extApi.post(
+          await http.post(
             "/wms/pick-ticket-tasks/close",
             { id: props.entity.id }
           );
@@ -160,7 +158,7 @@ export default defineComponent({
         title: "重置任务",
         content: "确认后任务将被重置",
         handler: async () => {
-          await extApi.post(
+          await http.post(
             "/wms/pick-ticket-tasks/reset",
             { id: props.entity.id }
           );

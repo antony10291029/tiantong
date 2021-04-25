@@ -21,7 +21,7 @@ namespace Namei.Wcs.Api.Test
       var controller = UseController();
       var param = new WmsPickTicketTaskController
         .StartParams {
-          Id = 1,
+          TaskId = 1,
           Position = "000001",
           Destination = "000002",
           PalletCode = "000003"
@@ -29,13 +29,6 @@ namespace Namei.Wcs.Api.Test
 
       controller.Start(param);
 
-      AssertHelper.HasEvent(
-        WebHookPost.Message,
-        new WebHookPost(
-          url: "http://localhost:5300/wms/pick-ticket-tasks/start",
-          data: new { Id = param.Id }
-        )
-      );
       AssertHelper.HasEvent(
         RcsAgcTaskCreate.Message,
         RcsAgcTaskCreate.From(
@@ -46,7 +39,7 @@ namespace Namei.Wcs.Api.Test
           podCode: param.PalletCode,
           comment: "",
           orderType: "wms.export.carry",
-          orderId: param.Id
+          orderId: param.TaskId
         )
       );
     }

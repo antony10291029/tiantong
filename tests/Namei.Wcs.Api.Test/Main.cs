@@ -21,6 +21,7 @@ namespace Namei.Wcs.Api.Test
     {
       using var domain = Utils.GetDomain();
 
+      domain.Database.EnsureDeleted();
       domain.Database.EnsureCreated();
 
       domain.Add(TestData.LifterAgcTaskType);

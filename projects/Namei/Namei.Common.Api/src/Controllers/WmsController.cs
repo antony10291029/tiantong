@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
+using Midos.Services.Http;
 using Namei.Common.Entities;
 using System.Linq;
 
@@ -8,16 +9,30 @@ namespace Namei.Common.Api
 {
   public class WmsController: BaseController
   {
+    private string _wcsUrl;
+
     private WmsContext _wms;
 
     private SapContext _sap;
 
+    private IHttpService _http;
+
     public WmsController(
+      Config config,
       WmsContext wms,
-      SapContext sap
+      SapContext sap,
+      IHttpService http
     ) {
       _sap = sap;
       _wms = wms;
+      _http = http;
+      if (config.IsProduction) {
+        _wcsUrl = "http://172.16.2.64:5100";
+      } else if (config.IsDevelopment) {
+        _wcsUrl = "http://localhost:5100";
+      } else {
+        _wcsUrl = "http://172.16.2.74:5100";
+      }
     }
 
     public class SearchAsnDetailBatch
@@ -64,15 +79,41 @@ namespace Namei.Common.Api
 
     public struct StartParams
     {
-      public long Id { get; set; }
+      public long TaskId { get; set; }
+
+      public string Position { get; set; }
+
+      public string Destination { get; set; }
+
+      public string PalletCode { get; set; }
     }
 
     [HttpPost("/wms/pick-ticket-tasks/start")]
     public object Start([FromBody] StartParams param)
     {
-      var task = _wms.Find<WmsTask>(param.Id);
+      var task = _wms.Find<WmsPickTicketTask>(param.TaskId);
+      var taskData = _wms.Find<WmsTask>(param.TaskId);
 
-      task.Start();
+      if (param.Destination == null) {
+        return NotifyResult
+          .FromVoid()
+          .Danger("任务终点不能为空");
+      }
+
+      if (param.Position == null) {
+        param.Position = task.LocationCode;
+      }
+
+      if (param.PalletCode == null) {
+        param.PalletCode = task.PalletCode;
+      }
+
+      _http.Post<object, object>(
+        url: $"{_wcsUrl}/wms/pick-ticket-tasks/start",
+        data: param
+      );
+
+      taskData.Start();
       _wms.SaveChanges();
 
       return NotifyResult
@@ -80,8 +121,13 @@ namespace Namei.Common.Api
         .Success("任务已下发");
     }
 
+    public class FinishParams
+    {
+      public long Id { get; set; }
+    }
+
     [HttpPost("/wms/pick-ticket-tasks/finish")]
-    public object Finish([FromBody] StartParams param)
+    public object Finish([FromBody] FinishParams param)
     {
       var task = _wms.Find<WmsTask>(param.Id);
 
@@ -94,7 +140,7 @@ namespace Namei.Common.Api
     }
 
     [HttpPost("/wms/pick-ticket-tasks/close")]
-    public object Close([FromBody] StartParams param)
+    public object Close([FromBody] FinishParams param)
     {
       var task = _wms.Find<WmsTask>(param.Id);
 
@@ -107,7 +153,7 @@ namespace Namei.Common.Api
     }
 
     [HttpPost("/wms/pick-ticket-tasks/reset")]
-    public object Reset([FromBody] StartParams param)
+    public object Reset([FromBody] FinishParams param)
     {
       var task = _wms.Find<WmsTask>(param.Id);
 

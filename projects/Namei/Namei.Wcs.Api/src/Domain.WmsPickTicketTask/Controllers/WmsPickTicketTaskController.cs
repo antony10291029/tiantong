@@ -30,7 +30,7 @@ namespace Namei.Wcs.Aggregates
 
     public struct StartParams
     {
-      public long Id { get; set; }
+      public long TaskId { get; set; }
 
       public string Position { get; set; }
 
@@ -50,14 +50,7 @@ namespace Namei.Wcs.Aggregates
           destination: param.Destination,
           podCode: param.PalletCode,
           orderType: OrderType,
-          orderId: param.Id
-        )
-      );
-      _context.Publish(
-        name: WebHookPost.Message,
-        data: new WebHookPost(
-          url: $"{_url}/wms/pick-ticket-tasks/start",
-          data: new { Id = param.Id }
+          orderId: param.TaskId
         )
       );
 
