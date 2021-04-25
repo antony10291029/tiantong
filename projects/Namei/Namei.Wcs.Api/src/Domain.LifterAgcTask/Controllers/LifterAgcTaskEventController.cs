@@ -1,6 +1,7 @@
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Midos.Services.Http;
 using Namei.Wcs.Api;
 using System.Linq;
 using System.Text.Json;
@@ -92,8 +93,8 @@ namespace Namei.Wcs.Aggregates
       }
 
       _context.Publish(
-        WebHookPost.Message,
-        new WebHookPost(
+        HttpPost.Event,
+        HttpPost.From(
           url: task.Type.WebHook,
           data: JsonSerializer.Serialize(new { OrderId = task.OrderId })
         )

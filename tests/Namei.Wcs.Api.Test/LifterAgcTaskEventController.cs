@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
+using Midos.Services.Http;
 using Namei.Wcs.Aggregates;
 using System.Text.Json;
 
@@ -148,8 +149,8 @@ namespace Namei.Wcs.Api.Test
       controller.Finished(param);
 
       AssertHelper.HasEvent(
-        WebHookPost.Message,
-        new WebHookPost(
+        HttpPost.Event,
+        HttpPost.From(
           url: task.Type.WebHook,
           data: JsonSerializer.Serialize(new { OrderId = task.OrderId })
         )

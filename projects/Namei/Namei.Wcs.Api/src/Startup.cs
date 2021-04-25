@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Midos.Domain;
 using Midos.Utils;
+using Midos.Services.Http;
 using Namei.Wcs.Aggregates;
 using Namei.Wcs.Database;
 using Savorboard.CAP.InMemoryMessageQueue;
@@ -21,6 +22,7 @@ namespace Namei.Wcs.Api
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
       services.AddSingleton<IAppConfig, Config>();
+      services.AddSingleton<IHttpService, HttpService>();
       services.AddSingleton<IDomainContextOptions<DomainContext>, DomainOptions>();
       services.AddSingleton<PlcStateServiceProvider>();
       services.AddTransient<PlcStateService>();

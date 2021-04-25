@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Midos.Services.Http;
 using Namei.Wcs.Api;
 using System.Text.Json;
 
@@ -73,8 +74,8 @@ namespace Namei.Wcs.Aggregates
     public void Finished(RcsAgcTaskOrderFinished param)
     {
       _context.Publish(
-        name: WebHookPost.Message,
-        data: new WebHookPost(
+        name: HttpPost.Event,
+        data: HttpPost.From(
           url: $"{_url}/wms/pick-ticket-tasks/finish",
           data: JsonSerializer.Serialize(new { Id = param.OrderId })
         )

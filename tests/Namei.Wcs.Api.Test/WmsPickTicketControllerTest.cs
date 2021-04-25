@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
+using Midos.Services.Http;
 using Namei.Wcs.Aggregates;
 
 namespace Namei.Wcs.Api.Test
@@ -58,8 +59,8 @@ namespace Namei.Wcs.Api.Test
       controller.Finished(param);
 
       AssertHelper.HasEvent(
-        WebHookPost.Message,
-        new WebHookPost(
+        HttpPost.Event,
+        HttpPost.From(
           url: "http://localhost:5300/wms/pick-ticket-tasks/finish",
           data: new { Id = param.OrderId }
         )
