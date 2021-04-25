@@ -5,6 +5,8 @@ namespace Midos.Services.Http
 {
   public interface IHttpService
   {
+    string Post<TRequest>(string url, TRequest data);
+
     TResponse Post<TRequest, TResponse>(string url, TRequest data);
 
     Task<TResponse> PostAsync<TRequest, TResponse>(string url, TRequest data);
@@ -18,6 +20,9 @@ namespace Midos.Services.Http
     {
       _client = factory.CreateClient();
     }
+
+    public string Post<TRequest>(string url, TRequest data)
+      => _client.Post<TRequest>(url, data);
 
     public TResponse Post<TRequest, TResponse>(string url, TRequest data)
       => _client.Post<TRequest, TResponse>(url, data);

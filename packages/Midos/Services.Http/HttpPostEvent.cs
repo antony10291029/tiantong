@@ -9,18 +9,12 @@ namespace Midos.Services.Http
 
     public string Url { get; init; }
 
-    public string Data { get; init; }
+    public object Data { get; init; }
 
-    public static HttpPost From(string url, string data)
+    public static HttpPost From(string url, object data)
       => new HttpPost {
         Url = url,
         Data = data
       };
-
-    public static HttpPost From(string url, object data)
-      => From(
-        url: url,
-        data: JsonSerializer.Serialize(data)
-      );
   }
 }

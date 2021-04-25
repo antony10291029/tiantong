@@ -29,6 +29,23 @@ namespace System.Net.Http
       this HttpClient client,
       string url,
       TRequest data
+    ) => JsonSerializer.Deserialize<TResponse>(await PostAsync(client, url, data));
+
+    public static TResponse Post<TRequest, TResponse>(
+      this HttpClient client,
+      string url,
+      TRequest data
+    ) {
+      return client
+        .PostAsync<TRequest, TResponse>(url, data)
+        .GetAwaiter()
+        .GetResult();
+    }
+
+    public static async Task<String> PostAsync<TRequest>(
+      this HttpClient client,
+      string url,
+      TRequest data
     ) {
       var text = JsonSerializer.Serialize(data);
       var content = new StringContent(
@@ -50,18 +67,14 @@ namespace System.Net.Http
         );
       }
 
-      return JsonSerializer.Deserialize<TResponse>(result);
+      return result;
     }
 
-    public static TResponse Post<TRequest, TResponse>(
+    public static String Post<TRequest>(
       this HttpClient client,
       string url,
       TRequest data
-    ) {
-      return client
-        .PostAsync<TRequest, TResponse>(url, data)
-        .GetAwaiter()
-        .GetResult();
-    }
+    ) => PostAsync(client, url, data).GetAwaiter().GetResult();
   }
+
 }

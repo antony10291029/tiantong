@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using DotNetCore.CAP;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Midos.Services.Http
 {
@@ -14,10 +15,15 @@ namespace Midos.Services.Http
       _http = http;
     }
 
+    public new struct Response
+    {
+
+    }
+
     [CapSubscribe(HttpPost.Event, Group = Group)]
     public void Post(HttpPost param)
     {
-      _http.Post<object, object>(param.Url, param.Data);
+      _http.Post<object>(param.Url, param.Data);
     }
   }
 }

@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Test;
+using System.Text.Json;
 
 namespace System.Net.Http.Test
 {
@@ -53,6 +54,29 @@ namespace System.Net.Http.Test
           Assert.Fail("expect an exception when status code >= 400");
         } catch {}
       }
+    }
+
+    [TestMethod]
+    public void Test_Post_String()
+    {
+      var port = TestUtils.GetFreePort();
+      var url = $"http://localhost:{port}/";
+      var client = new HttpClient();
+      var listener = new HttpListener();
+      var request = JsonSerializer.Serialize(new Request());
+      var response = new Response();
+
+      listener.Start(url);
+
+      var task = client.PostAsync<string, Response>($"http://localhost:{port}/test", request);
+
+      listener.Handle<string, Response>(
+        data => {
+          Assert.AreEqual(data, request);
+          return new Response();
+        }
+      );
+      listener.Close();
     }
   }
 }
