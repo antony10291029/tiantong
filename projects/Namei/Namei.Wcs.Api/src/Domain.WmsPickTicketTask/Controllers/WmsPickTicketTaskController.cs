@@ -77,7 +77,7 @@ namespace Namei.Wcs.Aggregates
         name: HttpPost.Event,
         data: HttpPost.From(
           url: $"{_url}/wms/pick-ticket-tasks/finish",
-          data: JsonSerializer.Serialize(new { Id = param.OrderId })
+          data: new { Id = param.OrderId }
         )
       );
     }
