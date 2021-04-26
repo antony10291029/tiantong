@@ -10,7 +10,7 @@
       <ul class="menu-list">
         <li>
           <router-link
-            :to="`/plcs`"
+            :to="`${baseURL}/plcs`"
             active-class="none"
             exact-active-class="is-active"
           >
@@ -24,7 +24,7 @@
           </router-link>
         </li>
         <li v-for="id in plcs.result" :key="id">
-          <router-link :to="`/plcs/${id}`">
+          <router-link :to="`${baseURL}/plcs/${id}`">
             <span
               class="icon"
               style="margin-right: 0.25rem"
@@ -35,7 +35,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="`/plcs/create`">
+          <router-link :to="`${baseURL}/plcs/create`">
             <span
               class="icon"
               style="margin-right: 0.25rem"
@@ -47,10 +47,11 @@
         </li>
       </ul>
     </aside>
+
     <router-view
-      :key="$route.params.plcId"
-      :plc="plcs.data[$route.params.plcId]"
-      baseURL="/plcs"
+      :key="currentPlc?.id"
+      :plc="currentPlc"
+      :baseURL="`${baseURL}/plcs`"
       class="is-flex-auto"
       @refresh="getPlcs"
     />
@@ -58,32 +59,47 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import axios from '@/providers/axios'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { defineComponent, reactive, computed } from "vue";
+import { useRoute } from "vue-router";
+import { useService } from "@midos/vue-ui";
+import { IotHttpClient } from "../../services/iot-http-client";
 
-@Component({
-  name: 'PlcList',
-  components: {
+export default defineComponent({
+  name: "PlcList",
 
+  setup() {
+    const route = useRoute();
+    const http = useService(IotHttpClient);
+
+    const plcs = reactive({
+      result: [] as any,
+      data: {} as any
+    });
+    const currentPlc = computed(() =>
+      plcs.data[route.params.plcId as string]
+    );
+
+    const getPlcs = async () => {
+      const response = await http.dataArray("/plcs/all");
+      const result = [] as any;
+      const data = {} as any;
+
+      response.forEach(plc => {
+        result.push(plc.id);
+        data[plc.id] = plc;
+      });
+
+      plcs.data = data;
+      plcs.result = result;
+    };
+
+    return {
+      baseURL: "/iot",
+      plcs,
+      currentPlc,
+      getPlcs,
+    };
   }
-})
-export default class extends Vue {
-  plcs = {
-    result: [] as any[],
-    data: {} as any
-  }
-
-  async getPlcs () {
-    const response = await axios.post('/plcs/all')
-    const result = [] as any
-    const data = {} as any
-
-    response.data.forEach((plc: any) => {
-      result.push(plc.id)
-      data[plc.id] = plc
-    })
-
-    this.plcs = { result, data }
-  }
-}
+});
 </script>

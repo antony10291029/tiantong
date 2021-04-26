@@ -1,36 +1,40 @@
 <template>
-  <Loader
-    v-bind="$attrs"
-    :is-show="isPending"
-    v-slot="slots"
-  >
-    <slot v-if="!isPending" v-bind="slots"></slot>
-  </Loader>
+  <div>
+    <slot v-if="!isPending"></slot>
+    <div v-else></div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import Loader from './Loader.vue'
+import { defineComponent, PropType, ref } from "vue";
 
-@Component({
-  name: 'AsyncLoader',
-  components: {
-    Loader
-  },
-  extends: Loader
-})
-export default class extends Vue {
-  @Prop({ required: true })
-  handler!: () => Promise<void>
+export default defineComponent({
+  name: "AsyncLoader",
 
-  isPending: boolean = true
-
-  async created () {
-    try {
-      await this.handler()
-    } finally {
-      this.isPending = false
+  props: {
+    handler: {
+      type: Function as PropType<() => void>,
     }
+  },
+
+  setup(props) {
+    const isPending = ref(true);
+
+    const handle = async () => {
+      try {
+        if (props.handler) {
+          await props.handler();
+        }
+      } finally {
+        isPending.value = false;
+      }
+    };
+
+    handle();
+
+    return {
+      isPending
+    };
   }
-}
+});
 </script>

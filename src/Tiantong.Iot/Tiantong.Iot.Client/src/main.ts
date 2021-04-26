@@ -1,15 +1,12 @@
-import Vue from 'vue'
-import App from './views/App.vue'
-import router from './providers/vue-router'
-import components from './share'
-import confirmAdminPassword from './providers/confirm-admin-password'
+/* eslint-disable indent */
+import { MidOS } from "@midos/core";
+import { VueUI } from "@midos/vue-ui";
+import { AppIot } from "./app-iot";
+import { IotHttpClient } from "./services/iot-http-client";
 
-Vue.use(components)
-Vue.use(confirmAdminPassword)
-
-Vue.config.productionTip = false
-
-new Vue({
-  router,
-  render: (h) => h(App),
-}).$mount('#app')
+MidOS.create()
+  .useUI(VueUI)
+  .addApp(AppIot)
+    .addHttpClient(IotHttpClient)
+  .build()
+  .run();
