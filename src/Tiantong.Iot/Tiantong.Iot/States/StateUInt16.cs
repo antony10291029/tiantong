@@ -1,5 +1,3 @@
-using Renet;
-
 namespace Tiantong.Iot
 {
   public class StateUInt16 : State<ushort>

@@ -1,4 +1,4 @@
-using Renet.Web.Attributes;
+using Midos.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

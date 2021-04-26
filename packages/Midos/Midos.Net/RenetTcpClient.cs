@@ -1,8 +1,7 @@
 using System;
 using System.IO;
-using System.Net.Sockets;
 
-namespace Midos.Net
+namespace System.Net.Sockets
 {
   public class RenetTcpClient: IDisposable
   {
