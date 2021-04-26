@@ -1,26 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="../../DBCore/DBCore.csproj" />
-    <ProjectReference Include="../../DbCore.Sqlite/DBCore.Sqlite.csproj" />
+    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../../packages/DbCore.Sqlite/DBCore.Sqlite.csproj" />
     <ProjectReference Include="../Tiantong.Iot/Tiantong.Iot.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Log.Sql/*.sql" />
-    <EmbeddedResource Include="Log.Migrations/*.cs" />
-    <EmbeddedResource Include="System.Sql/*.sql" />
-    <EmbeddedResource Include="System.Migrations/*.cs" />
+    <EmbeddedResource Include="Sql/*.sql" />
+    <EmbeddedResource Include="Migrations/*.cs" />
   </ItemGroup>
 </Project>

@@ -135,7 +135,7 @@ namespace Tiantong.Iot
           message = e.Message,
         });
 
-        throw e;
+        throw;
       }
 
       if (!value.Equals(CurrentValue)) {
@@ -167,7 +167,7 @@ namespace Tiantong.Iot
           message = e.Message,
         });
 
-        throw e;
+        throw;
       }
 
       foreach (var hook in _sethooks) {

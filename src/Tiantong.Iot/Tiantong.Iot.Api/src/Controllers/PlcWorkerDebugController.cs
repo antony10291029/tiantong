@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 using System;
 
 namespace Tiantong.Iot.Api

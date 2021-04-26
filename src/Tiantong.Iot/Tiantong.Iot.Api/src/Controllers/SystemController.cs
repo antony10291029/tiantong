@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 using System.Threading.Tasks;
-using Tiantong.Account.Utils;
 
 namespace Tiantong.Iot.Api
 {
@@ -9,17 +7,13 @@ namespace Tiantong.Iot.Api
   {
     private Mail _mail;
 
-    private PasswordService _passwordService;
-
     private SystemRepository _systemRepository;
 
     public SystemController(
       Mail mail,
-      PasswordService passwordService,
       SystemRepository systemRepository
     ) {
       _mail = mail;
-      _passwordService = passwordService;
       _systemRepository = systemRepository;
     }
 
@@ -32,28 +26,6 @@ namespace Tiantong.Iot.Api
     public bool GetIsSystemLocked()
     {
       return _systemRepository.GetIsSystemLocked();
-    }
-
-    [HttpPost("/system-lock/lock")]
-    public async Task<object> LockSystem(
-      [FromHeader] string authorization,
-      [FromBody] SystemLockParams param
-    ) {
-      await _passwordService.ConfirmAsync(authorization, param.password);
-      _systemRepository.LockSystem();
-
-      return SuccessOperation("设备锁定已开启");
-    }
-
-    [HttpPost("/system-lock/unlock")]
-    public async Task<object> UnlockSystem(
-      [FromHeader] string authorization,
-      [FromBody] SystemLockParams param
-    ) {
-      await _passwordService.ConfirmAsync(authorization, param.password);
-      _systemRepository.UnlockSystem();
-
-      return SuccessOperation("设备锁定已关闭");
     }
 
     [HttpPost("/autorun/get")]

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Renet.Utils;
-using Renet.Web;
-using Tiantong.Account.Utils;
+using Midos.Utils;
+using Midos.Web;
 using Tiantong.Iot.Entities;
 using Tiantong.Iot.Sqlite.Log;
 using Tiantong.Iot.Sqlite.System;
@@ -13,16 +12,16 @@ namespace Tiantong.Iot.Api
   {
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddExceptionHandler();
       services.AddControllers();
       services.AddHostedService<PlcManagerService>();
       services.AddSingleton<Mail>();
       services.AddSingleton<Config>();
       services.AddSingleton<PlcManager>();
-      services.AddSingleton<IHash, Hash>();
+      services.AddSingleton<IHash>(app => new Hash(app.GetService<Config>().AppKey));
       services.AddSingleton<IRandom, Random>();
       services.AddSingleton<HttpPusherClient>();
       services.AddSingleton<DomainContextFactory>();
-      services.AddHttpClient<PasswordService>();
       services.AddScoped<LogContext, SqliteLogContext>();
       services.AddScoped<SystemContext, SqliteSystemContext>();
       services.AddScoped<HttpPusherRepository>();
@@ -39,7 +38,7 @@ namespace Tiantong.Iot.Api
     public void Configure(IApplicationBuilder app)
     {
       app.UseMiddleware<JsonBody>();
-      app.UseProvider<ExceptionHandler>();
+      app.AddExceptionHandler();
       app.UseEmbeddedServer();
       app.UseRouting();
       app.UseCors(policy => policy.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials());

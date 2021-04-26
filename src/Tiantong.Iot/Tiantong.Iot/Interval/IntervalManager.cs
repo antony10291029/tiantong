@@ -23,9 +23,9 @@ namespace Tiantong.Iot
           if (task.IsCompleted) {
             try {
               task.GetAwaiter().GetResult();
-            } catch (Exception e) {
+            } catch (Exception) {
               Stop();
-              throw e;
+              throw;
             }
           }
         }

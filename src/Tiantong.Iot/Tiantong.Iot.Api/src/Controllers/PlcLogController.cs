@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Renet.Web;
 using Tiantong.Iot.Entities;
 using Z.EntityFramework.Plus;
 

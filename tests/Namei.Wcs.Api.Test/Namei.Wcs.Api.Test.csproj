@@ -9,6 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../Midos.Test/Midos.Test.csproj" />
-    <ProjectReference Include="../../projects/Namei/Namei.Wcs.Api/Namei.Wcs.Api.csproj" />
+    <ProjectReference Include="../../src/Namei/Namei.Wcs.Api/Namei.Wcs.Api.csproj" />
   </ItemGroup>
 </Project>

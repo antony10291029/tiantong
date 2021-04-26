@@ -10,7 +10,7 @@
       <ul class="menu-list">
         <li>
           <router-link
-            :to="`${baseURL}/plcs`"
+            :to="{ name: 'IotPlcsDashboard' }"
             active-class="none"
             exact-active-class="is-active"
           >
@@ -18,29 +18,29 @@
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <i class="iconfont icon-manage"></i>
+              <i class="icon-iot icon-iot-manage"></i>
             </span>
             <span>服务管理</span>
           </router-link>
         </li>
         <li v-for="id in plcs.result" :key="id">
-          <router-link :to="`${baseURL}/plcs/${id}`">
+          <router-link :to="{ name: 'IotPlcsPlc', params: { plcId: id } }">
             <span
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <span class="iconfont icon-device"></span>
+              <span class="icon-iot icon-iot-device"></span>
             </span>
             <span>{{plcs.data[id].name}}</span>
           </router-link>
         </li>
         <li>
-          <router-link :to="`${baseURL}/plcs/create`">
+          <router-link :to="{ name: 'IotPlcsCreate' }">
             <span
               class="icon"
               style="margin-right: 0.25rem"
             >
-              <i class="iconfont icon-add"></i>
+              <i class="icon-iot icon-iot-add"></i>
             </span>
             <span>添加设备</span>
           </router-link>
@@ -49,9 +49,8 @@
     </aside>
 
     <router-view
-      :key="currentPlc?.id"
+      :plcId="currentPlc?.id"
       :plc="currentPlc"
-      :baseURL="`${baseURL}/plcs`"
       class="is-flex-auto"
       @refresh="getPlcs"
     />
@@ -59,25 +58,24 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import { useService } from "@midos/vue-ui";
-import { IotHttpClient } from "../../services/iot-http-client";
+import { useIotHttp } from "../../services/iot-http-client";
 
 export default defineComponent({
   name: "PlcList",
 
   setup() {
     const route = useRoute();
-    const http = useService(IotHttpClient);
+    const http = useIotHttp();
 
-    const plcs = reactive({
+    const plcs = ref({
       result: [] as any,
       data: {} as any
     });
+
     const currentPlc = computed(() =>
-      plcs.data[route.params.plcId as string]
+      route.params.plcId && plcs.value.data[route.params.plcId as string]
     );
 
     const getPlcs = async () => {
@@ -90,12 +88,11 @@ export default defineComponent({
         data[plc.id] = plc;
       });
 
-      plcs.data = data;
-      plcs.result = result;
+      plcs.value.data = data;
+      plcs.value.result = result;
     };
 
     return {
-      baseURL: "/iot",
       plcs,
       currentPlc,
       getPlcs,

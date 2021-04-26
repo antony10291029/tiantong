@@ -8,8 +8,7 @@ namespace Tiantong.Iot.Sqlite.System
   {
     public SqliteSystemMigrator(SystemContext db): base(db)
     {
-      db.UseSqlDirectory("System.Sql");
-      UseMigrationDirectory("System.Migrations");
+
     }
   }
 }
