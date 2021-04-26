@@ -6,6 +6,8 @@ bin/
 obj/
 publish/
 release/
+.release/
 .ionide/
+Properties/
 log.txt
 *.db-journal
