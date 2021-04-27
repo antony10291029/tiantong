@@ -2,8 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-    <PublishDir>bin/publish</PublishDir>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
-    <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
     <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
+    <ProjectReference Include="../Namei.Common.Database/Namei.Common.Database.csproj" />
   </ItemGroup>
 </Project>

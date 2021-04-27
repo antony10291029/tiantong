@@ -16,6 +16,9 @@ namespace Namei.Common.Entities
     [Column("RELATED_BILL_ID")]
     public long? RelatedBillId { get; set; }
 
+    [Column("CODE")]
+    public string Code { get; set; }
+
     [Column("TYPE")]
     public string Type { get; set; }
 

@@ -20,6 +20,7 @@ import WmsPickTicketTasks from "./views/Wms.PickTicketTasks/index.vue";
 import RcsAgcTasks from "./views/Rcs.Agc.Tasks/index.vue";
 import RcsAgcTaskCreate from "./views/Rcs.Agc.Tasks.Create/index.vue";
 import RcsAgcTaskLogs from "./views/Rcs.Agc.Tasks.Logs/index.vue";
+import MoveDocBoxes from "./views/Wms.MoveDocBoxes/index.vue";
 
 @injectable()
 export class NameiWcs extends VueApp {
@@ -153,6 +154,11 @@ export class NameiWcs extends VueApp {
         path: "/wms/pick-ticket-tasks",
         name: "NameiWcsWmsPickTicketTasks",
         component: WmsPickTicketTasks
+      },
+      {
+        path: "/wms/move-doc-item-review-records",
+        name: "NameiWmsMoveDocBoxes",
+        component: MoveDocBoxes
       },
       {
         path: "/rcs/agc-tasks",

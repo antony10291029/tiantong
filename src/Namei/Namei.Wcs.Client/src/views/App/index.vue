@@ -37,6 +37,7 @@ export default defineComponent({
         { text: "自动门", route: "NameiWcsDoors", icon: "door" },
         { text: "AGC 任务", route: "NameiWcsRcsAgcTasks", icon: "door" },
         { text: "发料任务", route: "NameiWcsWmsPickTicketTasks", icon: "deliver-items" },
+        { text: "箱码绑定", route: "NameiWmsMoveDocBoxes", icon: "deliver-items" },
         { text: "地图管理", route: "NameiWcsRcs", icon: "map-unbind" },
         { text: "系统日志", route: "NameiWcsLogs", icon: "log" },
         { text: "系统功能", route: "NameiWcsSystem", icon: "settings" },

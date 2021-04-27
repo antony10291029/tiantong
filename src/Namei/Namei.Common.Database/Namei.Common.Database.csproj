@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
+    <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
+    <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations/*.cs" />
+    <EmbeddedResource Include="Sql/*.sql" />
+  </ItemGroup>
+</Project>

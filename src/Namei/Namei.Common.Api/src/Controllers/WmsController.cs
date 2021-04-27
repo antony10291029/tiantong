@@ -3,19 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using Midos.Services.Http;
 using Namei.Common.Entities;
+using System;
 using System.Linq;
 
 namespace Namei.Common.Api
 {
   public class WmsController: BaseController
   {
-    private string _wcsUrl;
+    private readonly string _wcsUrl;
 
-    private WmsContext _wms;
+    private readonly WmsContext _wms;
 
-    private SapContext _sap;
+    private readonly SapContext _sap;
 
-    private IHttpService _http;
+    private readonly IHttpService _http;
 
     public WmsController(
       Config config,
@@ -51,7 +52,7 @@ namespace Namei.Common.Api
         .FirstOrDefault(ad => ad.Id == param.AsnDetailId);
 
       if (asnDetail == null) {
-        return new SapItemBatch[] {};
+        return Array.Empty<SapItemBatch>();
       }
 
       var fromName = asnDetail.Asn.FromName;
@@ -65,6 +66,11 @@ namespace Namei.Common.Api
       }
 
       return query.ToArray();
+    }
+
+    public class MoveDocSearchParams
+    {
+      public string[] Codes { get; set; }
     }
 
     [HttpPost("/wms/pick-ticket-tasks/search")]
