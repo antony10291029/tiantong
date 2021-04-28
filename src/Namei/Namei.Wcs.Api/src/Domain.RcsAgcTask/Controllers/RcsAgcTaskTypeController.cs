@@ -16,15 +16,15 @@ namespace Namei.Wcs.Aggregates
 
     public struct CreateParams
     {
-      public long Id { get; private set; }
+      public long Id { get; set; }
 
-      public string Key { get; private set; }
+      public string Key { get; set; }
 
-      public string Name { get; private set; }
+      public string Name { get; set; }
 
-      public string Method { get; private set; }
+      public string Method { get; set; }
 
-      public string Webhook { get; private set; }
+      public string Webhook { get; set; }
     }
 
     [HttpPost("/rcs-agc-task-type/create")]
@@ -87,15 +87,15 @@ namespace Namei.Wcs.Aggregates
     }
 
     [HttpPost("/rcs-agc-task-type/all")]
-    public IDataMap<RcsAgcTaskType> All(QueryParams param)
+    public IDataMap<RcsAgcTaskType> All([FromBody] QueryParams param)
     {
       var query = _context.Set<RcsAgcTaskType>().AsQueryable();
 
-      if (param.Query != "" || param.Query != null) {
+      if (param.Query != "" && param.Query != null) {
         query = query.Where(type =>
-          type.Key == param.Query ||
-          type.Name == param.Query ||
-          type.Webhook == param.Query
+          type.Key.Contains(param.Query) ||
+          type.Name.Contains(param.Query) ||
+          type.Webhook.Contains(param.Query)
         );
       }
 

@@ -32,7 +32,7 @@ export default defineComponent({
   props: {
     isPending: {
       type: Boolean,
-      required: true
+      default: false
     },
 
     placeholder: {

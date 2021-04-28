@@ -18,6 +18,7 @@ import RcsNotifyTask from "./views/Rcs.NotifyTask/index.vue";
 import Logs from "./views/Logs/index.vue";
 import WmsPickTicketTasks from "./views/Wms.PickTicketTasks/index.vue";
 import RcsAgcTasks from "./views/Rcs.Agc.Tasks/index.vue";
+import RcsAgcTaskTypes from "./views/Rcs.Agc.Tasks.Types/index.vue";
 import RcsAgcTaskCreate from "./views/Rcs.Agc.Tasks.Create/index.vue";
 import RcsAgcTaskLogs from "./views/Rcs.Agc.Tasks.Logs/index.vue";
 import MoveDocBoxes from "./views/Wms.MoveDocBoxes/index.vue";
@@ -168,6 +169,7 @@ export class NameiWcs extends VueApp {
         props: () => ({
           tabs: [
             { text: "任务列表", route: "NameiWcsRcsAgcTasksSearch" },
+            { text: "任务类型", route: "NameiWcsRcsAgcTasksTypes" },
             { text: "运行日志", route: "NameiWcsRcsAgcTasksLogs" },
           ]
         }),
@@ -188,6 +190,11 @@ export class NameiWcs extends VueApp {
             path: "logs",
             name: "NameiWcsRcsAgcTasksLogs",
             component: RcsAgcTaskLogs
+          },
+          {
+            path: "types",
+            name: "NameiWcsRcsAgcTasksTypes",
+            component: RcsAgcTaskTypes
           }
         ]
       },
