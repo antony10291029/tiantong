@@ -1,20 +1,43 @@
+using Midos.Domain;
+
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskType
+  public class RcsAgcTaskType: IEntity, IAggregateRoot
   {
-    public const string Move = "wcs.move";
+    public long Id { get; private set; }
 
-    public const string MoveLock = "wcs.move.lock";
+    public string Key { get; private set; }
 
-    public const string Lift = "wcs.lift";
+    public string Name { get; private set; }
 
-    public const string Put = "wcs.put";
+    public string Method { get; private set; }
 
-    public const string PutLock = "wcs.put.lock";
+    public string Webhook { get; private set; }
 
-    public const string Carry = "wcs.carry";
+    private RcsAgcTaskType() {}
 
-    public const string CarryLock = "wcs.carry.lock";
+    public static RcsAgcTaskType From(
+      string key,
+      string name,
+      string method,
+      string webhook
+    ) => new() {
+        Key = key,
+        Name = name,
+        Method = method,
+        Webhook = webhook
+      };
 
+    public void Update(
+      string key,
+      string name,
+      string method,
+      string webhook
+    ) {
+      Key = key;
+      Name = name;
+      Method = method;
+      Webhook = webhook;
+    }
   }
 }

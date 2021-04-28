@@ -23,6 +23,8 @@ namespace Namei.Wcs.Api
 
     public DbSet<RcsAgcTask> RcsAgcTasks { get; set; }
 
+    public DbSet<RcsAgcTaskType> RcsAgcTaskTypes { get; set; }
+
     public DbSet<RcsDoorTask> RcsDoorTasks { get; set; }
 
     public DbSet<DeviceError> DeviceErrors { get; set; }

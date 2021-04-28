@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Builder
     {
       try {
         await _next(httpContext);
-        handler.HandleStatusCode(httpContext.Response.StatusCode);
+        ExceptionHandler.HandleStatusCode(httpContext.Response.StatusCode);
       } catch (Exception e) {
         await handler.Handle(e);
       }

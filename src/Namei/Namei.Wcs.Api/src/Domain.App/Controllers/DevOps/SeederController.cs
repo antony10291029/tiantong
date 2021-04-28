@@ -8,9 +8,9 @@ namespace Namei.Wcs.Api
 {
   public class SeederController: SeederControllerBase
   {
-    private IRandom _random;
+    private readonly IRandom _random;
 
-    private DomainContext _domain;
+    private readonly DomainContext _domain;
 
     public SeederController(
       DomainContext domain,
@@ -24,6 +24,21 @@ namespace Namei.Wcs.Api
     protected override void Seed()
     {
       SeedRcsAgcTasks();
+      SeedRcsAgcTaskTypes();
+    }
+
+    private void SeedRcsAgcTaskTypes()
+    {
+      var types = Enumerable.Range(1, 100)
+        .Select(i => RcsAgcTaskType.From(
+          key: $"test_type_key_{i}",
+          name: $"test_type_name_{i}",
+          method: RcsAgcTaskMethod.Values.ToArray()[i % 7],
+          webhook: "http://localhost:5100/"
+        ));
+
+      _domain.AddRange(types);
+      _domain.SaveChanges();
     }
 
     private void SeedRcsAgcTasks()
