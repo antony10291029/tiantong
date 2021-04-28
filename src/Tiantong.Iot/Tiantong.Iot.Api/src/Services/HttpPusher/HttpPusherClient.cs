@@ -11,7 +11,7 @@ namespace Tiantong.Iot.Api
 {
   public class HttpPusherClient
   {
-    private HttpClient _client = new HttpClient();
+    private readonly HttpClient _client = new();
 
     public DomainContextFactory _domain;
 
@@ -64,7 +64,7 @@ namespace Tiantong.Iot.Api
             message = e.Message,
           });
 
-          throw e;
+          throw;
         }
       }
     }

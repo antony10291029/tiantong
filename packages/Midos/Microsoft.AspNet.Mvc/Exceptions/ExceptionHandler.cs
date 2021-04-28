@@ -11,31 +11,39 @@ namespace Microsoft.AspNetCore.Builder
 {
   public class ExceptionHandler
   {
-    private HttpContext _httpContext;
+    private readonly HttpContext _httpContext;
 
-    private IHostingEnvironment _env;
+    private readonly IWebHostEnvironment _env;
 
     public ExceptionHandler(
-      IHostingEnvironment env,
+      IWebHostEnvironment env,
       IHttpContextAccessor httpAccessor
     ) {
       _env = env;
       _httpContext = httpAccessor.HttpContext;
     }
 
-    public void HandleStatusCode(int code)
+    public static void HandleStatusCode(int code)
     {
       if (code == 404) {
         throw new HttpException("Api not found", 404);
       }
     }
 
+    protected static Action<dynamic> ResolveExceptionExpander(Exception ex) => response =>
+    {
+      if (ex is DbUpdateException) {
+        var error = ex as DbUpdateException;
+        response.details = error.InnerException.ToString().Split('\n').Select(row => row.Trim());
+      }
+    };
+
     public async Task Handle(Exception ex)
     {
-      if (ex is IKnownException) {
-        await HandleKnownException((IKnownException) ex, _httpContext);
-      } else if (ex is IHttpException) {
-        await HandleHttpException((IHttpException) ex, _httpContext);
+      if (ex is IKnownException knownException) {
+        await HandleKnownException(knownException, _httpContext);
+      } else if (ex is IHttpException httpException) {
+        await HandleHttpException(httpException, _httpContext);
       } else if (ex is InvalidOperationException && ex?.InnerException?.Message == "Exception while connecting") {
         // 无法准确定位异常
         await HandleNpgsqlTimeoutException(ex, _httpContext);
@@ -43,14 +51,6 @@ namespace Microsoft.AspNetCore.Builder
         await ShowDevelopmentException(ex, _httpContext, ResolveExceptionExpander(ex));
       }
     }
-
-    protected Action<dynamic> ResolveExceptionExpander(Exception ex) => response =>
-    {
-      if (ex is DbUpdateException) {
-        var error = ex as DbUpdateException;
-        response.details = error.InnerException.ToString().Split('\n').Select(row => row.Trim());
-      }
-    };
 
     protected virtual async Task HandleKnownException(IKnownException ex, HttpContext context)
     {
@@ -93,7 +93,7 @@ namespace Microsoft.AspNetCore.Builder
 
       data.error = ex.GetType().Name;
       data.message = ex.Message;
-      if (expander != null) expander(data);
+      expander?.Invoke(data);
       data.traces = ex.StackTrace.Split("\n").Select(text => text.Trim()).ToArray();
 
       await context.Response.WriteAsync(JsonSerializer.Serialize((object) data));

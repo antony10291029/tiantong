@@ -8,9 +8,9 @@ namespace Tiantong.Iot.Api
 {
   public class PlcWorker
   {
-    private PlcClient _client;
+    private readonly PlcClient _client;
 
-    private IntervalManager _intervalManager;
+    private readonly IntervalManager _intervalManager;
 
     internal DomainContextFactory _domain;
 
@@ -52,7 +52,7 @@ namespace Tiantong.Iot.Api
         state.Set(value);
       } catch (Exception e) {
         Reconnect(e);
-        throw e;
+        throw;
       }
 
       if (state.IsWriteLogOn()) {
@@ -67,14 +67,14 @@ namespace Tiantong.Iot.Api
 
     public string Get(string name)
     {
-      var value = "";
+      string value;
       var state = _client.State(name);
 
       try {
         value = state.Get();
       } catch (Exception e) {
         Reconnect(e);
-        throw e;
+        throw;
       }
 
       if (state.IsReadLogOn()) {
