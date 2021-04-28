@@ -44,7 +44,7 @@ namespace Namei.Wcs.Aggregates
       string comment = "",
       string orderType = "",
       long orderId = 0
-    ) => new RcsAgcTask {
+    ) => new() {
       TaskType = taskType,
       Position = position,
       Destination = destination,

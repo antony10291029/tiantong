@@ -80,7 +80,7 @@ namespace Namei.Wcs.Api.Test
       AssertHelper.HasEvent(
         RcsAgcTaskCreate.Message,
         RcsAgcTaskCreate.From(
-          taskType: RcsAgcTaskType.Carry,
+          taskType: RcsAgcTaskMethod.Carry,
           position: task.Position,
           destination: task.Destination,
           priority: "",

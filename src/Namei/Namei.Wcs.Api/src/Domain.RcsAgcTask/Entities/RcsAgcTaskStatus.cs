@@ -4,13 +4,13 @@ namespace Namei.Wcs.Aggregates
 {
   public class RcsAgcTaskStatus
   {
-    public static string Created = "created";
+    public const string Created = "created";
 
-    public static string Started = "started";
+    public const string Started = "started";
 
-    public static string Finished = "finished";
+    public const string Finished = "finished";
 
-    public static string Closed = "closed";
+    public const string Closed = "closed";
 
     public static IEnumerable<string> Enumerate()
     {

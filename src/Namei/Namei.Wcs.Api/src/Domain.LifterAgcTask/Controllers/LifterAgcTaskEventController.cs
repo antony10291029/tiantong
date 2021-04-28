@@ -53,7 +53,7 @@ namespace Namei.Wcs.Aggregates
       }
 
       _context.Publish(RcsAgcTaskCreate.Message, RcsAgcTaskCreate.From(
-        taskType: RcsAgcTaskType.Carry,
+        taskType: RcsAgcTaskMethod.Carry,
         position: task.Position,
         destination: task.Destination,
         priority: "",

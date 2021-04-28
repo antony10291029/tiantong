@@ -46,7 +46,7 @@ namespace Namei.Wcs.Aggregates
       _context.Publish(
         name: RcsAgcTaskCreate.Message,
         data: RcsAgcTaskCreate.From(
-          taskType: RcsAgcTaskType.Carry,
+          taskType: RcsAgcTaskMethod.Carry,
           position: param.Position,
           destination: param.Destination,
           podCode: param.PalletCode,
