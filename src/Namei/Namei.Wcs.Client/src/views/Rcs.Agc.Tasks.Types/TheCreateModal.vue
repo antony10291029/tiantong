@@ -60,7 +60,7 @@ export default defineComponent({
     });
 
     async function handleSubmit() {
-      await http.post("/rcs-agc-task-type/create", params.value);
+      await http.post("/agc-task-types/create", params.value);
       emit("refresh");
       isShow.value = false;
       params.value = {

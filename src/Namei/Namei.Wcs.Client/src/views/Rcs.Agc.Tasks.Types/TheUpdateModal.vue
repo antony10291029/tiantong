@@ -3,6 +3,12 @@
     <a @click="isShow = true">
       编辑
     </a>
+    <a
+      @click="handleDelete"
+      style="margin-left: 0.25rem"
+    >
+      删除
+    </a>
     <div
       v-if="isShow"
       class="modal is-active"
@@ -38,12 +44,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, toRefs, useContext } from "vue";
+import { defineComponent, PropType, ref, toRefs } from "vue";
+import { useConfirm } from "@midos/vue-ui";
 import { useWcsHttp } from "../../services/wcs-http";
 import { useCopy } from "../../hooks/use-copy";
 import TheForm from "./TheForm.vue";
 
 interface Params {
+  id: number;
   key: string;
   name: string;
   method: string;
@@ -62,14 +70,25 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
-    const { emit } = useContext();
+  setup(props, { emit }) {
+    const confirm = useConfirm();
     const http = useWcsHttp();
     const isShow = ref(false);
     const { data, isChanged } = useCopy<any>(toRefs(props).params as any);
 
+    function handleDelete() {
+      confirm.open({
+        title: "提示",
+        content: "确认后将删除该任务",
+        handler: async () => {
+          await http.post("/agc-task-types/delete", { id: props.params.id });
+          emit("refresh");
+        }
+      });
+    }
+
     async function handleSubmit() {
-      await http.post("/rcs-agc-task-type/update", data.value);
+      await http.post("/agc-task-types/update", data.value);
       isShow.value = false;
       emit("refresh");
     }
@@ -78,7 +97,8 @@ export default defineComponent({
       isShow,
       data,
       isChanged,
-      handleSubmit
+      handleDelete,
+      handleSubmit,
     };
   }
 });

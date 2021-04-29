@@ -4,7 +4,7 @@
       class="modal-background"
       @click="handleClose"
     />
-    <div class="modal-card">
+    <div class="modal-card" style="width: 520px">
       <div class="modal-card-head">
         <div class="modal-card-title">
           创建 AGC 任务
@@ -12,7 +12,7 @@
       </div>
 
       <div class="modal-card-body">
-        <TheTaskType v-model:value="params.taskType" />
+        <TheTaskType v-model:value="params.type" />
 
         <div class="field">
           <label class="label">起点</label>
@@ -65,13 +65,11 @@ export default defineComponent({
     const http = useWcsHttp();
     const router = useRouter();
     const params = ref({
-      taskType: "",
+      type: "",
       position: "",
       destination: "",
       podCode: "",
-      comment: "",
-      orderType: "wcs.test",
-      orderId: 1
+      priority: ""
     });
 
     function handleClose() {

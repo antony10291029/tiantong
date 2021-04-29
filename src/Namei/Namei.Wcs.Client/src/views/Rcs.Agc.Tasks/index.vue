@@ -19,15 +19,15 @@
 
     <table class="table is-fullwidth is-bordered is-centered is-nowrap">
       <thead>
-        <th>编号</th>
+        <th>#</th>
+        <th>任务类型</th>
         <th>状态</th>
-        <th>订单类型</th>
-        <th>订单号</th>
-        <th>任务编号</th>
+        <th>外部单号</th>
         <th>起点</th>
         <th>终点</th>
         <th>托盘码</th>
-        <th>AGC编号</th>
+        <th>AGC 编号</th>
+        <th>RCS 任务单号</th>
         <th>日期</th>
         <th></th>
       </thead>
@@ -38,14 +38,14 @@
           tag="tr"
         >
           <td>{{entity.id}}</td>
+          <td>{{entity.type.name}}</td>
           <TheStatus :value="entity.status" />
-          <td>{{entity.orderType}}</td>
-          <td>{{entity.orderId}}</td>
-          <td>{{entity.taskCode}}</td>
+          <td>{{entity.taskId}}</td>
           <td>{{entity.position}}</td>
           <td>{{entity.destination}}</td>
           <td>{{entity.podCode}}</td>
           <td>{{entity.agcCode}}</td>
+          <td>{{entity.rcsTaskCode}}</td>
           <td v-text="entity.createdAt" tag="td" />
           <td>
             <a @click="handleClose(entity.id)">
@@ -86,12 +86,12 @@ export default defineComponent({
 
   setup() {
     const http = useWcsHttp();
-    const param = useQuery(10);
+    const param = useQuery(50);
     const data = usePagination();
     const confirm = useConfirm();
 
     async function getTasks() {
-      data.value = await http.paginate("/rcs/agc-tasks/search", param);
+      data.value = await http.paginate("/agc-tasks/search", param);
     }
 
     function changePage(page: number) {
@@ -111,7 +111,7 @@ export default defineComponent({
         title: "关闭任务",
         content: "确认后任务将被关闭",
         handler: async () => {
-          await http.post("/rcs/agc-tasks/close", { id });
+          await http.post("/agc-tasks/close", { id });
           await getTasks();
         }
       });

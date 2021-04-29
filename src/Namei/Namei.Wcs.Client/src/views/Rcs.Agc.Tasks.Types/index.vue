@@ -66,7 +66,7 @@ export default defineComponent({
     });
 
     async function getTypes() {
-      types.value = await http.post("/rcs-agc-task-type/all", params.value);
+      types.value = await http.post("/agc-task-types/all", params.value);
     }
 
     function handleSearch(text: string) {
