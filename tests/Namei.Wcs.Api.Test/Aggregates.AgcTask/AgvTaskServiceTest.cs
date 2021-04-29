@@ -23,6 +23,7 @@ namespace Namei.Wcs.Aggregates.Test
     [DataRow(false)]
     public void Test_Create(bool useTypeId)
     {
+      var rcsTaskCode = "100235";
       var param = useTypeId
         ? AgcTaskCreate.From(
             typeId: TestData.AgcTaskType.Id,
@@ -40,9 +41,16 @@ namespace Namei.Wcs.Aggregates.Test
           priority: "5",
           taskId: "100000"
         );
-      var service = UseService();
-      var id = service.Create(param);
-      var data = _context.Find<AgcTask>(id);
+      var rcs = Helper.UseService<IRcsService>(mock => mock
+        .Setup(rcs => rcs.CreateTask(It.IsAny<RcsTaskCreateParams>()))
+        .Returns(new RcsTaskCreateResult {
+          code = "0",
+          data = rcsTaskCode,
+        })
+      );
+      var service = UseService(rcs);
+      var result = service.Create(param);
+      var data = _context.Find<AgcTask>(result.Id);
 
       Assert.AreEqual(param.TypeId, data.TypeId);
       Assert.AreEqual(param.Position, data.Position);
@@ -50,70 +58,8 @@ namespace Namei.Wcs.Aggregates.Test
       Assert.AreEqual(param.PodCode, data.PodCode);
       Assert.AreEqual(param.Priority, data.Priority);
       Assert.AreEqual(param.TaskId, data.TaskId);
+      Assert.AreEqual(rcsTaskCode, data.RcsTaskCode);
       Assert.AreEqual(AgcTaskStatus.Created, data.Status);
-      AssertHelper.HasEvent(
-        AgcTaskCreated.@event,
-        AgcTaskCreated.From(id)
-      );
-    }
-
-    [TestMethod]
-    public void Test_Start()
-    {
-      var task = AgcTask.From(
-        typeId: TestData.AgcTaskType.Id,
-        position: "000001",
-        destination: "000002"
-      );
-
-      _context.Add(task);
-      _context.SaveChanges();
-
-      var result = new RcsTaskCreateResult {
-        data = "100000"
-      };
-      var rcs = Helper.UseService<IRcsService>(mock => mock
-        .Setup(rcs => rcs.CreateTask(It.IsAny<RcsTaskCreateParams>()))
-        .Returns(result)
-      );
-      var param = AgcTaskStart.From(task.Id);
-      var service = UseService(rcs);
-
-      service.Start(param);
-
-      AssertHelper.HasEvent(
-        AgcTaskStarted.@event,
-        AgcTaskStarted.From(
-          id: task.Id,
-          taskCode: result.data
-        )
-      );
-    }
-
-    [TestMethod]
-    public void Test_Started()
-    {
-      var task = AgcTask.From(
-        typeId: TestData.AgcTaskType.Id,
-        position: "0010000",
-        destination: "0020000"
-      );
-
-      _context.Add(task);
-      _context.SaveChanges();
-
-      var param = AgcTaskStarted.From(
-        id: task.Id,
-        taskCode: "100000"
-      );
-      var service = UseService();
-
-      service.Started(param);
-
-      var data = _context.Find<AgcTask>(task.Id);
-
-      Assert.AreEqual(param.TaskCode, data.RcsTaskCode);
-      Assert.AreEqual(AgcTaskStatus.Started, data.Status);
     }
 
     [TestMethod]

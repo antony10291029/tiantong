@@ -40,7 +40,7 @@ namespace Namei.Wcs.Aggregates
       Destination = destination,
       Priority = priority,
       PodCode = podCode,
-      TaskId = taskId
+      TaskId = taskId,
     };
 
     public static AgcTaskCreate From(
@@ -56,7 +56,7 @@ namespace Namei.Wcs.Aggregates
       Destination = destination,
       Priority = priority,
       PodCode = podCode,
-      TaskId = taskId
+      TaskId = taskId,
     };
   }
 }

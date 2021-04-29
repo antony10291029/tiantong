@@ -8,20 +8,10 @@ namespace Namei.Wcs.Aggregates
 
     public long Id { get; init; }
 
-    public bool IsEnforced { get; init; }
-
     public static AgcTaskStart From(
-      long id,
-      bool isEnforced = false
+      long id
     ) => new() {
-      Id = id,
-      IsEnforced = isEnforced
+      Id = id
     };
-
-    public static AgcTaskStart From(AgcTaskCreated param)
-      => From(
-        id: param.Id,
-        isEnforced: false
-      );
   }
 }

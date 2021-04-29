@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Midos.Domain;
+using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -12,44 +13,21 @@ namespace Namei.Wcs.Aggregates
       _service = service;
     }
 
-    public struct CreateResult: IMessageObject
-    {
-      public int Code { get; set; }
-
-      public string Message { get; set; }
-
-      public object Data { get; set; }
-    }
-
     [HttpPost("/agc-tasks/create")]
     [HttpPost("/rcs/agc-tasks/create")]
-    public INotifyResult<CreateResult> Create([FromBody] AgcTaskCreate param)
+    public INotifyResult<AgcTaskCreateResult> Create([FromBody] AgcTaskCreate param)
     {
-      var result = new CreateResult {
-        Code = 0,
-        Message = "任务已创建",
-        Data = param
-      };
+
 
       param.Priority ??= "";
       param.TaskId ??= "";
       param.PodCode ??= "";
 
-      _service.Create(param);
+      var result =_service.Create(param);
 
       return NotifyResult
         .From(result)
-        .Success("AGC 任务已创建");
-    }
-
-    [HttpPost("/agc-tasks/start")]
-    public INotifyResult<IMessageObject> Start([FromBody] AgcTaskStart param)
-    {
-      _service.Start(param);
-
-      return NotifyResult
-        .FromVoid()
-        .Success("AGC 任务下发成功");
+        .StatusCode(result.Code == 0 ? 201 : 400);
     }
 
     [HttpPost("/agc-tasks/finish")]

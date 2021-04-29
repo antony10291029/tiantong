@@ -1,5 +1,6 @@
 using Midos.Domain;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -27,8 +28,6 @@ namespace Namei.Wcs.Aggregates
 
     public DateTime CreatedAt { get; private set; }
 
-    public DateTime StartedAt { get; private set; }
-
     public DateTime ClosedAt { get; private set; }
 
     public AgcTaskType Type { get; private set; }
@@ -52,7 +51,6 @@ namespace Namei.Wcs.Aggregates
       Status = AgcTaskStatus.Created,
       TaskId = taskId,
       CreatedAt = DateTime.MinValue,
-      StartedAt = DateTime.MinValue,
       ClosedAt = DateTime.MinValue,
     };
 
@@ -69,8 +67,6 @@ namespace Namei.Wcs.Aggregates
     public void Start(string taskCode)
     {
       RcsTaskCode = taskCode;
-      StartedAt = DateTime.Now;
-      Status = AgcTaskStatus.Started;
     }
 
     public void Finish(string agcCode)
@@ -85,6 +81,5 @@ namespace Namei.Wcs.Aggregates
       ClosedAt = DateTime.Now;
       Status = AgcTaskStatus.Closed;
     }
-
   }
 }

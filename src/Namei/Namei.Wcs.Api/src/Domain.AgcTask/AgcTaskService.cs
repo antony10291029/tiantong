@@ -1,19 +1,26 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using Midos.Services.Http;
 using Namei.Wcs.Api;
+using SQLitePCL;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Namei.Wcs.Aggregates
 {
+  public class AgcTaskCreateResult: IMessageObject
+  {
+    public long Id { get; set; }
+
+    public int Code { get; set; }
+
+    public string Message { get; set; }
+  }
+
   public interface IAgcTaskService
   {
-    long Create(AgcTaskCreate param);
-
-    void Start(AgcTaskStart param);
-
-    void Started(AgcTaskStarted param);
+    AgcTaskCreateResult Create(AgcTaskCreate param);
 
     void Close(AgcTaskClose param);
 
@@ -38,38 +45,20 @@ namespace Namei.Wcs.Aggregates
       _rcs = rcs;
     }
 
-    public long Create(AgcTaskCreate param)
+    public AgcTaskCreateResult Create(AgcTaskCreate param)
     {
-      if (param.TypeId == default(int)) {
-        param.TypeId = _context.Set<AgcTaskType>()
-          .First(type => type.Key == param.Type)
-          .Id;
+      AgcTaskType type;
+
+      if (param.TypeId != default(int)) {
+        type = _context.Set<AgcTaskType>().First(type => type.Id == param.TypeId);
+      } else {
+        type = _context.Set<AgcTaskType>().First(type => type.Key == param.Type);
+        param.TypeId = type.Id;
       }
 
       var task = AgcTask.From(param);
-
-      _context.Add(task);
-      _context.SaveChanges();
-      _context.Publish(
-        AgcTaskCreated.@event,
-        AgcTaskCreated.From(task.Id)
-      );
-
-      return task.Id;
-    }
-
-    public void Start(AgcTaskStart param)
-    {
-      var task = _context.Set<AgcTask>()
-        .Include(task => task.Type)
-        .First(task => task.Id == param.Id);
-
-      if (task.Status != AgcTaskStatus.Created) {
-        return;
-      }
-
       var result = _rcs.CreateTask(new RcsTaskCreateParams {
-        taskTyp = task.Type.Method,
+        taskTyp = type.Method,
         agvCode = task.AgcCode,
         podCode = task.PodCode,
         priority = task.Priority,
@@ -79,21 +68,17 @@ namespace Namei.Wcs.Aggregates
         }
       });
 
-      _context.Publish(
-        AgcTaskStarted.@event,
-        AgcTaskStarted.From(
-          id: param.Id,
-          taskCode: result.data
-        )
-      );
-    }
+      if (result.code == "0") {
+        task.Start(result.data);
+        _context.Add(task);
+        _context.SaveChanges();
+      }
 
-    public void Started(AgcTaskStarted param)
-    {
-      var task = _context.Find<AgcTask>(param.Id);
-
-      task.Start(param.TaskCode);
-      _context.SaveChanges();
+      return new AgcTaskCreateResult {
+        Id = task.Id,
+        Code = int.Parse(result.code),
+        Message = result.message
+      };
     }
 
     public void Close(AgcTaskClose param)

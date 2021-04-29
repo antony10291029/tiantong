@@ -10,6 +10,5 @@ create table if not exists "AgcTasks" (
   "RcsTaskCode" varchar(255) not null,
   "Status" varchar(255) not null,
   "CreatedAt" timestamp(0) not null,
-  "StartedAt" timestamp(0) not null,
   "ClosedAt" timestamp(0) not null
 );
