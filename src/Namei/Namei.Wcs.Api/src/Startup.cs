@@ -39,7 +39,7 @@ namespace Namei.Wcs.Api
       services.AddScoped<IEventPublisher, EventPublisher>();
       services.AddScoped<RcsService>(); // todo remove
       services.AddScoped<IRcsService, RcsService>();
-      services.AddScoped<IRcsAgcTaskService, RcsAgcTaskService>();
+      services.AddScoped<IAgcTaskService, AgcTaskService>();
       services.AddScoped<IWcsDoorFactory, WcsDoorFactory>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<ILifterLogger, LifterLogger>();

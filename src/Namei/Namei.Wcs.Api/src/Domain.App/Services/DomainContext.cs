@@ -21,9 +21,9 @@ namespace Namei.Wcs.Api
 
     public DbSet<Device> Devices { get; set; }
 
-    public DbSet<RcsAgcTask> RcsAgcTasks { get; set; }
+    public DbSet<AgcTask> AgcTasks { get; set; }
 
-    public DbSet<RcsAgcTaskType> RcsAgcTaskTypes { get; set; }
+    public DbSet<AgcTaskType> AgcTaskTypes { get; set; }
 
     public DbSet<RcsDoorTask> RcsDoorTasks { get; set; }
 

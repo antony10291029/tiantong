@@ -11,9 +11,9 @@ namespace Namei.Wcs.Aggregates
 
     public const string Group = "WmsPickTicketTaskController";
 
-    private WcsContext _context;
+    private readonly WcsContext _context;
 
-    private string _url;
+    private readonly string _url;
 
     public WmsPickTicketTaskController(IAppConfig config, WcsContext context)
     {
@@ -29,57 +29,57 @@ namespace Namei.Wcs.Aggregates
       _context = context;
     }
 
-    public struct StartParams
-    {
-      public long TaskId { get; set; }
+    // public struct StartParams
+    // {
+    //   public long TaskId { get; set; }
 
-      public string Position { get; set; }
+    //   public string Position { get; set; }
 
-      public string Destination { get; set; }
+    //   public string Destination { get; set; }
 
-      public string PalletCode { get; set; }
-    }
+    //   public string PalletCode { get; set; }
+    // }
 
-    [HttpPost("/wms/pick-ticket-tasks/start")]
-    public object Start([FromBody] StartParams param)
-    {
-      _context.Publish(
-        name: RcsAgcTaskCreate.Message,
-        data: RcsAgcTaskCreate.From(
-          taskType: RcsAgcTaskMethod.Carry,
-          position: param.Position,
-          destination: param.Destination,
-          podCode: param.PalletCode,
-          orderType: OrderType,
-          orderId: param.TaskId
-        )
-      );
+    // [HttpPost("/wms/pick-ticket-tasks/start")]
+    // public object Start([FromBody] StartParams param)
+    // {
+    //   _context.Publish(
+    //     name: RcsAgcTaskCreate.Message,
+    //     data: RcsAgcTaskCreate.From(
+    //       taskType: RcsAgcTaskMethod.Carry,
+    //       position: param.Position,
+    //       destination: param.Destination,
+    //       podCode: param.PalletCode,
+    //       orderType: OrderType,
+    //       orderId: param.TaskId
+    //     )
+    //   );
 
-      return NotifyResult
-        .FromVoid()
-        .Success("任务已下发");
-    }
+    //   return NotifyResult
+    //     .FromVoid()
+    //     .Success("任务已下发");
+    // }
 
-    [HttpPost("/wms/pick-ticket-tasks/finish")]
-    public object HandleFinish([FromBody] RcsAgcTaskOrderFinished param)
-    {
-      Finished(param);
+    // [HttpPost("/wms/pick-ticket-tasks/finish")]
+    // public object HandleFinish([FromBody] RcsAgcTaskOrderFinished param)
+    // {
+    //   Finished(param);
 
-      return NotifyResult
-        .FromVoid()
-        .Success("任务已完成");
-    }
+    //   return NotifyResult
+    //     .FromVoid()
+    //     .Success("任务已完成");
+    // }
 
-    [RcsAgcTaskOrderFinished(OrderType, Group = Group)]
-    public void Finished(RcsAgcTaskOrderFinished param)
-    {
-      _context.Publish(
-        name: HttpPost.Event,
-        data: HttpPost.From(
-          url: $"{_url}/wms/pick-ticket-tasks/finish",
-          data: new { Id = param.OrderId }
-        )
-      );
-    }
+    // [RcsAgcTaskOrderFinished(OrderType, Group = Group)]
+    // public void Finished(RcsAgcTaskOrderFinished param)
+    // {
+    //   _context.Publish(
+    //     name: HttpPost.Event,
+    //     data: HttpPost.From(
+    //       url: $"{_url}/wms/pick-ticket-tasks/finish",
+    //       data: new { Id = param.OrderId }
+    //     )
+    //   );
+    // }
   }
 }

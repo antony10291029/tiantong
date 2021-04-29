@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskStatus
+  public class AgcTaskStatus
   {
     public const string Created = "created";
 

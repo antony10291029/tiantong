@@ -5,11 +5,19 @@ namespace Namei.Wcs.Api.Test
 {
   public static class TestData
   {
-    public static LifterAgcTaskType LifterAgcTaskType
-      = new LifterAgcTaskType(
+    public readonly static LifterAgcTaskType LifterAgcTaskType
+      = new(
         key: "test",
         name: "name",
         webHook: "webhook"
+      );
+
+    public readonly static AgcTaskType AgcTaskType
+      = AgcTaskType.From(
+        key: "test",
+        name: "test.name",
+        method: "wcs.move",
+        webhook: "http://localhost"
       );
   }
 
@@ -17,7 +25,7 @@ namespace Namei.Wcs.Api.Test
   public class Main
   {
     [AssemblyInitialize]
-    public static void Up(TestContext context)
+    public static void Up(TestContext _)
     {
       using var domain = Utils.GetDomain();
 
@@ -25,6 +33,7 @@ namespace Namei.Wcs.Api.Test
       domain.Database.EnsureCreated();
 
       domain.Add(TestData.LifterAgcTaskType);
+      domain.Add(TestData.AgcTaskType);
       domain.SaveChanges();
     }
 

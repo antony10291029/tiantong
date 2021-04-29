@@ -10,48 +10,50 @@ namespace Namei.Wcs.Api
   {
     private readonly IRandom _random;
 
-    private readonly DomainContext _domain;
+    private readonly WcsContext _context;
 
     public SeederController(
-      DomainContext domain,
+      WcsContext context,
       IMigrator migrator,
       IRandom random
     ): base(migrator) {
-      _domain = domain;
+      _context = context;
       _random = random;
     }
 
     protected override void Seed()
     {
-      SeedRcsAgcTasks();
-      SeedRcsAgcTaskTypes();
+      InsertAgcTaskTypes();
+      InsertAgcTasks();
     }
 
-    private void SeedRcsAgcTaskTypes()
+    private void InsertAgcTaskTypes()
     {
       var types = Enumerable.Range(1, 100)
-        .Select(i => RcsAgcTaskType.From(
+        .Select(i => AgcTaskType.From(
           key: $"test_type_key_{i}",
           name: $"test_type_name_{i}",
-          method: RcsAgcTaskMethod.Values.ToArray()[i % 7],
+          method: AgcTaskMethod.Values.ToArray()[i % 7],
           webhook: "http://localhost:5100/"
         ));
 
-      _domain.AddRange(types);
-      _domain.SaveChanges();
+      _context.AddRange(types);
+      _context.SaveChanges();
     }
 
-    private void SeedRcsAgcTasks()
+    private void InsertAgcTasks()
     {
+      var types = _context.Set<AgcTaskType>().ToArray();
+
       foreach (var i in Enumerable.Range(1, 1000)) {
-        var task = RcsAgcTask.From(
-          taskType: "wcs.put",
+        var task = AgcTask.From(
+          typeId: _random.Array(types).Id,
           position: (1000 + i).ToString(),
           destination: (8000 + i).ToString(),
           podCode: (10000 + i).ToString(),
-          comment: $"测试任务 {i}",
-          orderType: "测试任务",
-          orderId: _random.Int(100000, 999999)
+          taskId: _random.Int(100000, 999999).ToString(),
+          priority: "5",
+          agcCode: _random.Int(1, 5).ToString()
         );
 
         if (_random.Int(1, 10) > 3) {
@@ -63,10 +65,10 @@ namespace Namei.Wcs.Api
           }
         }
 
-        _domain.Add(task);
+        _context.Add(task);
       }
 
-      _domain.SaveChanges();
+      _context.SaveChanges();
     }
   }
 }

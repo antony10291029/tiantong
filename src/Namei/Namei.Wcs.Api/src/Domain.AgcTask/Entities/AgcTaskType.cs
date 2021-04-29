@@ -2,7 +2,7 @@ using Midos.Domain;
 
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskType: IEntity, IAggregateRoot
+  public class AgcTaskType: IEntity, IAggregateRoot
   {
     public long Id { get; private set; }
 
@@ -14,9 +14,9 @@ namespace Namei.Wcs.Aggregates
 
     public string Webhook { get; private set; }
 
-    private RcsAgcTaskType() {}
+    private AgcTaskType() {}
 
-    public static RcsAgcTaskType From(
+    public static AgcTaskType From(
       string key,
       string name,
       string method,

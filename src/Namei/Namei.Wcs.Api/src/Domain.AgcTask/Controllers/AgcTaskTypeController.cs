@@ -5,11 +5,11 @@ using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {
-  public class RcsAgcTaskTypeController: BaseController
+  public class AgcTaskTypeController: BaseController
   {
     private readonly WcsContext _context;
 
-    public RcsAgcTaskTypeController(WcsContext context)
+    public AgcTaskTypeController(WcsContext context)
     {
       _context = context;
     }
@@ -27,16 +27,16 @@ namespace Namei.Wcs.Aggregates
       public string Webhook { get; set; }
     }
 
-    [HttpPost("/rcs-agc-task-type/create")]
+    [HttpPost("/agc-task-types/create")]
     public INotifyResult<IMessageObject> Create([FromBody] CreateParams param)
     {
       var result = NotifyResult.FromVoid();
 
-      if (_context.Set<RcsAgcTaskType>().Any(type => type.Key == param.Key)) {
+      if (_context.Set<AgcTaskType>().Any(type => type.Key == param.Key)) {
         return result.Danger("任务类型已存在");
       }
 
-      var type = RcsAgcTaskType.From(
+      var type = AgcTaskType.From(
         key: param.Key,
         name: param.Name,
         method: param.Method,
@@ -48,11 +48,11 @@ namespace Namei.Wcs.Aggregates
       return result.Success("任务类型已创建");
     }
 
-    [HttpPost("/rcs-agc-task-type/update")]
+    [HttpPost("/agc-task-types/update")]
     public INotifyResult<IMessageObject> Update([FromBody] CreateParams param)
     {
       var result = NotifyResult.FromVoid();
-      var type = _context.Find<RcsAgcTaskType>(param.Id);
+      var type = _context.Find<AgcTaskType>(param.Id);
 
       type.Update(
         key: param.Key,
@@ -70,11 +70,11 @@ namespace Namei.Wcs.Aggregates
       public long Id { get; set; }
     }
 
-    [HttpPost("/rcs-agc-task-type/delete")]
+    [HttpPost("/agc-task-types/delete")]
     public INotifyResult<IMessageObject> Delete([FromBody] DeleteParams param)
     {
       var result = NotifyResult.FromVoid();
-      var type = _context.Find<RcsAgcTaskType>(param.Id);
+      var type = _context.Find<AgcTaskType>(param.Id);
 
       if (type is null) {
         return result.Danger("任务类型不存在");
@@ -86,10 +86,10 @@ namespace Namei.Wcs.Aggregates
       return result.Success("任务类型已删除");
     }
 
-    [HttpPost("/rcs-agc-task-type/all")]
-    public IDataMap<RcsAgcTaskType> All([FromBody] QueryParams param)
+    [HttpPost("/agc-task-types/all")]
+    public IDataMap<AgcTaskType> All([FromBody] QueryParams param)
     {
-      var query = _context.Set<RcsAgcTaskType>().AsQueryable();
+      var query = _context.Set<AgcTaskType>().AsQueryable();
 
       if (param.Query != "" && param.Query != null) {
         query = query.Where(type =>

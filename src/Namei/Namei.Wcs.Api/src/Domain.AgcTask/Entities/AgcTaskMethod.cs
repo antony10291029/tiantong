@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Namei.Wcs.Aggregates
 {
-  public static class RcsAgcTaskMethod
+  public static class AgcTaskMethod
   {
     public const string Move = "wcs.move";
 

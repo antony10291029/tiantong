@@ -2,27 +2,26 @@ using Midos.Domain;
 
 namespace Namei.Wcs.Aggregates
 {
-  public record RcsAgcTaskStart: DomainEvent
+  public record AgcTaskStart: DomainEvent
   {
-    public const string Message = "rcs.agc.tasks.start";
+    public const string @event = "agc.tasks.start";
 
     public long Id { get; init; }
 
     public bool IsEnforced { get; init; }
 
-    public static RcsAgcTaskStart From(
+    public static AgcTaskStart From(
       long id,
       bool isEnforced = false
-    ) => new RcsAgcTaskStart {
+    ) => new() {
       Id = id,
       IsEnforced = isEnforced
     };
 
-    public static RcsAgcTaskStart From(RcsAgcTaskCreated param)
+    public static AgcTaskStart From(AgcTaskCreated param)
       => From(
         id: param.Id,
         isEnforced: false
       );
-
   }
 }

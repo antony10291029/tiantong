@@ -1,4 +1,4 @@
-create table if not exists "RcsAgcTaskTypes" (
+create table if not exists "AgcTaskTypes" (
   "Id" bigserial not null primary key,
   "Key" varchar(255) not null unique,
   "Name" varchar(255) not null,
