@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Midos.Domain;
-using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -14,11 +13,9 @@ namespace Namei.Wcs.Aggregates
     }
 
     [HttpPost("/agc-tasks/create")]
-    [HttpPost("/rcs/agc-tasks/create")]
+    [HttpPost("/rcs/agv-tasks/create")]
     public INotifyResult<AgcTaskCreateResult> Create([FromBody] AgcTaskCreate param)
     {
-
-
       param.Priority ??= "";
       param.TaskId ??= "";
       param.PodCode ??= "";

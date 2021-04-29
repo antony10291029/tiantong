@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -5,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http
 {
-  public class HttpPostException: Exception, IKnownException
+  public class HttpPostException: Exception, IHttpException
   {
-    public override string Message { get; }
+    public int Status { get; } 
 
-    public int ErrorCode { get; }
+    public string Body { get; }
 
-    public object[] ErrorData { get; }
-
-    public JsonDocument Result { get; }
-
-    public HttpPostException(string message, int code, JsonDocument result)
+    public HttpPostException(int code, string body)
     {
-      Message = message;
-      ErrorCode = code;
-      Result = result;
+      Status = code;
+      Body = body;
     }
   }
 
@@ -58,13 +55,7 @@ namespace System.Net.Http
       var code = (int) response.StatusCode;
 
       if (code >= 400) {
-        var dom = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-
-        throw new HttpPostException(
-          message: "http status error",
-          code: code,
-          result: dom
-        );
+        throw new HttpPostException(code, result);
       }
 
       return result;

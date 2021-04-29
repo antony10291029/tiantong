@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using Midos.Services.Http;
 using Namei.Wcs.Api;
-using SQLitePCL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,6 +54,10 @@ namespace Namei.Wcs.Aggregates
       } else {
         type = _context.Set<AgcTaskType>().First(type => type.Key == param.Type);
         param.TypeId = type.Id;
+      }
+
+      if (type is null) {
+        throw KnownException.Error("任务类型不存在");
       }
 
       var task = AgcTask.From(param);

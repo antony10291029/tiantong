@@ -83,7 +83,7 @@ namespace Namei.Common.Api
         .Paginate(param);
     }
 
-    public struct StartParams
+    public record StartParams
     {
       public long TaskId { get; set; }
 
@@ -115,8 +115,14 @@ namespace Namei.Common.Api
       }
 
       _http.Post<object, object>(
-        url: $"{_wcsUrl}/wms/pick-ticket-tasks/start",
-        data: param
+        url: $"{_wcsUrl}/agc-tasks/create",
+        data: new {
+          type = "warehouse.workshop",
+          taskId = param.TaskId.ToString(),
+          position = param.Position,
+          destination = param.Destination,
+          palletCode = param.PalletCode
+        }
       );
 
       taskData.Start();
