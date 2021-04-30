@@ -4,9 +4,9 @@ namespace Namei.Wcs.Api
 {
   public class Logger
   {
-    protected DomainContext _domain;
+    protected WcsContext _domain;
 
-    public Logger(DomainContext domain)
+    public Logger(WcsContext domain)
     {
       _domain = domain;
     }
@@ -47,7 +47,7 @@ namespace Namei.Wcs.Api
       string klass,
       string operation,
       string index
-    ) => new ScopedLogger(
+    ) => new(
       logger: this,
       klass: klass,
       operation: operation,
@@ -63,13 +63,13 @@ namespace Namei.Wcs.Api
 
   public class ScopedLogger
   {
-    private Logger _logger;
+    private readonly Logger _logger;
 
-    private string _klass;
+    private readonly string _klass;
 
-    private string _operation;
+    private readonly string _operation;
 
-    private string _index;
+    private readonly string _index;
 
     public ScopedLogger(
       Logger logger,

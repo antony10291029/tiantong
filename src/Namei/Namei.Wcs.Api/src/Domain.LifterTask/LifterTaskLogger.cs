@@ -16,7 +16,7 @@ namespace Namei.Wcs.Api
 
   public class LifterLogger: Logger, ILifterLogger
   {
-    public LifterLogger(DomainContext domain): base(domain) {}
+    public LifterLogger(WcsContext domain): base(domain) {}
 
     public void FromTask(
       LifterTask task,
