@@ -22,7 +22,6 @@ namespace Namei.Wcs.Api
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
       services.AddSingleton<IAppConfig, Config>();
-      services.AddSingleton<IHttpService, HttpService>();
       services.AddSingleton<IDomainContextOptions<DomainContext>, DomainOptions>();
       services.AddSingleton<PlcStateServiceProvider>();
       services.AddTransient<PlcStateService>();
@@ -35,6 +34,7 @@ namespace Namei.Wcs.Api
       services.AddDbContext<WcsContext>();
       services.AddSingleton<IRandom, Random>();
       services.AddDbContext<Midos.Domain.DomainContext, DomainContext>();
+      services.AddScoped<IHttpService, HttpService>();
       services.AddScoped<IMigrator, PostgresMigrator>();
       services.AddScoped<IEventPublisher, EventPublisher>();
       services.AddScoped<RcsService>(); // todo remove

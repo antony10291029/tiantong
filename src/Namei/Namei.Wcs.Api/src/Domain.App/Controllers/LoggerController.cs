@@ -1,16 +1,39 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Midos.Domain;
+using Midos.Services.Http;
+using DotNetCore.CAP;
 
 namespace Namei.Wcs.Api
 {
   public class LoggerController: BaseController
   {
-    private DomainContext _domain;
+    const string Group = "LoggerController";
 
-    public LoggerController(DomainContext domain)
-    {
+    private readonly DomainContext _domain;
+
+    private readonly Logger _logger;
+
+    public LoggerController(
+      DomainContext domain,
+      Logger logger
+    ) {
+      _logger = logger;
       _domain = domain;
+    }
+
+    [CapSubscribe(HttpLogEvent.@event, Group = Group)]
+    public void HandleEvengLog(HttpLogEvent param)
+    {
+      _logger.Save(
+        level: Log.UseSuccess(),
+        klass: "http.service",
+        operation: "post",
+        message: "Http 请求执行完毕",
+        index: "0",
+        data: param
+      );
     }
 
     public class SearchParams

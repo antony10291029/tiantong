@@ -17,13 +17,13 @@ namespace Namei.Common.Api
       services.AddControllers();
       services.AddHttpClient();
       services.AddSingleton<Config>();
-      services.AddSingleton<IHttpService, HttpService>();
       services.AddDbContext<RcsContext>();
       services.AddSingleton<RcsHttpService>();
       services.AddDbContext<SapContext>();
       services.AddDbContext<WmsContext>();
       services.AddDbContext<AppContext>();
       services.AddSingleton<IDomainContextOptions<AppContext>, AppContextOptions>();
+      services.AddScoped<IHttpService, HttpService>();
       services.AddScoped<IEventPublisher, EventPublisher>();
       services.AddScoped<DomainContext, AppContext>();
       services.AddScoped<IMigrator, AppMigrator>();

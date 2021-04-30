@@ -79,7 +79,7 @@ export default defineComponent({
     }
 
     async function handleSubmit() {
-      await http.post("/rcs/agc-tasks/create", params.value);
+      await http.post("/rcs/agv-tasks/create", params.value);
 
       handleClose();
       emit("refresh");

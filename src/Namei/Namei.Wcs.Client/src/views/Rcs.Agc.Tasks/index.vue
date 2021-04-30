@@ -51,6 +51,10 @@
             <a @click="handleClose(entity.id)">
               关闭
             </a>
+
+            <a @click="handleFinish(entity.id)">
+              完成
+            </a>
           </td>
         </DataMapIterator>
       </tbody>
@@ -108,11 +112,21 @@ export default defineComponent({
 
     function handleClose(id: number) {
       confirm.open({
-        title: "关闭任务",
+        title: "提示",
         content: "确认后任务将被关闭",
         handler: async () => {
           await http.post("/agc-tasks/close", { id });
           await getTasks();
+        }
+      });
+    }
+
+    function handleFinish(id: number) {
+      confirm.open({
+        title: "提示",
+        content: "手动执行任务完成",
+        handler: async() => {
+          await http.post("/agc-tasks/finish", { id, agcCode: "0" });
         }
       });
     }
@@ -123,6 +137,7 @@ export default defineComponent({
       changePage,
       handleSearch,
       handleClose,
+      handleFinish
     };
   }
 });
