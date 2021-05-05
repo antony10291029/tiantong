@@ -1,11 +1,11 @@
 <template>
   <template v-if="tag">
     <component
-      v-for="key in dataMap.keys"
+      v-for="(key, index) in dataMap.keys"
       :is="tag"
       :key="key"
     >
-      <slot :entity="dataMap.entities[key]" />
+      <slot :entity="dataMap.entities[key]" :index="index" />
     </component>
   </template>
   <template v-else>

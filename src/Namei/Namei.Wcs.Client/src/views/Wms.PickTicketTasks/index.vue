@@ -8,7 +8,8 @@
 
     <table class="table is-fullwidth is-bordered is-centered is-nowrap is-clickable is-hoverable">
       <thead>
-        <th>编号</th>
+        <th>#</th>
+        <th>ID</th>
         <th>状态</th>
         <th>日期</th>
         <th>捡货单</th>
@@ -24,9 +25,10 @@
       <tbody>
         <DataMapIterator
           :dataMap="data"
-          v-slot="{ entity }"
+          v-slot="{ entity, index }"
           tag="tr"
         >
+          <td>{{index + 1}}</td>
           <td>{{entity.id}}</td>
           <TheStatus :value="entity.status" />
           <TimeWrapper :value="entity.createdAt" tag="td" />
