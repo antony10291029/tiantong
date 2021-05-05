@@ -135,13 +135,15 @@ namespace Namei.Common.Api
 
     public class FinishParams
     {
-      public long Id { get; set; }
+      public string TaskId { get; set; }
     }
 
     [HttpPost("/wms/pick-ticket-tasks/finish")]
     public object Finish([FromBody] FinishParams param)
     {
-      var task = _wms.Find<WmsTask>(param.Id);
+      var id = long.Parse(param.TaskId);
+      var task = _wms.Set<WmsTask>()
+        .FirstOrDefault(task => task.Id == id);
 
       task.Finish();
       _wms.SaveChanges();
@@ -151,8 +153,13 @@ namespace Namei.Common.Api
         .Success("任务已完成");
     }
 
+    public struct CloseParams
+    {
+      public long Id { get; set; }
+    }
+
     [HttpPost("/wms/pick-ticket-tasks/close")]
-    public object Close([FromBody] FinishParams param)
+    public object Close([FromBody] CloseParams param)
     {
       var task = _wms.Find<WmsTask>(param.Id);
 
@@ -165,7 +172,7 @@ namespace Namei.Common.Api
     }
 
     [HttpPost("/wms/pick-ticket-tasks/reset")]
-    public object Reset([FromBody] FinishParams param)
+    public object Reset([FromBody] CloseParams param)
     {
       var task = _wms.Find<WmsTask>(param.Id);
 
