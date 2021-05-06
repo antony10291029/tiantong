@@ -23,7 +23,7 @@ namespace Namei.Wcs.Aggregates
       string name,
       string method,
       string webhook,
-      bool isEnabled = true
+      bool isEnabled
     ) => new() {
         Key = key,
         Name = name,

@@ -17,7 +17,8 @@ namespace Namei.Wcs.Api.Test
         key: "test",
         name: "test.name",
         method: "wcs.move",
-        webhook: "http://localhost"
+        webhook: "http://localhost",
+        isEnabled: true
       );
   }
 

@@ -45,6 +45,28 @@ namespace Namei.Wcs.Aggregates
       _rcs = rcs;
     }
 
+    private RcsTaskCreateResult Start(AgcTask task, AgcTaskType type)
+    {
+      if (type is null) {
+        throw KnownException.Error("任务类型不存在");
+      } else if (type.IsEnabled == false) {
+        throw KnownException.Error("任务类型已禁用");
+      }
+
+      var result = _rcs.CreateTask(new RcsTaskCreateParams {
+        taskTyp = type.Method,
+        agvCode = task.AgcCode,
+        podCode = task.PodCode,
+        priority = task.Priority,
+        positionCodePath = new List<PositionCodePath> {
+          new PositionCodePath { positionCode = task.Position, type = "00" },
+          new PositionCodePath { positionCode = task.Destination, type = "00" },
+        }
+      });
+
+      return result;
+    }
+
     public AgcTaskCreateResult Create(AgcTaskCreate param)
     {
       AgcTaskType type;
@@ -63,16 +85,7 @@ namespace Namei.Wcs.Aggregates
       }
 
       var task = AgcTask.From(param);
-      var result = _rcs.CreateTask(new RcsTaskCreateParams {
-        taskTyp = type.Method,
-        agvCode = task.AgcCode,
-        podCode = task.PodCode,
-        priority = task.Priority,
-        positionCodePath = new List<PositionCodePath> {
-          new PositionCodePath { positionCode = task.Position, type = "00" },
-          new PositionCodePath { positionCode = task.Destination, type = "00" },
-        }
-      });
+      var result = Start(task, type);
 
       if (result.code == "0") {
         task.Start(result.data);

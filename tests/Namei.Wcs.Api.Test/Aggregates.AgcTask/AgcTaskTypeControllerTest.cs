@@ -25,7 +25,8 @@ namespace Namei.Wcs.Aggregates.Test
         Key = "test.create",
         Name = "test.name",
         Method = "wcs.move",
-        Webhook = "http://localhost"
+        Webhook = "http://localhost",
+        IsEnabled = true,
       };
       var result = controller.Create(param);
       var data = Utils.GetDomain()
@@ -48,7 +49,8 @@ namespace Namei.Wcs.Aggregates.Test
         key: "test.create.duplicate",
         name: "test.name",
         method: "wcs.move",
-        webhook: "http://localhost"
+        webhook: "http://localhost",
+        isEnabled: true
       );
 
       _context.Add(type);
@@ -58,7 +60,8 @@ namespace Namei.Wcs.Aggregates.Test
         Key = type.Key,
         Name = type.Name,
         Method = type.Method,
-        Webhook = type.Webhook
+        Webhook = type.Webhook,
+        IsEnabled = true
       };
       var controller = UseController();
       var result = controller.Create(param);
@@ -73,7 +76,8 @@ namespace Namei.Wcs.Aggregates.Test
         key: "test.update",
         name: "test.name",
         method: "wcs.move",
-        webhook: "http://localhost"
+        webhook: "http://localhost",
+        isEnabled: true
       );
 
       _context.Add(type);
@@ -104,7 +108,8 @@ namespace Namei.Wcs.Aggregates.Test
         key: "test.delete",
         name: "test.name",
         method: "wcs.move",
-        webhook: "http://localhost"
+        webhook: "http://localhost",
+        isEnabled: true
       );
 
       _context.Add(type);
