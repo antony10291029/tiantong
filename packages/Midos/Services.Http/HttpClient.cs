@@ -44,7 +44,12 @@ namespace System.Net.Http
       string url,
       TRequest data
     ) {
-      var text = JsonSerializer.Serialize(data);
+      var text = JsonSerializer.Serialize(
+        data,
+        new JsonSerializerOptions {
+          PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        }
+      );
       var content = new StringContent(
         content: text,
         encoding: Encoding.UTF8,
