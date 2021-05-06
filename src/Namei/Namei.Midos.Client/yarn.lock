@@ -1043,29 +1043,29 @@
   resolved "https://registry.npmjs.org/@midos/app-iot/-/app-iot-0.0.13.tgz#aaf5a676a41586027cc14d49aec74213541247e7"
   integrity sha512-euSVVfcxBTAX37/AmFW5exhGJrgMge6kx/YsYnr4GIDeN/dj23EMJ4GrD1SVFH8wN2fPFKh2Dcgj0sebjGY6NA==
 
-"@midos/app-midos-center@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.4.tgz#790d475d80a60180c48e246b3892cff19547dc2a"
-  integrity sha512-6NP6zYx7QhyIGd7eu0Y3qOMCRcunL5AnJS8F6gSKvdiZJoUVFvNTAjSJ3CgiBf/NdRf+MUhdwEKCXCRwXyHT8w==
+"@midos/app-midos-center@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@midos/app-midos-center/-/app-midos-center-0.0.5.tgz#a98e5b36ad2915677160adb75d7f61f8ddf7e17d"
+  integrity sha512-KrMnjdkJGPm1XksrozY5OWtfxq/oOihK7xIq0wpC5IzcxXbnlAkodPzAWLBuHKRIUN7SjSpXTFJAb20ayTeLpw==
 
-"@midos/app-namei-wcs@0.0.45":
-  version "0.0.45"
-  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.45.tgz#9f1d4955965d12f68468df40344d8fbf5410f3d5"
-  integrity sha512-GY9efZR6H03S/yCD6+zxaU6V/2ZYVC1tu6aq4IQlZ66cnNnLXEWW2tCqQFyWOi7Yi0MhVtMKpRSj8pjca0dO+Q==
+"@midos/app-namei-wcs@0.0.47":
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.47.tgz#3157b86d170519463cc087e72c9fdf6bb2455b83"
+  integrity sha512-XxNlVN8KTIKQ7YuNA/duVOEp53RRPBpWRD9G31kcBDlH3/p7/2gnSnMvBbK3YZhin6MBvSHpkbFck89mDFaWiw==
 
-"@midos/core@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.12.tgz#cf38bb71a84dba7f77431c9a3ebde6a024447b18"
-  integrity sha512-Mijjn5bAKz0FIV/Ci7V+nCZBW8ZMze2Wr+n5dk65oN/wSPdhECOj6xKoxsTJVNr56s3NoHsyXNXVUxUZjUrC4g==
+"@midos/core@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.14.tgz#301ef947ad46f38fee3f0e31ab2fc9eff0669b57"
+  integrity sha512-Mfr2vK95G1fkai2EZxJ27u6lGcXijrY7XR4fOTYaMbVvzzYsvLfZ55uMOXZYsj6p0WZ3sslL0GhQtc+MZA62oA==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
     tsyringe "^4.4.0"
 
-"@midos/vue-ui@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.12.tgz#085954c142732406a78a99e3ae84d8d4dc5c8e75"
-  integrity sha512-R/iZ2xF5PidJDb81jSvwDwB5p6MHz1H4FhbXYMupIXnAv+D3DFAsbRUnM+JzuYbNeHmK8tS0lIqdUHj6GAo//g==
+"@midos/vue-ui@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.14.tgz#dc0aafaea2bd82783b10b6ab3717a23abd6370db"
+  integrity sha512-OoOHQPby2gjJRM9vXLdkUelATocqYoSm7Jw2A6x6L/FViD/KHZjQInIpzXIPq+h5Xc5CjIiuK9K4D1Q2kYVYCg==
   dependencies:
     bulma "^0.9.2"
 

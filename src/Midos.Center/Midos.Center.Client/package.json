@@ -1,6 +1,6 @@
 {
   "name": "@midos/app-midos-center",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "main": "index.ts",
   "files": [
@@ -12,8 +12,8 @@
     "lint": "vue-cli-service lint"
   },
   "devDependencies": {
-    "@midos/core": "^0.0.12",
-    "@midos/vue-ui": "^0.0.12",
+    "@midos/core": "^0.0.14",
+    "@midos/vue-ui": "^0.0.14",
     "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -39,8 +39,8 @@
     "vue-router": "^4.0.0-0"
   },
   "peerDependencies": {
-    "@midos/core": "^0.0.12",
-    "@midos/vue-ui": "^0.0.12",
+    "@midos/core": "^0.0.14",
+    "@midos/vue-ui": "^0.0.14",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
     "vue": "^3.0.0",
