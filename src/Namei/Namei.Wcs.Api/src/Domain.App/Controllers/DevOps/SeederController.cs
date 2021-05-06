@@ -34,7 +34,8 @@ namespace Namei.Wcs.Api
           key: $"test_type_key_{i}",
           name: $"test_type_name_{i}",
           method: AgcTaskMethod.Values.ToArray()[i % 7],
-          webhook: "http://localhost:5100/"
+          webhook: "http://localhost:5100/",
+          isEnabled: _random.Bool()
         ));
 
       _context.AddRange(types);

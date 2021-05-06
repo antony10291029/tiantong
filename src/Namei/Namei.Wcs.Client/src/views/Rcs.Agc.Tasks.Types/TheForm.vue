@@ -44,6 +44,29 @@
         </table>
       </div>
     </div>
+
+    <div class="field">
+      <p class="label">是否启用</p>
+
+      <div class="control">
+        <table class="table is-fullwidth is-bordered is-hoverable">
+          <tbody>
+            <tr
+              v-for="value in [true, false]"
+              :key="value.toString()"
+              style="cursor: pointer"
+              @click="params.isEnabled = value"
+            >
+              <td style="width: 1px">
+                <Radio :value="value ? params.isEnabled : !params.isEnabled"/>
+              </td>
+              <td v-if="value">启用</td>
+              <td v-else>禁用</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,6 +88,7 @@ interface Params {
   name: string;
   method: string;
   webhook: string;
+  isEnabled: boolean;
 }
 
 export default defineComponent({

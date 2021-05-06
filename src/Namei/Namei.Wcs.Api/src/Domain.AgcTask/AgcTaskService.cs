@@ -58,6 +58,8 @@ namespace Namei.Wcs.Aggregates
 
       if (type is null) {
         throw KnownException.Error("任务类型不存在");
+      } else if (type.IsEnabled == false) {
+        throw KnownException.Error("任务类型已禁用");
       }
 
       var task = AgcTask.From(param);

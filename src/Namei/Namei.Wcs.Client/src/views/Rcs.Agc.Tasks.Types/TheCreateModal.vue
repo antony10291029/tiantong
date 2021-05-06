@@ -57,6 +57,7 @@ export default defineComponent({
       name: "",
       method: "",
       webhook: "",
+      isEnabled: true
     });
 
     async function handleSubmit() {
@@ -68,6 +69,7 @@ export default defineComponent({
         name: "",
         method: "",
         webhook: "",
+        isEnabled: true
       };
     }
 

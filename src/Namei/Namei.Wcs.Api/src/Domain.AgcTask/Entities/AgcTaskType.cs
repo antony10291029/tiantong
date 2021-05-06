@@ -14,30 +14,36 @@ namespace Namei.Wcs.Aggregates
 
     public string Webhook { get; private set; }
 
+    public bool IsEnabled { get; private set; }
+
     private AgcTaskType() {}
 
     public static AgcTaskType From(
       string key,
       string name,
       string method,
-      string webhook
+      string webhook,
+      bool isEnabled = true
     ) => new() {
         Key = key,
         Name = name,
         Method = method,
-        Webhook = webhook
+        Webhook = webhook,
+        IsEnabled = isEnabled
       };
 
     public void Update(
       string key,
       string name,
       string method,
-      string webhook
+      string webhook,
+      bool isEnabled
     ) {
       Key = key;
       Name = name;
       Method = method;
       Webhook = webhook;
+      IsEnabled = isEnabled;
     }
   }
 }

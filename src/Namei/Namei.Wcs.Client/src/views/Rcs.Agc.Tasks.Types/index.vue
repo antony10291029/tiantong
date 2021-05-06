@@ -12,7 +12,8 @@
 
     <table class="table is-fullwidth is-bordered is-centered">
       <thead>
-        <th>#</th>
+        <th style="width: 1px">#</th>
+        <th>启用</th>
         <th>Key</th>
         <th>任务名</th>
         <th>方法</th>
@@ -27,6 +28,20 @@
           tag="tr"
         >
           <td>{{entity.id}}</td>
+          <td>
+            <span
+              v-if="entity.isEnabled"
+              class="icon has-text-success"
+            >
+              <i class="icon-midos icon-midos-success"></i>
+            </span>
+            <span
+              v-else
+              class="icon has-text-danger"
+            >
+              <i class="icon-midos icon-midos-danger"></i>
+            </span>
+          </td>
           <td>{{entity.key}}</td>
           <td>{{entity.name}}</td>
           <td>{{entity.method}}</td>

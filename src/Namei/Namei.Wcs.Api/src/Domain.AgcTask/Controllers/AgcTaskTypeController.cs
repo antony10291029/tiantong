@@ -25,6 +25,8 @@ namespace Namei.Wcs.Aggregates
       public string Method { get; set; }
 
       public string Webhook { get; set; }
+
+      public bool IsEnabled { get; set; }
     }
 
     [HttpPost("/agc-task-types/create")]
@@ -40,7 +42,8 @@ namespace Namei.Wcs.Aggregates
         key: param.Key,
         name: param.Name,
         method: param.Method,
-        webhook: param.Webhook
+        webhook: param.Webhook,
+        isEnabled: param.IsEnabled
       );
       _context.Add(type);
       _context.SaveChanges();
@@ -58,7 +61,8 @@ namespace Namei.Wcs.Aggregates
         key: param.Key,
         name: param.Name,
         method: param.Method,
-        webhook: param.Webhook
+        webhook: param.Webhook,
+        isEnabled: param.IsEnabled
       );
       _context.SaveChanges();
 
