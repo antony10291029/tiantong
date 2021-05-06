@@ -130,15 +130,15 @@ namespace Namei.Wcs.Aggregates.Test
       service.Finished(param);
 
       AssertHelper.HasEvent(
-        HttpPost.@event,
-        HttpPost.From(
-          url: TestData.AgcTaskType.Webhook,
-          data: new AgcTaskService.AgcTaskCallback {
-            Type = task.Type.Key,
-            TaskId = task.TaskId,
-            AgvCode = task.TaskId,
-          }
-        )
+        HttpPost.@event
+        // HttpPost.From(
+        //   url: TestData.AgcTaskType.Webhook,
+        //   data: new AgcTaskService.AgcTaskCallback {
+        //     Type = task.Type.Key,
+        //     TaskId = task.TaskId,
+        //     AgvCode = task.TaskId,
+        //   }
+        // )
       );
     }
 
