@@ -15,6 +15,7 @@
   "devDependencies": {
     "@midos/core": "^0.0.14",
     "@midos/vue-ui": "^0.0.14",
+    "@midos/eslint-config": "^0.0.2",
     "@types/jest": "^24.0.19",
     "@types/lodash": "^4.14.168",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
