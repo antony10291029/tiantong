@@ -11,7 +11,7 @@ namespace Namei.Common.Api
 
     const string AreaMethod = "area";
 
-    static readonly Dictionary<string, bool> NotAllowedArea = new Dictionary<string, bool> {
+    static readonly Dictionary<string, bool> NotAllowedArea = new() {
       { "201", true },
       { "216", true },
       { "217", true },
@@ -22,14 +22,49 @@ namespace Namei.Common.Api
       { "401", true },
     };
 
-    private RcsContext _rcs;
+    private readonly RcsContext _rcs;
 
-    private RcsHttpService _rcsHttp;
+    private readonly RcsHttpService _rcsHttp;
 
     public RcsController(RcsContext rcs, RcsHttpService rcsHttp)
     {
       _rcs = rcs;
       _rcsHttp = rcsHttp;
+    }
+    public class ConvertParams
+    {
+      public string Value { get; set; }
+    }
+
+    public class ConvertResult
+    {
+      public string Value { get; set; }
+    }
+
+    [HttpPost("/rcs/mapDataName/find")]
+    public object Convert([FromBody] ConvertParams param)
+    {
+      var result = new ConvertResult();
+
+      if (param.Value == null || param.Value == "") {
+        result.Value = param.Value;
+
+        return result;
+      }
+
+      var dataName = _rcs.Set<MapData>()
+        .FirstOrDefault(data => data.DataName == param.Value)
+        ?.DataName;
+
+      if (dataName == null) {
+        dataName = _rcs.Set<MapData>()
+          .FirstOrDefault(data => data.MapDataCode == param.Value)
+          ?.DataName;
+      }
+
+      result.Value = dataName ?? param.Value;
+
+      return result;
     }
 
     public class SearchParams

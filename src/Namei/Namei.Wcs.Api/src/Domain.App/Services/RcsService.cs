@@ -1,4 +1,3 @@
-using DotNetCore.CAP;
 using System;
 using System.Collections.Generic;
 using System.Net.Mime;
@@ -6,74 +5,77 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Midos.Services.Http;
+using System.Text.Json.Serialization;
 
 namespace Namei.Wcs.Api
 {
   public class RcsTaskCreateParams
   {
-    public string reqCode { get; set; }
+    public string ReqCode { get; set; }
 
-    public string taskTyp { get; set; }
+    public string TaskTyp { get; set; }
 
-    public string podCode { get; set; }
+    public string PodCode { get; set; }
 
-    public string priority { get; set; }
+    public string Priority { get; set; }
 
-    public string taskCode { get; set; }
+    public string TaskCode { get; set; }
 
-    public string agvCode { get; set; }
+    public string AgvCode { get; set; }
 
-    public string data { get; set; }
+    public string Data { get; set; }
 
-    public List<PositionCodePath> positionCodePath { get; set; }
+    public List<PositionCodePath> PositionCodePath { get; set; }
   }
+
   public class RcsTaskContinueParams
   {
-    public string reqCode { get; set; }
+    public string ReqCode { get; set; }
 
-    public string podCode { get; set; }
+    public string PodCode { get; set; }
 
-    public string taskCode { get; set; }
+    public string TaskCode { get; set; }
 
-    public string agvCode { get; set; }
+    public string AgvCode { get; set; }
 
-    public PositionCodePath nextPositionCode { get; set; }
+    public PositionCodePath NextPositionCode { get; set; }
   }
 
   public class PositionCodePath
   {
-    public string positionCode { get; set; }
+    public string PositionCode { get; set; }
 
-    public string type { get; set; }
+    public string Type { get; set; }
   }
 
   public class RcsTaskCreateResult
   {
-    public string code { get; set; } = "0";
+    public string Code { get; set; } = "0";
 
-    public string message { get; set; } = "";
+    public string Message { get; set; } = "";
 
-    public string reqCode { get; set; }
+    public string ReqCode { get; set; }
 
-    public string data { get; set; } = "";
+    public string Data { get; set; } = "";
   }
 
   public class RcsTaskCancelParams
   {
-    public string reqCode { get; set; }
+    public string ReqCode { get; set; }
 
-    public string agvCode { get; set; }
+    public string AgvCode { get; set; }
 
-    public string taskCode { get; set; }
+    public string TaskCode { get; set; }
   }
 
   public class RcsTaskCancelResult
   {
-    public string code { get; set; }
+    public string Code { get; set; }
 
-    public string message { get; set; }
+    public string Message { get; set; }
 
-    public string reqCode { get; set; }
+    public string ReqCode { get; set; }
   }
 
   public interface IRcsService
@@ -92,21 +94,24 @@ namespace Namei.Wcs.Api
 
   public class RcsService: IRcsService
   {
-    private HttpClient _client;
+    private readonly HttpClient _client;
 
-    private ICapPublisher _cap;
+    private readonly IHttpService _httpService;
 
-    private Logger _logger;
+    private readonly Logger _logger;
+
+    private readonly Config _config;
 
     public RcsService(
       IHttpClientFactory factory,
-      ICapPublisher cap,
       Config config,
-      Logger logger
+      Logger logger,
+      IHttpService httpService
     ) {
-      _cap = cap;
       _logger = logger;
+      _config = config;
       _client = factory.CreateClient();
+      _httpService = httpService;
       _client.Timeout = new TimeSpan(0, 0, 10);
       _client.BaseAddress = new System.Uri(config.RcsUrl);
       _client.DefaultRequestHeaders.Accept.Add(
@@ -114,10 +119,29 @@ namespace Namei.Wcs.Api
       );
     }
 
+    public class ToDataNameParams
+    {
+      [JsonPropertyName("value")]
+      public string Value { get; set; }
+    }
+
+    public string ToDataName(string mapData)
+    {
+      var url = $"{_config.NameiCommonUrl}/rcs/mapDataName/find";
+
+      return _httpService.Post<ToDataNameParams, ToDataNameParams>(url, new() { Value = mapData }).Value;
+    }
+
     public RcsTaskCreateResult CreateTask(RcsTaskCreateParams param)
     {
-      if (param.reqCode == null || param.reqCode == "") {
-        param.reqCode = System.Guid.NewGuid().ToString();
+      if (param.ReqCode == null || param.ReqCode == "") {
+        param.ReqCode = System.Guid.NewGuid().ToString();
+      }
+
+      foreach (var position in param.PositionCodePath) {
+        if (position.PositionCode != "" && position.PositionCode != null) {
+          position.PositionCode = ToDataName(position.PositionCode);
+        }
       }
 
       var scope = _logger.UseScope(
@@ -128,7 +152,7 @@ namespace Namei.Wcs.Api
       var json = JsonSerializer.Serialize(param);
       var content = new StringContent(json, Encoding.UTF8);
       var result = new RcsTaskCreateResult() {
-        reqCode = param.reqCode
+        ReqCode = param.ReqCode
       };
 
       scope.Info("收到 RCS 任务", json);
@@ -144,7 +168,7 @@ namespace Namei.Wcs.Api
       } catch (Exception e) {
         scope.Danger("RCS 任务创建失败", e.Message);
 
-        result.message = e.Message;
+        result.Message = e.Message;
       }
 
       return result;
@@ -152,8 +176,8 @@ namespace Namei.Wcs.Api
 
     public RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param)
     {
-      if (param.reqCode == null || param.reqCode == "") {
-        param.reqCode = System.Guid.NewGuid().ToString();
+      if (param.ReqCode == null || param.ReqCode == "") {
+        param.ReqCode = System.Guid.NewGuid().ToString();
       }
 
       var json = JsonSerializer.Serialize(param);
@@ -164,7 +188,7 @@ namespace Namei.Wcs.Api
         index: "0"
       );
       var result = new RcsTaskCreateResult() {
-        reqCode = param.reqCode
+        ReqCode = param.ReqCode
       };
 
       scope.Info("收到 RCS 触发任务", json);
@@ -180,7 +204,7 @@ namespace Namei.Wcs.Api
       } catch (Exception e) {
         scope.Danger("RCS 任务触发失败", e.Message);
 
-        result.message = e.Message;
+        result.Message = e.Message;
       }
 
       return result;
@@ -188,8 +212,8 @@ namespace Namei.Wcs.Api
 
     public RcsTaskCancelResult CancelTask(RcsTaskCancelParams param)
     {
-      if (param.reqCode == null || param.reqCode == "") {
-        param.reqCode = System.Guid.NewGuid().ToString();
+      if (param.ReqCode == null || param.ReqCode == "") {
+        param.ReqCode = System.Guid.NewGuid().ToString();
       }
 
       var json = JsonSerializer.Serialize(param);
@@ -200,7 +224,7 @@ namespace Namei.Wcs.Api
         index: "0"
       );
       var result = new RcsTaskCancelResult() {
-        reqCode = param.reqCode
+        ReqCode = param.ReqCode
       };
 
       scope.Info("收到 RCS 取消任务", json);
@@ -216,7 +240,7 @@ namespace Namei.Wcs.Api
       } catch (Exception e) {
         scope.Danger("RCS 任务取消失败", e.Message);
 
-        result.message = e.Message;
+        result.Message = e.Message;
       }
 
       return result;
@@ -232,7 +256,7 @@ namespace Namei.Wcs.Api
         deviceType = "door",
         deviceIndex = doorId,
         actionStatus = action,
-        uuid = uuid,
+        uuid,
       });
       var content = new StringContent(json, Encoding.UTF8);
       var scope = _logger.UseScope(

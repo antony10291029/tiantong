@@ -50,7 +50,7 @@ namespace Namei.Wcs.Aggregates
       AgcCode = agcCode,
       Status = AgcTaskStatus.Created,
       TaskId = taskId,
-      CreatedAt = DateTime.MinValue,
+      CreatedAt = DateTime.Now,
       ClosedAt = DateTime.MinValue,
     };
 
@@ -67,6 +67,7 @@ namespace Namei.Wcs.Aggregates
     public void Start(string taskCode)
     {
       RcsTaskCode = taskCode;
+      CreatedAt = DateTime.Now;
     }
 
     public void Finish(string agcCode)

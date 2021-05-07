@@ -24,6 +24,8 @@ namespace Namei.Wcs.Api
     string WmsUrl { get; }
 
     string RcsUrl { get; }
+
+    string NameiCommonUrl { get; }
   }
 
   public class Config: IAppConfig
@@ -48,6 +50,8 @@ namespace Namei.Wcs.Api
 
     public string RcsUrl { get; }
 
+    public string NameiCommonUrl { get; }
+
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
@@ -58,6 +62,7 @@ namespace Namei.Wcs.Api
       PlcUrl = config.GetValue<string>("plc_url");
       WmsUrl = config.GetValue<string>("wms_url");
       RcsUrl = config.GetValue<string>("rcs_url");
+      NameiCommonUrl = config.GetValue<string>("namei.common.url");
     }
   }
 }

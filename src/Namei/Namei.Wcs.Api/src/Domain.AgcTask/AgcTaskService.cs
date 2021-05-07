@@ -54,13 +54,13 @@ namespace Namei.Wcs.Aggregates
       }
 
       var result = _rcs.CreateTask(new RcsTaskCreateParams {
-        taskTyp = type.Method,
-        agvCode = task.AgcCode,
-        podCode = task.PodCode,
-        priority = task.Priority,
-        positionCodePath = new List<PositionCodePath> {
-          new PositionCodePath { positionCode = task.Position, type = "00" },
-          new PositionCodePath { positionCode = task.Destination, type = "00" },
+        TaskTyp = type.Method,
+        AgvCode = task.AgcCode,
+        PodCode = task.PodCode,
+        Priority = task.Priority,
+        PositionCodePath = new List<PositionCodePath> {
+          new PositionCodePath { PositionCode = task.Position, Type = "00" },
+          new PositionCodePath { PositionCode = task.Destination, Type = "00" },
         }
       });
 
@@ -87,16 +87,16 @@ namespace Namei.Wcs.Aggregates
       var task = AgcTask.From(param);
       var result = Start(task, type);
 
-      if (result.code == "0") {
-        task.Start(result.data);
+      if (result.Code == "0") {
+        task.Start(result.Data);
         _context.Add(task);
         _context.SaveChanges();
       }
 
       return new AgcTaskCreateResult {
         Id = task.Id,
-        Code = int.Parse(result.code),
-        Message = result.message
+        Code = int.Parse(result.Code),
+        Message = result.Message
       };
     }
 
