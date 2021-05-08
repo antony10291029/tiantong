@@ -5,8 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Midos.Services.Http;
 using System.Text.Json.Serialization;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
@@ -80,7 +81,7 @@ namespace Namei.Wcs.Api
 
   public interface IRcsService
   {
-    RcsTaskCreateResult CreateTask(RcsTaskCreateParams param);
+    Task<RcsTaskCreateResult> CreateTask(RcsTaskCreateParams param);
 
     RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param);
 
@@ -96,8 +97,6 @@ namespace Namei.Wcs.Api
   {
     private readonly HttpClient _client;
 
-    private readonly IHttpService _httpService;
-
     private readonly Logger _logger;
 
     private readonly Config _config;
@@ -105,15 +104,13 @@ namespace Namei.Wcs.Api
     public RcsService(
       IHttpClientFactory factory,
       Config config,
-      Logger logger,
-      IHttpService httpService
+      Logger logger
     ) {
       _logger = logger;
       _config = config;
       _client = factory.CreateClient();
-      _httpService = httpService;
       _client.Timeout = new TimeSpan(0, 0, 10);
-      _client.BaseAddress = new System.Uri(config.RcsUrl);
+      _client.BaseAddress = new Uri(config.RcsUrl);
       _client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
       );
@@ -121,26 +118,28 @@ namespace Namei.Wcs.Api
 
     public class ToDataNameParams
     {
-      [JsonPropertyName("value")]
       public string Value { get; set; }
     }
 
-    public string ToDataName(string mapData)
+    private async Task<string> ToDataName(string mapData)
     {
       var url = $"{_config.NameiCommonUrl}/rcs/mapDataName/find";
+      var param = new ToDataNameParams { Value = mapData };
+      var response = await _client.PostAsJsonAsync(url, param);
+      var result = await response.Content.ReadFromJsonAsync<ToDataNameParams>();
 
-      return _httpService.Post<ToDataNameParams, ToDataNameParams>(url, new() { Value = mapData }).Value;
+      return result.Value;
     }
 
-    public RcsTaskCreateResult CreateTask(RcsTaskCreateParams param)
+    public async Task<RcsTaskCreateResult> CreateTask(RcsTaskCreateParams param)
     {
       if (param.ReqCode == null || param.ReqCode == "") {
-        param.ReqCode = System.Guid.NewGuid().ToString();
+        param.ReqCode = Guid.NewGuid().ToString();
       }
 
       foreach (var position in param.PositionCodePath) {
         if (position.PositionCode != "" && position.PositionCode != null) {
-          position.PositionCode = ToDataName(position.PositionCode);
+          position.PositionCode = await ToDataName(position.PositionCode);
         }
       }
 
@@ -150,34 +149,27 @@ namespace Namei.Wcs.Api
         index: "0"
       );
       var json = JsonSerializer.Serialize(param);
-      var content = new StringContent(json, Encoding.UTF8);
-      var result = new RcsTaskCreateResult() {
-        ReqCode = param.ReqCode
-      };
 
       scope.Info("收到 RCS 任务", json);
 
       try {
-        var response = _client.PostAsync("/rcs/services/rest/hikRpcService/genAgvSchedulingTask", content)
-          .GetAwaiter().GetResult();
-        json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        var url = "/rcs/services/rest/hikRpcService/genAgvSchedulingTask";
+        var response = await _client.PostAsJsonAsync(url, param);
 
         scope.Success("RCS 任务创建成功", json);
 
-        result = JsonSerializer.Deserialize<RcsTaskCreateResult>(json);
+        return await response.Content.ReadFromJsonAsync<RcsTaskCreateResult>();
       } catch (Exception e) {
         scope.Danger("RCS 任务创建失败", e.Message);
 
-        result.Message = e.Message;
+        return new() { Message = e.Message };
       }
-
-      return result;
     }
 
     public RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param)
     {
       if (param.ReqCode == null || param.ReqCode == "") {
-        param.ReqCode = System.Guid.NewGuid().ToString();
+        param.ReqCode = Guid.NewGuid().ToString();
       }
 
       var json = JsonSerializer.Serialize(param);

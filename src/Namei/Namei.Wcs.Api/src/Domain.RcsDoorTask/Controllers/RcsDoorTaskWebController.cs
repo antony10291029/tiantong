@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Midos.Domain;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
@@ -39,7 +40,7 @@ namespace Namei.Wcs.Api
     }
 
     [HttpPost("/rcs/tasks/create")]
-    public RcsTaskCreateResult HandleTaskCreate([FromBody] RcsTaskCreateParams param)
+    public Task<RcsTaskCreateResult> HandleTaskCreate([FromBody] RcsTaskCreateParams param)
     {
       return _rcs.CreateTask(param);
     }

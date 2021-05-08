@@ -62,7 +62,7 @@ namespace Namei.Wcs.Aggregates
           new PositionCodePath { PositionCode = task.Position, Type = "00" },
           new PositionCodePath { PositionCode = task.Destination, Type = "00" },
         }
-      });
+      }).GetAwaiter().GetResult();
 
       return result;
     }

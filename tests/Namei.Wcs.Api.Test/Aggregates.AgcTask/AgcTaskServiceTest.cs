@@ -2,11 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
 using Midos.Services.Http;
-using Midos.Test;
 using Moq;
 using Namei.Wcs.Api;
 using Namei.Wcs.Api.Test;
-using System.Linq;
 
 namespace Namei.Wcs.Aggregates.Test
 {
@@ -43,10 +41,12 @@ namespace Namei.Wcs.Aggregates.Test
         );
       var rcs = Helper.UseService<IRcsService>(mock => mock
         .Setup(rcs => rcs.CreateTask(It.IsAny<RcsTaskCreateParams>()))
-        .Returns(new RcsTaskCreateResult {
-          code = "0",
-          data = rcsTaskCode,
-        })
+        .Returns(Task.CompletedTask.ContinueWith(
+          _ => new RcsTaskCreateResult {
+            Code = "0",
+            Data = rcsTaskCode,
+          })
+        )
       );
       var service = UseService(rcs);
       var result = service.Create(param);
