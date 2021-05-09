@@ -76,15 +76,15 @@ namespace Midos.Services.Logging
     public LogData[] Get()
       => _logData.ToArray();
 
-    private static object ConvertException(Exception exception)
+    private static object ConvertException(Exception exception, int deep = 0)
       => exception is null ? null : new {
         exception.Data,
         exception.Message,
         exception.Source,
         exception.HResult,
         exception.HelpLink,
-        StackTrace = exception.StackTrace.Split('\n').Select(row => row.Trim()),
-        InnerException = ConvertException(exception.InnerException)
+        StackTrace = exception.StackTrace?.Split('\n').Select(row => row.Trim()),
+        InnerException = deep > 10 ? null : ConvertException(exception.InnerException, deep + 1)
       };
 
     private static object ConvertLogState(object state)

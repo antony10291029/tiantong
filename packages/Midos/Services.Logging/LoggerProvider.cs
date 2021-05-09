@@ -9,11 +9,6 @@ namespace Midos.Services.Logging
   {
     private readonly ConcurrentDictionary<string, MidosLogger> _loggers = new();
 
-    public MidosLoggerProvider()
-    {
-
-    }
-
     public ILogger CreateLogger(string categoryName)
     {
       return _loggers.GetOrAdd(categoryName, name => new(name));

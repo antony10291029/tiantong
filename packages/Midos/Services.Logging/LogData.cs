@@ -10,9 +10,9 @@ namespace Midos.Services.Logging
 
     public string EventId { get; set; }
 
-    public object Exception { get; set; }
-
     public object Data { get; set; }
+
+    public object Exception { get; set; }
 
     public DateTime CreatedAt { get; set; }
   }
