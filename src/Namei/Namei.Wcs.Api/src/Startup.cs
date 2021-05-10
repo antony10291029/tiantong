@@ -8,6 +8,7 @@ using Namei.Wcs.Aggregates;
 using Namei.Wcs.Database;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
+using Midos.Services.Logging;
 
 namespace Namei.Wcs.Api
 {
@@ -44,6 +45,9 @@ namespace Namei.Wcs.Api
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<ILifterLogger, LifterLogger>();
       services.AddScoped<Logger>();
+      services.UseMidosLogger(logger => {
+        logger.UseDbContextOptions<LoggerContextOptions>();
+      });
       services.AddCap(cap => {
         cap.FailedRetryCount = 0;
         cap.UseInMemoryStorage();

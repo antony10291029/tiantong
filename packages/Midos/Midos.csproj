@@ -9,6 +9,7 @@
     <PackageReference Include="DotNetCore.Cap" Version="5.0.1" />
     <PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.0.1" />
     <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.5" />
     <PackageReference Include="Savorboard.CAP.InMemoryMessageQueue" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="5.0.3" />

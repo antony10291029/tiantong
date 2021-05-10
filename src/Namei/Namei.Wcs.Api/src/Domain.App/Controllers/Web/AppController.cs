@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using DotNetCore.CAP;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Namei.Wcs.Api
 {
@@ -25,6 +26,8 @@ namespace Namei.Wcs.Api
     [Route("/")]
     public IResult<object> Home()
     {
+      throw new Exception("test exception", new Exception("Inner exception"));
+
       return Result.FromObject(new {
         message = _config.AppName,
         version = _config.AppVersion,

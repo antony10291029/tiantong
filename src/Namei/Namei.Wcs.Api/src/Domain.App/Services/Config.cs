@@ -26,6 +26,8 @@ namespace Namei.Wcs.Api
     string RcsUrl { get; }
 
     string NameiCommonUrl { get; }
+
+    string MidosLoggerContext { get; }
   }
 
   public class Config: IAppConfig
@@ -52,6 +54,8 @@ namespace Namei.Wcs.Api
 
     public string NameiCommonUrl { get; }
 
+    public string MidosLoggerContext { get; }
+
     public Config(IConfiguration config, IHostEnvironment env)
     {
       Env = env.EnvironmentName;
@@ -63,6 +67,7 @@ namespace Namei.Wcs.Api
       WmsUrl = config.GetValue<string>("wms_url");
       RcsUrl = config.GetValue<string>("rcs_url");
       NameiCommonUrl = config.GetValue<string>("namei.common.url");
+      MidosLoggerContext = config.GetValue<string>("midos.logger.context");
     }
   }
 }

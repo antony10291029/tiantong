@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -15,11 +16,15 @@ namespace Microsoft.AspNetCore.Builder
 
     private readonly IWebHostEnvironment _env;
 
+    private readonly ILogger<ExceptionHandler> _logger;
+
     public ExceptionHandler(
       IWebHostEnvironment env,
-      IHttpContextAccessor httpAccessor
+      IHttpContextAccessor httpAccessor,
+      ILogger<ExceptionHandler> logger
     ) {
       _env = env;
+      _logger = logger;
       _httpContext = httpAccessor.HttpContext;
     }
 
@@ -40,6 +45,8 @@ namespace Microsoft.AspNetCore.Builder
 
     public async Task Handle(Exception ex)
     {
+      _logger.LogError(ex, "Unhandled Exception");
+
       if (ex is IKnownException knownException) {
         await HandleKnownException(knownException, _httpContext);
       } else if (ex is IHttpException httpException) {

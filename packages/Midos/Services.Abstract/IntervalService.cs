@@ -40,7 +40,7 @@ namespace Midos.Services.Abstract
 
     protected abstract Task HandleJob(CancellationToken stoppingToken);
 
-    public async Task StartAsync(CancellationToken _)
+    public virtual async Task StartAsync(CancellationToken _)
     {
       _stoppingToken = new CancellationTokenSource();
 
