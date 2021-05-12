@@ -1,12 +1,12 @@
 using AspNetCore.Proxy;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Midos;
 using Midos.Domain;
 using Midos.Services.Logging;
-using Midos.Utils;
 using Savorboard.CAP.InMemoryMessageQueue;
 
 namespace Namei.ApiGateway.Server
@@ -15,13 +15,14 @@ namespace Namei.ApiGateway.Server
   {
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddExceptionHandler();
       services.AddControllers();
-      services.AddProxies();
+      services.AddExceptionHandler();
+      services.AddHttpLogServices();
       services.AddHttpContextAccessor();
+      services.AddHttpContextAccessor();
+      services.AddProxies();
       services.AddSingleton<AppConfig>();
       services.AddSingleton<IAppInfo, AppConfig>();
-      services.AddSingleton<IRandom, Random>();
       services.AddSingleton<ProxyTable>();
       services.AddSingleton<IDomainContextOptions<DatabaseContext>, DatabaseContextOptions>();
       services.AddScoped<IEventPublisher, EventPublisher>();
@@ -47,11 +48,12 @@ namespace Namei.ApiGateway.Server
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Namei.ApiGateway"));
       }
 
-      app.UseMiddleware<JsonBody>();
       app.AddExceptionHandler();
       app.UseRouting();
       app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-      app.UseEndpoints(endpoints => endpoints.MapControllers());
+      app.UseEndpoints(endpoints => {
+        endpoints.MapControllers();
+      });
     }
   }
 }

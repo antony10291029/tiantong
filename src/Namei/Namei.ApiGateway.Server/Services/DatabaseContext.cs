@@ -9,6 +9,8 @@ namespace Namei.ApiGateway.Server
 
     protected DbSet<Route> Routes { get; set; }
 
+    protected DbSet<HttpLog> HttpLogs { get; set; }
+
     public DatabaseContext(
       IDomainContextOptions<DatabaseContext> options,
       IEventPublisher publisher

@@ -19,7 +19,7 @@ namespace Namei.ApiGateway.Server
 
     public string EndpointPath { get; set; }
 
-    public string EndpointFullpath { get => Endpoint + EndpointPath; }
+    public string EndpointFullPath { get => Endpoint + EndpointPath; }
   }
 
   public class ProxyTable

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System.Net.Mime;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -30,9 +31,7 @@ namespace Microsoft.AspNetCore.Builder
 
     public static void HandleStatusCode(int code)
     {
-      if (code == 404) {
-        throw new HttpException("Api not found", 404);
-      }
+
     }
 
     protected static Action<dynamic> ResolveExceptionExpander(Exception ex) => response =>
@@ -46,6 +45,8 @@ namespace Microsoft.AspNetCore.Builder
     public async Task Handle(Exception ex)
     {
       _logger.LogError(ex, "Unhandled Exception");
+
+      _httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 
       if (ex is IKnownException knownException) {
         await HandleKnownException(knownException, _httpContext);

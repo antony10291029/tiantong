@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AspNetCore.Proxy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace Namei.ApiGateway.Server
 {
   [Controller]
-  public class AppController: ControllerBase
+  public class AppController
   {
     private readonly ProxyTable _proxyTable;
 
@@ -21,27 +19,6 @@ namespace Namei.ApiGateway.Server
       _logger = logger;
     }
 
-    [HttpGet]
-    [HttpPost]
-    [HttpPut]
-    [HttpPatch]
-    [HttpDelete]
-    [HttpHead]
-    [HttpOptions]
-    [Route("/{**rest}")]
-    public Task Proxy(string rest)
-    {
-      var queryString = Request.QueryString.Value ?? "";
-      var record = _proxyTable.Get()[$"/{rest}"];
-
-      _logger.LogInformation(
-        "正在将接口 {Path} 代理至 {Endpoint}/{EndpointPath}",
-        record.Path, record.Endpoint, record.EndpointPath
-      );
-
-      return this.HttpProxyAsync($"{record.EndpointFullpath}{queryString}");
-    }
-
     [HttpPost("/$proxy-table/get")]
     public IReadOnlyDictionary<string, ProxyRecord> GetMap()
       => _proxyTable.Get();
@@ -53,9 +30,12 @@ namespace Namei.ApiGateway.Server
     [HttpPost("/$proxy-table/sync")]
     public INotifyResult<IMessageObject> Sync()
     {
-      _proxyTable.Sync();
+      var msg = "代理映射表已更新";
 
-      return NotifyResult.FromVoid().Success("映射表已更新");
+      _proxyTable.Sync();
+      _logger.LogInformation(msg);
+
+      return NotifyResult.FromVoid().Success(msg);
     }
   }
 }

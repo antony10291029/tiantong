@@ -5,7 +5,6 @@ using Midos.Domain;
 namespace Namei.ApiGateway.Server
 {
   [Index(nameof(Path), IsUnique = true)]
-  [Index(nameof(EndpointPath), nameof(EndpointId), IsUnique = true)]
   public class Route: IEntity
   {
     [Key]
@@ -19,7 +18,7 @@ namespace Namei.ApiGateway.Server
 
     public long EndpointId { get; set; }
 
-    public Endpoint Endpoint { get; }
+    public Endpoint Endpoint { get; set; }
 
     public Route() {}
 
