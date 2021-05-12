@@ -1,0 +1,63 @@
+using Microsoft.AspNetCore.Mvc;
+using Midos.Domain;
+using System;
+using System.Linq;
+using Z.EntityFramework.Plus;
+
+namespace Namei.ApiGateway.Server
+{
+  public class HttpLogController
+  {
+    private readonly DatabaseContext _context;
+
+    public HttpLogController(DatabaseContext context)
+    {
+      _context = context;
+    }
+
+    public class SearchParams: QueryParams
+    {
+      public string Path { get; set; }
+    }
+
+    [HttpPost("/$http-logs/search")]
+    public IPagination<HttpLog> Search([FromBody] SearchParams param)
+    {
+      var query = _context.Set<HttpLog>().AsQueryable();
+
+      if (param.Path?.Length > 0) {
+        query = query.Where(log => log.SourcePath.Contains(param.Path));
+      }
+
+      if (param.Query?.Length > 0) {
+        query = query.Where(log =>
+          log.RequestBody.Contains(param.Query) ||
+          log.ResponseBody.Contains(param.Query)
+        );
+      }
+
+      return query
+        .OrderByDescending(log => log.Id)
+        .Paginate(param);
+    }
+
+    public class ClearParams
+    {
+      public int Days { get; set; }
+    }
+
+    [HttpPost("/$http-logs/clear")]
+    public INotifyResult<IMessageObject> Clear([FromBody] ClearParams param)
+    {
+      var date = DateTime.Now.AddDays(0 - param.Days);
+
+      _context.Set<HttpLog>()
+        .Where(log => log.RequestedAt < date)
+        .Delete();
+
+      return NotifyResult
+        .FromVoid()
+        .Success("日志数据已清楚");
+    }
+  }
+}
