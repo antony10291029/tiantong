@@ -44,21 +44,21 @@ namespace Namei.ApiGateway.Server
     [NotMapped]
     public object RequestHeaders
     {
-      get => JsonSerializer.Deserialize<object>(InnerRequestHeaders);
+      get => JsonSerializer.Deserialize<object>(InnerRequestHeaders ?? "null");
       set => InnerRequestHeaders = JsonSerializer.Serialize(value);
     }
 
     [NotMapped]
     public object ResponseHeaders
     {
-      get => JsonSerializer.Deserialize<object>(InnerResponseHeaders);
+      get => JsonSerializer.Deserialize<object>(InnerResponseHeaders ?? "null");
       set => InnerResponseHeaders = JsonSerializer.Serialize(value);
     }
 
     [NotMapped]
     public object Exception
     {
-      get => JsonSerializer.Deserialize<object>(InnerException);
+      get => JsonSerializer.Deserialize<object>(InnerException ?? "null");
       set => InnerException = JsonSerializer.Serialize(ConvertException(value as Exception));
     }
 
