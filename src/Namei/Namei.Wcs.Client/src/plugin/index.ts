@@ -1,7 +1,7 @@
 import { Plugin } from "vue";
 
 export default {
-  install(app) {
+  install() {
 
   }
 } as Plugin;
