@@ -22,6 +22,7 @@ namespace Namei.ApiGateway.Server
 
     public string RequestVersion { get; set; }
 
+    [JsonIgnore]
     [Column("RequestHeaders")]
     public string InnerRequestHeaders { get; set; }
 
