@@ -32,7 +32,8 @@ export default defineComponent({
   setup() {
     return {
       menus: [
-        { text: "通讯记录", route: "ApiGatewayDashboard", icon: "menu" }
+        { text: "运行状态", route: "ApiGatewayDashboard", icon: "menu" },
+        { text: "服务管理", route: "ApiGatewayEndpoints", icon: "menu" },
       ]
     };
   }
