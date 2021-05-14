@@ -34,6 +34,8 @@ export default defineComponent({
       menus: [
         { text: "运行状态", route: "ApiGatewayDashboard", icon: "menu" },
         { text: "服务管理", route: "ApiGatewayEndpoints", icon: "menu" },
+        { text: "路由管理", route: "ApiGatewayRoutes", icon: "menu" },
+        { text: "设置", route: "ApiGatewaySettings", icon: "menu" },
       ]
     };
   }

@@ -6,6 +6,8 @@ import Dashboard from "./views/Dashboard/index.vue";
 import Endpoints from "./views/Endpoints/index.vue";
 import EndpointsEndpoint from "./views/Endpoints.Endpoint/index.vue";
 import EndpointsCreate from "./views/Endpoints.Create/index.vue";
+import Routes from "./views/Routes/index.vue";
+import Settings from "./views/Settings/index.vue";
 
 @injectable()
 export class ApiGateway extends VueApp {
@@ -19,7 +21,7 @@ export class ApiGateway extends VueApp {
 
   public icon = "icon-api-gateway icon-api-gateway-logo";
 
-  public iconfont = "font_1745808_bcslrl0t1up";
+  public iconfont = "font_1745808_xmkvwmtiay";
 
   public route: RouteRecordRaw = {
     path: "/api-gateway",
@@ -49,6 +51,16 @@ export class ApiGateway extends VueApp {
             component: EndpointsEndpoint
           }
         ]
+      },
+      {
+        path: "routes",
+        name: "ApiGatewayRoutes",
+        component: Routes
+      },
+      {
+        path: "settings",
+        name: "ApiGatewaySettings",
+        component: Settings
       }
     ]
   }

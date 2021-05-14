@@ -882,10 +882,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@midos/core@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.17.tgz#be36dd72753be5bece02f3a947ba29813fc66ade"
-  integrity sha512-6862iqVk+bcGn5Nu+rAQNGB2I4OMwHFQ4ZE6A62eTIEwcZF9iEVCDOe75CQRwf78rMwGThnVJspK6jeHxG8m1w==
+"@midos/core@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.19.tgz#848302c4c10c6b64786afe4a688dcebe05478ebe"
+  integrity sha512-jCX+g+lFqJQxPQI7jbRfKk6wM1AERMCV/gezbls7VLWMMoIZ4gutIsRS3TYv+HDjxy5dChWVR3dEcyHZorQ9HA==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
@@ -900,10 +900,10 @@
     "@vue/eslint-config-typescript" "^5.0.2"
     eslint-plugin-vue "^7.0.0-0"
 
-"@midos/vue-ui@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.17.tgz#1b1039b444a9533bf3e7a506522a4db2683dfb2d"
-  integrity sha512-MyEZa+9BUf0Gti1nqUfUq52NU621X+oeVvEnJry2B8yt2hyOBedxDmJ56OzAGYR0jsvZIvGuFr7QMV+/KyG76Q==
+"@midos/vue-ui@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.19.tgz#e82f61e433139c23ef8a19658a3f31d3735d97c8"
+  integrity sha512-y1bqrnsuStayxD746z/dBR2s1Pf4x9qg9KlwF5m4jvok0Fw2OrAtACLUWR/Un19NF5HovnN5QFYBK5mPB8Tohg==
   dependencies:
     bulma "^0.9.2"
 

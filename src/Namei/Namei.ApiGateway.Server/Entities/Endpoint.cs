@@ -11,7 +11,7 @@ namespace Namei.ApiGateway.Server
 
     public string Name { get; set; }
 
-    public List<Route> Routes { get; }
+    public List<Route> Routes { get; set; }
 
     public Endpoint() {}
 

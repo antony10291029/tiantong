@@ -50,7 +50,6 @@
       </Radio>
     </label>
   </div>
-  <p class="help is-danger">This email is invalid</p>
 
   <div style="height: 1.25rem"></div>
 
@@ -65,13 +64,13 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useConfirm } from "@midos/vue-ui";
-import { useWcsHttp } from "../../services/wcs-http";
+import { UseApiGatewayHttp } from "../../services/api-gateway-http";
 
 export default defineComponent({
   name: "ClearLogs",
 
   setup() {
-    const http = useWcsHttp();
+    const http = UseApiGatewayHttp();
     const confirm = useConfirm();
     const days = ref(30);
 
@@ -79,7 +78,7 @@ export default defineComponent({
       confirm.open({
         title: "确认",
         content: "清除日志后将无法找回",
-        handler: () => http.post("/logs/clear", { days: days.value })
+        handler: () => http.post("/$http-logs/clear", { days: days.value })
       });
     }
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -71,21 +72,33 @@ namespace Midos.Domain
     [HttpPost("search")]
     public IPagination<TEntity, TKey> Search([FromBody] QueryParams param)
     {
-      var query = _context.Set<TEntity>().AsQueryable();
+      var query = AsQueryable(_context.Set<TEntity>());
 
       query = query.OrderByDescending(entity => entity.Id);
 
-      return query.Paginate<TEntity, TKey>(param);
+      var result = query.Paginate<TEntity, TKey>(param);
+
+      foreach (var keyValue in result.Entities) {
+        HandleReference(keyValue.Value);
+      }
+
+      return result;
     }
 
     [HttpPost("all")]
     public IDataMap<TEntity, TKey> All()
     {
-      var query = _context.Set<TEntity>().AsQueryable();
+      var query = AsQueryable(_context.Set<TEntity>());
 
       query = query.OrderByDescending(entity => entity.Id);
 
-      return query.ToDataMap<TEntity, TKey>();
+      var result = query.ToDataMap<TEntity, TKey>();
+
+      foreach (var keyValue in result.Entities) {
+        HandleReference(keyValue.Value);
+      }
+
+      return result;
     }
 
     [HttpPost("batch/add")]
@@ -140,6 +153,14 @@ namespace Midos.Domain
       _logger.LogInformation(msg);
 
       return NotifyResult.FromVoid().Success(msg);
+    }
+
+    protected virtual IQueryable<TEntity> AsQueryable(DbSet<TEntity> set)
+      => set.AsQueryable();
+
+    protected virtual void HandleReference(TEntity entity)
+    {
+
     }
   }
 
