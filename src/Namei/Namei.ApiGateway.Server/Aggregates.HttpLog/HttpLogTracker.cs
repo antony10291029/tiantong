@@ -1,6 +1,8 @@
+using DotNetCore.CAP.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,11 +32,16 @@ namespace Namei.ApiGateway.Server
 
     public async Task TrackRequestAsync(HttpRequestMessage request)
     {
+      var headers = request.Headers.AsEnumerable();
+
+      if (request.Content != null) {
+        headers = headers.Concat(request.Content.Headers);
+        _log.RequestBody = await request.Content?.ReadAsStringAsync();
+      }
+
       _log.RequestVersion = request.Version.ToString();
       _log.RequestUri = request.RequestUri.ToString();
-      _log.RequestHeaders = request.Headers.Concat(request.Content.Headers)
-        .ToDictionary(kv => kv.Key, kv => new StringValues(kv.Value.ToArray()));
-      _log.RequestBody = await request.Content.ReadAsStringAsync();
+      _log.RequestHeaders = headers.ToDictionary(kv => kv.Key, kv => new StringValues(kv.Value.ToArray()));
       _log.RequestedAt = DateTime.Now;
     }
 
