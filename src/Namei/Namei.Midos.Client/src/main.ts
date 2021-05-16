@@ -4,6 +4,7 @@ import { VueUI, Confirm, Notify, HttpNotifyMiddleware, Config, VueEnv } from "@m
 import { MidosCenter, MidosCenterHttp } from "@midos/app-midos-center";
 import { NameiWcs, NameiWcsHttp } from "@midos/app-namei-wcs";
 import { AppIot, IotHttpClient } from "@midos/app-iot";
+import { ApiGateway, ApiGatewayHttp } from "@midos/app-api-proxy";
 import "@midos/vue-ui/style.sass";
 
 MidOS.create()
@@ -15,6 +16,8 @@ MidOS.create()
   .addHttpMiddleware(HttpNotifyMiddleware)
   .addApp(NameiWcs)
     .addHttpClient(NameiWcsHttp)
+  .addApp(ApiGateway)
+    .addHttpClient(ApiGatewayHttp)
   .addApp(AppIot)
     .addHttpClient(IotHttpClient)
   .addApp(MidosCenter)

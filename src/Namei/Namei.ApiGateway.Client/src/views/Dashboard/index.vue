@@ -8,6 +8,7 @@
       <thead>
         <th>#</th>
         <th>时间</th>
+        <th>耗时</th>
         <th>方法</th>
         <th>路由</th>
         <th>重定向</th>
@@ -24,6 +25,14 @@
           <td>{{index + 1}}</td>
           <td>
             <TimeWrapper :value="entity.requestedAt" />
+          </td>
+          <td>
+            <span class="tag is-success is-light">
+              <span>
+                {{getTimeConsuming(entity)}}
+              </span>
+              <span>ms</span>
+            </span>
           </td>
           <td>{{entity.requestMethod}}</td>
           <td>{{entity.sourcePath}}</td>
@@ -65,9 +74,17 @@ export default defineComponent({
       logs.value = result;
     }
 
+    function getTimeConsuming(entity: any) {
+      const requestedAt = Date.parse(entity.requestedAt);
+      const responsedAt = Date.parse(entity.responsedAt);
+
+      return responsedAt - requestedAt;
+    }
+
     return {
       logs,
-      getLogs
+      getLogs,
+      getTimeConsuming
     };
   }
 });

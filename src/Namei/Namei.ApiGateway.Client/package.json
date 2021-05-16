@@ -1,6 +1,6 @@
 {
-  "name": "@midos/app-namei-wcs",
-  "version": "0.0.48",
+  "name": "@midos/app-api-proxy",
+  "version": "0.0.4",
   "license": "MIT",
   "main": "index.ts",
   "files": [

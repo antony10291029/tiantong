@@ -1,9 +1,15 @@
 using AspNetCore.Proxy;
 using AspNetCore.Proxy.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCaching;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Converters;
 using System;
+using System.Drawing.Imaging;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Namei.ApiGateway.Server
@@ -30,7 +36,10 @@ namespace Namei.ApiGateway.Server
           .GetService<HttpLogTracker>()
           .TrackExceptionAsync(exception);
 
-          throw exception;
+        await context.Response.WriteAsJsonAsync(new {
+          error = exception.GetType().Name,
+          message = exception.Message,
+        });
       })
       .Build();
 
