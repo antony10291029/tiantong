@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Midos.Domain;
+using System.Text.Json.Serialization;
+using Midos.SeedWork.Domain;
 
 namespace Namei.ApiGateway.Server
 {
@@ -11,6 +12,7 @@ namespace Namei.ApiGateway.Server
 
     public string Name { get; set; }
 
+    [JsonIgnore]
     public List<Route> Routes { get; set; }
 
     public Endpoint() {}

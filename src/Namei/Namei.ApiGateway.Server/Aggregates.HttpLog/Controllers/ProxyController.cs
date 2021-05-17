@@ -69,7 +69,7 @@ namespace Namei.ApiGateway.Server
       var proxyTable = _proxyTable.Get();
 
       if (!proxyTable.ContainsKey(path)) {
-        throw KnownException.Error("Api not found", 404);
+        throw new HttpException("Api not found", 404);
       }
 
       var proxyRecord = proxyTable[path];

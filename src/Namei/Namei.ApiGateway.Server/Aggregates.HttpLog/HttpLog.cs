@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Midos.Domain;
+using Midos.SeedWork.Domain;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;

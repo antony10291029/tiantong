@@ -882,10 +882,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@midos/core@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.19.tgz#848302c4c10c6b64786afe4a688dcebe05478ebe"
-  integrity sha512-jCX+g+lFqJQxPQI7jbRfKk6wM1AERMCV/gezbls7VLWMMoIZ4gutIsRS3TYv+HDjxy5dChWVR3dEcyHZorQ9HA==
+"@midos/core@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.26.tgz#8ae304ccbd718eb8997a49da2bd4106c3198bf79"
+  integrity sha512-lw1FPvlXDExcPbhsfs37Daevim5VsOSKnwL0vUeeH9ubivIC5DHbcd9z31S+8AHlNp5Kqw4yMkuC3ENC6PrHkA==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
@@ -899,6 +899,11 @@
     "@vue/eslint-config-airbnb" "^5.0.2"
     "@vue/eslint-config-typescript" "^5.0.2"
     eslint-plugin-vue "^7.0.0-0"
+
+"@midos/seed-work@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@midos/seed-work/-/seed-work-0.0.6.tgz#f40ace3a5ea00e457e0d13aff37e9b36b05af525"
+  integrity sha512-WNAvsY+mcrH0YrWhUxA0mRhCL9YU8tn8dJXgJiiJkpgsw5LoOSvoxk/VgawIgqFOqwKUlEQy+zQPosso7tR0+w==
 
 "@midos/vue-ui@^0.0.19":
   version "0.0.19"

@@ -17,29 +17,29 @@
       </thead>
 
       <tbody>
-        <DataMapIterator
+        <DataMap
           :dataMap="logs"
-          v-slot="{ entity, index }"
+          v-slot="{ value, index }"
           tag="tr"
         >
           <td>{{index + 1}}</td>
           <td>
-            <TimeWrapper :value="entity.requestedAt" />
+            <TimeWrapper :value="value.requestedAt" />
           </td>
           <td>
             <span class="tag is-success is-light">
               <span>
-                {{getTimeConsuming(entity)}}
+                {{getTimeConsuming(value)}}
               </span>
               <span>ms</span>
             </span>
           </td>
-          <td>{{entity.requestMethod}}</td>
-          <td>{{entity.sourcePath}}</td>
-          <td>{{entity.requestUri}}</td>
-          <td>{{entity.requestBody}}</td>
-          <td>{{entity.responseBody}}</td>
-        </DataMapIterator>
+          <td>{{value.requestMethod}}</td>
+          <td>{{value.sourcePath}}</td>
+          <td>{{value.requestUri}}</td>
+          <td>{{value.requestBody}}</td>
+          <td>{{value.responseBody}}</td>
+        </DataMap>
       </tbody>
     </table>
 
@@ -50,23 +50,19 @@
 </template>
 
 <script lang="ts">
-import { Pagination } from "@midos/core";
 import { defineComponent, ref } from "vue";
+import { PaginateParams, Pagination } from "@midos/seed-work";
+import { HttpLog } from "../../domain/entities/http-log";
 import { UseApiGatewayHttp } from "../../services/api-gateway-http";
 
 export default defineComponent({
   setup() {
     const http = UseApiGatewayHttp();
-    const params = ref({
-      page: 1,
-      pageSize: 100,
-      query: "",
-      path: "",
-    });
-    const logs = ref(new Pagination<any>());
+    const params = ref(new PaginateParams());
+    const logs = ref(new Pagination<HttpLog>());
 
     async function getLogs() {
-      const result = await http.paginate(
+      const result = await http.post<any>(
         "/$http-logs/search",
         params.value
       );

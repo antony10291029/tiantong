@@ -41,8 +41,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useRouteRepository } from "../../domain/repositories";
+import { Route } from "../../domain/entities";
 import TheForm from "./Form.vue";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
 
 export default defineComponent({
   components: {
@@ -50,17 +51,12 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
+    const repository = useRouteRepository();
     const isShow = ref(false);
-    const params = ref({
-      name: "",
-      path: "",
-      endpointPath: "",
-      endpointId: 0,
-    });
-    const http = UseApiGatewayHttp();
+    const params = ref(new Route());
 
     async function handleSubmit() {
-      await http.post("/$routes/add", params.value);
+      await repository.add(params.value);
       isShow.value = false;
       emit("refresh");
     }

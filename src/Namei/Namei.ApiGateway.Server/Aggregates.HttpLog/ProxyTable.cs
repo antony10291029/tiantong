@@ -45,7 +45,7 @@ namespace Namei.ApiGateway.Server
     public IReadOnlyDictionary<string, ProxyRecord> Fetch()
     {
       using var scope = _serviceProvider.CreateScope();
-      using var context = scope.ServiceProvider.GetService<DatabaseContext>();
+      using var context = scope.ServiceProvider.GetService<AppContext>();
 
       return context.Set<Endpoint>()
         .Include(endpoint => endpoint.Routes)

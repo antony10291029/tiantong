@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using Midos;
+using Midos.SeedWork.Services;
 
 namespace Namei.ApiGateway.Server
 {

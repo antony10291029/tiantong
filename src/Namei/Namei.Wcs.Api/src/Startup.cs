@@ -48,12 +48,6 @@ namespace Namei.Wcs.Api
       services.UseMidosLogger(logger => {
         logger.UseDbContextOptions<LoggerContextOptions>();
       });
-      services.AddCap(cap => {
-        cap.FailedRetryCount = 0;
-        cap.UseInMemoryStorage();
-        cap.UseInMemoryMessageQueue();
-        cap.UseDashboard();
-      });
     }
 
     public void Configure(IApplicationBuilder app)

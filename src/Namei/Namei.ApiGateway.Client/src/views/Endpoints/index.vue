@@ -14,30 +14,30 @@
             </router-link>
           </p>
 
-          <DataMapIterator
+          <DataMap
             :dataMap="endpoints"
-            v-slot="{ entity }"
+            v-slot="{ value }"
           >
             <router-link
               class="panel-block"
               :to="{
                 name: 'ApiGatewayEndpointsEndpoint',
-                params: { endpointId: entity.id }
+                params: { endpointId: value.id }
               }"
             >
               <div class="is-flex is-flex-column">
-                <span>{{entity.name}}</span>
+                <span>{{value.name}}</span>
                 <span class="has-text-grey">
-                  {{entity.url}}
+                  {{value.url}}
                 </span>
               </div>
             </router-link>
-          </DataMapIterator>
+          </DataMap>
         </nav>
       </div>
       <router-view
         :key="$route.path"
-        :endpoints="endpoints.entities"
+        :endpoints="endpoints.values"
         @refresh="getEndpoints"
       />
     </div>
@@ -46,26 +46,17 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { DataMap } from "@midos/core";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
+import { DataMap, QueryParams } from "@midos/seed-work";
+import { Endpoint } from "../../domain/entities";
+import { useEndpointRepository } from "../../domain/repositories/endpoint-repository";
 
 export default defineComponent({
   setup() {
-    const http = UseApiGatewayHttp();
-    const endpoints = ref(new DataMap());
-    const params = ref({
-      page: 1,
-      pageSize: 15,
-      query: ""
-    });
-    const endpointId = ref(0);
-
+    const repository = useEndpointRepository();
+    const endpoints = ref(new DataMap<Endpoint>());
+    const params = ref(new QueryParams());
     async function getEndpoints() {
-      endpoints.value = await http.getDataMap<any>("$endpoints/search", params.value);
-
-      if (endpointId.value === 0 && endpoints.value.keys.length > 0) {
-        [endpointId.value] = endpoints.value.keys;
-      }
+      endpoints.value = await repository.query(params.value);
     }
 
     return {

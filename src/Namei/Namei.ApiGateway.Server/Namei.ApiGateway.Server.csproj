@@ -12,8 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
-    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
-    <ProjectReference Include="../../../packages/DBCore.Postgres/DBCore.Postgres.csproj" />
+    <ProjectReference Include="../../../packages/Midos.SeedWork/Midos.SeedWork.csproj" />
   </ItemGroup>
 </Project>

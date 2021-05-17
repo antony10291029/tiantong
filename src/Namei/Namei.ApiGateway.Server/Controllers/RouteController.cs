@@ -1,30 +1,38 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Midos.Domain;
-using System.Linq;
+using Midos.SeedWork.Domain;
 
 namespace Namei.ApiGateway.Server
 { 
-  [Controller]
-  [Route(Name)]
-  public class RouteController: EntityController<Route>
+  public class RouteRepository: Repository<Route>
   {
-    const string Name = "$routes";
+    private readonly AppContext _context;
 
-    public RouteController(
-      DatabaseContext context,
-      ILogger<Route> logger
-    ): base(context, logger) {
-
+    public RouteRepository(AppContext context, IUnitOfWork unitOfWork)
+      : base(context, unitOfWork)
+    {
+      _context = context;
     }
 
-    protected override IQueryable<Route> AsQueryable(DbSet<Route> set)
-      => set.Include(route => route.Endpoint);
-
-    protected override void HandleReference(Route entity)
+    public override DataMap<Route> Query(QueryParams param)
     {
-      entity.Endpoint.Routes = null;
+      return _context.Set<Route>()
+        .Include(route => route.Endpoint)
+        .OrderByDescending(route => route.Endpoint.Id)
+          .ThenByDescending(route => route.Id)
+        .ToDataMap();
+    }
+  }
+
+  [Controller]
+  [Route("$routes")]
+  public class RouteController: EntityController<Route>
+  {
+    public RouteController(
+      RouteRepository repository
+    ): base(repository) {
+
     }
   }
 }

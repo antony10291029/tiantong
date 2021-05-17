@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using Midos.Domain;
+using Midos.SeedWork.Domain;
 
 namespace Namei.ApiGateway.Server
 {

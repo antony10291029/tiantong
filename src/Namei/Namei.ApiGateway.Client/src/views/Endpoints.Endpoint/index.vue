@@ -33,7 +33,7 @@
 import { computed, defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { useConfirm } from "@midos/vue-ui";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
+import { useEndpointRepository } from "../../domain/repositories";
 import { useCopy } from "../../hooks/use-copy";
 import TheForm from "../Endpoints.Create/Form.vue";
 
@@ -55,14 +55,14 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const http = UseApiGatewayHttp();
     const router = useRouter();
     const confirm = useConfirm();
+    const repository = useEndpointRepository();
     const entity = computed(() => props.endpoints[props.id]);
     const { data, isChanged } = useCopy(entity);
 
     async function handleUpdate() {
-      await http.post("/$endpoints/update", data.value);
+      await repository.update(data.value);
       emit("refresh");
     }
 
@@ -71,7 +71,7 @@ export default defineComponent({
         title: "提示",
         content: "删除后数据将无法恢复",
         handler: async () => {
-          await http.post("/$endpoints/remove", { id: props.id });
+          await repository.remove(data.value.id);
           emit("refresh");
           router.push({ name: "ApiGatewayEndpoints" });
         }

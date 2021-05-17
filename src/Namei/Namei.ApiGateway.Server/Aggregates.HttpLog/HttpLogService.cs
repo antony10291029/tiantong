@@ -46,7 +46,7 @@ namespace Namei.ApiGateway.Server
 
       if (logs.Length != 0) {
         using var scope = _serviceProvider.CreateScope();
-        using var context = scope.ServiceProvider.GetService<DatabaseContext>();
+        using var context = scope.ServiceProvider.GetService<AppContext>();
 
         context.AddRange(logs);
         await context.SaveChangesAsync();

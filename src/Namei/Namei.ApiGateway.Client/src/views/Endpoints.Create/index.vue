@@ -20,8 +20,10 @@
 </template>
 
 <script lang="ts">
+import { useService } from "@midos/vue-ui";
 import { defineComponent, ref } from "vue";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
+import { Endpoint } from "../../domain/entities";
+import { EndpointRepository } from "../../domain/repositories";
 import TheForm from "./Form.vue";
 
 export default defineComponent({
@@ -30,14 +32,11 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const http = UseApiGatewayHttp();
-    const entity = ref({
-      name: "",
-      url: "",
-    });
+    const repository = useService(EndpointRepository);
+    const entity = ref(new Endpoint());
 
     async function handleSubmit() {
-      await http.post("/$endpoints/add", entity.value);
+      await repository.add(entity.value);
       emit("refresh");
     }
 

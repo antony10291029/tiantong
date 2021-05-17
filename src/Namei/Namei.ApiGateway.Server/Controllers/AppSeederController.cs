@@ -1,19 +1,19 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Midos.Controllers;
+using Midos.SeedWork.Domain;
 using System.Linq;
 
 namespace Namei.ApiGateway.Server
 {
   public class AppSeederController: SeederController
   {
-    private readonly DatabaseContext _context;
+    private readonly AppContext _context;
 
     public AppSeederController(
-      DatabaseContext context,
-      ILogger<SeederController> logger,
-      IHostEnvironment env
-    ): base(context, logger, env) {
+      AppContext context,
+      IHostEnvironment env,
+      ILogger<SeederController> logger
+    ): base(context, env, logger) {
       _context = context;
     }
 

@@ -49,10 +49,11 @@
 </template>
 
 <script lang="ts">
-import { useConfirm } from "@midos/vue-ui";
 import { defineComponent, PropType, ref, toRefs } from "vue";
+import { useConfirm, useService } from "@midos/vue-ui";
 import { useCopy } from "../../hooks/use-copy";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
+import { Route } from "../../domain/entities";
+import { RouteRepository } from "../../domain/repositories";
 import TheForm from "./Form.vue";
 
 export default defineComponent({
@@ -62,20 +63,20 @@ export default defineComponent({
 
   props: {
     route: {
-      type: Object as PropType<any>,
+      type: Object as PropType<Route>,
       required: true
     }
   },
 
   setup(props, { emit }) {
-    const http = UseApiGatewayHttp();
+    const repository = useService(RouteRepository);
     const confirm = useConfirm();
     const isShow = ref(false);
     const { route } = toRefs(props);
     const { data, isChanged } = useCopy<any>(route);
 
     async function handleUpdate() {
-      await http.post("$routes/update", data.value);
+      await repository.update(data.value);
       isShow.value = false;
       emit("refresh");
     }
@@ -85,7 +86,7 @@ export default defineComponent({
         title: "提示",
         content: "删除后将无法恢复",
         handler: async () => {
-          await http.post("$routes/remove", { id: data.value.id });
+          await repository.remove(data.value.id);
           isShow.value = false;
           emit("refresh");
         }

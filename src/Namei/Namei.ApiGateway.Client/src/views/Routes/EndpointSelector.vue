@@ -2,7 +2,7 @@
   <div>
     <Input
       readonly
-      :value="endpoints.entities[value]?.name ?? ''"
+      :value="endpoints.values[value]?.name ?? ''"
       @click="isShow = true"
     />
 
@@ -32,27 +32,27 @@
               <th style="width: 3rem"></th>
             </thead>
             <tbody>
-              <DataMapIterator
+              <DataMap
                 :dataMap="endpoints"
-                v-slot="{ entity, index }"
+                v-slot="{ value, index }"
               >
-                <tr @click="endpoint = entity">
+                <tr @click="endpoint = value">
                   <td>{{index + 1}}</td>
-                  <td>{{entity.name}}</td>
-                  <td>{{entity.url}}</td>
+                  <td>{{value.name}}</td>
+                  <td>{{value.url}}</td>
                   <td
                     class="is-centered is-vcentered"
                     style="padding: 0"
                   >
                     <span
-                      v-if="endpoint?.id === entity.id"
+                      v-if="endpoint?.id === value.id"
                       class="icon has-text-success"
                     >
                       <i class="icon-api-gateway icon-api-gateway-tick" />
                     </span>
                   </td>
                 </tr>
-              </DataMapIterator>
+              </DataMap>
             </tbody>
           </table>
         </section>
@@ -71,9 +71,11 @@
 </template>
 
 <script lang="ts">
-import { DataMap } from "@midos/core";
 import { defineComponent, onMounted, ref } from "vue";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
+import { DataMap } from "@midos/seed-work";
+import { useService } from "@midos/vue-ui";
+import { EndpointRepository } from "../../domain/repositories";
+import { Endpoint } from "../../domain/entities";
 
 export default defineComponent({
   props: {
@@ -84,20 +86,20 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const endpoints = ref(new DataMap<any>());
-    const http = UseApiGatewayHttp();
+    const repository = useService(EndpointRepository);
+    const endpoints = ref(new DataMap<Endpoint>());
     const endpoint = ref<any>(null);
     const isShow = ref(false);
 
     async function getEndpoints() {
-      endpoints.value = await http.getDataMap("$endpoints/all");
+      endpoints.value = await repository.query({ query: "" });
 
       if (endpoint.value != null) {
         return;
       }
 
       if (props.value !== 0) {
-        endpoint.value = endpoints.value.entities[props.value];
+        endpoint.value = endpoints.value.values[props.value];
       }
     }
 

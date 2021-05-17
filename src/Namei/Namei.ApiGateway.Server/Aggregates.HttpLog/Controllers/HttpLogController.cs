@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Midos.Domain;
+using Midos.SeedWork.Domain;
 using System;
 using System.Linq;
 using Z.EntityFramework.Plus;
@@ -8,20 +8,20 @@ namespace Namei.ApiGateway.Server
 {
   public class HttpLogController
   {
-    private readonly DatabaseContext _context;
+    private readonly AppContext _context;
 
-    public HttpLogController(DatabaseContext context)
+    public HttpLogController(AppContext context)
     {
       _context = context;
     }
 
-    public class SearchParams: QueryParams
+    public record SearchParams: PaginateParams
     {
       public string Path { get; set; }
     }
 
     [HttpPost("/$http-logs/search")]
-    public IPagination<HttpLog> Search([FromBody] SearchParams param)
+    public Pagination<HttpLog> Search([FromBody] SearchParams param)
     {
       var query = _context.Set<HttpLog>().AsQueryable();
 

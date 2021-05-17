@@ -1,4 +1,4 @@
-using Midos.Services.Abstract;
+using Midos.SeedWork.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
