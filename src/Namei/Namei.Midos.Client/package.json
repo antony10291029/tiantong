@@ -11,10 +11,11 @@
     "@midos/app-iot": "0.0.13",
     "@midos/app-midos-center": "^0.0.5",
     "@midos/app-namei-wcs": "0.0.47",
-    "@midos/app-api-proxy": "0.0.4"
+    "@midos/app-api-gateway": "0.0.1"
   },
   "devDependencies": {
-    "@midos/core": "^0.0.19",
+    "@midos/core": "^0.0.26",
+    "@midos/seed-work": "^0.0.6",
     "@midos/vue-ui": "^0.0.19",
     "@types/jest": "^24.0.19",
     "@types/lodash": "^4.14.168",

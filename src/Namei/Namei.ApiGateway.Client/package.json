@@ -1,6 +1,6 @@
 {
-  "name": "@midos/app-api-proxy",
-  "version": "0.0.4",
+  "name": "@midos/app-api-gateway",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "index.ts",
   "files": [
@@ -36,8 +36,8 @@
     "vue-router": "^4.0.0-0"
   },
   "peerDependencies": {
-    "@midos/core": "^0.0.19",
-    "@midos/seed-work": "^0.0.2",
+    "@midos/core": "^0.0.26",
+    "@midos/seed-work": "^0.0.6",
     "@midos/vue-ui": "^0.0.19",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
