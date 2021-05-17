@@ -18,7 +18,6 @@ namespace Namei.ApiGateway.Server
       services.AddHttpTrackServices();
       services.AddSingleton<AppConfig>();
       services.AddSingleton<IAppInfo, AppConfig>();
-      services.AddSingleton<ProxyTable>();
       services.AddEFContext<AppContext, AppContextOptions>();
       services.AddScoped<RouteRepository>();
       // services.AddScoped<IEventPublisher, EventPublisher>();

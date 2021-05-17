@@ -10,6 +10,7 @@ namespace Namei.ApiGateway.Server
       services.AddProxies();
       services.AddSingleton<HttpLogService>();
       services.AddScoped<HttpLogTracker>();
+      services.AddSingleton<ProxyTable>();
       services.AddHostedService<HttpLogHostedService>();
     }
   }
