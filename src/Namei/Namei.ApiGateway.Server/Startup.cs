@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 // using Midos;
 // using Midos.Domain;
 // using Midos.Services.Logging;
@@ -14,8 +12,9 @@ namespace Namei.ApiGateway.Server
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
-      services.AddExceptionHandler();
       services.AddHttpContextAccessor();
+      services.AddSwagger();
+      services.AddExceptionHandler();
       services.AddHttpTrackServices();
       services.AddSingleton<AppConfig>();
       services.AddSingleton<IAppInfo, AppConfig>();
@@ -26,20 +25,13 @@ namespace Namei.ApiGateway.Server
       // services.UseMidosLogger(logger => {
       //   logger.UseDbContextOptions<LoggerContextOptions>();
       // });
-      services.AddSwaggerGen(c => {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Namei.ApiGateway" });
-      });
     }
 
-    public void Configure(IApplicationBuilder app, IHostEnvironment env)
+    public void Configure(IApplicationBuilder app)
     {
-      if (env.IsDevelopment()) {
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Namei.ApiGateway"));
-      }
-
-      app.AddExceptionHandler();
       app.UseRouting();
+      app.UseSwagger();
+      app.AddExceptionHandler();
       app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
       app.UseEndpoints(endpoints => {
         endpoints.MapControllers();

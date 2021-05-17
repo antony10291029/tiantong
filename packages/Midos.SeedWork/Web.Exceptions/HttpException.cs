@@ -5,13 +5,13 @@ namespace Microsoft.AspNetCore.Http
 {
   public class HttpException : Exception, IHttpException
   {
-    private string _error;
+    private readonly string _error;
 
     public int Status { get; set; }
 
     public string Name
     {
-      get => _error == null ? this.GetType().Name : _error;
+      get => _error ?? this.GetType().Name;
     }
 
     public string Msg { get; set; }

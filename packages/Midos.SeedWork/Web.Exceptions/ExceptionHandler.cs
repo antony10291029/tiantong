@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Dynamic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using System.Net.Mime;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -29,7 +29,7 @@ namespace Microsoft.AspNetCore.Builder
       _httpContext = httpAccessor.HttpContext;
     }
 
-    public static void HandleStatusCode(int code)
+    public static void HandleStatusCode(int _)
     {
 
     }
