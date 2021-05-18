@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { MidOS } from "@midos/core";
 import { VueUI, Confirm, Notify, HttpNotifyMiddleware, VueEnv } from "@midos/vue-ui";
+import { DomainSeedWork } from "@midos/seed-work";
 import { NameiWcs } from "./app-namei-wcs";
 import { NameiWcsHttp } from "./services/wcs-http";
 import { RcsExtHttp } from "./services/rcs-ext-http";
@@ -11,6 +12,7 @@ MidOS.create()
   .useUI(VueUI)
     .singleton(Confirm)
     .singleton(Notify)
+  .useSeedWork(DomainSeedWork)
   .addHttpMiddleware(HttpNotifyMiddleware)
   .addApp(NameiWcs)
     .addHttpClient(NameiWcsHttp)

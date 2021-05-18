@@ -23,30 +23,32 @@
         <th></th>
       </thead>
       <tbody>
-        <DataMapIterator
+        <DataMap
           :dataMap="data"
-          v-slot="{ entity, index }"
+          v-slot="{ value, index }"
           tag="tr"
         >
           <td>{{index + 1}}</td>
-          <td>{{entity.id}}</td>
-          <TheStatus :value="entity.status" />
-          <TimeWrapper :value="entity.createdAt" tag="td" />
-          <td>{{entity.orderNumber}}</td>
-          <td>{{entity.palletCode}}</td>
-          <td>{{entity.locationCode}}</td>
-          <td>{{entity.fromName}}</td>
-          <td>{{entity.pickedQuantity}}</td>
-          <td>{{entity.restQuantity ?? 0}}</td>
-          <td>{{entity.itemName}}</td>
-          <td>{{entity.itemCode}}</td>
+          <td>{{value.id}}</td>
+          <TheStatus :value="value.status" />
+          <TimeWrapper :value="value.createdAt" tag="td" />
+          <td>{{value.orderNumber}}</td>
+          <td>{{value.palletCode}}</td>
+          <td>{{value.locationCode}}</td>
+          <td>{{value.fromName}}</td>
+          <td>{{value.pickedQuantity}}</td>
+          <td>
+            {{restQuantities[value.palletCode]?.restQuantity ?? 0}}
+          </td>
+          <td>{{value.itemName}}</td>
+          <td>{{value.itemCode}}</td>
           <td>
             <TheOperation
-              :entity="entity"
+              :entity="value"
               @refresh="getTasks"
             />
           </td>
-        </DataMapIterator>
+        </DataMap>
       </tbody>
     </table>
 
@@ -60,11 +62,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { usePagination } from "../../hooks/use-pagination";
-import { UseDataMap } from "../../hooks/use-data-map";
-import { useQuery } from "../../hooks/use-query";
+import { defineComponent, ref } from "vue";
+import { DataMap, PaginateParams, Pagination } from "@midos/seed-work";
 import { useRcsExtHttp } from "../../services/rcs-ext-http";
+import { WmsPickTicketTask } from "./entities/pick-ticket-task";
+import { RestQuantity } from "./entities/rest-quantity";
 import SearchField from "../../components/SearchField.vue";
 import TheStatus from "./TheStatus.vue";
 import TheOperation from "./TheOperation.vue";
@@ -80,29 +82,40 @@ export default defineComponent({
 
   setup() {
     const api = useRcsExtHttp();
-    const param = useQuery(100);
-    const data = usePagination<any>();
-    const pallets = UseDataMap<any>();
+    const param = ref(new PaginateParams(100));
+    const data = ref(new Pagination<WmsPickTicketTask>());
+    const restQuantities = ref<any>({});
 
     async function getTasks() {
-      data.value = await api.paginate("/wms/pick-ticket-tasks/search", param);
+      data.value = await api.post<Pagination<WmsPickTicketTask>>(
+        "/wms/pick-ticket-tasks/search", param.value
+      );
+
+      const palletCodes = data.value.keys.map(
+        key => data.value.values[key].palletCode
+      );
+
+      api.post<DataMap<RestQuantity>>(
+        "/wms/inventory-rest-quantity/query",
+        { codes: palletCodes }
+      ).then(result => restQuantities.value = result);
     }
 
     function changePage(page: number) {
-      param.page = page;
+      param.value.page = page;
 
       return getTasks();
     }
 
     function handleSearch(query: string) {
-      param.query = query;
+      param.value.query = query;
 
       return getTasks();
     }
 
     return {
       data,
-      pallets,
+      restQuantities,
       getTasks,
       changePage,
       handleSearch

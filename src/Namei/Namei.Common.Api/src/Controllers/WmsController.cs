@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Midos.Domain;
 using Midos.Services.Http;
@@ -68,19 +69,34 @@ namespace Namei.Common.Api
       return query.ToArray();
     }
 
-    public class MoveDocSearchParams
+    [HttpPost("/wms/pick-ticket-tasks/search")]
+    public object SearchPickTicketTasks([FromBody] QueryParams param)
+    {
+      var data =  _wms.Set<WmsPickTicketTask>()
+        .OrderByDescending(task => task.Id)
+        .ThenByDescending(task => task.FromName)
+        .Paginate(param);
+
+      return new {
+        page = data.Page,
+        pageSize = data.PageSize,
+        total = data.Total,
+        keys = data.Keys,
+        values = data.Entities
+      };
+    }
+
+    public class RestQuantityQueryParams
     {
       public string[] Codes { get; set; }
     }
 
-    [HttpPost("/wms/pick-ticket-tasks/search")]
-    public object SearchPickTicketTasks([FromBody] QueryParams param)
+    [HttpPost("/wms/inventory-rest-quantity/query")]
+    public object QueryRestQuantity([FromBody] RestQuantityQueryParams param)
     {
-      return _wms.Set<WmsPickTicketTask>()
-        .OrderByDescending(task => task.Id)
-        .ThenByDescending(task => task.FromName)
-        .ThenByDescending(task => task.RestQuantity)
-        .Paginate(param);
+      return _wms.Set<WmsInventoryRestQuantity>()
+        .Where(quantity => param.Codes.Contains(quantity.PalletCode))
+        .ToDictionary(quantity => quantity.PalletCode, quantity => quantity);
     }
 
     public record StartParams

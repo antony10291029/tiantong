@@ -19,8 +19,6 @@ namespace Namei.Common.Entities
 
     public string PickedQuantity { get; private set; }
 
-    public string RestQuantity { get; private set; }
-
     public string FromName { get; private set; }
 
     public string LocationCode { get; private set; }

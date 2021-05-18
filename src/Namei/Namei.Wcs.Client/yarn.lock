@@ -882,10 +882,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@midos/core@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.17.tgz#be36dd72753be5bece02f3a947ba29813fc66ade"
-  integrity sha512-6862iqVk+bcGn5Nu+rAQNGB2I4OMwHFQ4ZE6A62eTIEwcZF9iEVCDOe75CQRwf78rMwGThnVJspK6jeHxG8m1w==
+"@midos/core@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@midos/core/-/core-0.0.26.tgz#8ae304ccbd718eb8997a49da2bd4106c3198bf79"
+  integrity sha512-lw1FPvlXDExcPbhsfs37Daevim5VsOSKnwL0vUeeH9ubivIC5DHbcd9z31S+8AHlNp5Kqw4yMkuC3ENC6PrHkA==
   dependencies:
     "@abraham/reflection" "^0.7.0"
     axios "^0.21.1"
@@ -900,10 +900,15 @@
     "@vue/eslint-config-typescript" "^5.0.2"
     eslint-plugin-vue "^7.0.0-0"
 
-"@midos/vue-ui@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.17.tgz#1b1039b444a9533bf3e7a506522a4db2683dfb2d"
-  integrity sha512-MyEZa+9BUf0Gti1nqUfUq52NU621X+oeVvEnJry2B8yt2hyOBedxDmJ56OzAGYR0jsvZIvGuFr7QMV+/KyG76Q==
+"@midos/seed-work@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@midos/seed-work/-/seed-work-0.0.6.tgz#f40ace3a5ea00e457e0d13aff37e9b36b05af525"
+  integrity sha512-WNAvsY+mcrH0YrWhUxA0mRhCL9YU8tn8dJXgJiiJkpgsw5LoOSvoxk/VgawIgqFOqwKUlEQy+zQPosso7tR0+w==
+
+"@midos/vue-ui@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@midos/vue-ui/-/vue-ui-0.0.19.tgz#e82f61e433139c23ef8a19658a3f31d3735d97c8"
+  integrity sha512-y1bqrnsuStayxD746z/dBR2s1Pf4x9qg9KlwF5m4jvok0Fw2OrAtACLUWR/Un19NF5HovnN5QFYBK5mPB8Tohg==
   dependencies:
     bulma "^0.9.2"
 

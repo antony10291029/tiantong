@@ -29,6 +29,8 @@ namespace Namei.Common.Api
 
     public DbSet<WmsPickTicketTask> PickTicketTasks { get; private set; }
 
+    public DbSet<WmsInventoryRestQuantity> InventoryRestQuantities { get; private set; }
+
     public WmsContext(Config config)
     {
       _config = config;
