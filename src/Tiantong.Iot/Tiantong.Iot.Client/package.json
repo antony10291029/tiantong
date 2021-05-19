@@ -1,52 +1,40 @@
 {
   "name": "@midos/app-iot",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "license": "MIT",
   "main": "index.ts",
   "files": [
+    "index.ts",
     "src"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
-  "devDependencies": {
-    "@midos/core": "^0.0.1-alpha.34",
-    "@midos/vue-ui": "^0.0.1-alpha.34",
-    "@types/jest": "^24.0.19",
-    "@types/lodash": "^4.14.168",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-airbnb": "^5.0.2",
-    "@vue/eslint-config-typescript": "^5.0.2",
-    "@vue/test-utils": "^2.0.0-0",
-    "core-js": "^3.6.5",
-    "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-vue": "^7.0.0-0",
-    "lodash": "^4.17.20",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.2",
-    "typescript": "~3.9.3",
-    "vue": "^3.0.0",
-    "vue-jest": "^5.0.0-0",
-    "vue-router": "^4.0.0-0"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "vuePlugins": {
+    "resolveFrom": "node_modules/@midos/vue-cli"
   },
-  "peerDependencies": {
-    "@midos/core": "^0.0.1-alpha.34",
-    "@midos/vue-ui": "^0.0.1-alpha.34",
-    "core-js": "^3.6.5",
-    "lodash": "^4.17.20",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+  "eslintConfig": {
+    "root": true,
+    "extends": "./node_modules/@midos/vue-cli",
+    "rules": {
+      "camelcase": "off"
+    }
+  },
+  "devDependencies": {
+    "@midos/core": "^0.0.28",
+    "@midos/seed-work": "^0.0.8",
+    "@midos/vue-cli": "^0.0.4",
+    "@midos/vue-ui": "^0.0.28",
+    "@types/lodash": "^4.14.169",
+    "lodash": "^4.17.21",
+    "vue": "^3.0.11",
+    "vue-router": "^4.0.8"
   }
 }

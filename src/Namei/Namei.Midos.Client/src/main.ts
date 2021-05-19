@@ -2,7 +2,6 @@
 import { MidOS } from "@midos/core";
 import { DomainSeedWork } from "@midos/seed-work";
 import { VueUI, Confirm, Notify, HttpNotifyMiddleware, Config, VueEnv } from "@midos/vue-ui";
-import { MidosCenter, MidosCenterHttp } from "@midos/app-midos-center";
 import { NameiWcs, NameiWcsHttp } from "@midos/app-namei-wcs";
 import { AppIot, IotHttpClient } from "@midos/app-iot";
 import { ApiGateway, ApiGatewayHttp, RouteRepository, EndpointRepository } from "@midos/app-api-gateway";
@@ -20,11 +19,9 @@ MidOS.create()
     .addHttpClient(NameiWcsHttp)
   .addApp(ApiGateway)
     .addHttpClient(ApiGatewayHttp)
-  .addApp(AppIot)
-    .addHttpClient(IotHttpClient)
-  .addApp(MidosCenter)
-    .addHttpClient(MidosCenterHttp)
     .singleton(RouteRepository)
     .singleton(EndpointRepository)
+  .addApp(AppIot)
+    .addHttpClient(IotHttpClient)
   .build()
   .run();

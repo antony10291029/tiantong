@@ -1,46 +1,36 @@
 {
   "private": true,
+
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:staging": "vue-cli-service build --mode staging",
-    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {
-    "@midos/app-iot": "0.0.13",
-    "@midos/app-midos-center": "^0.0.5",
-    "@midos/app-namei-wcs": "0.0.51",
-    "@midos/app-api-gateway": "0.0.1"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "eslintConfig": {
+    "root": true,
+    "extends": "./node_modules/@midos/vue-cli"
+  },
+  "vuePlugins": {
+    "resolveFrom": "node_modules/@midos/vue-cli"
   },
   "devDependencies": {
-    "@midos/core": "^0.0.26",
-    "@midos/seed-work": "^0.0.6",
-    "@midos/vue-ui": "^0.0.19",
-    "@types/jest": "^24.0.19",
-    "@types/lodash": "^4.14.168",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-airbnb": "^5.0.2",
-    "@vue/eslint-config-typescript": "^5.0.2",
-    "@vue/test-utils": "^2.0.0-0",
-    "core-js": "^3.6.5",
-    "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-vue": "^7.0.0-0",
-    "lodash": "^4.17.20",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.2",
-    "typescript": "~3.9.3",
-    "vue": "^3.0.0",
-    "vue-jest": "^5.0.0-0",
+    "@midos/core": "^0.0.28",
+    "@midos/seed-work": "^0.0.8",
+    "@midos/vue-cli": "^0.0.4",
+    "@midos/vue-ui": "^0.0.28",
+    "@types/lodash": "^4.14.169",
+    "lodash": "^4.17.21",
+    "vue": "^3.0.11",
     "vue-router": "^4.0.0-0"
+  },
+  "dependencies": {
+    "@midos/app-iot": "0.0.14",
+    "@midos/app-namei-wcs": "0.0.52",
+    "@midos/app-api-gateway": "0.0.2"
   }
 }

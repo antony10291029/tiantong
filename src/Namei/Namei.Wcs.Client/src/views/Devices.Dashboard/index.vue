@@ -26,7 +26,7 @@ import { useInterval } from "@midos/vue-ui";
 import { useWcsHttp } from "../../services/wcs-http";
 import TheDoors from "./Doors.vue";
 import TheLifter from "./Lifter.vue";
-import { Obj, Door, Lifter } from "./_interfaces";
+import type { Obj, Door, Lifter } from "./_interfaces";
 
 export default defineComponent({
   name: "Devices",

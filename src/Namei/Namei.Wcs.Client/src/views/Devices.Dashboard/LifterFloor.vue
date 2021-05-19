@@ -68,7 +68,7 @@ import { computed, defineComponent, PropType } from "vue";
 import { useConfirm } from "@midos/vue-ui";
 import { useWcsHttp } from "../../services/wcs-http";
 import LifterPlatform from "./LifterPlatform.vue";
-import { Door } from "./_interfaces";
+import type { Door } from "./_interfaces";
 
 export default defineComponent({
   name: "LifterFloor",

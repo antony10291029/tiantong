@@ -15,8 +15,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env",
-      "jest"
+      "webpack-env"
     ],
     "lib": [
       "esnext",
@@ -26,9 +25,7 @@
     ]
   },
   "include": [
-    "src/**/*",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"
