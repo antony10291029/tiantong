@@ -70,19 +70,18 @@ namespace Namei.Common.Api
     }
 
     [HttpPost("/wms/pick-ticket-tasks/search")]
-    public object SearchPickTicketTasks([FromBody] QueryParams param)
+    public object SearchPickTicketTasks()
     {
+      var day = DateTime.Now.Add(-DateTime.Now.TimeOfDay);
+
       var data =  _wms.Set<WmsPickTicketTask>()
+        .Where(task => task.CreatedAt > day)
         .OrderByDescending(task => task.Id)
-        .ThenByDescending(task => task.FromName)
-        .Paginate(param);
+        .ToDataMap();
 
       return new {
-        page = data.Page,
-        pageSize = data.PageSize,
-        total = data.Total,
-        keys = data.Keys,
-        values = data.Entities
+        data.Keys,
+        Values = data.Entities
       };
     }
 

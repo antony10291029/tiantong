@@ -37,9 +37,9 @@
           <td>{{value.locationCode}}</td>
           <td>{{value.fromName}}</td>
           <td>{{value.pickedQuantity}}</td>
-          <td>
-            {{restQuantities[value.palletCode]?.restQuantity ?? 0}}
-          </td>
+          <TheRestQuantityCell
+            :value="restQuantities[value.palletCode]?.restQuantity ?? 0"
+          />
           <td>{{value.itemName}}</td>
           <td>{{value.itemCode}}</td>
           <td>
@@ -53,25 +53,19 @@
         </DataMap>
       </tbody>
     </table>
-
-    <div style="height: 1.25rem"></div>
-
-    <Pagination
-      v-bind="data"
-      @change="changePage"
-    />
   </AsyncLoader>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { DataMap, PaginateParams, Pagination } from "@midos/seed-work";
+import { DataMap, Pagination, QueryParams } from "@midos/seed-work";
 import { useRcsExtHttp } from "../../services/rcs-ext-http";
 import { WmsPickTicketTask } from "./entities/pick-ticket-task";
 import { RestQuantity } from "./entities/rest-quantity";
 import SearchField from "../../components/SearchField.vue";
 import TheStatus from "./TheStatus.vue";
 import TheOperation from "./TheOperation.vue";
+import TheRestQuantityCell from "./TheRestQuantityCell.vue";
 
 export default defineComponent({
   name: "PickTicketTasks",
@@ -79,13 +73,14 @@ export default defineComponent({
   components: {
     SearchField,
     TheStatus,
-    TheOperation
+    TheOperation,
+    TheRestQuantityCell
   },
 
   setup() {
     const api = useRcsExtHttp();
-    const param = ref(new PaginateParams(100));
-    const data = ref(new Pagination<WmsPickTicketTask>());
+    const param = ref(new QueryParams());
+    const data = ref(new DataMap<WmsPickTicketTask>());
     const restQuantities = ref<any>({});
     const isRestQuantityLoaded = ref(false);
 
@@ -107,12 +102,6 @@ export default defineComponent({
       });
     }
 
-    function changePage(page: number) {
-      param.value.page = page;
-
-      return getTasks();
-    }
-
     function handleSearch(query: string) {
       param.value.query = query;
 
@@ -124,7 +113,6 @@ export default defineComponent({
       restQuantities,
       isRestQuantityLoaded,
       getTasks,
-      changePage,
       handleSearch
     };
   }
