@@ -108,16 +108,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import { useConfirm } from "@midos/vue-ui";
 import { useRcsExtHttp } from "../../services/rcs-ext-http";
+import { WmsPickTicketTask } from "./entities/pick-ticket-task";
 
 export default defineComponent({
   name: "TheOperation",
 
   props: {
     entity: {
-      type: Object,
+      type: Object as PropType<WmsPickTicketTask>,
+      required: true
+    },
+    restQuantity: {
+      type: Number,
       required: true
     }
   },
@@ -129,7 +134,8 @@ export default defineComponent({
     const params = ref({
       taskId: props.entity.id,
       position: props.entity.locationCode,
-      destination: "",
+      // eslint-disable-next-line no-template-curly-in-string
+      destination: props.restQuantity ? "204${04}" : "294${04}",
       palletCode: props.entity.palletCode,
     });
 

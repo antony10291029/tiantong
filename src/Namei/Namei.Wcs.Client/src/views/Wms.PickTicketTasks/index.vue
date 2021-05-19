@@ -44,7 +44,9 @@
           <td>{{value.itemCode}}</td>
           <td>
             <TheOperation
+              v-if="isRestQuantityLoaded"
               :entity="value"
+              :restQuantity="restQuantities[value.palletCode]?.restQuantity ?? 0"
               @refresh="getTasks"
             />
           </td>
@@ -85,6 +87,7 @@ export default defineComponent({
     const param = ref(new PaginateParams(100));
     const data = ref(new Pagination<WmsPickTicketTask>());
     const restQuantities = ref<any>({});
+    const isRestQuantityLoaded = ref(false);
 
     async function getTasks() {
       data.value = await api.post<Pagination<WmsPickTicketTask>>(
@@ -98,7 +101,10 @@ export default defineComponent({
       api.post<DataMap<RestQuantity>>(
         "/wms/inventory-rest-quantity/query",
         { codes: palletCodes }
-      ).then(result => restQuantities.value = result);
+      ).then(result => {
+        restQuantities.value = result;
+        isRestQuantityLoaded.value = true;
+      });
     }
 
     function changePage(page: number) {
@@ -116,6 +122,7 @@ export default defineComponent({
     return {
       data,
       restQuantities,
+      isRestQuantityLoaded,
       getTasks,
       changePage,
       handleSearch
