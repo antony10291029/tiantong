@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Midos.SeedWork.Domain;
 using Savorboard.CAP.InMemoryMessageQueue;
 
