@@ -5,12 +5,16 @@
       class="modal is-active"
       style="text-align: left"
     >
-      <div class="modal-background" @click="isShow = false"></div>
+      <div class="modal-background"></div>
       <div class="modal-card" style="width: 600px">
         <div class="modal-card-head">
           <p class="modal-card-title">
             任务下发
           </p>
+          <button
+            class="delete"
+            @click="isShow = false"
+          />
         </div>
         <div class="modal-card-body">
           <div class="field">
@@ -76,12 +80,19 @@
             </div>
           </div>
         </div>
-        <div class="modal-card-foot">
+        <div class="modal-card-foot is-flex">
           <AsyncButton
             class="button is-success"
             :handler="handleSubmit"
           >
             下发
+          </AsyncButton>
+
+          <AsyncButton
+            class="button is-danger"
+            :handler="handleClose"
+          >
+            关闭
           </AsyncButton>
         </div>
       </div>
@@ -154,6 +165,7 @@ export default defineComponent({
             "/wms/pick-ticket-tasks/close",
             { id: props.entity.id }
           );
+          isShow.value = false;
           await emit("refresh");
         }
       });
