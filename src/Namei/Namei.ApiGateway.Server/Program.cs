@@ -14,7 +14,7 @@ namespace Namei.ApiGateway.Server
     {
       return Host.CreateDefaultBuilder(args)
         .ConfigureEnvironment()
-        // .UseMidosLogging()
+        .UseMidosLogging()
         .ConfigureWebHostDefaults(builder => {
           builder.UseIISIntegration();
           builder.UseStartup<Startup>();

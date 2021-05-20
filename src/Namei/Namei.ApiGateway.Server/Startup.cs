@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-// using Midos;
-// using Midos.Domain;
-// using Midos.Services.Logging;
+using Midos.SeedWork.Services.Logging;
 using Midos.SeedWork.Services;
 
 namespace Namei.ApiGateway.Server
@@ -21,9 +19,9 @@ namespace Namei.ApiGateway.Server
       services.AddEFContext<AppContext, AppContextOptions>();
       services.AddScoped<RouteRepository>();
       // services.AddScoped<IEventPublisher, EventPublisher>();
-      // services.UseMidosLogger(logger => {
-      //   logger.UseDbContextOptions<LoggerContextOptions>();
-      // });
+      services.UseMidosLogger(logger => {
+        logger.UseDbContextOptions<LoggerContextOptions>();
+      });
     }
 
     public void Configure(IApplicationBuilder app)
