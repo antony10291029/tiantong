@@ -4,10 +4,27 @@
     class="has-background-white"
     style="padding: 1.25rem; overflow: auto"
   >
-    <SearchField @search="handleSearch" />
+    <div class="is-flex" style="margin-bottom: 0.75rem">
+      <SearchField
+        @search="handleSearch"
+        style="margin-bottom: 0"
+      />
+
+      <AsyncButton
+        class="button is-info"
+        style="margin-left: 0.75rem; margin-bottom: 0"
+        v-if="selectedStatus !== false"
+        :handler="handleTasksCreate"
+      >
+        批量下发
+      </AsyncButton>
+    </div>
 
     <table class="table is-fullwidth is-bordered is-centered is-nowrap is-clickable is-hoverable">
       <thead>
+        <th @click="selectAll">
+          <Checkbox :value="selectedStatus"/>
+        </th>
         <th>#</th>
         <th>ID</th>
         <th>状态</th>
@@ -28,6 +45,9 @@
           v-slot="{ value, index }"
           tag="tr"
         >
+          <td @click="selectTask(value.id)">
+            <Checkbox :value="selectedTasks.indexOf(value.id) !== -1" />
+          </td>
           <td>{{index + 1}}</td>
           <td>{{value.id}}</td>
           <TheStatus :value="value.status" />
@@ -57,8 +77,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { DataMap, Pagination, QueryParams } from "@midos/seed-work";
+import { useConfirm } from "@midos/vue-ui";
 import { useRcsExtHttp } from "../../services/rcs-ext-http";
 import { WmsPickTicketTask } from "./entities/pick-ticket-task";
 import { RestQuantity } from "./entities/rest-quantity";
@@ -79,10 +100,23 @@ export default defineComponent({
 
   setup() {
     const api = useRcsExtHttp();
+    const confirm = useConfirm();
     const param = ref(new QueryParams());
     const data = ref(new DataMap<WmsPickTicketTask>());
     const restQuantities = ref<any>({});
     const isRestQuantityLoaded = ref(false);
+    const selectedTasks = ref<number[]>([]);
+    const selectedStatus = computed(() => {
+      if (selectedTasks.value.length === 0) {
+        return false;
+      }
+
+      if (selectedTasks.value.length === data.value.keys.length) {
+        return true;
+      }
+
+      return "minus";
+    });
 
     async function getTasks() {
       data.value = await api.post<Pagination<WmsPickTicketTask>>(
@@ -108,12 +142,54 @@ export default defineComponent({
       return getTasks();
     }
 
+    function selectTask(id: number) {
+      const index = selectedTasks.value.indexOf(id);
+
+      if (index === -1) {
+        selectedTasks.value.push(id);
+      } else {
+        selectedTasks.value.splice(index, 1);
+      }
+    }
+
+    function selectAll() {
+      if (selectedTasks.value.length !== data.value.keys.length) {
+        selectedTasks.value = [...data.value.keys];
+      } else {
+        selectedTasks.value = [];
+      }
+    }
+
+    function handleTasksCreate() {
+      const params = selectedTasks.value
+        .map(id => data.value.values[id])
+        .filter(task => task.status === null)
+        .map(task => ({
+          taskId: task.id,
+          position: task.locationCode,
+          // eslint-disable-next-line no-template-curly-in-string
+          destination: task ? "204${04}" : "294${04}",
+          palletCode: task.palletCode,
+        }));
+
+      confirm.open({
+        title: "提示",
+        content: `确认将执行未下发的 ${params.length} 条任务`,
+        handler: async () => await api.post("/wms/pick-ticket-tasks/start-batch", params)
+      });
+    }
+
     return {
       data,
       restQuantities,
       isRestQuantityLoaded,
+      selectedTasks,
+      selectedStatus,
       getTasks,
-      handleSearch
+      selectTask,
+      selectAll,
+      handleSearch,
+      handleTasksCreate
     };
   }
 });

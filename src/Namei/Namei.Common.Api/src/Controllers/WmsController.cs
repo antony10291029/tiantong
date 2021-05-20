@@ -148,6 +148,26 @@ namespace Namei.Common.Api
         .Success("任务已下发");
     }
 
+    [HttpPost("/wms/pick-ticket-tasks/start-batch")]
+    public object StartRange([FromBody] StartParams[] param)
+    {
+      var isSuccess = true;
+
+      foreach (var item in param) {
+        try {
+          Start(item);
+        } catch {
+          isSuccess = false;
+        }
+      }
+
+      var notify =  NotifyResult.FromVoid();
+      
+      return isSuccess
+        ? notify.Success("任务已全部下发")
+        : notify.Danger("部分任务下发失败，请校验任务列表");
+    }
+
     public class FinishParams
     {
       public string TaskId { get; set; }
