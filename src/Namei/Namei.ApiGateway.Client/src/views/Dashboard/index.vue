@@ -45,7 +45,10 @@
 
     <div style="height: 1.5rem"></div>
 
-    <Pagination v-bind="logs" />
+    <Pagination
+      v-bind="logs"
+      @change="changePage"
+    />
   </AsyncLoader>
 </template>
 
@@ -77,9 +80,16 @@ export default defineComponent({
       return responsedAt - requestedAt;
     }
 
+    function changePage(page: number) {
+      params.value.page = page;
+
+      return getLogs();
+    }
+
     return {
       logs,
       getLogs,
+      changePage,
       getTimeConsuming
     };
   }
