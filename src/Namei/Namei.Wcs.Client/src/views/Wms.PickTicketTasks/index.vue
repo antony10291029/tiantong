@@ -58,7 +58,7 @@
           <td>{{value.fromName}}</td>
           <td>{{value.pickedQuantity}}</td>
           <TheRestQuantityCell
-            :value="restQuantities[value.palletCode]?.restQuantity ?? 0"
+            :value="getRestQuantity(value)"
           />
           <td>{{value.itemName}}</td>
           <td>{{value.itemCode}}</td>
@@ -66,7 +66,7 @@
             <TheOperation
               v-if="isRestQuantityLoaded"
               :entity="value"
-              :restQuantity="restQuantities[value.palletCode]?.restQuantity ?? 0"
+              :restQuantity="getRestQuantity(value)"
               @refresh="getTasks"
             />
           </td>
@@ -160,6 +160,10 @@ export default defineComponent({
       }
     }
 
+    function getRestQuantity(task: WmsPickTicketTask) {
+      return restQuantities[task.palletCode]?.restQuantity ?? 0
+    }
+
     function handleTasksCreate() {
       const params = selectedTasks.value
         .map(id => data.value.values[id])
@@ -168,7 +172,7 @@ export default defineComponent({
           taskId: task.id,
           position: task.locationCode,
           // eslint-disable-next-line no-template-curly-in-string
-          destination: task ? "204${04}" : "294${04}",
+          destination: getRestQuantity(task) ? "204${04}" : "294${04}",
           palletCode: task.palletCode,
         }));
 
@@ -189,6 +193,7 @@ export default defineComponent({
       selectTask,
       selectAll,
       handleSearch,
+      getRestQuantity,
       handleTasksCreate
     };
   }
