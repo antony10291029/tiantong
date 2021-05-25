@@ -19,9 +19,9 @@ namespace Namei.ApiGateway.Server
       services.AddEFContext<AppContext, AppContextOptions>();
       services.AddScoped<RouteRepository>();
       // services.AddScoped<IEventPublisher, EventPublisher>();
-      services.UseMidosLogger(logger => {
-        logger.UseDbContextOptions<LoggerContextOptions>();
-      });
+      // services.UseMidosLogger(logger => {
+      //   logger.UseDbContextOptions<LoggerContextOptions>();
+      // });
     }
 
     public void Configure(IApplicationBuilder app)
