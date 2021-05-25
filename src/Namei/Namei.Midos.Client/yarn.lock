@@ -910,10 +910,10 @@
   resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.14.tgz#02c4a0f22dc8091fbc7cc94c57df4327170fd3eb"
   integrity sha512-Cpr3LGuhuF+m+J8nKMLB5ZAWp5C9h8POXxU8ML2b8yV2yNtH/BQGhQFUPBtACrWKGI1zQx3U0GwpiZXXTdOCog==
 
-"@midos/app-namei-wcs@0.0.56":
-  version "0.0.56"
-  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.56.tgz#0889f4b8d29cefe8be72f754ee66148f83c478f4"
-  integrity sha512-/Hns6JRCD+GNLHkBasTv8VLls0G2dKVkvtdmalKTEVUJSJ50B9lo/vO2IlUyEe5qxuxi/ZNmnOuGrNz1X0PMLg==
+"@midos/app-namei-wcs@0.0.58":
+  version "0.0.58"
+  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.58.tgz#94591a9f80cee4afc15147f5357e8c6fd33ed6eb"
+  integrity sha512-2G760eJCfrWiyRBkppFJtm9ttV3PviYR7FKAxqGfWFrpX9Imk29aDGFQxXCYlAWd+8U4gZ+4E7+8iohoYSRjpw==
 
 "@midos/core@^0.0.28":
   version "0.0.28"

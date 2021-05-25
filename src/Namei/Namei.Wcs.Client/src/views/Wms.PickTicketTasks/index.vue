@@ -88,6 +88,8 @@ import TheStatus from "./TheStatus.vue";
 import TheOperation from "./TheOperation.vue";
 import TheRestQuantityCell from "./TheRestQuantityCell.vue";
 
+type RestQuantityMap = { [ key: string ]: RestQuantity }
+
 export default defineComponent({
   name: "PickTicketTasks",
 
@@ -103,7 +105,7 @@ export default defineComponent({
     const confirm = useConfirm();
     const param = ref(new QueryParams());
     const data = ref(new DataMap<WmsPickTicketTask>());
-    const restQuantities = ref<any>({});
+    const restQuantities = ref<RestQuantityMap>({});
     const isRestQuantityLoaded = ref(false);
     const selectedTasks = ref<number[]>([]);
     const selectedStatus = computed(() => {
@@ -127,7 +129,7 @@ export default defineComponent({
         key => data.value.values[key].palletCode
       );
 
-      api.post<DataMap<RestQuantity>>(
+      api.post<RestQuantityMap>(
         "/wms/inventory-rest-quantity/query",
         { codes: palletCodes }
       ).then(result => {
@@ -161,7 +163,7 @@ export default defineComponent({
     }
 
     function getRestQuantity(task: WmsPickTicketTask) {
-      return restQuantities[task.palletCode]?.restQuantity ?? 0
+      return restQuantities.value[task.palletCode]?.restQuantity ?? 0;
     }
 
     function handleTasksCreate() {
