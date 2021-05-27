@@ -47,18 +47,18 @@ namespace Namei.Wcs.Aggregates.Test
     public void Test_Get_Free_Location_Code()
     {
       var locations = new TcsMapData[] {
-        new() { MapDataCode = "002@0001", DataName = "000021", PodCode = null,  AreaCode = "002", WcsAreaSeq = 1 },
+        new() { MapDataCode = "002@0001", DataName = "000021", PodCode = null,  AreaCode = "003", WcsAreaSeq = 1 },
         new() { MapDataCode = "002@0002", DataName = "000022", PodCode = null,  AreaCode = "002", WcsAreaSeq = 2 },
-        new() { MapDataCode = "002@0003", DataName = "000023", PodCode = null,  AreaCode = "002", WcsAreaSeq = 3 },
-        new() { MapDataCode = "002@0004", DataName = "000024", PodCode = "100000",  AreaCode = "002", WcsAreaSeq = 4 },
+        new() { MapDataCode = "002@0003", DataName = "000023", PodCode = "100000",  AreaCode = "002", WcsAreaSeq = 3 },
+        new() { MapDataCode = "002@0004", DataName = "000024", PodCode = null,  AreaCode = "002", WcsAreaSeq = 4 },
         new() { MapDataCode = "002@0005", DataName = "000025", PodCode = null,  AreaCode = "002", WcsAreaSeq = 5 },
-        new() { MapDataCode = "002@0006", DataName = "000026", PodCode = null,  AreaCode = "003", WcsAreaSeq = 6 },
+        new() { MapDataCode = "002@0006", DataName = "000026", PodCode = null,  AreaCode = "002", WcsAreaSeq = 6 },
       };
       var tasks = new TcsMainTask[] {
         new() {
           MainTaskNum = "0001",
           TaskStatus = TcsMainTaskStatus.Started,
-          ViaCodes = JsonSerializer.Serialize(new string[] { "002@0001", "002@0005" })
+          ViaCodes = JsonSerializer.Serialize(new string[] { "002@0001", "002@0002" })
         }
       };
 
@@ -71,7 +71,7 @@ namespace Namei.Wcs.Aggregates.Test
 
       var location = service.GetFreeLocationCode("002");
 
-      Assert.AreEqual("000023", location);
+      Assert.AreEqual("000024", location);
     }
   }
 }

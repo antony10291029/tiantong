@@ -89,10 +89,10 @@ namespace Namei.Wcs.Aggregates
       AgcTaskType type;
 
       if (param.TypeId != default(int)) {
-        type = _context.Set<AgcTaskType>().First(type => type.Id == param.TypeId);
+        type = _context.Set<AgcTaskType>().FirstOrDefault(type => type.Id == param.TypeId);
       } else {
-        type = _context.Set<AgcTaskType>().First(type => type.Key == param.Type);
-        param.TypeId = type.Id;
+        type = _context.Set<AgcTaskType>().FirstOrDefault(type => type.Key == param.Type);
+        param.TypeId = type?.Id ?? 0;
       }
 
       if (type is null) {

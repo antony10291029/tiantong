@@ -11,6 +11,7 @@ namespace Namei.Wcs.Aggregates
       services.AddSingleton<IDomainContextOptions<RcsContext>, RcsContextOptions>();
       services.AddDbContext<RcsContext>();
       services.AddScoped<IRcsService, RcsService>();
+      services.AddScoped<IRcsMapService, RcsMapService>();
     }
   }
 }

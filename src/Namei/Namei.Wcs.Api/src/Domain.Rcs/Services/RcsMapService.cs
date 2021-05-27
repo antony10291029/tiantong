@@ -1,4 +1,5 @@
 using System.Linq;
+using Midos.Domain;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -7,6 +8,10 @@ namespace Namei.Wcs.Aggregates
     string[] ToDataName(string[] codes);
 
     string GetFreeLocationCode(string areaCode);
+
+    void UpdateRange(TcsMapData[] codes);
+
+    object Search(string areaCode = null);
   }
 
   public class RcsMapService: IRcsMapService
@@ -54,8 +59,44 @@ namespace Namei.Wcs.Aggregates
 
       return locations
         .Where(location => !destinations.Contains(location.MapDataCode))
-        .OrderByDescending(location => location.WcsAreaSeq)
+        .OrderBy(location => location.WcsAreaSeq)
         .FirstOrDefault()?.DataName;
+    }
+
+    public void UpdateRange(TcsMapData[] data)
+    {
+      var codes = data.Select(map => map.MapDataCode);
+      var dict = data.ToDictionary(data => data.MapDataCode, data => data);
+      var source = _context.Set<TcsMapData>()
+        .Where(map => codes.Contains(map.MapDataCode))
+        .ToArray();
+
+      foreach (var item in source) {
+        item.WcsAreaSeq = dict[item.MapDataCode].WcsAreaSeq;
+      }
+
+      _context.SaveChanges();
+    }
+
+    public object Search(string areaCode = null)
+    {
+      var query = _context.Set<TcsMapData>().AsQueryable();
+
+      if (!string.IsNullOrWhiteSpace(areaCode)) {
+        query = query.Where(map => map.AreaCode == areaCode);
+      }
+
+      var data = query
+        .OrderBy(map => map.AreaCode == null)
+        .ThenByDescending(map => map.AreaCode)
+        .ThenBy(map => map.WcsAreaSeq)
+        .ThenByDescending(map => map.DataName)
+        .ToArray();
+
+      return new {
+        Keys = data.Select(map => map.MapDataCode),
+        Values = data.ToDictionary(map => map.MapDataCode, map => map)
+      };
     }
   }
 }

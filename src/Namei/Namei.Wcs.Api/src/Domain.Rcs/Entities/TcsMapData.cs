@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Midos.Domain;
+using Newtonsoft.Json;
 
 namespace Namei.Wcs.Aggregates
 {
