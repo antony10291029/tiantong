@@ -28,29 +28,15 @@ namespace Namei.Wcs.Aggregates
     }
 
     public static AgcTaskCreate From(
-      long typeId,
       string position,
       string destination,
+      long typeId = 0,
+      string type = "",
       string podCode = "",
       string taskId = "",
       string priority = ""
     ) => new() {
       TypeId = typeId,
-      Position = position,
-      Destination = destination,
-      Priority = priority,
-      PodCode = podCode,
-      TaskId = taskId,
-    };
-
-    public static AgcTaskCreate From(
-      string type,
-      string position,
-      string destination,
-      string podCode = "",
-      string taskId = "",
-      string priority = ""
-    ) => new() {
       Type = type,
       Position = position,
       Destination = destination,

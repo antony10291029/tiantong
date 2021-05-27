@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
 using Midos.Services.Http;
@@ -13,8 +12,10 @@ namespace Namei.Wcs.Aggregates.Test
   {
     private readonly WcsContext _context = Utils.GetDomain();
 
-    private AgcTaskService UseService(IRcsService rcs = null)
-      => new(_context, rcs);
+    private AgcTaskService UseService(
+      IRcsService rcs = null,
+      IRcsMapService rcsMap = null
+    ) => new(_context, rcs, rcsMap);
 
     [TestMethod]
     [DataRow(true)]
@@ -22,33 +23,35 @@ namespace Namei.Wcs.Aggregates.Test
     public void Test_Create(bool useTypeId)
     {
       var rcsTaskCode = "100235";
-      var param = useTypeId
-        ? AgcTaskCreate.From(
-            typeId: TestData.AgcTaskType.Id,
-            position: "000001",
-            destination: "000002",
-            podCode: "100000",
-            priority: "5",
-            taskId: "100000"
-          )
-        : AgcTaskCreate.From(
-          type: TestData.AgcTaskType.Key,
-          position: "000001",
-          destination: "000002",
-          podCode: "100000",
-          priority: "5",
-          taskId: "100000"
-        );
-      var rcs = Helper.UseService<IRcsService>(mock => mock
-        .Setup(rcs => rcs.CreateTask(It.IsAny<RcsTaskCreateParams>()))
-        .Returns(Task.CompletedTask.ContinueWith(
-          _ => new RcsTaskCreateResult {
-            Code = "0",
-            Data = rcsTaskCode,
-          })
-        )
+      var param = AgcTaskCreate.From(
+        typeId: useTypeId ? TestData.AgcTaskType.Id : 0,
+        type: useTypeId ? null : TestData.AgcTaskType.Key,
+        position: "000001",
+        destination: "000002",
+        podCode: "100000",
+        priority: "5",
+        taskId: "100000"
       );
-      var service = UseService(rcs);
+      var rcsMap = Helper.UseService<IRcsMapService>(mock => mock
+        .Setup(map => map .ToDataName(It.IsAny<string[]>()))
+        .Returns(new string[] {
+          param.Position + "a",
+          param.Destination + "b"
+        })
+      );
+      var rcs = Helper.UseService<IRcsService>(mock => mock
+        .Setup(rcs => rcs
+          .CreateTask(It.Is<RcsTaskCreateParams>(param =>
+            param.PositionCodePath[0].PositionCode.EndsWith("a") &&
+            param.PositionCodePath[1].PositionCode.EndsWith("b")
+          ))
+        )
+        .ReturnsAsync(new RcsTaskCreateResult {
+          Code = "0",
+          Data = rcsTaskCode,
+        })
+      );
+      var service = UseService(rcs, rcsMap);
       var result = service.Create(param);
       var data = _context.Find<AgcTask>(result.Id);
 
@@ -59,6 +62,52 @@ namespace Namei.Wcs.Aggregates.Test
       Assert.AreEqual(param.Priority, data.Priority);
       Assert.AreEqual(param.TaskId, data.TaskId);
       Assert.AreEqual(rcsTaskCode, data.RcsTaskCode);
+      Assert.AreEqual(AgcTaskStatus.Created, data.Status);
+    }
+
+    [TestMethod]
+    public void Test_Create_By_Area()
+    {
+      var rcsTaskCode = "100235";
+      var param = AgcTaskCreate.From(
+        typeId: TestData.AgcTaskType.Id,
+        position: "000001",
+        destination: "002${04}",
+        podCode: "100000",
+        priority: "5",
+        taskId: "100000"
+      );
+      var rcsMap = Helper.UseService<IRcsMapService>(
+        mock => {
+          mock
+            .Setup(map => map.ToDataName(It.IsAny<string[]>()))
+            .Returns(new string[] {
+              param.Position,
+              param.Destination
+            });
+          mock
+            .Setup(map => map.GetFreeLocationCode(
+              It.Is<string>(value => value == "002")
+            ))
+            .Returns("000002");
+        }
+      );
+      var rcs = Helper.UseService<IRcsService>(mock => mock
+        .Setup(rcs => rcs.CreateTask(
+          It.Is<RcsTaskCreateParams>(param =>
+            param.PositionCodePath[0].PositionCode == "000001" &&
+            param.PositionCodePath[1].PositionCode == "000002"
+          )
+        ))
+        .ReturnsAsync(new RcsTaskCreateResult {
+          Code = "0",
+          Data = rcsTaskCode,
+        })
+      );
+      var service = UseService(rcs, rcsMap);
+      var result = service.Create(param);
+      var data = _context.Find<AgcTask>(result.Id);
+
       Assert.AreEqual(AgcTaskStatus.Created, data.Status);
     }
 

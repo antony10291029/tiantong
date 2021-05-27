@@ -39,11 +39,17 @@ namespace Namei.Wcs.Aggregates
 
     private readonly IRcsService _rcs;
 
-    public AgcTaskService(WcsContext domain, IRcsService rcs)
+    private readonly IRcsMapService _rcsMap;
+
+    public AgcTaskService(WcsContext domain, IRcsService rcs, IRcsMapService rcsMap)
     {
       _context = domain;
       _rcs = rcs;
+      _rcsMap = rcsMap;
     }
+
+    private static string GetAreaCode(string code)
+      => code.EndsWith("${04}") ? code.Split("$").First() : null;
 
     private RcsTaskCreateResult Start(AgcTask task, AgcTaskType type)
     {
@@ -53,14 +59,25 @@ namespace Namei.Wcs.Aggregates
         throw KnownException.Error("任务类型已禁用");
       }
 
+      var codes = _rcsMap.ToDataName(new string[] { task.Position, task.Destination });
+      var areaCode = GetAreaCode(codes[1]);
+
+      if (areaCode != null) {
+        codes[1] = _rcsMap.GetFreeLocationCode(areaCode);
+
+        if (codes[1] == null) {
+          throw KnownException.Error("区域内无可分配点位");
+        }
+      }
+
       var result = _rcs.CreateTask(new RcsTaskCreateParams {
         TaskTyp = type.Method,
         AgvCode = task.AgcCode,
         PodCode = task.PodCode,
         Priority = task.Priority,
         PositionCodePath = new List<PositionCodePath> {
-          new PositionCodePath { PositionCode = task.Position, Type = "00" },
-          new PositionCodePath { PositionCode = task.Destination, Type = "00" },
+          new PositionCodePath { PositionCode = codes[0], Type = "00" },
+          new PositionCodePath { PositionCode = codes[1], Type = "00" },
         }
       }).GetAwaiter().GetResult();
 

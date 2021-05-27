@@ -32,7 +32,7 @@ namespace Namei.Wcs.Aggregates
         Method = method
       };
       var logger = new Namei.Wcs.Api.Logger(context);
-      var agcService = new AgcTaskService(context, null);
+      var agcService = new AgcTaskService(context, null, null);
       var controller = new AgcTaskCallbackController(agcService, logger);
       var result = controller.RcsCallback(param);
       var data = context.Find<AgcTask>(task.Id);
