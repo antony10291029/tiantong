@@ -5,9 +5,16 @@ namespace Midos.Domain.Test
   public class PostgresDomainOptions<T>: DomainContextOptions<T>
     where T: DomainContext
   {
+    private readonly string _database;
+
+    public PostgresDomainOptions(string database = "midos.test")
+    {
+      _database = database;
+    }
+
     public override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-      builder.UseNpgsql("Host=localhost;Port=5432;Database=midos.test;Username=postgres;Password=password");
+      builder.UseNpgsql($"Host=localhost;Port=5432;Database={_database};Username=postgres;Password=password");
     }
   }
 

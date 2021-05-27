@@ -29,9 +29,11 @@ namespace Namei.Wcs.Api.Test
     public static void Up(TestContext _)
     {
       using var domain = Utils.GetDomain();
+      using var rcs = Utils.GetRcsContext();
 
       domain.Database.EnsureDeleted();
       domain.Database.EnsureCreated();
+      rcs.Database.EnsureCreated();
 
       domain.Add(TestData.LifterAgcTaskType);
       domain.Add(TestData.AgcTaskType);
@@ -41,9 +43,11 @@ namespace Namei.Wcs.Api.Test
     [AssemblyCleanup]
     public static void Down()
     {
-      using var domain = Utils.GetDomain();
+      using var wcs = Utils.GetDomain();
+      using var rcs = Utils.GetRcsContext();
 
-      domain.Database.EnsureDeleted();
+      wcs.Database.EnsureDeleted();
+      rcs.Database.EnsureDeleted();
     }
   }
 }

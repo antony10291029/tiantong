@@ -25,6 +25,8 @@ namespace Namei.Wcs.Api
 
     string RcsUrl { get; }
 
+    string RcsContext { get; }
+
     string NameiCommonUrl { get; }
 
     string MidosLoggerContext { get; }
@@ -52,6 +54,8 @@ namespace Namei.Wcs.Api
 
     public string RcsUrl { get; }
 
+    public string RcsContext { get; }
+
     public string NameiCommonUrl { get; }
 
     public string MidosLoggerContext { get; }
@@ -66,6 +70,7 @@ namespace Namei.Wcs.Api
       PlcUrl = config.GetValue<string>("plc_url");
       WmsUrl = config.GetValue<string>("wms_url");
       RcsUrl = config.GetValue<string>("rcs_url");
+      RcsContext = config.GetValue<string>("rcs.context");
       NameiCommonUrl = config.GetValue<string>("namei.common.url");
       MidosLoggerContext = config.GetValue<string>("midos.logger.context");
     }

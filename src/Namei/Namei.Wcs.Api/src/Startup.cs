@@ -8,7 +8,6 @@ using Namei.Wcs.Aggregates;
 using Namei.Wcs.Database;
 using Savorboard.CAP.InMemoryMessageQueue;
 using Tiantong.Iot.Utils;
-using Midos.Services.Logging;
 
 namespace Namei.Wcs.Api
 {
@@ -20,6 +19,7 @@ namespace Namei.Wcs.Api
       services.AddControllers();
       services.AddHttpClient();
       services.AddHttpContextAccessor();
+      services.AddRcsServices();
       services.AddHostedService<DoorTaskHostedService>();
       services.AddSingleton<Config>();
       services.AddSingleton<IAppConfig, Config>();
@@ -38,15 +38,19 @@ namespace Namei.Wcs.Api
       services.AddScoped<IHttpService, HttpService>();
       services.AddScoped<IMigrator, PostgresMigrator>();
       services.AddScoped<IEventPublisher, EventPublisher>();
-      services.AddScoped<RcsService>(); // todo remove
-      services.AddScoped<IRcsService, RcsService>();
       services.AddScoped<IAgcTaskService, AgcTaskService>();
       services.AddScoped<IWcsDoorFactory, WcsDoorFactory>();
       services.AddScoped<DeviceErrorService>();
       services.AddScoped<ILifterLogger, LifterLogger>();
       services.AddScoped<Logger>();
-      services.UseMidosLogger(logger => {
-        logger.UseDbContextOptions<LoggerContextOptions>();
+      // services.UseMidosLogger(logger => {
+      //   logger.UseDbContextOptions<LoggerContextOptions>();
+      // });
+      services.AddCap(cap => {
+        cap.ConsumerThreadCount = 10;
+        cap.FailedRetryCount = 0;
+        cap.UseInMemoryStorage();
+        cap.UseInMemoryMessageQueue();
       });
     }
 
