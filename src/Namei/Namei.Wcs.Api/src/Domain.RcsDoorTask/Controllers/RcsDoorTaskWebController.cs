@@ -57,6 +57,21 @@ namespace Namei.Wcs.Api
       return _rcs.CancelTask(param);
     }
 
+    public class RcsDoorNotifyParams
+    {
+      public string DoorId { get; set; }
+
+      public string Uuid { get; set; }
+    }
+
+    [HttpPost("/rcs/doors/notify")]
+    public object RcsDoorNotify([FromBody] RcsDoorNotifyParams param)
+    {
+      _rcs.NotifyDoorOpened(param.DoorId, param.Uuid);
+
+      return NotifyResult.FromVoid().Success("任务已通知");
+    }
+
     public class PublishDoorsMessageParams
     {
       public string door_id { get; set; }

@@ -16,7 +16,7 @@
         </label>
 
         <Input
-          v-model:value="params.deviceIndex"
+          v-model:value="params.doorId"
           style="max-width: 400px"
         />
       </div>
@@ -67,16 +67,12 @@ export default defineComponent({
   setup() {
     const http = useWcsHttp();
     const params = ref({
-      type: "notifyTask",
-      deviceType: "door",
-      deviceIndex: "201",
-      actionTask: "applyLock",
+      doorId: "",
       uuid: "",
-      from: "WCS"
     });
 
     async function handleSubmit() {
-      await http.post("/REV_AGC/NotifyTaskInfo", params.value);
+      await http.post("/rcs/doors/notify", params.value);
     }
 
     return {
