@@ -15,6 +15,7 @@ import DoorCommands from "./views/Doors.Commands/index.vue";
 import RcsUnbind from "./views/Rcs.Unbind/index.vue";
 import RcsTasks from "./views/Rcs.Tasks/index.vue";
 import RcsNotifyTask from "./views/Rcs.NotifyTask/index.vue";
+import RcsMapData from "./views/Rcs.MapData/index.vue";
 import Logs from "./views/Logs/index.vue";
 import WmsPickTicketTasks from "./views/Wms.PickTicketTasks/index.vue";
 import RcsAgcTasks from "./views/Rcs.Agc.Tasks/index.vue";
@@ -130,6 +131,7 @@ export class NameiWcs extends VueApp {
             { text: "任务通知", route: "NameiWcsNotifyTask" },
             { text: "地图绑定", route: "NameiWcsRcsUnbind" },
             { text: "任务调度", route: "NameiWcsRcsTasks" },
+            { text: "地图数据", route: "NameiWcsRcsMapData" },
           ],
         }),
         component: RouteTab,
@@ -148,6 +150,11 @@ export class NameiWcs extends VueApp {
             path: "notify-task",
             name: "NameiWcsNotifyTask",
             component: RcsNotifyTask
+          },
+          {
+            path: "map-data",
+            name: "NameiWcsRcsMapData",
+            component: RcsMapData
           }
         ]
       },

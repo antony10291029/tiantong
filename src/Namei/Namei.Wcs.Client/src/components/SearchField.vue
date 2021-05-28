@@ -3,7 +3,7 @@
     <slot></slot>
     <div class="control" :style="{ width }">
       <input
-        v-model.lazy="value"
+        v-model.lazy="inputValue"
         type="text" class="input"
         :placeholder="placeholder"
         @keypress.enter="handleEnter"
@@ -43,23 +43,28 @@ export default defineComponent({
     width: {
       type: String,
       default: "160px"
-    }
+    },
+
+    value: {
+      type: String,
+      default: ""
+    },
   },
 
   setup(props, { emit }) {
-    const value = ref("");
+    const inputValue = ref(props.value);
 
     function handleSearch () {
-      emit("search", value.value);
+      emit("search", inputValue.value);
     }
 
     function handleEnter (event: any) {
-      value.value = event.target.value;
+      inputValue.value = event.target.value;
       handleSearch();
     }
 
     return {
-      value,
+      inputValue,
       handleEnter,
       handleSearch,
     };
