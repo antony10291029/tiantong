@@ -5,7 +5,7 @@ namespace Namei.Wcs.Api
 {
   public class DeviceErrorService
   {
-    private DomainContext _domain;
+    private readonly DomainContext _domain;
 
     public DeviceErrorService(DomainContext domain)
     {

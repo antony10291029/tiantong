@@ -5,14 +5,14 @@ namespace Namei.Wcs.Api
 {
   public class DeviceStateLogger
   {
-    private DomainContext _domain;
+    private readonly DomainContext _domain;
 
     public DeviceStateLogger(DomainContext domain)
     {
       _domain = domain;
     }
 
-    private void Log(string type, int deviceId, string state)
+    private void Log(string _, int deviceId, string state)
     {
       var log = _domain.DeviceStates.FirstOrDefault(ls =>
         ls.device_id == deviceId &&

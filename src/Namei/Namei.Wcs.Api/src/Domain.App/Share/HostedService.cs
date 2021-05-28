@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
+  // @Todo remove
   public abstract class IntervalService: IHostedService, IDisposable
   {
     private CancellationTokenSource _stoppingToken;
 
     protected int Time = 5000;
 
-    private Task _task;
+    protected Task _task;
 
     private async Task RunAsync(CancellationToken stoppingToken)
     {
@@ -54,7 +55,7 @@ namespace Namei.Wcs.Api
 
     public virtual void Dispose()
     {
-
+      GC.SuppressFinalize(this);
     }
   }
 }

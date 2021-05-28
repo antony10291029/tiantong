@@ -4,7 +4,7 @@ namespace Namei.Wcs.Api
 {
   public class Logger
   {
-    protected WcsContext _domain;
+    protected readonly WcsContext _domain;
 
     public Logger(WcsContext domain)
     {

@@ -26,18 +26,15 @@ namespace Namei.Wcs.Api
 
   public class WmsService: IWmsService
   {
-    public static string Destination = "1";
+    public readonly static string Destination = "1";
 
-    private ICapPublisher _cap;
+    private readonly HttpClient _client;
 
-    private HttpClient _client;
-
-    public WmsService(ICapPublisher cap, IHttpClientFactory factory, Config config)
+    public WmsService(IHttpClientFactory factory, Config config)
     {
-      _cap = cap;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
-      _client.BaseAddress = new System.Uri(config.WmsUrl);
+      _client.BaseAddress = new Uri(config.WmsUrl);
       _client.DefaultRequestHeaders.Accept.Add(
         new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
       );
@@ -52,8 +49,8 @@ namespace Namei.Wcs.Api
       var content = new StringContent(json, Encoding.UTF8);
       var response = _client.PostAsync("/namei_wms/wcsCallback/request", content).GetAwaiter().GetResult();
       var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-      var taskid = "";
-      var destination =  "";
+      string taskid;
+      string destination;
 
       try {
         var dom = JsonDocument.Parse(result);

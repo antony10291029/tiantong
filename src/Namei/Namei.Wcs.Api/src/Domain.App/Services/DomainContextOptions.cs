@@ -4,7 +4,7 @@ namespace Namei.Wcs.Api
 {
   public class DomainOptions: Midos.Domain.DomainContextOptions<DomainContext>
   {
-    private IAppConfig _config;
+    private readonly IAppConfig _config;
 
     public DomainOptions(IAppConfig config)
     {
