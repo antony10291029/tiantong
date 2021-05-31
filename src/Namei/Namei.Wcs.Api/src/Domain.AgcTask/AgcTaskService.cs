@@ -6,6 +6,7 @@ using Namei.Wcs.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -31,6 +32,8 @@ namespace Namei.Wcs.Aggregates
     AgcTask FindByTaskCode(string taskCode);
 
     IPagination<AgcTask> Search(IQueryParams param);
+
+    Task<RcsTaskCreateResult> CreateTaskFromRcsApiAsync(RcsTaskCreateParams param);
   }
 
   public class AgcTaskService: IAgcTaskService
@@ -43,12 +46,34 @@ namespace Namei.Wcs.Aggregates
 
     public AgcTaskService(WcsContext domain, IRcsService rcs, IRcsMapService rcsMap)
     {
-      _context = domain;
       _rcs = rcs;
+      _context = domain;
       _rcsMap = rcsMap;
     }
 
-    private static string GetAreaCode(string code)
+    public Task<RcsTaskCreateResult> CreateTaskFromRcsApiAsync(RcsTaskCreateParams param)
+    {
+      var codes = _rcsMap.ToDataName(
+        param.PositionCodePath.Select(path => path.PositionCode).ToArray()
+      );
+
+      if (codes.Length == 2) {
+        var areaCode = GetAreaCode(codes[1]);
+        var code = _rcsMap.GetFreeLocationCode(areaCode);
+
+        if (code != null) {
+          codes[1] = code;
+        }
+      }
+
+      for (var i = 0; i < codes.Length; i++) {
+        param.PositionCodePath[i].PositionCode = codes[i];
+      }
+
+      return _rcs.CreateTask(param);
+    }
+
+    public static string GetAreaCode(string code)
       => code.EndsWith("${04}") ? code.Split("$").First() : null;
 
     private RcsTaskCreateResult Start(AgcTask task, AgcTaskType type)

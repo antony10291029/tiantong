@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
 using Midos.Services.Http;
@@ -208,6 +209,76 @@ namespace Namei.Wcs.Aggregates.Test
       var data = service.FindByTaskCode(task.RcsTaskCode);
 
       Assert.AreEqual(task.Id, data.Id);
+    }
+
+    [TestMethod]
+    public async Task Test_CreateTaskFromRcsApi_Position()
+    {
+      var param = new RcsTaskCreateParams {
+        PositionCodePath = new() {
+          new() { PositionCode = "100000", Type = "0" },
+          new() { PositionCode = "100001", Type = "0" },
+        }
+      };
+      var rcsMap = Helper.UseService<IRcsMapService>(mock => {
+        mock.Setup(map => map.ToDataName(It.IsAny<string[]>()))
+          .Returns(new string[] { "100000", "100001" });
+      });
+      var rcs = Helper.UseService<IRcsService>(mock => mock
+        .Setup(rcs => rcs.CreateTask(
+          It.Is<RcsTaskCreateParams>(result =>
+            result.PositionCodePath[0].PositionCode == "100000" &&
+            result.PositionCodePath[1].PositionCode == "100001"
+          )
+        ))
+        .ReturnsAsync(new RcsTaskCreateResult () {
+          Code = "0",
+          Message = "success"
+        })
+      );
+
+      var service = UseService(rcs, rcsMap);
+      var result = await service.CreateTaskFromRcsApiAsync(param);
+
+      Assert.IsNotNull(result);
+      Assert.AreEqual("0", result.Code);
+      Assert.AreEqual("success", result.Message);
+    }
+
+    [TestMethod]
+    public async Task Test_CreateTaskFromRcsApi_Area()
+    {
+      var param = new RcsTaskCreateParams {
+        PositionCodePath = new() {
+          new() { PositionCode = "100000", Type = "0" },
+          new() { PositionCode = "100${04}", Type = "0" },
+        }
+      };
+      var rcsMap = Helper.UseService<IRcsMapService>(mock => {
+        mock.Setup(map => map.ToDataName(It.IsAny<string[]>()))
+          .Returns(new string[] { "100000", "100${04}" });
+        mock.Setup(map => map.GetFreeLocationCode("100"))
+          .Returns("200001");
+      });
+      var rcs = Helper.UseService<IRcsService>(mock => mock
+        .Setup(rcs => rcs.CreateTask(
+          It.Is<RcsTaskCreateParams>(result =>
+            result.PositionCodePath[0].PositionCode == "100000" &&
+            result.PositionCodePath[1].PositionCode == "200001"
+          )
+        ))
+        .ReturnsAsync(new RcsTaskCreateResult () {
+          Code = "0",
+          Message = "success"
+        })
+      );
+
+      var service = UseService(rcs, rcsMap);
+      var result = await service.CreateTaskFromRcsApiAsync(param);
+
+      Assert.IsNotNull(result);
+      Assert.AreEqual("0", result.Code);
+      Assert.AreEqual("success", result.Message);
     }
   }
 }

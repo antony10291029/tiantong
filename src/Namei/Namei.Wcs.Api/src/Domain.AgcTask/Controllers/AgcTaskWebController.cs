@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Midos.Domain;
+using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -11,6 +13,10 @@ namespace Namei.Wcs.Aggregates
     {
       _service = service;
     }
+
+    [HttpPost("/agc-tasks/create-from-rcs-api")]
+    public Task<RcsTaskCreateResult> CreateFromRcsApi([FromBody] RcsTaskCreateParams param)
+      =>_service.CreateTaskFromRcsApiAsync(param);
 
     [HttpPost("/agc-tasks/create")]
     [HttpPost("/rcs/agv-tasks/create")]

@@ -17,9 +17,29 @@ namespace Namei.Wcs.Api
   {
     public string ReqCode { get; set; }
 
+    public string ReqTime { get; set; }
+
+    public string ClientCode { get; set; }
+
+    public string TokenCode { get; set; }
+
     public string TaskTyp { get; set; }
 
+    public string SceneTyp { get; set; }
+
+    public string CtnrTyp { get; set; }
+
+    public string CtnrCode { get; set; }
+
+    public string WbCode { get; set; }
+
     public string PodCode { get; set; }
+
+    public string PodDir { get; set; }
+
+    public string PodTyp { get; set; }
+
+    public string MaterialLot { get; set; }
 
     public string Priority { get; set; }
 
@@ -101,19 +121,12 @@ namespace Namei.Wcs.Api
 
     private readonly Logger _logger;
 
-    private readonly Config _config;
-
-    private readonly IRcsMapService _rcsMap;
-
     public RcsService(
       IHttpClientFactory factory,
       Config config,
-      Logger logger,
-      IRcsMapService context
+      Logger logger
     ) {
       _logger = logger;
-      _config = config;
-      _rcsMap = context;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
       _client.BaseAddress = new Uri(config.RcsUrl);
