@@ -82,7 +82,8 @@ namespace Namei.Wcs.Api
       });
 
       var content = new StringContent(json, Encoding.UTF8);
-      var response = _client.PostAsync("/namei_wms/wcsCallback/request", content).GetAwaiter().GetResult();
+      var url = "http://172.16.2.64:5200/wms/wcsCallback/request";
+      var response = _client.PostAsync(url, content).GetAwaiter().GetResult();
       var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
       return result;
