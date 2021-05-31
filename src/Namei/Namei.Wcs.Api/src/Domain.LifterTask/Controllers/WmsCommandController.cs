@@ -4,10 +4,15 @@ namespace Namei.Wcs.Api
 {
   public class WmsCommandController: BaseController
   {
-    private Logger _logger;
+    private readonly Logger _logger;
+
+    private readonly IWmsService _wms;
     
-    public WmsCommandController(Logger logger)
-    {
+    public WmsCommandController(
+      Logger logger,
+      IWmsService wms
+    ) {
+      _wms = wms;
       _logger = logger;
     }
 
@@ -57,6 +62,30 @@ namespace Namei.Wcs.Api
       return new {
         message = "状态已接收"
       };
+    }
+
+    public class RequestPickingParams
+    {
+      public string LifterId { get; set; }
+
+      public string Floor { get; set; }
+
+      public string Barcode { get; set; }
+
+      public string TaskId { get; set; }
+    }
+
+    [HttpPost("/wms/requestPicking")]
+    public object HandleRequestPicking([FromBody] RequestPickingParams param)
+    {
+      _wms.RequestPicking(
+        lifterId: param.LifterId,
+        floor: param.Floor,
+        barcode: param.Barcode,
+        taskId: param.TaskId
+      );
+
+      return NotifyResult.FromVoid().Success("请求取货已发送");
     }
   }
 }
