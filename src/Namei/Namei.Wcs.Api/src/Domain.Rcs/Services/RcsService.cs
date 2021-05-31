@@ -146,13 +146,16 @@ namespace Namei.Wcs.Api
         var url = "/rcs/services/rest/hikRpcService/genAgvSchedulingTask";
         var response = await _client.PostAsJsonAsync(url, param);
 
-        scope.Success("RCS 任务创建成功", json);
+        scope.Success("RCS 任务请求下发成功", json);
 
         return await response.Content.ReadFromJsonAsync<RcsTaskCreateResult>();
       } catch (Exception e) {
-        scope.Danger("RCS 任务创建失败", e.Message);
+        scope.Danger("RCS 任务请求下发失败", e.Message);
 
-        return new() { Message = e.Message };
+        return new() {
+          Code = "-1",
+          Message = e.Message
+        };
       }
     }
 
