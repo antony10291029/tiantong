@@ -88,10 +88,10 @@ namespace Namei.Wcs.Aggregates
       var areaCode = GetAreaCode(codes[1]);
 
       if (areaCode != null) {
-        codes[1] = _rcsMap.GetFreeLocationCode(areaCode);
+        var code = _rcsMap.GetFreeLocationCode(areaCode);
 
-        if (codes[1] == null) {
-          throw KnownException.Error("区域内无可分配点位");
+        if (code != null) {
+          codes[1] = code;
         }
       }
 
