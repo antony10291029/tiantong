@@ -266,7 +266,8 @@ namespace Namei.Wcs.Api
       scope.Info("正在通知 RCS 任务完成", json);
 
       try {
-        var response = _client.PostAsync("/rcs/services/rest/liftCtlService/notifyExcuteResultInfo", content).GetAwaiter().GetResult();
+        var url = "http://172.16.2.64:5200/rcs/doors/notify";
+        var response = _client.PostAsync(url, content).GetAwaiter().GetResult();
         var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         scope.Success("已通知 RCS 任务完成", result);
 
