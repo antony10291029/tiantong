@@ -44,6 +44,9 @@ namespace Namei.Wcs.Aggregates
 
     private readonly IRcsMapService _rcsMap;
 
+    // 避免任务分配异常
+    private readonly object _createLock = new();
+
     public AgcTaskService(WcsContext domain, IRcsService rcs, IRcsMapService rcsMap)
     {
       _rcs = rcs;
@@ -57,20 +60,22 @@ namespace Namei.Wcs.Aggregates
         param.PositionCodePath.Select(path => path.PositionCode).ToArray()
       );
 
-      if (codes.Length == 2) {
-        var areaCode = GetAreaCode(codes[1]);
-        var code = _rcsMap.GetFreeLocationCode(areaCode);
+      lock (_createLock) {
+        if (codes.Length == 2) {
+          var areaCode = GetAreaCode(codes[1]);
+          var code = _rcsMap.GetFreeLocationCode(areaCode);
 
-        if (code != null) {
-          codes[1] = code;
+          if (code != null) {
+            codes[1] = code;
+          }
         }
-      }
 
-      for (var i = 0; i < codes.Length; i++) {
-        param.PositionCodePath[i].PositionCode = codes[i];
-      }
+        for (var i = 0; i < codes.Length; i++) {
+          param.PositionCodePath[i].PositionCode = codes[i];
+        }
 
-      return _rcs.CreateTask(param);
+        return _rcs.CreateTask(param);
+      }
     }
 
     public static string GetAreaCode(string code)
@@ -87,26 +92,28 @@ namespace Namei.Wcs.Aggregates
       var codes = _rcsMap.ToDataName(new string[] { task.Position, task.Destination });
       var areaCode = GetAreaCode(codes[1]);
 
-      if (areaCode != null) {
-        var code = _rcsMap.GetFreeLocationCode(areaCode);
+      lock (_createLock) {
+        if (areaCode != null) {
+          var code = _rcsMap.GetFreeLocationCode(areaCode);
 
-        if (code != null) {
-          codes[1] = code;
+          if (code != null) {
+            codes[1] = code;
+          }
         }
+
+        var result = _rcs.CreateTask(new RcsTaskCreateParams {
+          TaskTyp = type.Method,
+          AgvCode = task.AgcCode,
+          PodCode = task.PodCode,
+          Priority = task.Priority,
+          PositionCodePath = new List<PositionCodePath> {
+            new PositionCodePath { PositionCode = codes[0], Type = "00" },
+            new PositionCodePath { PositionCode = codes[1], Type = "00" },
+          }
+        }).GetAwaiter().GetResult();
+
+        return result;
       }
-
-      var result = _rcs.CreateTask(new RcsTaskCreateParams {
-        TaskTyp = type.Method,
-        AgvCode = task.AgcCode,
-        PodCode = task.PodCode,
-        Priority = task.Priority,
-        PositionCodePath = new List<PositionCodePath> {
-          new PositionCodePath { PositionCode = codes[0], Type = "00" },
-          new PositionCodePath { PositionCode = codes[1], Type = "00" },
-        }
-      }).GetAwaiter().GetResult();
-
-      return result;
     }
 
     public AgcTaskCreateResult Create(AgcTaskCreate param)
