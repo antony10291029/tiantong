@@ -46,16 +46,12 @@ namespace Namei.Wcs.Api
     }
 
     [HttpPost("/rcs/tasks/continue")]
-    public RcsTaskCreateResult HandleTaskContinue([FromBody] RcsTaskContinueParams param)
-    {
-      return _rcs.ContinueTask(param);
-    }
+    public Task<RcsTaskCreateResult> HandleTaskContinue([FromBody] RcsTaskContinueParams param)
+      => _rcs.ContinueTask(param);
 
     [HttpPost("/rcs/tasks/cancel")]
-    public RcsTaskCancelResult HandleTaskCancel([FromBody] RcsTaskCancelParams param)
-    {
-      return _rcs.CancelTask(param);
-    }
+    public Task<RcsTaskCancelResult> HandleTaskCancel([FromBody] RcsTaskCancelParams param)
+      => _rcs.CancelTask(param);
 
     public class RcsDoorNotifyParams
     {
@@ -65,9 +61,9 @@ namespace Namei.Wcs.Api
     }
 
     [HttpPost("/rcs/doors/notify")]
-    public object RcsDoorNotify([FromBody] RcsDoorNotifyParams param)
+    public async Task<object> RcsDoorNotify([FromBody] RcsDoorNotifyParams param)
     {
-      _rcs.NotifyDoorOpened(param.DoorId, param.Uuid);
+      await _rcs.NotifyDoorOpened(param.DoorId, param.Uuid);
 
       return NotifyResult.FromVoid().Success("任务已通知");
     }

@@ -2,6 +2,7 @@ using DotNetCore.CAP;
 using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
@@ -105,10 +106,8 @@ namespace Namei.Wcs.Api
     }
 
     [CapSubscribe(RcsDoorEvent.Entered, Group = Group)]
-    public void HandleDoorTaskEntered(RcsDoorEvent param)
-    {
-      _rcs.NotifyDoorOpened(param.DoorId, param.Uuid);
-    }
+    public Task HandleDoorTaskEntered(RcsDoorEvent param)
+      => _rcs.NotifyDoorOpened(param.DoorId, param.Uuid);
 
     [CapSubscribe(RcsDoorEvent.Leave, Group = Group)]
     public void HandleDoorTaskLeave(RcsDoorEvent param)
@@ -154,7 +153,8 @@ namespace Namei.Wcs.Api
       var passport = _domain.WcsDoorPassports.Find(doorId);
 
       if (passport == null) {
-        _domain.Add(passport = WcsDoorPassport.From(doorId, 15000));
+        passport = WcsDoorPassport.From(doorId, 15000);
+        _domain.Add(passport);
       } else {
         passport.AddMilliseconds(15000);
       }

@@ -1,15 +1,12 @@
-using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Namei.Wcs.Aggregates;
-using System.Linq;
 
 namespace Namei.Wcs.Api
 {
@@ -101,18 +98,24 @@ namespace Namei.Wcs.Api
     public string ReqCode { get; set; }
   }
 
+  public class RcsDoorNotifyResult
+  {
+    public int Code { get; set; }
+
+    public string Message { get; set; }
+  }
+
   public interface IRcsService
   {
     Task<RcsTaskCreateResult> CreateTask(RcsTaskCreateParams param);
 
-    RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param);
+    Task<RcsTaskCreateResult> ContinueTask(RcsTaskContinueParams param);
 
-    RcsTaskCancelResult CancelTask(RcsTaskCancelParams param);
+    Task<RcsTaskCancelResult> CancelTask(RcsTaskCancelParams param);
 
-    void NotifyDoorOpened(string doorId, string uuid);
+    Task<RcsDoorNotifyResult> NotifyDoorOpened(string doorId, string uuid);
 
-    void NotifyDoorClosing(string doorId, string uuid);
-
+    Task<RcsDoorNotifyResult> NotifyDoorClosing(string doorId, string uuid);
   }
 
   public class RcsService: IRcsService
@@ -172,114 +175,114 @@ namespace Namei.Wcs.Api
       }
     }
 
-    public RcsTaskCreateResult ContinueTask(RcsTaskContinueParams param)
+    public async Task<RcsTaskCreateResult> ContinueTask(RcsTaskContinueParams param)
     {
-      if (param.ReqCode == null || param.ReqCode == "") {
-        param.ReqCode = Guid.NewGuid().ToString();
-      }
-
-      var json = JsonSerializer.Serialize(param);
-      var content = new StringContent(json, Encoding.UTF8);
+      HttpResponseMessage response;
+      var url = "http://172.16.2.64:5200/rcs/agc-tasks/continue";
       var scope = _logger.UseScope(
         klass: "rcs.tasks",
         operation: "continue",
         index: "0"
       );
-      var result = new RcsTaskCreateResult() {
-        ReqCode = param.ReqCode
-      };
 
-      scope.Info("收到 RCS 触发任务", json);
+      scope.Info("收到 RCS 触发任务", param);
+
+      if (param.ReqCode == null || param.ReqCode == "") {
+        param.ReqCode = Guid.NewGuid().ToString();
+      }
 
       try {
-        var response = _client.PostAsync("/rcs/services/rest/hikRpcService/continueTask", content)
-          .GetAwaiter().GetResult();
-        json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
-        scope.Success("RCS 触发创建成功", json);
-
-        result = JsonSerializer.Deserialize<RcsTaskCreateResult>(json);
+        response = await _client.PostAsJsonAsync(url, param);
       } catch (Exception e) {
         scope.Danger("RCS 任务触发失败", e.Message);
 
-        result.Message = e.Message;
+        return new() {
+          Code = "-1",
+          Message = e.Message
+        };
       }
+
+      var result = await response.Content.ReadFromJsonAsync<RcsTaskCreateResult>();
+
+      scope.Success("RCS 触发创建成功", result);
 
       return result;
     }
 
-    public RcsTaskCancelResult CancelTask(RcsTaskCancelParams param)
+    public async Task<RcsTaskCancelResult> CancelTask(RcsTaskCancelParams param)
     {
-      if (param.ReqCode == null || param.ReqCode == "") {
-        param.ReqCode = System.Guid.NewGuid().ToString();
-      }
-
-      var json = JsonSerializer.Serialize(param);
-      var content = new StringContent(json, Encoding.UTF8);
+      HttpResponseMessage response;
+      var url = "http://172.16.2.64:5200/rcs/agc-tasks/cancel";
       var scope = _logger.UseScope(
         klass: "rcs.tasks",
         operation: "cancel",
         index: "0"
       );
-      var result = new RcsTaskCancelResult() {
-        ReqCode = param.ReqCode
-      };
 
-      scope.Info("收到 RCS 取消任务", json);
+      scope.Info("收到 RCS 取消任务", param);
+
+      if (param.ReqCode == null || param.ReqCode == "") {
+        param.ReqCode = Guid.NewGuid().ToString();
+      }
 
       try {
-        var response = _client.PostAsync("/rcs/services/rest/hikRpcService/cancelTask", content)
-          .GetAwaiter().GetResult();
-        json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
-        scope.Success("RCS 任务取消成功", json);
-
-        return JsonSerializer.Deserialize<RcsTaskCancelResult>(json);
+        response = await _client.PostAsJsonAsync(url, param);
       } catch (Exception e) {
         scope.Danger("RCS 任务取消失败", e.Message);
 
-        result.Message = e.Message;
+        return new() { Code = "-1", Message = e.Message };
       }
+
+      var result = await response.Content.ReadFromJsonAsync<RcsTaskCancelResult>();
+
+      scope.Success("RCS 任务取消成功", result);
 
       return result;
     }
 
-    private void NotifyDoorTask(string doorId, string uuid, string action)
+    private async Task<RcsDoorNotifyResult> NotifyDoorTask(string doorId, string uuid, string action)
     {
-      if (uuid == "" || uuid == "A001") {
-        return;
-      }
-
-      var json = JsonSerializer.Serialize(new {
+      HttpResponseMessage response;
+      var url = "http://172.16.2.64:5200/rcs/doors/notify";
+      var param = new {
         deviceType = "door",
         deviceIndex = doorId,
         actionStatus = action,
         uuid,
-      });
-      var content = new StringContent(json, Encoding.UTF8);
+      };
       var scope = _logger.UseScope(
         klass: "wcs.door",
         operation: "notify",
         index: uuid
       );
 
-      scope.Info("正在通知 RCS 任务完成", json);
+      scope.Info("正在通知 RCS 任务完成", param);
+
+      if (uuid == "" || uuid == "A001") {
+        return new() { Code = 0, Message = "success" };
+      }
 
       try {
-        var url = "http://172.16.2.64:5200/rcs/doors/notify";
-        var response = _client.PostAsync(url, content).GetAwaiter().GetResult();
-        var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-        scope.Success("已通知 RCS 任务完成", result);
-
+        response = await _client.PostAsJsonAsync(url, param);
       } catch (Exception e) {
         scope.Danger("通知 RCS 任务完成失败", e.Message);
+
+        return new() { Code = -1, Message = e.Message };
       }
+
+      var result = await response.Content.ReadFromJsonAsync<RcsDoorNotifyResult>(new(
+        JsonSerializerDefaults.Web
+      ));
+
+      scope.Success("已通知 RCS 任务完成", result);
+
+      return result;
     }
 
-    public void NotifyDoorOpened(string doorId, string uuid)
+    public Task<RcsDoorNotifyResult> NotifyDoorOpened(string doorId, string uuid)
       => NotifyDoorTask(doorId, uuid, "1");
 
-    public void NotifyDoorClosing(string doorId, string uuid)
+    public Task<RcsDoorNotifyResult> NotifyDoorClosing(string doorId, string uuid)
       => NotifyDoorTask(doorId, uuid, "2");
   }
 }
