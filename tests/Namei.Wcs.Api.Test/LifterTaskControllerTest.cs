@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
 using Moq;
 using System;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api.Test
 {
@@ -57,14 +58,14 @@ namespace Namei.Wcs.Api.Test
     [TestMethod]
     [DataRow("100000", "0")]
     [DataRow("100000", "4")]
-    public void Test_Scanned(string barcode, string destination)
+    public async Task Test_Scanned(string barcode, string destination)
     {
       var isWmsCalled = false;
       var isDestinationWritten = false;
       var param = new LifterTaskScannedEvent("1", "4");
       var wms = UseWms(mock => {
         mock.Setup(wms => wms.GetPalletInfo(barcode))
-          .Returns(new PalletInfo() { Destination = destination })
+          .ReturnsAsync(new PalletInfo() { Destination = destination })
           .Callback(() => isWmsCalled = true);
       });
       var lifter = UseLifter(mock => {
@@ -83,7 +84,7 @@ namespace Namei.Wcs.Api.Test
       );
       var controller = UseController(lifters, wms);
 
-      controller.HandleTaskScanned(param);
+      await controller.HandleTaskScanned(param);
 
       if (destination == "0") {
         Assert.IsTrue(isWmsCalled);
@@ -97,7 +98,7 @@ namespace Namei.Wcs.Api.Test
     [TestMethod]
     [DataRow(5)]
     [DataRow(15)]
-    public void Test_Exported(int seconds)
+    public async Task Test_Exported(int seconds)
     {
       var floor = "1";
       var lifterId = "1";
@@ -124,13 +125,13 @@ namespace Namei.Wcs.Api.Test
       );
       var wms = UseWms(mock => {
         mock.Setup(wms => wms.GetPalletInfo(barcode))
-          .Returns(new PalletInfo { Destination = destination,  TaskId = taskCode});
+          .ReturnsAsync(new PalletInfo { Destination = destination,  TaskId = taskCode});
         mock.Setup(wms => wms.RequestPicking(lifterId, floor, barcode, taskCode))
           .Callback(() => isRequested = true);
       });
       var controller = UseController(lifters, wms);
 
-      controller.HandleTaskExported(param);
+      await controller.HandleTaskExported(param);
 
       if (seconds < 10) {
         Assert.IsTrue(!isRequested);

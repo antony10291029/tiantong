@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 
 namespace Namei.Wcs.Api
 {
@@ -83,6 +84,15 @@ namespace Namei.Wcs.Api
       _index = index;
     }
 
+    public void Info(string message, object data)
+      => Info(message, JsonSerializer.Serialize(data));
+
+    public void Success(string message, object data)
+      => Success(message, JsonSerializer.Serialize(data));
+
+    public void Danger(string message, object data)
+      => Danger(message, JsonSerializer.Serialize(data));
+
     public void Info(string message, string data)
       => _logger.Save(
         klass: _klass,
@@ -103,7 +113,6 @@ namespace Namei.Wcs.Api
         level: Log.UseSuccess()
       );
 
-
     public void Danger(string message, string data)
       => _logger.Save(
         klass: _klass,
@@ -113,6 +122,5 @@ namespace Namei.Wcs.Api
         data: data,
         level: Log.UseDanger()
       );
-
   }
 }

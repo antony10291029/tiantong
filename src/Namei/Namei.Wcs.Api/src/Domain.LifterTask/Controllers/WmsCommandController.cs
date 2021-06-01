@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Namei.Wcs.Api
@@ -76,9 +77,9 @@ namespace Namei.Wcs.Api
     }
 
     [HttpPost("/wms/requestPicking")]
-    public object HandleRequestPicking([FromBody] RequestPickingParams param)
+    public async Task<object> HandleRequestPicking([FromBody] RequestPickingParams param)
     {
-      _wms.RequestPicking(
+      await _wms.RequestPicking(
         lifterId: param.LifterId,
         floor: param.Floor,
         barcode: param.Barcode,

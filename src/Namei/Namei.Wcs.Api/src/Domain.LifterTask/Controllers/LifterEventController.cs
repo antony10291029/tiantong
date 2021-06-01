@@ -58,7 +58,7 @@ namespace Namei.Wcs.Api
     }
 
     [CapSubscribe(LifterTaskScannedEvent.Message, Group = Group)]
-    public void HandleTaskScanned(LifterTaskScannedEvent param)
+    public async Task HandleTaskScanned(LifterTaskScannedEvent param)
     {
       _logger.FromLifter(
         operation: "scanned",
@@ -76,7 +76,7 @@ namespace Namei.Wcs.Api
       var barcode = lifter.GetPalletCode(param.Floor);
 
       try {
-        var info = _wms.GetPalletInfo(barcode);
+        var info = await _wms.GetPalletInfo(barcode);
         var taskCode = info.TaskId;
         var destination = info.Destination;
 
@@ -103,7 +103,7 @@ namespace Namei.Wcs.Api
     }
 
     [CapSubscribe(LifterTaskExported.Message, Group = Group)]
-    public void HandleTaskExported(LifterTaskExported param)
+    public async Task HandleTaskExported(LifterTaskExported param)
     {
       _logger.FromLifter(
         operation: "exported",
@@ -138,8 +138,8 @@ namespace Namei.Wcs.Api
       }
 
       try {
-        var taskId = _wms.GetPalletInfo(barcode).TaskId;
-        var result =_wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
+        var taskId = (await _wms.GetPalletInfo(barcode)).TaskId;
+        var result = await _wms.RequestPicking(param.LifterId, param.Floor, barcode, taskId);
 
         _logger.FromLifter(
           operation: "notify.wms.pick",

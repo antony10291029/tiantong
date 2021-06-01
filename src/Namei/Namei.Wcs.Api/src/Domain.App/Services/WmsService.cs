@@ -1,18 +1,16 @@
-using DotNetCore.CAP;
 using System;
-using System.Net.Mime;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
   public interface IWmsService
   {
-    PalletInfo GetPalletInfo(string barcode);
+    Task<PalletInfo> GetPalletInfo(string barcode);
 
-    string RequestPicking(string lifterId, string floor, string barcode, string taskId);
+    Task<string> RequestPicking(string lifterId, string floor, string barcode, string taskId);
   }
 
   public class PalletInfo
@@ -34,34 +32,35 @@ namespace Namei.Wcs.Api
     {
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
-      _client.BaseAddress = new Uri(config.WmsUrl);
-      _client.DefaultRequestHeaders.Accept.Add(
-        new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
-      );
+      _client.BaseAddress = new Uri(config.ApiGatewayUrl);
     }
 
-    public PalletInfo GetPalletInfo(string barcode)
+    public async Task<PalletInfo> GetPalletInfo(string barcode)
     {
-      var json = JsonSerializer.Serialize(new {
+      var param = new {
         method = "ReqTask",
         BARCODE = barcode,
-      });
-      var content = new StringContent(json, Encoding.UTF8);
-      var url = "http://172.16.2.64:5200/wms/wcsCallback/request";
-      var response = _client.PostAsync(url, content).GetAwaiter().GetResult();
-      var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+      };
+      var url = "/wms/wcsCallback/request";
       string taskid;
       string destination;
+      string result = "";
+      HttpResponseMessage response;
 
       try {
+        response = await _client.PostAsJsonAsync(url, param);
+      } catch (Exception e) {
+        throw new Exception("任务查询失败：" + e.Message);
+      }
+
+      try {
+        result = await response.Content.ReadAsStringAsync();
+
         var dom = JsonDocument.Parse(result);
+
         destination = dom.RootElement.GetProperty("TO_LF").GetString();
         taskid = dom.RootElement.GetProperty("taskid").GetString();
       } catch {
-        throw new Exception("任务查询失败：" + result);
-      }
-
-      if (taskid == "") {
         throw new Exception("任务查询失败：" + result);
       }
 
@@ -72,20 +71,18 @@ namespace Namei.Wcs.Api
       };
     }
 
-    public string RequestPicking(string lifterId, string floor, string barcode, string taskId)
+    public async Task<string> RequestPicking(string lifterId, string floor, string barcode, string taskId)
     {
-      var json = JsonSerializer.Serialize(new {
+      var param = new {
         method = "FinishReport",
         LF_NO = $"LF0{lifterId}",
         TO_LF = $"LF0{floor}",
         taskid = taskId,
         BARCODE = barcode,
-      });
-
-      var content = new StringContent(json, Encoding.UTF8);
-      var url = "http://172.16.2.64:5200/wms/wcsCallback/request";
-      var response = _client.PostAsync(url, content).GetAwaiter().GetResult();
-      var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+      };
+      var url = "/wms/wcsCallback/request";
+      var response = await _client.PostAsJsonAsync(url, param);
+      var result = await response.Content.ReadAsStringAsync();
 
       return result;
     }
