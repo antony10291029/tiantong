@@ -76,9 +76,9 @@ namespace Namei.Common.Api
 
       var data =  _wms.Set<WmsPickTicketTask>()
         .Where(task => task.CreatedAt > day)
-        .OrderBy(task => task.ItemCode)
-        .ThenBy(task => task.OrderNumber)
-        .ThenBy(task => task.Id)
+        .OrderByDescending(task => task.OrderNumber)
+        .ThenByDescending(task => task.ItemCode)
+        .ThenByDescending(task => task.Id)
         .ToDataMap();
 
       return new {
