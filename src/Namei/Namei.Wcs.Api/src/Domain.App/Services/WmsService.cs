@@ -48,7 +48,9 @@ namespace Namei.Wcs.Api
       HttpResponseMessage response;
 
       try {
-        response = await _client.PostAsJsonAsync(url, param);
+        response = await _client.PostAsJsonAsync(url, param, new JsonSerializerOptions(
+          defaults: JsonSerializerDefaults.General
+        ));
       } catch (Exception e) {
         throw new Exception("任务查询失败：" + e.Message);
       }
