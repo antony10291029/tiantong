@@ -21,10 +21,6 @@ namespace Namei.Wcs.Api
 
     string PlcUrl { get; }
 
-    string WmsUrl { get; }
-
-    string RcsUrl { get; }
-
     string ApiGatewayUrl { get; }
 
     string RcsContext { get; }
@@ -36,8 +32,6 @@ namespace Namei.Wcs.Api
 
   public class Config: IAppConfig
   {
-    private readonly IConfiguration _config;
-    
     public string Env { get; }
 
     public bool IsProduction { get => Env == "Production"; }
@@ -54,10 +48,6 @@ namespace Namei.Wcs.Api
 
     public string PlcUrl { get; }
 
-    public string WmsUrl { get; }
-
-    public string RcsUrl { get; }
-
     public string ApiGatewayUrl { get; }
 
     public string RcsContext { get; }
@@ -68,15 +58,12 @@ namespace Namei.Wcs.Api
 
     public Config(IConfiguration config, IHostEnvironment env)
     {
-      _config = config;
       Env = env.EnvironmentName;
       AppName = config.GetValue<string>("app_name");
       AppVersion = config.GetValue<string>("app_version");
       AppKey = config.GetValue<string>("app_key");
       Postgres = config.GetValue<string>("postgres");
       PlcUrl = config.GetValue<string>("plc_url");
-      WmsUrl = config.GetValue<string>("wms_url");
-      RcsUrl = config.GetValue<string>("rcs_url");
       ApiGatewayUrl = config.GetValue<string>("api.gateway.url");
       RcsContext = config.GetValue<string>("rcs.context");
       NameiCommonUrl = config.GetValue<string>("namei.common.url");

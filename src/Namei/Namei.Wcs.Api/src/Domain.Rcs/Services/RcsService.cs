@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -132,10 +129,7 @@ namespace Namei.Wcs.Api
       _logger = logger;
       _client = factory.CreateClient();
       _client.Timeout = new TimeSpan(0, 0, 10);
-      _client.BaseAddress = new Uri(config.RcsUrl);
-      _client.DefaultRequestHeaders.Accept.Add(
-        new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json)
-      );
+      _client.BaseAddress = new Uri(config.ApiGatewayUrl);
     }
 
     public class ToDataNameParams
@@ -145,40 +139,41 @@ namespace Namei.Wcs.Api
 
     public async Task<RcsTaskCreateResult> CreateTask(RcsTaskCreateParams param)
     {
-      if (string.IsNullOrWhiteSpace(param.ReqCode)) {
-        param.ReqCode = Guid.NewGuid().ToString();
-      }
+      HttpResponseMessage response;
 
+      var url = "/rcs/agc-tasks/create";
       var scope = _logger.UseScope(
         klass: "rcs.tasks",
         operation: "create",
         index: "0"
       );
-      var json = JsonSerializer.Serialize(param);
 
-      scope.Info("收到 RCS 任务", json);
+      scope.Info("收到 RCS 任务", param);
+
+      if (string.IsNullOrWhiteSpace(param.ReqCode)) {
+        param.ReqCode = Guid.NewGuid().ToString();
+      }
 
       try {
-        var url = "/rcs/services/rest/hikRpcService/genAgvSchedulingTask";
-        var response = await _client.PostAsJsonAsync(url, param);
-
-        scope.Success("RCS 任务请求下发成功", json);
-
-        return await response.Content.ReadFromJsonAsync<RcsTaskCreateResult>();
+        response = await _client.PostAsJsonAsync(url, param);
       } catch (Exception e) {
         scope.Danger("RCS 任务请求下发失败", e.Message);
 
-        return new() {
-          Code = "-1",
-          Message = e.Message
-        };
+        return new() { Code = "-1", Message = e.Message };
       }
+
+      var result = await response.Content.ReadFromJsonAsync<RcsTaskCreateResult>();
+
+      scope.Success("RCS 任务请求下发成功", result);
+
+      return result;
     }
 
     public async Task<RcsTaskCreateResult> ContinueTask(RcsTaskContinueParams param)
     {
       HttpResponseMessage response;
-      var url = "http://172.16.2.64:5200/rcs/agc-tasks/continue";
+
+      var url = "/rcs/agc-tasks/continue";
       var scope = _logger.UseScope(
         klass: "rcs.tasks",
         operation: "continue",
@@ -212,7 +207,8 @@ namespace Namei.Wcs.Api
     public async Task<RcsTaskCancelResult> CancelTask(RcsTaskCancelParams param)
     {
       HttpResponseMessage response;
-      var url = "http://172.16.2.64:5200/rcs/agc-tasks/cancel";
+
+      var url = "/rcs/agc-tasks/cancel";
       var scope = _logger.UseScope(
         klass: "rcs.tasks",
         operation: "cancel",
@@ -243,7 +239,8 @@ namespace Namei.Wcs.Api
     private async Task<RcsDoorNotifyResult> NotifyDoorTask(string doorId, string uuid, string action)
     {
       HttpResponseMessage response;
-      var url = "http://172.16.2.64:5200/rcs/doors/notify";
+
+      var url = "/rcs/doors/notify";
       var param = new {
         deviceType = "door",
         deviceIndex = doorId,
