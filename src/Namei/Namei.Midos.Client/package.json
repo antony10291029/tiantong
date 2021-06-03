@@ -30,6 +30,6 @@
   "dependencies": {
     "@midos/app-iot": "0.0.14",
     "@midos/app-namei-wcs": "0.0.59",
-    "@midos/app-api-gateway": "0.0.3"
+    "@midos/app-api-gateway": "0.0.4"
   }
 }

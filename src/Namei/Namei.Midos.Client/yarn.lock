@@ -900,10 +900,10 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@midos/app-api-gateway@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@midos/app-api-gateway/-/app-api-gateway-0.0.3.tgz#e99c7ae621ae198cc328ed3798202dabce9a04d8"
-  integrity sha512-eEOIZUFhS52P9J9I5oLsBY8k7nxGfMjJ4kUGhMIUhE4GIuIV0m3aK2C2h+Ig3A07QMppRJN0YPYrhye3COaxCA==
+"@midos/app-api-gateway@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@midos/app-api-gateway/-/app-api-gateway-0.0.4.tgz#f9d0bf84e14fe54cbfaa408f926e755fa849766a"
+  integrity sha512-6VhcNpUwwPikJZiORo0QRuIyh5qZ4W6zWt03gSHZvL98uV/xP7jaanCWVrNgyK/mw4SwM4SoF8mik796a69YpQ==
 
 "@midos/app-iot@0.0.14":
   version "0.0.14"
