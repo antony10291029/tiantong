@@ -47,7 +47,7 @@ namespace Namei.Wcs.Api
       //   logger.UseDbContextOptions<LoggerContextOptions>();
       // });
       services.AddCap(cap => {
-        cap.ConsumerThreadCount = 10;
+        cap.ConsumerThreadCount = 2;
         cap.FailedRetryCount = 0;
         cap.UseInMemoryStorage();
         cap.UseInMemoryMessageQueue();
