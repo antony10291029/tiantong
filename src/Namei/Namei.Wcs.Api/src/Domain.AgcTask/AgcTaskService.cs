@@ -5,6 +5,7 @@ using Midos.Services.Http;
 using Namei.Wcs.Api;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,19 +55,28 @@ namespace Namei.Wcs.Aggregates
       _rcsMap = rcsMap;
     }
 
-    public Task<RcsTaskCreateResult> CreateTaskFromRcsApiAsync(RcsTaskCreateParams param)
+    public async Task<RcsTaskCreateResult> CreateTaskFromRcsApiAsync(RcsTaskCreateParams param)
     {
       var codes = _rcsMap.ToDataName(
         param.PositionCodePath.Select(path => path.PositionCode).ToArray()
       );
 
+      await Task.CompletedTask;
+
       lock (_createLock) {
+        if (param.PodCode != null && _rcsMap.IsTaskStartedWithPod(param.PodCode)) {
+          throw new InvalidDataException("托盘号已在任务中");
+        }
+
         if (codes.Length == 2) {
           var areaCode = GetAreaCode(codes[1]);
-          var code = _rcsMap.GetFreeLocationCode(areaCode);
 
-          if (code != null) {
-            codes[1] = code;
+          if (areaCode != null) {
+            codes[1] = _rcsMap.GetFreeLocationCode(areaCode);
+
+            if (codes[1] == null) {
+              throw new InvalidDataException("区域内没有可分配点位");
+            }
           }
         }
 
@@ -74,7 +84,17 @@ namespace Namei.Wcs.Aggregates
           param.PositionCodePath[i].PositionCode = codes[i];
         }
 
-        return _rcs.CreateTask(param);
+        var result =  _rcs.CreateTask(param).GetAwaiter().GetResult();
+
+        while (true) {
+          if (_rcsMap.HasTask(result.Code)) {
+            break;
+          }
+
+          Task.Delay(100).GetAwaiter().GetResult();
+        }
+
+        return result;
       }
     }
 
@@ -89,31 +109,16 @@ namespace Namei.Wcs.Aggregates
         throw KnownException.Error("任务类型已禁用");
       }
 
-      var codes = _rcsMap.ToDataName(new string[] { task.Position, task.Destination });
-      var areaCode = GetAreaCode(codes[1]);
-
-      lock (_createLock) {
-        if (areaCode != null) {
-          var code = _rcsMap.GetFreeLocationCode(areaCode);
-
-          if (code != null) {
-            codes[1] = code;
-          }
+      return CreateTaskFromRcsApiAsync(new RcsTaskCreateParams {
+        TaskTyp = type.Method,
+        AgvCode = task.AgcCode,
+        PodCode = task.PodCode,
+        Priority = task.Priority,
+        PositionCodePath = new List<PositionCodePath> {
+          new PositionCodePath { PositionCode = task.Position, Type = "00" },
+          new PositionCodePath { PositionCode = task.Destination, Type = "00" },
         }
-
-        var result = _rcs.CreateTask(new RcsTaskCreateParams {
-          TaskTyp = type.Method,
-          AgvCode = task.AgcCode,
-          PodCode = task.PodCode,
-          Priority = task.Priority,
-          PositionCodePath = new List<PositionCodePath> {
-            new PositionCodePath { PositionCode = codes[0], Type = "00" },
-            new PositionCodePath { PositionCode = codes[1], Type = "00" },
-          }
-        }).GetAwaiter().GetResult();
-
-        return result;
-      }
+      }).GetAwaiter().GetResult();
     }
 
     public AgcTaskCreateResult Create(AgcTaskCreate param)

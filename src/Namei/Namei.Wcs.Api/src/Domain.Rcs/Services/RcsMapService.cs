@@ -12,6 +12,10 @@ namespace Namei.Wcs.Aggregates
     void UpdateRange(TcsMapData[] codes);
 
     object Search(string areaCode = null);
+
+    bool IsTaskStartedWithPod(string podCode);
+
+    bool HasTask(string taskCode);
   }
 
   public class RcsMapService: IRcsMapService
@@ -34,6 +38,14 @@ namespace Namei.Wcs.Aggregates
       return query.ToArray();
     }
 
+    public bool IsTaskStartedWithPod(string podCode)
+    {
+      return _context.Set<TcsMainTask>().Any(task =>
+        task.PodCode == podCode &&
+        task.TaskStatus == TcsMainTaskStatus.Started
+      );
+    }
+
     public string[] ToDataName(string[] codes)
     {
       var validCodes = codes.Where(code => code.Length > 6).ToArray();
@@ -48,14 +60,14 @@ namespace Namei.Wcs.Aggregates
 
     public string GetFreeLocationCode(string areaCode)
     {
-      var destinations = GetTasks(TcsMainTaskStatus.Started)
-        .Select(task => task.Destination)
-        .Distinct();
-
       var locations = _context.Set<TcsMapData>()
         .Where(location => location.AreaCode == areaCode)
         .Where(location => location.PodCode == null)
         .ToArray();
+
+      var destinations = GetTasks(TcsMainTaskStatus.Started)
+        .Select(task => task.Destination)
+        .Distinct();
 
       return locations
         .Where(location => !destinations.Contains(location.MapDataCode))
@@ -98,5 +110,9 @@ namespace Namei.Wcs.Aggregates
         Values = data.ToDictionary(map => map.MapDataCode, map => map)
       };
     }
+
+    public bool HasTask(string taskCode)
+      => _context.Set<TcsMainTask>()
+        .Any(task => task.MainTaskNum == taskCode);
   }
 }

@@ -25,6 +25,9 @@ namespace Namei.Wcs.Aggregates
     [Column("via_codes")]
     public string ViaCodes { get; set; }
 
+    [Column("pod_code")]
+    public string PodCode { get; set; }
+
     [NotMapped]
     public string Destination
     {
