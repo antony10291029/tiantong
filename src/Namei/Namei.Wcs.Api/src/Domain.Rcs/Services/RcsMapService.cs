@@ -27,22 +27,17 @@ namespace Namei.Wcs.Aggregates
       _context = context;
     }
 
-    private TcsMainTask[] GetTasks(string status = null)
-    {
-      var query = _context.Set<TcsMainTask>().AsQueryable();
-
-      if (status != null) {
-        query = query.Where(task => task.TaskStatus == status);
-      }
-
-      return query.ToArray();
-    }
-
     public bool IsTaskStartedWithPod(string podCode)
     {
-      return _context.Set<TcsMainTask>().Any(task =>
-        task.PodCode == podCode &&
-        task.TaskStatus == TcsMainTaskStatus.Started
+      if (string.IsNullOrWhiteSpace(podCode)) {
+        return false;
+      }
+
+      return  _context.Set<TcsMainTask>().Any(task =>
+        task.PodCode == podCode && (
+          task.TaskStatus == TcsMainTaskStatus.Created ||
+          task.TaskStatus == TcsMainTaskStatus.Started
+        )
       );
     }
 
@@ -65,13 +60,16 @@ namespace Namei.Wcs.Aggregates
         .Where(location => location.PodCode == null)
         .ToArray();
 
-      var destinations = GetTasks(TcsMainTaskStatus.Started)
+      var destinations = _context.Set<TcsMainTask>()
+        .Where(task => task.TaskStatus == TcsMainTaskStatus.Created || task.TaskStatus == TcsMainTaskStatus.Started)
+        .ToArray()
         .Select(task => task.Destination)
         .Distinct();
 
       return locations
         .Where(location => !destinations.Contains(location.MapDataCode))
         .OrderBy(location => location.WcsAreaSeq)
+        .ThenBy(location => location.DataName)
         .FirstOrDefault()?.DataName;
     }
 

@@ -10,6 +10,8 @@ namespace Namei.Wcs.Aggregates
     public const string Finished = "9";
 
     public const string Started = "2";
+
+    public const string Created = "1";
   }
 
   [Table("tcs_main_task")]

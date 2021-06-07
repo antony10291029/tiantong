@@ -18,6 +18,8 @@ namespace Namei.Wcs.Aggregates
     public int Code { get; set; }
 
     public string Message { get; set; }
+
+    public string Data { get; set; }
   }
 
   public interface IAgcTaskService
@@ -45,8 +47,8 @@ namespace Namei.Wcs.Aggregates
 
     private readonly IRcsMapService _rcsMap;
 
-    // 避免任务分配异常
-    private readonly object _createLock = new();
+    // 使用并发锁控制任务逐条下发
+    private static readonly object _createLock = new();
 
     public AgcTaskService(WcsContext domain, IRcsService rcs, IRcsMapService rcsMap)
     {
@@ -55,7 +57,7 @@ namespace Namei.Wcs.Aggregates
       _rcsMap = rcsMap;
     }
 
-    public async Task<RcsTaskCreateResult> CreateTaskFromRcsApiAsync(RcsTaskCreateParams param)
+    public async Task<RcsTaskCreateResult> CreateTaskFromRcsApiAsync(RcsTaskCreateParams param) 
     {
       var codes = _rcsMap.ToDataName(
         param.PositionCodePath.Select(path => path.PositionCode).ToArray()
@@ -63,14 +65,14 @@ namespace Namei.Wcs.Aggregates
 
       await Task.CompletedTask;
 
+      var areaCode = GetAreaCode(codes[1]);
+
       lock (_createLock) {
-        if (param.PodCode != null && _rcsMap.IsTaskStartedWithPod(param.PodCode)) {
+        if (_rcsMap.IsTaskStartedWithPod(param.PodCode)) {
           throw new InvalidDataException("托盘号已在任务中");
         }
 
         if (codes.Length == 2) {
-          var areaCode = GetAreaCode(codes[1]);
-
           if (areaCode != null) {
             codes[1] = _rcsMap.GetFreeLocationCode(areaCode);
 
@@ -84,17 +86,7 @@ namespace Namei.Wcs.Aggregates
           param.PositionCodePath[i].PositionCode = codes[i];
         }
 
-        var result =  _rcs.CreateTask(param).GetAwaiter().GetResult();
-
-        while (true) {
-          if (_rcsMap.HasTask(result.Code)) {
-            break;
-          }
-
-          Task.Delay(100).GetAwaiter().GetResult();
-        }
-
-        return result;
+        return _rcs.CreateTask(param).GetAwaiter().GetResult();
       }
     }
 
@@ -150,7 +142,8 @@ namespace Namei.Wcs.Aggregates
       return new AgcTaskCreateResult {
         Id = task.Id,
         Code = int.Parse(result.Code),
-        Message = result.Message
+        Message = result.Message,
+        Data = result.Data
       };
     }
 
