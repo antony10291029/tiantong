@@ -46,6 +46,7 @@ namespace Namei.Wcs.Api
       // services.UseMidosLogger(logger => {
       //   logger.UseDbContextOptions<LoggerContextOptions>();
       // });
+      services.AddLifterServices();
       services.AddCap(cap => {
         cap.ConsumerThreadCount = 2;
         cap.FailedRetryCount = 0;

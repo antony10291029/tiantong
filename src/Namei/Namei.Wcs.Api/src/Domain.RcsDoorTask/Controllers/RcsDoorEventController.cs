@@ -142,9 +142,10 @@ namespace Namei.Wcs.Api
       _doors.Get(param.DoorId).Close();
     }
 
+    [CapSubscribe(LifterTaskFinished.Message, Group = Group)]
     [CapSubscribe(LifterTaskTaken.Message, Group = Group)]
     [CapSubscribe(LifterTaskImported.Message, Group = Group)]
-    public void HandleLifterTaskTaken(LifterTaskTaken param)
+    public void HandleLifterTaskTaken(LifterTaskFinished param)
     {
       var doorId = DoorType.GetDoorIdFromLifter(
         floor: param.Floor,

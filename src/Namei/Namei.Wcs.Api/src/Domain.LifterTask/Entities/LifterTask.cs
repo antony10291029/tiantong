@@ -1,7 +1,7 @@
+using Midos.Domain;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Midos.Domain;
 
 namespace Namei.Wcs.Api
 {
@@ -27,6 +27,9 @@ namespace Namei.Wcs.Api
     [Column("task_code")]
     public string TaskCode { get; private set; }
 
+    [NotMapped]
+    public string From { get; private set; }
+
     [Column("status")]
     public string Status { get; private set; }
 
@@ -40,6 +43,22 @@ namespace Namei.Wcs.Api
     public DateTime TakenAt { get; private set; }
 
     private LifterTask() {}
+
+    public LifterTask(
+      string lifterId, string floor, string barcode,
+      string destination, string data, string from
+    ) {
+      LifterId = lifterId;
+      Floor = floor;
+      Barcode = barcode;
+      Destination = destination;
+      TaskCode = data;
+      From = from;
+      Status = LifterTaskStatus.Imported;
+      ImportedAt = DateTime.Now;
+      ExportedAt = default;
+      TakenAt = default;
+    }
 
     public bool IsExported()
     {
