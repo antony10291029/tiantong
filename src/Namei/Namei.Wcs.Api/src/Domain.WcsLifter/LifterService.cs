@@ -12,6 +12,8 @@ namespace Namei.Wcs.Aggregates
     void HandleExported(string lifterId, string floor);
 
     void HandleTaken(string lifterId, string floor, string barcode);
+
+    void HandleClear(string lifterId, string floor);
   }
 
   public class LifterService: ILifterService
@@ -106,5 +108,8 @@ namespace Namei.Wcs.Aggregates
 
       _command.SetTaken(lifterId, floor);
     }
+
+    public void HandleClear(string lifterId, string floor)
+      => _command.Clear(lifterId, floor);
   }
 }

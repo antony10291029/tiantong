@@ -25,6 +25,30 @@ namespace Namei.Wcs.Aggregates
 
   public class FirstLifterCommand : ILifterCommand
   {
+    public static bool GetIsSpare(string data)
+      => !MelsecStateHelper.GetBit(data, 1) && !MelsecStateHelper.GetBit(data, 3);
+
+    public static bool GetIsTaskScanned(string data)
+      => MelsecStateHelper.GetBit(data, 4);
+
+    public static bool GetIsImportAllowed(string data)
+      => MelsecStateHelper.GetBit(data, 6);
+
+    public static bool GetIsRequestingPickup(string data)
+      => MelsecStateHelper.GetBit(data, 7);
+
+    public static bool IsTaskScanned(string data, string oldData)
+      => GetIsTaskScanned(data) && !GetIsTaskScanned(oldData);
+
+    public static bool IsRequestingPickup(string data, string oldData)
+      => GetIsRequestingPickup(data) && !GetIsRequestingPickup(oldData);
+
+    public static bool IsImportAllowed(string data, string oldData)
+      => GetIsImportAllowed(data) && !GetIsImportAllowed(oldData);
+
+    public static bool IsSpare(string data, string oldData)
+      => GetIsSpare(data) && !GetIsSpare(oldData);
+
     protected readonly PlcStateService _plc;
 
     public FirstLifterCommand(PlcStateService plc, Config config)

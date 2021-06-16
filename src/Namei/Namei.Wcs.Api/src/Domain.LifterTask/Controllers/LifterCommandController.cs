@@ -21,55 +21,6 @@ namespace Namei.Wcs.Api
       _wms = wms;
     }
 
-    public class ConveyorChangedParams
-    {
-      public string floor { get; set; }
-
-      public string value { get; set; }
-
-      public string old_value { get; set; }
-    }
-
-    [HttpPost]
-    [Route("reformed-lifters/conveyor/changed")]
-    public object ConveyorChanged([FromBody] ConveyorChangedParams param)
-    {
-      var lifter = _lifters.Get("1");
-      var message = "输送线状态无需处理";
-
-      if (param.value == null || param.old_value == null) {
-        return new { message };
-      }
- 
-      var isScanned = FirstLifterService.IsTaskScanned(param.value, param.old_value);
-      var isImportedAllowed = FirstLifterService.IsImportAllowed(param.value, param.old_value);
-      var isRequestingPickup = FirstLifterService.IsRequestingPickup(param.value, param.old_value);
-      var isSpare = FirstLifterService.IsSpare(param.value, param.old_value);
-
-      if (isRequestingPickup) {
-        message = "正在处理取货指令";
-
-        _cap.Publish(LifterTaskExported.Message, LifterTaskExported.From(
-          lifterId: "1", 
-          floor: param.floor
-        ));
-      } else if (isScanned) {
-        _cap.Publish(LifterTaskScannedEvent.Message, new LifterTaskScannedEvent("1", param.floor));
-        message = "正在处理读码指令";
-      } else if (isSpare) {
-        lifter.SetImported(param.floor, false);
-        message = "正在清除信号";
-      }
-
-      if (isImportedAllowed || isRequestingPickup) {
-        var doorId = CrashDoor.GetDoorIdFromLifter(param.floor, "1");
-
-        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
-      }
-
-      return new { message };
-    }
-
     public class LifterTaskScannedParams
     {
       public string lifter_id { get; set; }

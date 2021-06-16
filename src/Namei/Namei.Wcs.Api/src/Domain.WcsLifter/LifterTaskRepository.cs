@@ -1,6 +1,6 @@
+using Namei.Wcs.Api;
 using System;
 using System.Linq;
-using Namei.Wcs.Api;
 
 namespace Namei.Wcs.Aggregates
 {

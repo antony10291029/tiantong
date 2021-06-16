@@ -15,6 +15,8 @@ namespace Namei.Wcs.Aggregates
 
     string GetTaskDestination(string lifterId, string floor);
 
+    void Clear(string lifterId, string floor);
+
     bool IsBarcodeValid(string barcode);
 
     bool IsDestinationValid(string destination);
@@ -27,6 +29,7 @@ namespace Namei.Wcs.Aggregates
     private readonly SecondLifterCommand _lifter2;
 
     private readonly ThirdLifterCommand _lifter3;
+
     public LifterCommandService(
       FirstLifterCommand lifter1,
       SecondLifterCommand lifter2,
@@ -64,6 +67,15 @@ namespace Namei.Wcs.Aggregates
         await _;
         lifter.SetTaken(floor, false);
       });
+    }
+
+    public void Clear(string lifterId, string floor)
+    {
+      var lifter = GetLifter(lifterId);
+
+      lifter.SetImported(floor, false);
+      lifter.SetDestination(floor, "0");
+      lifter.SetBarcode(floor, "0");
     }
 
     public string GetBarcode(string lifterId, string floor)

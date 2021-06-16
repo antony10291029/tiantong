@@ -2,6 +2,7 @@ using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Namei.Wcs.Api;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Namei.Wcs.Aggregates
 {
@@ -92,6 +93,23 @@ namespace Namei.Wcs.Aggregates
         _logger.LogSuccess("taken", lifterId, floor, "取货完成指令已处理");
       } catch (Exception e) {
         _logger.LogError("taken", lifterId, floor, $"取货完成指令处理失败: {e.Message}");
+
+        throw;
+      }
+    }
+
+    private void HandleClear(string lifterId, string floor, string from)
+    {
+      _logger.LogInfo(
+        "clear", lifterId, floor, $"收到 [{from}] 清除信号指令",
+        new { lifterId, floor, from }
+      );
+
+      try {
+        _service.HandleClear(lifterId, floor);
+        _logger.LogSuccess("clear", lifterId, floor, "清除信号指令已处理");
+      } catch (Exception e) {
+        _logger.LogError("clear", lifterId, floor, $"清除信号指令处理失败：{e.Message}");
 
         throw;
       }
@@ -204,6 +222,52 @@ namespace Namei.Wcs.Aggregates
       HandleTaken(param.LifterId, param.Floor, "",  LifterTaskFrom.Manual);
 
       return NotifyResult.FromVoid().Success("取货完成指令已处理");
+    }
+
+    public record ReformedLifterStateChanged
+    {
+      [JsonPropertyName("floor")]
+      public string Floor { get; set; }
+
+      [JsonPropertyName("Value")]
+      public string Value { get; set; }
+
+      [JsonPropertyName("old_value")]
+      public string OldValue { get; set; }
+    }
+
+    [HttpPost("reformed-lifters/conveyor/changed")]
+    public object ReformedLifterChange([FromBody] ReformedLifterStateChanged param)
+    {
+      var message = "输送线状态无需处理";
+
+      if (param.Value == null || param.OldValue == null) {
+        return NotifyResult.FromVoid().Success(message);
+      }
+
+      var isSpare = FirstLifterCommand.IsSpare(param.Value, param.OldValue);
+      var isScanned = FirstLifterCommand.IsTaskScanned(param.Value, param.OldValue);
+      var isImportedAllowed = FirstLifterCommand.IsImportAllowed(param.Value, param.OldValue);
+      var isRequestingPickup = FirstLifterCommand.IsRequestingPickup(param.Value, param.OldValue);
+
+      if (isSpare) {
+        message = "信号清除指令已处理";
+        HandleClear(LifterCode.First, param.Floor, LifterTaskFrom.Plc);
+      } else if (isScanned) {
+        message = "扫码指令已处理";
+        HandleScanned(LifterCode.First, param.Floor, LifterTaskFrom.Plc);
+      } else if (isRequestingPickup) {
+        message = "取货指令已处理";
+        HandleExported(LifterCode.First, param.Floor, LifterTaskFrom.Plc);
+      }
+
+      if (isImportedAllowed || isRequestingPickup) {
+        var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, "1");
+
+        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
+      }
+
+      return NotifyResult.FromVoid().Success(message);
     }
   }
 }
