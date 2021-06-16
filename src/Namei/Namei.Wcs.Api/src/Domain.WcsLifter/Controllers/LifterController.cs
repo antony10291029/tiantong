@@ -224,7 +224,7 @@ namespace Namei.Wcs.Aggregates
       return NotifyResult.FromVoid().Success("取货完成指令已处理");
     }
 
-    public record ReformedLifterStateChanged
+    public record PlcStateParams
     {
       [JsonPropertyName("floor")]
       public string Floor { get; set; }
@@ -237,7 +237,7 @@ namespace Namei.Wcs.Aggregates
     }
 
     [HttpPost("reformed-lifters/conveyor/changed")]
-    public object ReformedLifterChange([FromBody] ReformedLifterStateChanged param)
+    public object ReformedLifterChange([FromBody] PlcStateParams param)
     {
       var message = "输送线状态无需处理";
 
@@ -265,6 +265,63 @@ namespace Namei.Wcs.Aggregates
         var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, "1");
 
         _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
+      }
+
+      return NotifyResult.FromVoid().Success(message);
+    }
+
+    public class LifterPlcStateParams
+    {
+      [JsonPropertyName("LifterId")]
+      public string LifterId { get; set; }
+
+      [JsonPropertyName("Floor")]
+      public string Floor { get; set; }
+
+      [JsonPropertyName("Value")]
+      public string Value { get; set; }
+    }
+
+    [HttpPost("/standard-lifters/scanned")]
+    public object LifterTaskScanned([FromBody] LifterPlcStateParams param)
+    {
+      var message = "指令未识别";
+
+      if (param.Value == "1") {
+        message = "扫码状态已处理";
+        HandleScanned(param.LifterId, param.Floor, LifterTaskFrom.Plc);
+      }
+
+      return NotifyResult.FromVoid().Success(message);
+    }
+
+    [HttpPost("/standard-lifters/exported")]
+    public object HandleLifterTaskExported([FromBody] LifterPlcStateParams param)
+    {
+      var message = "指令未识别";
+
+      if (param.Value == "3") {
+        message = "请求取货指令已处理";
+        HandleExported(param.LifterId, param.Floor, LifterTaskFrom.Plc);
+      }
+
+      if (param.Value == "2" || param.Value == "3") {
+        var doorId =  CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
+
+        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
+      }
+
+      return NotifyResult.FromVoid().Success(message);
+    }
+
+    [HttpPost("/standard-lifters/conveyor/changed")]
+    public object StandardLifterConveyorChanged([FromBody] LifterPlcStateParams param)
+    {
+      var message = "状态无需处理";
+
+      if (param.Value == "1") {
+        message = "数据已清空";
+        HandleClear(param.LifterId, param.Floor, LifterTaskFrom.Plc);
       }
 
       return NotifyResult.FromVoid().Success(message);
