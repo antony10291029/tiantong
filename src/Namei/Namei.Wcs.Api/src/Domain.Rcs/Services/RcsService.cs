@@ -3,12 +3,43 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Namei.Wcs.Api
 {
+  public class JsonNumberToStringConverter: JsonConverter<object>
+  {
+    public override bool CanConvert(Type typeToConvert)
+    {
+        return typeof(string) == typeToConvert;
+    }
+
+    public override object Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+      if (reader.TokenType == JsonTokenType.Number) {
+        return reader.TryGetInt64(out long l) ?
+          l.ToString():
+          reader.GetDouble().ToString();
+      }
+      if (reader.TokenType == JsonTokenType.String) {
+        return reader.GetString();
+      }
+
+      using var document = JsonDocument.ParseValue(ref reader);
+
+      return document.RootElement.Clone().ToString();
+    }
+
+    public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
+    {
+      writer.WriteStringValue( value.ToString());
+    }
+  }
+
   public class RcsTaskCreateParams
   {
+    [JsonConverter(typeof(JsonNumberToStringConverter))]
     public string ReqCode { get; set; }
 
     public string ReqTime { get; set; }
@@ -35,8 +66,10 @@ namespace Namei.Wcs.Api
 
     public string MaterialLot { get; set; }
 
+    [JsonConverter(typeof(JsonNumberToStringConverter))]
     public string Priority { get; set; }
 
+    [JsonConverter(typeof(JsonNumberToStringConverter))]
     public string TaskCode { get; set; }
 
     public string AgvCode { get; set; }
