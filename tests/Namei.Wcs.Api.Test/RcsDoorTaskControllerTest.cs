@@ -299,7 +299,7 @@ namespace Namei.Wcs.Api.Test
     [DataRow("4", "3")]
     public void Test_LifterTaskTaken(string floor, string lifterId)
     {
-      var param = LifterTaskTaken.From(
+      var param = LifterTaskFinished.From(
         floor: floor,
         lifterId: lifterId
       );

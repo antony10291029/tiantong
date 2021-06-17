@@ -80,16 +80,16 @@ namespace Namei.Wcs.Aggregates
       }
     }
 
-    private void HandleTaken(string lifterId, string floor, string barcode, string from)
+    private void HandleTaken(string lifterId, string floor, string from)
     {
       _logger.LogInfo(
         "taken", lifterId, floor, $"收到 [{from}] 取货完成指令",
-        new { lifterId, floor, barcode, from }
+        new { lifterId, floor, from }
       );
 
       try {
         _cap.Publish(LifterTaskFinished.Message, LifterTaskFinished.From(floor, lifterId));
-        _service.HandleTaken(lifterId, floor, barcode);
+        _service.HandleTaken(lifterId, floor);
         _logger.LogSuccess("taken", lifterId, floor, "取货完成指令已处理");
       } catch (Exception e) {
         _logger.LogError("taken", lifterId, floor, $"取货完成指令处理失败: {e.Message}");
@@ -147,7 +147,7 @@ namespace Namei.Wcs.Aggregates
       } else if (param.Method == "pick") {
         message = "取货指令已处理";
 
-        HandleTaken(param.LiftCode, param.Floor, param.BarCode, LifterTaskFrom.Wms);
+        HandleTaken(param.LiftCode, param.Floor, LifterTaskFrom.Wms);
       }
 
       return NotifyResult.FromVoid().Success(message);
@@ -219,7 +219,7 @@ namespace Namei.Wcs.Aggregates
     [HttpPost("/lifters/taken")]
     public object Taken([FromBody] TakenParams param)
     {
-      HandleTaken(param.LifterId, param.Floor, "",  LifterTaskFrom.Manual);
+      HandleTaken(param.LifterId, param.Floor, LifterTaskFrom.Manual);
 
       return NotifyResult.FromVoid().Success("取货完成指令已处理");
     }

@@ -11,7 +11,7 @@ namespace Namei.Wcs.Aggregates
 
     void HandleExported(string lifterId, string floor);
 
-    void HandleTaken(string lifterId, string floor, string barcode);
+    void HandleTaken(string lifterId, string floor);
 
     void HandleClear(string lifterId, string floor);
   }
@@ -87,18 +87,11 @@ namespace Namei.Wcs.Aggregates
       }
     }
 
-    public void HandleTaken(string lifterId, string floor, string barcode)
+    public void HandleTaken(string lifterId, string floor)
     {
-      if (_command.IsBarcodeValid(barcode)) {
-        var task = _repository.FindFromRuntimeBarcode(barcode);
+      var tasks = _repository.FindRangeFromExported(lifterId, floor);
 
-        if (task != null) {
-          task.SetTaken();
-          _repository.SaveChanges();
-        }
-      } else {
-        var tasks = _repository.FindRangeFromExported(lifterId, floor);
-
+      if (tasks.Length > 0) {
         foreach (var task in tasks) {
           task.SetTaken();
         }

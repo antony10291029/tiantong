@@ -1,3 +1,4 @@
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Midos.Domain.Test;
 using Namei.Wcs.Api;
@@ -137,11 +138,9 @@ namespace Namei.Wcs.Aggregates
     }
 
     [TestMethod]
-    [DataRow(true, true)]
-    [DataRow(false, true)]
-    [DataRow(true, false)]
-    [DataRow(false, false)]
-    public void TestHandleTaken(bool isTaskFound, bool isBarcodeValid)
+    [DataRow(true)]
+    [DataRow(false)]
+    public void TestHandleTaken(bool isTaskFound)
     {
       var lifterId = "";
       var floor = "";
@@ -150,16 +149,12 @@ namespace Namei.Wcs.Aggregates
       var isSaveCalled = false;
       var isTakenCalled = false;
       var command = Helper.UseService<ILifterCommandService>(mock => {
-        mock.Setup(command => command.IsBarcodeValid(barcode))
-          .Returns(isBarcodeValid);
-        mock.Setup(command => command.GetBarcode(lifterId, floor))
-          .Returns(barcode);
         mock.Setup(command => command.SetTaken(lifterId, floor))
           .Callback(() => isTakenCalled = true);
       });
       var repository = Helper.UseService<ILifterTaskRepository>(mock => {
-        mock.Setup(repository => repository.FindFromRuntimeBarcode(barcode))
-          .Returns(isTaskFound ? task : null);
+        mock.Setup(repository => repository.FindRangeFromExported(lifterId, floor))
+          .Returns(isTaskFound ? new LifterTask[] { task } : Array.Empty<LifterTask>());
         mock.Setup(repository => repository.SaveChanges())
           .Callback(() => isSaveCalled = true);
       });
@@ -168,8 +163,8 @@ namespace Namei.Wcs.Aggregates
       service.HandleTaken(lifterId, floor, barcode);
 
       Assert.IsTrue(isTakenCalled);
-      Assert.AreEqual(isTaskFound && isBarcodeValid, isSaveCalled);
-      Assert.AreEqual(isTaskFound && isBarcodeValid, task.Status == LifterTaskStatus.Taken);
+      Assert.AreEqual(isTaskFound, isSaveCalled);
+      Assert.AreEqual(isTaskFound, task.Status == LifterTaskStatus.Taken);
     }
   }
 }
