@@ -1,4 +1,3 @@
-using DotNetCore.CAP;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -15,17 +14,13 @@ namespace Namei.Wcs.Api
 
   public class LifterServiceManager: ILifterServiceFactory
   {
-    private Dictionary<string, ILifterService> _lifters = new Dictionary<string, ILifterService>();
-
-    private ICapPublisher _cap;
+    private readonly Dictionary<string, ILifterService> _lifters = new();
 
     public LifterServiceManager(
       FirstLifterService firstLifter,
       SecondLifterService secondLifter,
-      ThirdLifterService thirdLifter,
-      ICapPublisher cap
+      ThirdLifterService thirdLifter
     ) {
-      _cap = cap;
       _lifters.Add("1", firstLifter);
       _lifters.Add("2", secondLifter);
       _lifters.Add("3", thirdLifter);
@@ -111,7 +106,7 @@ namespace Namei.Wcs.Api
   {
     public Dictionary<string, DateTime> ExportedAt
     {
-      get => new Dictionary<string, DateTime>() {
+      get => new() {
         { "1", DateTime.MinValue },
         { "2", DateTime.MinValue },
         { "3", DateTime.MinValue },
@@ -175,7 +170,7 @@ namespace Namei.Wcs.Api
     public static bool IsSpare(string data, string oldData)
       => GetIsSpare(data) && !GetIsSpare(oldData);
 
-    private PlcStateService _plc;
+    private readonly PlcStateService _plc;
 
     public FirstLifterService(PlcStateService plc, Config config)
     {
@@ -251,7 +246,7 @@ namespace Namei.Wcs.Api
 
   public class StandardLifterService: LifterService
   {
-    private PlcStateService _plc;
+    private readonly PlcStateService _plc;
 
     public StandardLifterService(PlcStateService plc)
     {

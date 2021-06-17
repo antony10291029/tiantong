@@ -144,8 +144,7 @@ namespace Namei.Wcs.Aggregates
     {
       var lifterId = "";
       var floor = "";
-      var barcode = "";
-      var task = new LifterTask(lifterId, floor, barcode, "", "", "");
+      var task = new LifterTask(lifterId, floor, "", "", "", "");
       var isSaveCalled = false;
       var isTakenCalled = false;
       var command = Helper.UseService<ILifterCommandService>(mock => {
@@ -160,7 +159,7 @@ namespace Namei.Wcs.Aggregates
       });
       var service = new LifterService(command, repository, null);
 
-      service.HandleTaken(lifterId, floor, barcode);
+      service.HandleTaken(lifterId, floor);
 
       Assert.IsTrue(isTakenCalled);
       Assert.AreEqual(isTaskFound, isSaveCalled);
