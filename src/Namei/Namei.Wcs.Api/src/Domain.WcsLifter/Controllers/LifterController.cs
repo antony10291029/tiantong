@@ -272,14 +272,17 @@ namespace Namei.Wcs.Aggregates
 
     public class LifterPlcStateParams
     {
-      [JsonPropertyName("LifterId")]
+      [JsonPropertyName("lifter_id")]
       public string LifterId { get; set; }
 
-      [JsonPropertyName("Floor")]
+      [JsonPropertyName("floor")]
       public string Floor { get; set; }
 
-      [JsonPropertyName("Value")]
+      [JsonPropertyName("value")]
       public string Value { get; set; }
+
+      [JsonPropertyName("old_value")]
+      public string OldValue { get; set; }
     }
 
     [HttpPost("/standard-lifters/scanned")]
