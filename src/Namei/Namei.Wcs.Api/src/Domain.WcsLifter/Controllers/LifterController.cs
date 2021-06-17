@@ -146,7 +146,6 @@ namespace Namei.Wcs.Aggregates
         );
       } else if (param.Method == "pick") {
         message = "取货指令已处理";
-
         HandleTaken(param.LiftCode, param.Floor, LifterTaskFrom.Wms);
       }
 
@@ -224,12 +223,15 @@ namespace Namei.Wcs.Aggregates
       return NotifyResult.FromVoid().Success("取货完成指令已处理");
     }
 
-    public record PlcStateParams
+    public record LifterPlcStateParams
     {
+      [JsonPropertyName("lifter_id")]
+      public string LifterId { get; set; }
+
       [JsonPropertyName("floor")]
       public string Floor { get; set; }
 
-      [JsonPropertyName("Value")]
+      [JsonPropertyName("value")]
       public string Value { get; set; }
 
       [JsonPropertyName("old_value")]
@@ -237,7 +239,7 @@ namespace Namei.Wcs.Aggregates
     }
 
     [HttpPost("reformed-lifters/conveyor/changed")]
-    public object ReformedLifterChange([FromBody] PlcStateParams param)
+    public object ReformedLifterChange([FromBody] LifterPlcStateParams param)
     {
       var message = "输送线状态无需处理";
 
@@ -268,21 +270,6 @@ namespace Namei.Wcs.Aggregates
       }
 
       return NotifyResult.FromVoid().Success(message);
-    }
-
-    public class LifterPlcStateParams
-    {
-      [JsonPropertyName("lifter_id")]
-      public string LifterId { get; set; }
-
-      [JsonPropertyName("floor")]
-      public string Floor { get; set; }
-
-      [JsonPropertyName("value")]
-      public string Value { get; set; }
-
-      [JsonPropertyName("old_value")]
-      public string OldValue { get; set; }
     }
 
     [HttpPost("/standard-lifters/scanned")]
