@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Midos.Domain;
 using Midos.Services.Http;
 using Namei.Common.Entities;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace Namei.Common.Api
 {
@@ -17,17 +18,18 @@ namespace Namei.Common.Api
 
     private readonly SapContext _sap;
 
-    private readonly IHttpService _http;
+    private readonly HttpClient _client;
 
     public WmsController(
       Config config,
       WmsContext wms,
       SapContext sap,
-      IHttpService http
+      IHttpClientFactory http
     ) {
       _sap = sap;
       _wms = wms;
-      _http = http;
+      _client = http.CreateClient();
+
       if (config.IsProduction) {
         _wcsUrl = "http://172.16.2.64:5100";
       } else if (config.IsDevelopment) {
@@ -112,7 +114,7 @@ namespace Namei.Common.Api
     }
 
     [HttpPost("/wms/pick-ticket-tasks/start")]
-    public object Start([FromBody] StartParams param)
+    public async Task<object> Start([FromBody] StartParams param)
     {
       var task = _wms.Find<WmsPickTicketTask>(param.TaskId);
       var taskData = _wms.Find<WmsTask>(param.TaskId);
@@ -131,23 +133,21 @@ namespace Namei.Common.Api
         param.PalletCode = task.PalletCode;
       }
 
-      _http.Post<object, object>(
-        url: $"{_wcsUrl}/agc-tasks/create",
-        data: new {
-          type = "warehouse.workshop",
-          taskId = param.TaskId.ToString(),
-          position = param.Position,
-          destination = param.Destination,
-          palletCode = param.PalletCode
-        }
-      );
+      var url = $"{_wcsUrl}/agc-tasks/create";
+      var data = new {
+        type = "warehouse.workshop",
+        taskId = param.TaskId.ToString(),
+        position = param.Position,
+        destination = param.Destination,
+        palletCode = param.PalletCode
+      };
+
+      await _client.PostAsJsonAsync(url, data);
 
       taskData.Start();
       _wms.SaveChanges();
 
-      return NotifyResult
-        .FromVoid()
-        .Success("任务已下发");
+      return NotifyResult.FromVoid().Success("任务已下发");
     }
 
     [HttpPost("/wms/pick-ticket-tasks/start-batch")]
@@ -157,7 +157,7 @@ namespace Namei.Common.Api
 
       foreach (var item in param) {
         try {
-          Start(item);
+          Start(item).GetAwaiter().GetResult();
         } catch {
           isSuccess = false;
         }

@@ -1,4 +1,5 @@
 using Midos.Domain;
+using System.Text.Json;
 
 namespace Midos.Services.Http
 {
@@ -10,12 +11,14 @@ namespace Midos.Services.Http
 
     public string Url { get; init; }
 
-    public object Data { get; init; }
+    public byte[] Data { get; init; }
 
     public static HttpPost From(string url, object data)
       => new() {
         Url = url,
-        Data = data
+        Data = JsonSerializer.SerializeToUtf8Bytes(
+          data, new(JsonSerializerDefaults.Web)
+        )
       };
   }
 }

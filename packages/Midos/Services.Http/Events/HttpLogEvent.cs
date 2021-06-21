@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Midos.Domain;
 
 namespace Midos.Services.Http
@@ -13,16 +12,16 @@ namespace Midos.Services.Http
 
     public int Status { get; init; }
 
-    public object Request { get; init; }
+    public string Request { get; init; }
 
-    public object Response { get; init; }
+    public string Response { get; init; }
 
     public static HttpLogEvent From(
       string method,
       string url,
       int status,
-      object request,
-      object response
+      string request,
+      string response
     ) => new() {
       Method = method,
       Url = url,
