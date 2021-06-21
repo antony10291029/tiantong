@@ -15,19 +15,18 @@ namespace Namei.Wcs.Api
     );
 
     void LogInfo(string operation, string lifterId, string floor, string message, object data = null)
-      => FromLifter(operation, lifterId, floor, message, Log.UseInfo(), JsonSerializer.Serialize(data));
+      => FromLifter(operation, lifterId, floor, message, Log.UseInfo(), JsonSerializer.Serialize(data ?? ""));
 
     void LogSuccess(string operation, string lifterId, string floor, string message, object data = null)
-      => FromLifter(operation, lifterId, floor, message, Log.UseSuccess(), JsonSerializer.Serialize(data));
+      => FromLifter(operation, lifterId, floor, message, Log.UseSuccess(), JsonSerializer.Serialize(data ?? ""));
 
     void LogError(string operation, string lifterId, string floor, string message, object data = null)
-      => FromLifter(operation, lifterId, floor, message, Log.UseDanger(), JsonSerializer.Serialize(data));
+      => FromLifter(operation, lifterId, floor, message, Log.UseDanger(), JsonSerializer.Serialize(data ?? ""));
   }
 
   public class LifterLogger: Logger, ILifterLogger
   {
     public LifterLogger(WcsContext domain): base(domain) {}
-
     public void FromTask(
       LifterTask task,
       string operation,
