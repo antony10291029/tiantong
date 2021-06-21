@@ -1,38 +1,45 @@
 <template>
-  <AsyncLoader :handler="getTasks">
-    <div class="box" style="margin: 1.25rem">
-      <SearchField @search="handleSearch" />
+  <AsyncLoader
+    :handler="getTasks"
+    style="padding: 1.25rem"
+  >
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <SearchField @search="handleSearch" />
 
-      <table class="table is-fullwidth is-centered">
-        <thead>
-          <th>封锁点</th>
-          <th>请求编号</th>
-          <th>状态</th>
-          <th>失败重试</th>
-          <th>请求开门</th>
-          <th>开门完成</th>
-          <th>请求关门</th>
-        </thead>
-        <tbody>
-          <DataMapIterator
-            :dataMap="tasks"
-            v-slot="{ entity }"
-            tag="tr"
-          >
-            <td>{{`${entity.doorId}`}}</td>
-            <td>{{entity.id}}</td>
-            <TheStatus :value="entity.status" />
-            <td>{{`${entity.retryCount} 次`}}</td>
-            <td>{{entity.requestedAt.split('T').join(' ')}}</td>
-            <td>{{entity.enteredAt.split('T').join(' ')}}</td>
-            <td>{{entity.leftAt.split('T').join(' ')}}</td>
-          </DataMapIterator>
-        </tbody>
-      </table>
+          <table class="table is-fullwidth is-centered is-nowrap">
+            <thead>
+              <th>封锁点</th>
+              <th>请求编号</th>
+              <th>状态</th>
+              <th>失败重试</th>
+              <th>请求开门</th>
+              <th>开门完成</th>
+              <th>请求关门</th>
+            </thead>
+            <tbody>
+              <DataMapIterator
+                :dataMap="tasks"
+                v-slot="{ entity }"
+                tag="tr"
+              >
+                <td>{{`${entity.doorId}`}}</td>
+                <td>{{entity.id}}</td>
+                <TheStatus :value="entity.status" />
+                <td>{{`${entity.retryCount} 次`}}</td>
+                <td>{{entity.requestedAt.split('T').join(' ')}}</td>
+                <td>{{entity.enteredAt.split('T').join(' ')}}</td>
+                <td>{{entity.leftAt.split('T').join(' ')}}</td>
+              </DataMapIterator>
+            </tbody>
+          </table>
 
-      <div style="height: 1.25rem"></div>
+          <div style="height: 1.25rem"></div>
 
-      <Pagination v-bind="tasks" @change="changePage" />
+          <Pagination v-bind="tasks" @change="changePage" />
+        </div>
+      </div>
     </div>
   </AsyncLoader>
 </template>
@@ -71,7 +78,6 @@ export default defineComponent({
     function handleSearch(query: string) {
       params.page = 1;
       params.query = query;
-      console.log(1000);
 
       return getTasks();
     }

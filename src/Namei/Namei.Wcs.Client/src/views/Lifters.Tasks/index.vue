@@ -1,46 +1,53 @@
 <template>
-  <AsyncLoader :handler="getTasks">
-    <div class="box" style="margin: 1.25rem">
-      <SearchField @search="handleSearch" />
+  <AsyncLoader
+    :handler="getTasks"
+    style="padding: 1.25rem"
+  >
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <SearchField @search="handleSearch" />
 
-      <table class="table is-fullwidth is-centered">
-        <thead>
-          <th>提升机</th>
-          <th>托盘号</th>
-          <th>TaskCode</th>
-          <th>楼层</th>
-          <th>状态</th>
-          <th>放货完成</th>
-          <th>请求取货</th>
-          <th>取货完成</th>
-          <th></th>
-        </thead>
-        <tbody>
-          <DataMapIterator
-            :dataMap="tasks"
-            v-slot="{ entity }"
-            tag="tr"
-          >
-            <td>{{`${entity.lifterId} 号梯`}}</td>
-            <td>{{entity.barcode}}</td>
-            <td>{{entity.taskCode}}</td>
-            <td>{{`${entity.floor}F - ${entity.destination}F`}}</td>
-            <TheStatus :value="entity.status" />
-            <td>{{entity.importedAt.split('T').join(' ')}}</td>
-            <td>{{entity.exportedAt.split('T').join(' ')}}</td>
-            <td>{{entity.takenAt.split('T').join(' ')}}</td>
-            <td>
-              <a @click="handleClose(entity.id)">
-                关闭
-              </a>
-            </td>
-          </DataMapIterator>
-        </tbody>
-      </table>
+          <table class="table is-fullwidth is-centered is-nowrap">
+            <thead>
+              <th>提升机</th>
+              <th>托盘号</th>
+              <th>TaskCode</th>
+              <th>楼层</th>
+              <th>状态</th>
+              <th>放货完成</th>
+              <th>请求取货</th>
+              <th>取货完成</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <DataMapIterator
+                :dataMap="tasks"
+                v-slot="{ entity }"
+                tag="tr"
+              >
+                <td>{{`${entity.lifterId} 号梯`}}</td>
+                <td>{{entity.barcode}}</td>
+                <td>{{entity.taskCode}}</td>
+                <td>{{`${entity.floor}F - ${entity.destination}F`}}</td>
+                <TheStatus :value="entity.status" />
+                <td>{{entity.importedAt.split('T').join(' ')}}</td>
+                <td>{{entity.exportedAt.split('T').join(' ')}}</td>
+                <td>{{entity.takenAt.split('T').join(' ')}}</td>
+                <td>
+                  <a @click="handleClose(entity.id)">
+                    关闭
+                  </a>
+                </td>
+              </DataMapIterator>
+            </tbody>
+          </table>
 
-      <div style="height: 1.25rem"></div>
+          <div style="height: 1.25rem"></div>
 
-      <Pagination v-bind="tasks" @change="changePage" />
+          <Pagination v-bind="tasks" @change="changePage" />
+        </div>
+      </div>
     </div>
   </AsyncLoader>
 </template>
@@ -81,7 +88,6 @@ export default defineComponent({
     function handleSearch(query: string) {
       params.page = 1;
       params.query = query;
-      console.log(1000);
 
       return getTasks();
     }

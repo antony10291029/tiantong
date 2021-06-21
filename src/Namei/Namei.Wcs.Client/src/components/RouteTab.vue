@@ -1,5 +1,7 @@
 <template>
-  <div class="is-flex is-flex-column">
+  <div
+    class="is-flex is-flex-column"
+  >
     <div
       class="tabs"
       style="margin-bottom: 0; font-size: 1.125rem; flex-shrink: 0"
@@ -21,7 +23,10 @@
       </ul>
     </div>
 
-    <router-view class="is-flex-auto" />
+    <router-view
+      class="is-flex-auto"
+      style="overflow-y: auto; overflow-x: auto"
+    />
   </div>
 </template>
 

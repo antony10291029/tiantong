@@ -19,7 +19,10 @@
       </ul>
     </aside>
 
-    <router-view class="is-flex-auto" style="overflow-y: auto"/>
+    <router-view
+      class="is-flex-auto"
+      style="overflow-y: auto; overflow-x: auto"
+    />
   </div>
 </template>
 
