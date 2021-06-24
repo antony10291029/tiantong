@@ -1,5 +1,5 @@
-using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
+using Midos.Eventing;
 using Namei.Wcs.Api;
 using System;
 using System.Text.Json.Serialization;
@@ -8,18 +8,18 @@ namespace Namei.Wcs.Aggregates
 {
   public class LifterController
   {
-    private readonly ICapPublisher _cap;
+    private readonly IEventPublisher _publisher;
 
     private readonly ILifterLogger _logger;
 
     private readonly ILifterService _service;
 
     public LifterController(
-      ICapPublisher cap,
+      IEventPublisher publisher,
       ILifterLogger logger,
       ILifterService service
     ) {
-      _cap = cap;
+      _publisher = publisher;
       _logger = logger;
       _service = service;
     }
@@ -36,7 +36,7 @@ namespace Namei.Wcs.Aggregates
       );
 
       try {
-        _cap.Publish(LifterTaskFinished.Message, LifterTaskFinished.From(floor, lifterId));
+        _publisher.Publish(LifterTaskFinished.Message, LifterTaskFinished.From(floor, lifterId));
         _service.HandleImported(lifterId, floor, barcode, destination, data, from);
         _logger.LogSuccess("imported", lifterId, floor, "放货完成指令已处理");
       } catch (Exception e) {
@@ -88,7 +88,7 @@ namespace Namei.Wcs.Aggregates
       );
 
       try {
-        _cap.Publish(LifterTaskFinished.Message, LifterTaskFinished.From(floor, lifterId));
+        _publisher.Publish(LifterTaskFinished.Message, LifterTaskFinished.From(floor, lifterId));
         _service.HandleTaken(lifterId, floor);
         _logger.LogSuccess("taken", lifterId, floor, "取货完成指令已处理");
       } catch (Exception e) {
@@ -266,7 +266,7 @@ namespace Namei.Wcs.Aggregates
       if (isImportedAllowed || isRequestingPickup) {
         var doorId = CrashDoor.GetDoorIdFromLifter(param.Floor, "1");
 
-        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
+        _publisher.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
       }
 
       return NotifyResult.FromVoid().Success(message);
@@ -298,7 +298,7 @@ namespace Namei.Wcs.Aggregates
       if (param.Value == "2" || param.Value == "3") {
         var doorId =  CrashDoor.GetDoorIdFromLifter(param.Floor, param.LifterId);
 
-        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
+        _publisher.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(doorId));
       }
 
       return NotifyResult.FromVoid().Success(message);

@@ -1,4 +1,4 @@
-using DotNetCore.CAP;
+using Midos.Eventing;
 using System;
 using System.Data;
 using System.Linq;
@@ -10,11 +10,11 @@ namespace Namei.Wcs.Api
   {
     public const string Group = "RcsDoorController";
 
-    private DomainContext _domain;
+    private readonly DomainContext _domain;
 
-    private IWcsDoorFactory _doors;
+    private readonly IWcsDoorFactory _doors;
 
-    private IRcsService _rcs;
+    private readonly IRcsService _rcs;
 
     public RcsDoorEventController(
       DomainContext domain,
@@ -26,13 +26,14 @@ namespace Namei.Wcs.Api
       _rcs = rcs;
     }
 
-    [CapSubscribe(RcsDoorEvent.Request, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Request, Group)]
     public void HandleDoorTaskRequest(RcsDoorEvent param)
     {
       var task = _domain.RcsDoorTasks.Find(param.Uuid);
 
       if (task == null) {
-        _domain.Add(task = RcsDoorTask.From(param));
+        task = RcsDoorTask.From(param);
+        _domain.Add(task);
       } else {
         task.Request(param.DoorId);
       }
@@ -41,8 +42,8 @@ namespace Namei.Wcs.Api
       _domain.Publish(RcsDoorEvent.Requested, param);
     }
 
-    [CapSubscribe(RcsDoorEvent.Retry, Group = Group)]
-    [CapSubscribe(RcsDoorEvent.Requested, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Retry, Group)]
+    [EventSubscribe(RcsDoorEvent.Requested, Group)]
     public void HandleDoorTaskRequested(RcsDoorEvent param)
     {
       var door = _doors.Get(param.DoorId);
@@ -57,7 +58,7 @@ namespace Namei.Wcs.Api
       }
     }
 
-    [CapSubscribe(WcsDoorEvent.Open, Group = Group)]
+    [EventSubscribe(WcsDoorEvent.Open, Group)]
     public void HandleDoorOpen(WcsDoorEvent param)
     {
       var door = _doors.Get(param.DoorId);
@@ -69,7 +70,7 @@ namespace Namei.Wcs.Api
       door.Open();
     }
 
-    [CapSubscribe(WcsDoorEvent.Opened, Group = Group)]
+    [EventSubscribe(WcsDoorEvent.Opened, Group)]
     public void HandleDoorOpened(WcsDoorEvent param)
     {
       var tasks = _domain.RcsDoorTasks
@@ -88,7 +89,7 @@ namespace Namei.Wcs.Api
       }
     }
 
-    [CapSubscribe(RcsDoorEvent.Enter, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Enter, Group)]
     public void HandleDoorTaskEnter(RcsDoorEvent param)
     {
       var task = _domain.RcsDoorTasks.Find(param.Uuid);
@@ -105,11 +106,11 @@ namespace Namei.Wcs.Api
       _domain.Publish(RcsDoorEvent.Entered, param);
     }
 
-    [CapSubscribe(RcsDoorEvent.Entered, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Entered, Group)]
     public Task HandleDoorTaskEntered(RcsDoorEvent param)
       => _rcs.NotifyDoorOpened(param.DoorId, param.Uuid);
 
-    [CapSubscribe(RcsDoorEvent.Leave, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Leave, Group)]
     public void HandleDoorTaskLeave(RcsDoorEvent param)
     {
       var task = _domain.RcsDoorTasks.Find(param.Uuid);
@@ -120,7 +121,7 @@ namespace Namei.Wcs.Api
       _domain.Publish(RcsDoorEvent.Left, param);
     }
 
-    [CapSubscribe(RcsDoorEvent.Left, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Left, Group)]
     public void HandleRcsDoorTaskLeft(RcsDoorEvent param)
     {
       var count = _domain.RcsDoorTasks
@@ -136,15 +137,15 @@ namespace Namei.Wcs.Api
       }
     }
 
-    [CapSubscribe(WcsDoorEvent.Close, Group = Group)]
+    [EventSubscribe(WcsDoorEvent.Close, Group)]
     public void HandleDoorClose(WcsDoorEvent param)
     {
       _doors.Get(param.DoorId).Close();
     }
 
-    [CapSubscribe(LifterTaskFinished.Message, Group = Group)]
-    [CapSubscribe(LifterTaskTaken.Message, Group = Group)]
-    [CapSubscribe(LifterTaskImported.Message, Group = Group)]
+    [EventSubscribe(LifterTaskFinished.Message, Group)]
+    [EventSubscribe(LifterTaskTaken.Message, Group)]
+    [EventSubscribe(LifterTaskImported.Message, Group)]
     public void HandleLifterTaskTaken(LifterTaskFinished param)
     {
       var doorId = DoorType.GetDoorIdFromLifter(

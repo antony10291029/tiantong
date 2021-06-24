@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP" Version="5.0.3" />
-    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.0.3" />
-    <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="5.0.3" />
+    <PackageReference Include="DotNetCore.CAP" Version="5.1.0" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.1.0" />
+    <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
     <PackageReference Include="Savorboard.CAP.InMemoryMessageQueue" Version="3.1.1" />

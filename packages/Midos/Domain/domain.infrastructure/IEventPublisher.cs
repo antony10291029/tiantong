@@ -11,17 +11,17 @@ namespace Midos.Domain
 
   public class EventPublisher: IEventPublisher
   {
-    private ICapPublisher _cap;
+    private readonly Eventing.IEventPublisher _publisher;
 
-    public EventPublisher(ICapPublisher cap)
+    public EventPublisher(Eventing.IEventPublisher publisher)
     {
-      _cap = cap;
+      _publisher = publisher;
     }
 
     public void Publish(string msg, object data)
-      => _cap.Publish(msg, data);
+      => _publisher.PublishAsync(msg, data).GetAwaiter().GetResult();
 
     public void Publish<T>(string msg, T data) where T: DomainEvent
-      => _cap.Publish(msg, data);
+      => _publisher.PublishAsync(msg, data).GetAwaiter().GetResult();
   }
 }

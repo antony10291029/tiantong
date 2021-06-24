@@ -1,6 +1,5 @@
-using System.Reflection;
-using DotNetCore.CAP;
 using Microsoft.Extensions.DependencyInjection;
+using Midos.Eventing;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,13 +10,15 @@ namespace Namei.Wcs.Api
   // 后台托管服务
   public class DoorTaskHostedService: IntervalService
   {
-    private ICapPublisher _cap;
+    private readonly IEventPublisher _publisher;
 
-    private IServiceProvider _services;
+    private readonly IServiceProvider _services;
 
-    public DoorTaskHostedService(ICapPublisher cap, IServiceProvider services)
-    {
-      _cap = cap;
+    public DoorTaskHostedService(
+      IEventPublisher publisher,
+      IServiceProvider services
+    ) {
+      _publisher = publisher;
       _services = services;
     }
 
@@ -59,13 +60,13 @@ namespace Namei.Wcs.Api
 
         if (task.RetryCount < 2) {
           task.Retry();
-          _cap.Publish(RcsDoorEvent.Retry, @event);
+          _publisher.Publish(RcsDoorEvent.Retry, @event);
         } else {
-          _cap.Publish(RcsDoorEvent.Leave, @event);
+          _publisher.Publish(RcsDoorEvent.Leave, @event);
         }
       }
 
-      if (tasks.Count() > 0) {
+      if (tasks.Length > 0) {
         domain.SaveChanges();
       }
     }

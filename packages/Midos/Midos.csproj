@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Midos.Eventing" Version="0.0.5-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetCore.Cap" Version="5.0.1" />
     <PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.0.1" />
     <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="5.0.1" />

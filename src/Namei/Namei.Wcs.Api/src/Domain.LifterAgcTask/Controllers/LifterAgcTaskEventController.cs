@@ -1,6 +1,6 @@
-// using DotNetCore.CAP;
 // using Microsoft.AspNetCore.Mvc;
 // using Microsoft.EntityFrameworkCore;
+// using Midos.Eventing;
 // using Midos.Services.Http;
 // using Namei.Wcs.Api;
 // using System.Linq;
@@ -19,13 +19,13 @@
 //       _context = context;
 //     }
 
-//     [CapSubscribe(LifterAgcTaskEvent.Created, Group = Group)]
+//     [EventSubscribe(LifterAgcTaskEvent.Created, Group)]
 //     public void Created(LifterAgcTaskEvent param)
 //     {
 //       _context.Publish(LifterAgcTaskEvent.Started, param);
 //     }
 
-//     [CapSubscribe(LifterAgcTaskEvent.Started, Group = Group)]
+//     [EventSubscribe(LifterAgcTaskEvent.Started, Group)]
 //     public void Started(LifterAgcTaskEvent param)
 //     {
 //       var task = _context.Set<LifterAgcTask>()
@@ -41,7 +41,7 @@
 //       _context.Publish(LifterAgcTaskEvent.Exported, param);
 //     }
 
-//     [CapSubscribe(LifterAgcTaskEvent.Exported, Group = Group)]
+//     [EventSubscribe(LifterAgcTaskEvent.Exported, Group)]
 //     public void Export(LifterAgcTaskEvent param)
 //     {
 //       var task = _context.Set<LifterAgcTask>()
@@ -81,7 +81,7 @@
 //       );
 //     }
 
-//     [CapSubscribe(LifterAgcTaskEvent.Finished, Group = Group)]
+//     [EventSubscribe(LifterAgcTaskEvent.Finished, Group)]
 //     public void Finished(LifterAgcTaskEvent param)
 //     {
 //       var task = _context.Set<LifterAgcTask>()

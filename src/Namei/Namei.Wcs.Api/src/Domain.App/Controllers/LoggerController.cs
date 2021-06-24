@@ -1,6 +1,6 @@
-using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Midos.Domain;
+using Midos.Eventing;
 using Midos.Services.Http;
 using System.Linq;
 
@@ -22,7 +22,7 @@ namespace Namei.Wcs.Api
       _domain = domain;
     }
 
-    [CapSubscribe(HttpLogEvent.@event, Group = Group)]
+    [EventSubscribe(HttpLogEvent.@event, Group)]
     public void HandleEvengLog(HttpLogEvent param)
     {
       _logger.Save(

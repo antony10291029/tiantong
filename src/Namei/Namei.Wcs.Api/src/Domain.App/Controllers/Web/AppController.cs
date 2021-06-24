@@ -1,4 +1,3 @@
-using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using Midos.Services.Http;
 
@@ -8,13 +7,9 @@ namespace Namei.Wcs.Api
   {
     private readonly Config _config;
 
-    public AppController(Config config, ICapPublisher cap)
+    public AppController(Config config)
     {
       _config = config;
-      cap.Publish(HttpPost.Event, HttpPost.From(
-        "http://172.16.2.62/wcs/home",
-        new { Home = "home", Id = 1234 }
-      ));
     }
 
     [HttpGet]

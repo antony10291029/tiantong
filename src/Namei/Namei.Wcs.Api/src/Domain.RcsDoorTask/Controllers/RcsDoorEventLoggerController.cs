@@ -1,5 +1,5 @@
-using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
+using Midos.Eventing;
 using System.Linq;
 
 namespace Namei.Wcs.Api
@@ -8,7 +8,7 @@ namespace Namei.Wcs.Api
   {
     private const string Group = "DoorLoggerController";
 
-    private Logger _logger;
+    private readonly Logger _logger;
 
     public DoorLoggerController(Logger logger)
     {
@@ -34,7 +34,7 @@ namespace Namei.Wcs.Api
       _logger.Save(log);
     }
 
-    [CapSubscribe(RcsDoorEvent.Request, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Request, Group)]
     public void RequestedOpen(RcsDoorEvent param)
       => Info(
         doorId: param.DoorId,
@@ -43,7 +43,7 @@ namespace Namei.Wcs.Api
         data: param
       );
 
-    [CapSubscribe(RcsDoorEvent.Leave, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Leave, Group)]
     public void RequestedClose(RcsDoorEvent param)
       => Info(
         doorId: param.DoorId,
@@ -52,7 +52,7 @@ namespace Namei.Wcs.Api
         data: param
       );
 
-    [CapSubscribe(RcsDoorEvent.Retry, Group = Group)]
+    [EventSubscribe(RcsDoorEvent.Retry, Group)]
     public void Retry(RcsDoorEvent param)
       => Info(
         doorId: param.DoorId,
@@ -61,7 +61,7 @@ namespace Namei.Wcs.Api
         data: param
       );
 
-    [CapSubscribe(WcsDoorEvent.Opened, Group = Group)]
+    [EventSubscribe(WcsDoorEvent.Opened, Group)]
     public void Opened(WcsDoorEvent param)
       => Info(
         doorId: param.DoorId,
@@ -69,7 +69,7 @@ namespace Namei.Wcs.Api
         message: "门已打开"
       );
 
-    [CapSubscribe(WcsDoorEvent.Closed, Group = Group)]
+    [EventSubscribe(WcsDoorEvent.Closed, Group)]
     public void Closed(WcsDoorEvent param)
       => Info(
         doorId: param.DoorId,

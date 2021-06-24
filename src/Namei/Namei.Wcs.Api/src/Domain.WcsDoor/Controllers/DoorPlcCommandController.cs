@@ -1,22 +1,25 @@
-using DotNetCore.CAP;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Midos.Eventing;
 
 namespace Namei.Wcs.Api
 {
   public class DoorPlcCommandController: BaseController
   {
-    private ICapPublisher _cap;
+    private IEventPublisher _publisher;
 
-    public DoorPlcCommandController(ICapPublisher cap)
+    public DoorPlcCommandController(IEventPublisher publisher)
     {
-      _cap = cap;
+      _publisher = publisher;
     }
 
     public class DoorStateChangedParams
     {
-      public string door_id { get; set; }
+      [JsonPropertyName("door_id")]
+      public string DoorId { get; set; }
 
-      public string value { get; set; }
+      [JsonPropertyName("value")]
+      public string Value { get; set; }
     }
 
     [HttpPost("/doors/state/changed")]
@@ -24,16 +27,15 @@ namespace Namei.Wcs.Api
     {
       var message = "指令未识别";
 
-      if (param.value == "12") {
+      if (param.Value == "12") {
         message = "正在处理开门完成指令";
-        _cap.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(param.door_id));
-      } else if (param.value == "22") {
+        _publisher.Publish(WcsDoorEvent.Opened, WcsDoorEvent.From(param.DoorId));
+      } else if (param.Value == "22") {
         message = "正在处理关门完成指令";
-        _cap.Publish(WcsDoorEvent.Closed, WcsDoorEvent.From(param.door_id));
+        _publisher.Publish(WcsDoorEvent.Closed, WcsDoorEvent.From(param.DoorId));
       }
 
-      return NotifyResult.FromVoid()
-        .Success(message);
+      return NotifyResult.FromVoid().Success(message);
     }
   }
 }

@@ -1,4 +1,3 @@
-using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
