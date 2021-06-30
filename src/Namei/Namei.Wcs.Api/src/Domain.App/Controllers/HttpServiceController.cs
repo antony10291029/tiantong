@@ -1,5 +1,5 @@
-using Midos.Domain;
 using System.Net.Http;
+using Midos.Eventing;
 
 namespace Namei.Wcs.Aggregates
 {

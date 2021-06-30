@@ -1,4 +1,4 @@
-using DotNetCore.CAP;
+using System.Threading.Tasks;
 
 namespace Midos.Domain
 {

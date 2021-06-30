@@ -4,6 +4,7 @@ using DBCore;
 using Midos.Domain;
 using Namei.Aggregates;
 using Namei.Common.Database;
+using Midos.Eventing;
 
 namespace Namei.Common.Api
 {
@@ -14,6 +15,7 @@ namespace Namei.Common.Api
       services.AddExceptionHandler();
       services.AddControllers();
       services.AddHttpClient();
+      services.AddEventing(eventing => eventing.UseInMemoryQueue());
       services.AddSingleton<Config>();
       services.AddDbContext<RcsContext>();
       services.AddSingleton<RcsHttpService>();
@@ -21,7 +23,7 @@ namespace Namei.Common.Api
       services.AddDbContext<WmsContext>();
       services.AddDbContext<AppContext>();
       services.AddSingleton<IDomainContextOptions<AppContext>, AppContextOptions>();
-      services.AddScoped<IEventPublisher, EventPublisher>();
+      services.AddScoped<Midos.Domain.IEventPublisher, Midos.Domain.EventPublisher>();
       services.AddScoped<DomainContext, AppContext>();
       services.AddScoped<IMigrator, AppMigrator>();
     }

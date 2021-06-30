@@ -1,9 +1,8 @@
-using DotNetCore.CAP;
 using Microsoft.AspNetCore.Mvc;
-using Midos.Domain;
+using Midos.Eventing;
 using System;
-using System.Net.Mime;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,7 +24,7 @@ namespace Midos.Services.Http
       _client = factory.CreateClient();
     }
 
-    [CapSubscribe(HttpPost.Event, Group = Group)]
+    [EventSubscribe(HttpPost.Event, Group)]
     public async Task Post(HttpPost param)
     {
       var contentString = Encoding.UTF8.GetString(param.Data);
