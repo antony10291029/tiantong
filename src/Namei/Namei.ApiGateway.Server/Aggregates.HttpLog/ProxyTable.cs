@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -28,10 +29,22 @@ namespace Namei.ApiGateway.Server
 
     private readonly IServiceProvider _serviceProvider;
 
-    public ProxyTable(IServiceProvider serviceProvider)
+    private readonly IHostEnvironment _env;
+
+    public ProxyTable(IServiceProvider serviceProvider, IHostEnvironment env)
     {
+      _env = env;
       _serviceProvider = serviceProvider;
       Sync();
+    }
+
+    private string GetUrlFromEndpoint(Endpoint endpoint)
+    {
+      if (_env.IsStaging()) {
+        return endpoint.UrlStaging;
+      } else {
+        return endpoint.Url;
+      }
     }
 
     public IReadOnlyDictionary<string, ProxyRecord> Get()
@@ -55,7 +68,7 @@ namespace Namei.ApiGateway.Server
             EndpointId = endpoint.Id,
             RouteId = route.Id,
             Path = route.Path,
-            Endpoint = endpoint.Url,
+            Endpoint = GetUrlFromEndpoint(endpoint),
             EndpointPath = route.EndpointPath,
           })
         )

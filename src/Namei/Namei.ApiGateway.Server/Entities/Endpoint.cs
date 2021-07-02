@@ -1,6 +1,6 @@
+using Midos.SeedWork.Domain;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Midos.SeedWork.Domain;
 
 namespace Namei.ApiGateway.Server
 {
@@ -9,6 +9,8 @@ namespace Namei.ApiGateway.Server
     public long Id { get; set; }
 
     public string Url { get; set; }
+
+    public string UrlStaging { get; set; }
 
     public string Name { get; set; }
 
