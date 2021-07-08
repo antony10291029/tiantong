@@ -27,15 +27,17 @@ namespace Namei.ApiGateway.Server
     {
       _context.Add(
         Endpoint.From(
+          name: "测试应用",
           url: "http://localhost:5000",
-          name: "测试应用"
+          urlStaging: "http://localhost:6000"
         )
       );
       _context.AddRange(
         Enumerable.Range(1, 20)
           .Select(i => Endpoint.From(
+            name: $"测试应用_{i}",
             url: $"http://localhost:500{i}",
-            name: $"测试应用_{i}"
+            urlStaging: $"http://localhost:600{i}"
           ))
       );
 

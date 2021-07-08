@@ -29,18 +29,18 @@ namespace Namei.ApiGateway.Server
 
     private readonly IServiceProvider _serviceProvider;
 
-    private readonly IHostEnvironment _env;
+    private readonly AppConfig _config;
 
-    public ProxyTable(IServiceProvider serviceProvider, IHostEnvironment env)
+    public ProxyTable(IServiceProvider serviceProvider, AppConfig env)
     {
-      _env = env;
+      _config = env;
       _serviceProvider = serviceProvider;
       Sync();
     }
 
     private string GetUrlFromEndpoint(Endpoint endpoint)
     {
-      if (_env.IsStaging()) {
+      if (_config.ApiEnv == Environments.Staging) {
         return endpoint.UrlStaging;
       } else {
         return endpoint.Url;

@@ -20,11 +20,13 @@ namespace Namei.ApiGateway.Server
     public Endpoint() {}
 
     public static Endpoint From(
+      string name,
       string url,
-      string name
+      string urlStaging
     ) => new() {
+      Name = name,
       Url = url,
-      Name = name
+      UrlStaging = urlStaging,
     };
   }
 }
