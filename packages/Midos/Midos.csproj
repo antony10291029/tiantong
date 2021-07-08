@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Midos.Eventing" Version="0.0.5-alpha" />
+    <PackageReference Include="Midos.Eventing" Version="0.0.6-alpha" />
   </ItemGroup>
 
   <ItemGroup>
