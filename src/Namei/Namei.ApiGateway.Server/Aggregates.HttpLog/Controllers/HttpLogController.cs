@@ -17,7 +17,7 @@ namespace Namei.ApiGateway.Server
 
     public record SearchParams: PaginateParams
     {
-      public string Path { get; set; }
+      public string SourcePath { get; set; }
     }
 
     [HttpPost("/$http-logs/search")]
@@ -25,11 +25,11 @@ namespace Namei.ApiGateway.Server
     {
       var query = _context.Set<HttpLog>().AsQueryable();
 
-      if (param.Path?.Length > 0) {
-        query = query.Where(log => log.SourcePath.Contains(param.Path));
+      if (!string.IsNullOrWhiteSpace(param.SourcePath)) {
+        query = query.Where(log => log.SourcePath.Contains(param.SourcePath));
       }
 
-      if (param.Query?.Length > 0) {
+      if (!string.IsNullOrWhiteSpace(param.Query)) {
         query = query.Where(log =>
           log.RequestBody.Contains(param.Query) ||
           log.ResponseBody.Contains(param.Query)

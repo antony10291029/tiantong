@@ -3,6 +3,7 @@ import { VueApp, VueUI } from "@midos/vue-ui";
 import { RouteRecordRaw } from "vue-router";
 import App from "./views/App/index.vue";
 import Dashboard from "./views/Dashboard/index.vue";
+import DashBoardHttpLogs from "./views/Dashboard.HttpLogs/index.vue";
 import Endpoints from "./views/Endpoints/index.vue";
 import EndpointsEndpoint from "./views/Endpoints.Endpoint/index.vue";
 import EndpointsCreate from "./views/Endpoints.Create/index.vue";
@@ -32,7 +33,14 @@ export class ApiGateway extends VueApp {
       {
         path: "dashboard",
         name: "ApiGatewayDashboard",
-        component: Dashboard
+        component: Dashboard,
+        children: [
+          {
+            path: "routes/:routeId/http-logs",
+            name: "ApiGatewayDashboardHttpLogs",
+            component: DashBoardHttpLogs
+          }
+        ]
       },
       {
         path: "endpoints",

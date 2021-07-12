@@ -1,96 +1,96 @@
 <template>
   <AsyncLoader
-    :handler="getLogs"
-    style="padding: 1.25rem; overflow: auto"
+    :handler="getRoutes"
     class="has-background-white"
+    style="padding: 1.25rem; overflow: auto"
+    v-slot="{ isPending }"
   >
-    <table class="table is-bordered is-nowrap is-fullwidth">
-      <thead>
-        <th>#</th>
-        <th>时间</th>
-        <th>耗时</th>
-        <th>方法</th>
-        <th>路由</th>
-        <th>重定向</th>
-        <th>请求数据</th>
-        <th>响应数据</th>
-      </thead>
-
-      <tbody>
-        <DataMap
-          :dataMap="logs"
-          v-slot="{ value, index }"
-          tag="tr"
-        >
-          <td>{{index + 1}}</td>
-          <td>
-            <TimeWrapper :value="value.requestedAt" />
-          </td>
-          <td>
-            <span class="tag is-success is-light">
-              <span>
-                {{getTimeConsuming(value)}}
+    <div
+      v-if="!isPending"
+      class="columns"
+    >
+      <div class="column is-narrow">
+        <nav class="panel is-light" style="max-width: 360px; overflow: hidden">
+          <p class="panel-heading">
+            接口列表
+          </p>
+          <div class="panel-block">
+            <p class="control has-icons-left">
+              <Input
+                class="input is-small"
+                v-model:value="search"
+              />
+              <span class="icon is-left">
+                <i class="icon-midos icon-midos-search" aria-hidden="true"></i>
               </span>
-              <span>ms</span>
-            </span>
-          </td>
-          <td>{{value.requestMethod}}</td>
-          <td>{{value.sourcePath}}</td>
-          <td>{{value.requestUri}}</td>
-          <td>{{value.requestBody}}</td>
-          <td>{{value.responseBody}}</td>
-        </DataMap>
-      </tbody>
-    </table>
+            </p>
+          </div>
 
-    <div style="height: 1.5rem"></div>
+          <DataMap
+            :dataMap="routes"
+            v-slot="{ value }"
+          >
+            <router-link
+              v-show="matchRouteName(value.name)"
+              class="panel-block"
+              :to="{
+                name: 'ApiGatewayDashboardHttpLogs',
+                params: { routeId: value.id }
+              }"
+            >
+              <div class="is-flex is-flex-column">
+                <span>{{value.name}}</span>
+                <span class="has-text-grey">
+                  {{value.path}}
+                </span>
+              </div>
+            </router-link>
+          </DataMap>
+        </nav>
+      </div>
 
-    <Pagination
-      v-bind="logs"
-      @change="changePage"
-    />
+      <div class="column">
+        <router-view
+          :key="+$route.params.routeId"
+          :routeId="$route.params.routeId"
+          :routes="routes.values"
+        />
+      </div>
+    </div>
   </AsyncLoader>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { PaginateParams, Pagination } from "@midos/seed-work";
-import { HttpLog } from "../../domain/entities/http-log";
-import { UseApiGatewayHttp } from "../../services/api-gateway-http";
+import { QueryParams, DataMap } from "@midos/seed-work";
+import { useService } from "@midos/vue-ui";
+import { Route } from "../../domain/entities";
+import { RouteRepository } from "../../domain/repositories/route-repository";
 
 export default defineComponent({
   setup() {
-    const http = UseApiGatewayHttp();
-    const params = ref(new PaginateParams());
-    const logs = ref(new Pagination<HttpLog>());
+    const repository = useService(RouteRepository);
+    const routes = ref(new DataMap<Route>());
+    const params = ref(new QueryParams());
+    const search = ref("");
 
-    async function getLogs() {
-      const result = await http.post<any>(
-        "/$http-logs/search",
-        params.value
-      );
-
-      logs.value = result;
+    async function getRoutes() {
+      routes.value = await repository.query(params.value);
     }
 
-    function getTimeConsuming(entity: any) {
-      const requestedAt = Date.parse(entity.requestedAt);
-      const responsedAt = Date.parse(entity.responsedAt);
+    function matchRouteName(name: string) {
+      if (search.value === "") {
+        return true;
+      }
 
-      return responsedAt - requestedAt;
-    }
-
-    function changePage(page: number) {
-      params.value.page = page;
-
-      return getLogs();
+      return name.toLowerCase().search(search.value) !== -1;
     }
 
     return {
-      logs,
-      getLogs,
-      changePage,
-      getTimeConsuming
+      search,
+      routes,
+      getRoutes,
+      matchRouteName
     };
   }
 });

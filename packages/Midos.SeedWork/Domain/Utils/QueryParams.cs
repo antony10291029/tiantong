@@ -2,6 +2,6 @@ namespace Midos.SeedWork.Domain
 {
   public record QueryParams
   {
-    public string Query;
+    public string Query { get; set; }
   }
 }
