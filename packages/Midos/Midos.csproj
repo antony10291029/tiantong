@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Midos.Eventing" Version="0.0.6-alpha" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
   <ItemGroup>

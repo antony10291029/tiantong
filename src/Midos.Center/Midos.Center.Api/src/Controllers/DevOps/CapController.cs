@@ -1,18 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using DotNetCore.CAP;
 using Midos.Domain;
+using Midos.Eventing;
 
 namespace Midos.Server.Controllers
 {
   public class DevController: BaseController
   {
-    private ICapPublisher _cap;
+    private readonly DomainContext _domain;
 
-    private DomainContext _domain;
-
-    public DevController(ICapPublisher cap, DomainContext domain)
+    public DevController(DomainContext domain)
     {
-      _cap = cap;
       _domain = domain;
     }
 
@@ -37,7 +34,7 @@ namespace Midos.Server.Controllers
       return NotifyResult.FromVoid().Success("消息发送成功");
     }
 
-    [CapSubscribe("midos.test", Group = "test")]
+    [EventSubscribe("midos.test", "test")]
     public void Handle(TestMessage msg)
     {
       System.Console.WriteLine("================ Success ====================");

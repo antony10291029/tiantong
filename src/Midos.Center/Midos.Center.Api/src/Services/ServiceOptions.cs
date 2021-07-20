@@ -5,7 +5,7 @@ namespace Midos.Center
 {
   public class ServiceOptions: DomainContextOptions<DomainContext>
   {
-    private AppConfig _config;
+    private readonly AppConfig _config;
 
     public ServiceOptions(AppConfig config)
     {

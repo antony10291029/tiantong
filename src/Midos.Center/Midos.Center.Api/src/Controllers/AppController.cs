@@ -7,7 +7,7 @@ namespace Midos.Center.Controllers
 {
   public class AppController: BaseController
   {
-    private DomainContext _domain;
+    private readonly DomainContext _domain;
 
     public AppController(
       DomainContext domain
@@ -78,13 +78,13 @@ namespace Midos.Center.Controllers
         .Success("应用配置已更新");
     }
 
-    public class DeleteParams
+    public class AppDeleteParams
     {
       public long Id { get; set; }
     }
 
     [HttpPost("/midos/apps/delete")]
-    public INotifyResult<IMessageObject> Update([FromBody] DeleteParams param)
+    public INotifyResult<IMessageObject> Update([FromBody] AppDeleteParams param)
     {
       var app = _domain.Set<App>().Find(param.Id);
 
@@ -96,13 +96,13 @@ namespace Midos.Center.Controllers
         .Success("应用已删除");
     }
 
-    public class SearchParams
+    public class AppSearchParams
     {
       public string Class { get; set; } = "default";
     }
 
     [HttpPost("/midos/apps/search")]
-    public IResult<App[]> All([FromBody] SearchParams param)
+    public IResult<App[]> All([FromBody] AppSearchParams param)
     {
       return Result.From(_domain.Set<App>()
         .Where(app => app.Class == param.Class)
