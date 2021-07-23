@@ -1,11 +1,7 @@
-using System.Reflection.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Google.Protobuf.WellKnownTypes;
-using System.Reflection;
 
 namespace Namei.Open.Server
 {
@@ -22,38 +18,6 @@ namespace Namei.Open.Server
       _mes = mes;
       _sap = sap;
       _wms = wms;
-    }
-
-    [HttpPost("/test")]
-    public object Test([FromBody] QueryParams param)
-    {
-      var codeInfo = new QRCodeInfo();
-
-      var record = _mes.Set<MesRetrospectCode>().FirstOrDefault(item => item.ItemBarCode == param.Code);
-      var mesOrder = _mes.Set<MesWoOrder>().FirstOrDefault(item => item.WoOrderNo == record.WoOrderNo);
-      var boxCode = record?.BoxBarCode;
-      var batchId = record?.MaterielLot;
-      var itemCode = mesOrder.FormulaNo;
-
-      var item = _sap.Set<SapItem>().FirstOrDefault(item => item.ItemCode == itemCode);
-      var itemName = item?.ItemName;
-
-      var boxBind = _wms.Set<WmsBoxCodeBind>().FirstOrDefault(item => item.BoxCode == boxCode);
-      var moveDocCode = boxBind?.OrderCode;
-      var moveDoc = _wms.Set<WmsMoveDoc>().FirstOrDefault(item => item.Code == moveDocCode);
-      var pickTicketId = moveDoc?.RelatedBillId;
-      var pickTicket = _wms.Set<WmsPickTicket>().FirstOrDefault(item => item.Id == pickTicketId);
-      var shipToName = pickTicket?.ShipToName;
-      var shipDate = boxBind?.BindTime;
-
-      return new {
-        boxCode,
-        batchId,
-        itemCode,
-        itemName,
-        shipToName,
-        shipDate,
-      };
     }
 
     public record QueryParams
@@ -89,21 +53,22 @@ namespace Namei.Open.Server
     {
       public string Title { get; set; }
 
-      public List<SearchRecordRow> Records { get; set; } = new();
+      public string RecordedAt { get; set; }
+
+      public List<SearchRecordRow> Records { get; set; }
     }
 
     [HttpPost("/qrcode/search")]
     public SearchResult Search([FromBody] QueryParams param)
     {
-      var now = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss");
+      var now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
       var record = _mes.Set<MesRetrospectCode>().FirstOrDefault(item => item.ItemBarCode == param.Code);
 
       if (record == null) {
         return new() {
           Title = "无效编码",
-          Records = new() {
-            new() { Key = "查询时间", Value = now }
-          }
+          RecordedAt = now,
+          Records = new() {}
         };
       }
 
@@ -121,17 +86,17 @@ namespace Namei.Open.Server
       var pickTicketId = moveDoc?.RelatedBillId;
       var pickTicket = _wms.Set<WmsPickTicket>().FirstOrDefault(item => item.Id == pickTicketId);
       var shipToName = pickTicket?.ShipToName;
-      var shipDate = boxBind?.BindTime.ToString("yyyy-MM-dd HH:MM:ss");
+      var shipDate = boxBind?.BindTime.ToString("yyyy-MM-dd HH:mm:ss");
 
       return new() {
         Title = "一品一码追溯",
+        RecordedAt = now,
         Records = new() {
-          new() { Key = "产品编码", Value = itemCode },
           new() { Key = "产品名称", Value = itemName },
+          new() { Key = "产品编码", Value = itemCode },
           new() { Key = "产品批次", Value = batchId },
-          new() { Key = "经销商", Value = shipToName },
+          new() { Key = "经销商名", Value = shipToName },
           new() { Key = "发货时间", Value = shipDate },
-          new() { Key = "查询时间", Value = now },
         }
       };
     }
