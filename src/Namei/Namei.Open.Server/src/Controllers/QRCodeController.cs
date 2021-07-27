@@ -95,6 +95,8 @@ namespace Namei.Open.Server
           new() { Key = "产品名称", Value = itemName },
           new() { Key = "产品编码", Value = itemCode },
           new() { Key = "产品批次", Value = batchId },
+          new() { Key = "生产订单", Value = record.WoOrderNo },
+          new() { Key = "出货订单", Value = pickTicket.Code },
           new() { Key = "经销商名", Value = shipToName },
           new() { Key = "发货时间", Value = shipDate },
         }
