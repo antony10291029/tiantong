@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Namei.Common.Api
@@ -113,6 +114,11 @@ namespace Namei.Common.Api
       public string PalletCode { get; set; }
     }
 
+    public record CreateTaskDTO
+    {
+      public string Message { get; set; }
+    }
+
     [HttpPost("/wms/pick-ticket-tasks/start")]
     public async Task<object> Start([FromBody] StartParams param)
     {
@@ -142,12 +148,19 @@ namespace Namei.Common.Api
         palletCode = param.PalletCode
       };
 
-      await _client.PostAsJsonAsync(url, data);
+      var response = await _client.PostAsJsonAsync(url, data);
+      var result = await response.Content.ReadFromJsonAsync<CreateTaskDTO>(
+        new(JsonSerializerDefaults.Web)
+      );
 
-      taskData.Start();
-      _wms.SaveChanges();
+      if (((int) response.StatusCode) < 400) {
+        taskData.Start();
+        _wms.SaveChanges();
 
-      return NotifyResult.FromVoid().Success("任务已下发");
+        return NotifyResult.FromVoid().Success("任务已下发");
+      } else {
+        return NotifyResult.FromVoid().Danger(result.Message);
+      }
     }
 
     [HttpPost("/wms/pick-ticket-tasks/start-batch")]
@@ -164,7 +177,7 @@ namespace Namei.Common.Api
       }
 
       var notify =  NotifyResult.FromVoid();
-      
+
       return isSuccess
         ? notify.Success("任务已全部下发")
         : notify.Danger("部分任务下发失败，请校验任务列表");
