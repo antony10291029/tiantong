@@ -14,7 +14,6 @@ namespace Namei.Wcs.Api
     {
       return Host.CreateDefaultBuilder(args)
         .ConfigureEnvironment()
-        .UseMidosLogging()
         .ConfigureWebHostDefaults(builder => {
           builder.UseIISIntegration();
           builder.UseStartup<Startup>();
