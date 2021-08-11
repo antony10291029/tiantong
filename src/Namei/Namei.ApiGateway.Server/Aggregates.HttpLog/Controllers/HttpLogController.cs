@@ -26,7 +26,7 @@ namespace Namei.ApiGateway.Server
       var query = _context.Set<HttpLog>().AsQueryable();
 
       if (!string.IsNullOrWhiteSpace(param.SourcePath)) {
-        query = query.Where(log => log.SourcePath.Contains(param.SourcePath));
+        query = query.Where(log => log.SourcePath == param.SourcePath);
       }
 
       if (!string.IsNullOrWhiteSpace(param.Query)) {
