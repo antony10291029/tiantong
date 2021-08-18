@@ -62,9 +62,9 @@ namespace Midos.Domain
     public Repository(DomainContext domain): base(domain) {}
 
     public new IDataMap<TEntity> ToDataMap()
-      => DomainContext.Set<TEntity>().ToDataMap<TEntity>();
+      => DomainContext.Set<TEntity>().ToDataMap();
 
     public new IPagination<TEntity> Paginate(QueryParams param)
-      => DomainContext.Set<TEntity>().Paginate<TEntity>(param);
+      => DomainContext.Set<TEntity>().Paginate(param);
   }
 }
