@@ -900,10 +900,13 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@midos/app-api-gateway@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@midos/app-api-gateway/-/app-api-gateway-0.0.6.tgz#579231976f901cebc814fc0067d2cdcccddf198e"
-  integrity sha512-8WbbeQDpuHeode+HGPMrdrgTJ6IJ+beovzM9/SeZmvNM5iOLSrWdQQnRa9A57DoX4F3cO/l7OkvAsUs53JMlCw==
+"@midos/app-api-gateway@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@midos/app-api-gateway/-/app-api-gateway-0.0.8.tgz#09d4aa3fe5f143ffa081858a7487e7a48e6be6ea"
+  integrity sha512-UR+yIaXGbfmiYUlBuIbswDMMY2aNC9p/pJgZQFfbB7UhEm1UccwJFiX9WtZAxONYU7YmNmiGYaU0NmJ2yHZV6Q==
+  dependencies:
+    js-htmlencode "^0.3.0"
+    xml-formatter "^2.4.0"
 
 "@midos/app-iot@0.0.14":
   version "0.0.14"
@@ -2631,9 +2634,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001181:
-  version "1.0.30001183"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001183.tgz#7a57ba9d6584119bb5f2bc76d3cc47ba9356b3e2"
-  integrity sha512-7JkwTEE1hlRKETbCFd8HDZeLiQIUcl8rC6JgNjvHCNaxOeNmQ9V4LvQXRUsKIV2CC73qKxljwVhToaA3kLRqTw==
+  version "1.0.30001252"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001252.tgz"
+  integrity sha512-I56jhWDGMtdILQORdusxBOH+Nl/KgQSdDmpJezYddnAkVOmnoU8zwjTV9xAjMIYxr0iPreEAVylCGcmHCjfaOw==
 
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.3.0"
@@ -5653,6 +5656,11 @@ js-base64@^2.1.8:
   version "2.6.4"
   resolved "https://registry.npmjs.org/js-base64/-/js-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
   integrity sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==
+
+js-htmlencode@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/js-htmlencode/-/js-htmlencode-0.3.0.tgz#b1ce293df94e96f8a8a08b1f3368f977bd255731"
+  integrity sha1-sc4pPflOlviooIsfM2j5d70lVzE=
 
 js-message@1.0.7:
   version "1.0.7"
@@ -9719,6 +9727,18 @@ ws@^6.0.0, ws@^6.2.1:
   integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
   dependencies:
     async-limiter "~1.0.0"
+
+xml-formatter@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/xml-formatter/-/xml-formatter-2.4.0.tgz#c956ea6c5345240c0829da86a5e81d44ed4cb9c7"
+  integrity sha512-xTQ2IfbkCQKn0DGN5SD5KUgTgVohWiolyOXTLUHKJczIuSeGonN0BPduB9VQR5HOEuT1KOHQsOHSmTpU76zpUA==
+  dependencies:
+    xml-parser-xo "^3.1.1"
+
+xml-parser-xo@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/xml-parser-xo/-/xml-parser-xo-3.1.1.tgz#a87d92e44fa8ad3ba7242517df96e6b0893f1f47"
+  integrity sha512-gq1nDlJxjKQpPPZUhLbJ52pghtlB4Rz6LAQULm3SF6xzOYVnUloBglNhJR9vtZB3vIxMN/R3nZTf3qmun+6GCg==
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"

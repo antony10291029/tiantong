@@ -28,8 +28,8 @@
     "vue-router": "^4.0.0-0"
   },
   "dependencies": {
+    "@midos/app-api-gateway": "0.0.8",
     "@midos/app-iot": "0.0.14",
-    "@midos/app-namei-wcs": "0.0.59",
-    "@midos/app-api-gateway": "0.0.6"
+    "@midos/app-namei-wcs": "0.0.59"
   }
 }

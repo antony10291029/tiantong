@@ -7,20 +7,30 @@
       >
         <div class="modal-background"/>
 
-        <div class="modal-card" style="overflow: auto">
+        <div class="modal-card" style="width: calc(100% - 100px)">
           <div class="modal-card-head">
             <p class="modal-card-title">
               详情
             </p>
           </div>
 
-          <div class="modal-card-body">
+          <div class="modal-card-body" style="overflow: auto">
+            <div class="field">
+              <p class="label">
+                Query
+              </p>
+
+              <div class="control">
+                <pre>{{httpLog.requestQuery}}</pre>
+              </div>
+            </div>
+
             <div class="field">
               <p class="label">
                 请求
               </p>
               <div class="control">
-                <pre>{{parseJsonData(httpLog.requestBody)}}</pre>
+                <DataParser :value="httpLog.requestBody" />
               </div>
             </div>
 
@@ -29,7 +39,7 @@
                 响应
               </p>
               <div class="control">
-                <pre>{{parseJsonData(httpLog.responseBody)}}</pre>
+                <DataParser :value="httpLog.responseBody" />
               </div>
             </div>
 
@@ -38,7 +48,7 @@
                 请求头
               </p>
               <div class="control">
-                <pre>{{parseJsonData(httpLog.requestHeaders)}}</pre>
+                <DataParser :value="httpLog.requestHeaders" />
               </div>
             </div>
 
@@ -47,7 +57,7 @@
                 响应头
               </p>
               <div class="control">
-                <pre>{{parseJsonData(httpLog.responseHeaders)}}</pre>
+                <DataParser :value="httpLog.responseHeaders" />
               </div>
             </div>
 
@@ -56,7 +66,7 @@
                 异常
               </p>
               <div class="control">
-                <pre>{{parseJsonData(httpLog.exception)}}</pre>
+                <DataParser :value="httpLog.exception" />
               </div>
             </div>
           </div>
@@ -77,8 +87,13 @@
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
 import { HttpLog } from "../../domain";
+import DataParser from "./DataParser.vue";
 
 export default defineComponent({
+  components: {
+    DataParser
+  },
+
   props: {
     httpLog: {
       type: Object as PropType<HttpLog>,
@@ -89,21 +104,8 @@ export default defineComponent({
   setup() {
     const isShow = ref(false);
 
-    function parseJsonData(text: any) {
-      try {
-        if ((typeof text) === "string") {
-          text = JSON.parse(text);
-        }
-
-        return JSON.stringify(text, null, 2);
-      } catch {
-        return text;
-      }
-    }
-
     return {
-      isShow,
-      parseJsonData
+      isShow
     };
   }
 });

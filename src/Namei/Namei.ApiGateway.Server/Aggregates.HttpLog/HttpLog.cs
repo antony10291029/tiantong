@@ -28,6 +28,8 @@ namespace Namei.ApiGateway.Server
 
     public string RequestBody { get; set; }
 
+    public string RequestQuery { get; set; }
+
     public string ResponseVersion { get; set; }
 
     public string ResponseStatus { get; set; }

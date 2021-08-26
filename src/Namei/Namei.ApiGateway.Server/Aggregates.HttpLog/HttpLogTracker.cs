@@ -39,6 +39,7 @@ namespace Namei.ApiGateway.Server
         _log.RequestBody = await request.Content?.ReadAsStringAsync();
       }
 
+      _log.RequestQuery = request.RequestUri.Query.ToString();
       _log.RequestVersion = request.Version.ToString();
       _log.RequestUri = request.RequestUri.ToString();
       _log.RequestHeaders = headers.ToDictionary(kv => kv.Key, kv => new StringValues(kv.Value.ToArray()));

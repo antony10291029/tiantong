@@ -1,6 +1,6 @@
 {
   "name": "@midos/app-api-gateway",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "license": "MIT",
   "main": "index.ts",
   "files": [
@@ -23,12 +23,17 @@
   "vuePlugins": {
     "resolveFrom": "node_modules/@midos/vue-cli"
   },
+  "dependencies": {
+    "js-htmlencode": "^0.3.0",
+    "xml-formatter": "^2.4.0"
+  },
   "devDependencies": {
     "@midos/core": "^0.0.28",
     "@midos/seed-work": "^0.0.8",
     "@midos/vue-cli": "^0.0.4",
     "@midos/vue-ui": "^0.0.28",
     "@types/lodash": "^4.14.169",
+    "@types/xml-formatter": "^2.1.1",
     "lodash": "^4.17.21",
     "vue": "^3.0.11",
     "vue-router": "^4.0.0-0"
