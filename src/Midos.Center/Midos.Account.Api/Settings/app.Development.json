@@ -1,0 +1,4 @@
+{
+  "Urls": "http://localhost:5000",
+  "App.Database": "Host=localhost;Port=5432;Database=Midos.Account;Username=postgres;Password=password"
+}
