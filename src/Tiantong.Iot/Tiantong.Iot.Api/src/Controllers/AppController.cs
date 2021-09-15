@@ -24,8 +24,13 @@ namespace Tiantong.Iot.Api
       _plcManager = plcManager;
     }
 
-    [HttpGet]
-    [HttpPost]
+    // [HttpGet("/{*path}")]
+    // public object RedirectAll(string path)
+    // {
+    //   return Redirect("/index.html/" + path);
+    // }
+
+    [HttpPost("/")]
     public object Home()
     {
       return new {

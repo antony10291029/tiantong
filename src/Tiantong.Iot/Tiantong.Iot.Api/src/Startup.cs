@@ -1,5 +1,9 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Embedded;
 using Midos.Utils;
 using Midos.Web;
 using Tiantong.Iot.Entities;
@@ -35,9 +39,8 @@ namespace Tiantong.Iot.Api
 
     public void Configure(IApplicationBuilder app)
     {
-      app.UseMiddleware<JsonBody>();
-      app.AddExceptionHandler();
       app.UseEmbeddedServer();
+      app.AddExceptionHandler();
       app.UseRouting();
       app.UseCors(policy => policy.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
       app.UseEndpoints(endpoints => {
