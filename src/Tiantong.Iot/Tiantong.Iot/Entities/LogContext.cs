@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Iot.Entities
 {
-  public class LogContext: DBCore.DbContext
+  public class LogContext: DbContext
   {
     public DbSet<EmailVerifyCode> EmailVerifyCodes { get; set; }
 
@@ -15,7 +15,5 @@ namespace Tiantong.Iot.Entities
     public DbSet<PlcStateError> PlcStateErrors { get; set; }
 
     public DbSet<PlcStateLog> PlcStateLogs { get; set; }
-
   }
-
 }

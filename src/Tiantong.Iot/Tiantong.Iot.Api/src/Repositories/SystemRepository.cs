@@ -1,6 +1,7 @@
 using Midos.Utils;
 using System.Linq;
 using Tiantong.Iot.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Iot.Api
 {

@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
     <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
   </ItemGroup>
 </Project>

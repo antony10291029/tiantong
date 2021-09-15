@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tiantong.Iot.Entities
 {
-  public class SystemContext: DBCore.DbContext
+  public class SystemContext: DbContext
   {
     public DbSet<HttpPusher> HttpPushers { get; set; }
 

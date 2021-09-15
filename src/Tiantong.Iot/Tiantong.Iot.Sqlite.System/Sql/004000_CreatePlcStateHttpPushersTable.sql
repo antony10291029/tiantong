@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS "plc_state_http_pushers" (
-  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "state_id" INTEGER NOT NULL,
-  "pusher_id" INTEGER NOT NULL
-);

@@ -7,12 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../packages/DBCore/DBCore.csproj" />
     <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
-    <ProjectReference Include="../../../packages/DBCore.Sqlite/DBCore.Sqlite.csproj" />
     <ProjectReference Include="../Tiantong.Iot/Tiantong.Iot.csproj" />
-    <ProjectReference Include="../Tiantong.Iot.Sqlite.Log/Tiantong.Iot.Sqlite.Log.csproj" />
-    <ProjectReference Include="../Tiantong.Iot.Sqlite.System/Tiantong.Iot.Sqlite.System.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,6 +6,16 @@ namespace Microsoft.EntityFrameworkCore
 {
   public static class DbContextExtensions
   {
+    public static bool HasTable(this DbContext db, string table)
+    {
+      try {
+        db.Database.ExecuteSqlRaw($"select 1 from \"{table}\" limit 1");
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
     public static void UseTransaction(this DbContext dbContext, Action handler, Action<Exception> error = null)
     {
       try {

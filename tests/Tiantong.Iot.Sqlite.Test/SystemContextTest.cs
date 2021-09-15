@@ -1,19 +1,32 @@
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Tiantong.Iot.Entities;
-using Tiantong.Iot.Sqlite.System;
 
 namespace Tiantong.Iot.Sqlite.Test
 {
+  public class TestSystemContext: SystemContext
+  {
+    static SqliteConnection _connection = new("DataSource=system;mode=memory;cache=shared");
+
+    protected override void OnConfiguring(DbContextOptionsBuilder builder)
+    {
+      if (_connection.State == 0) {
+        _connection.Open();
+      }
+
+      builder.UseSqlite(_connection);
+    }
+  }
+
   [TestFixture]
   public class SystemContextTest
   {
     private SystemContext GetDb()
     {
-      var db = new SqliteSystemContext();
-      var mg = new SqliteSystemMigrator(db);
+      var db = new TestSystemContext();
 
-      db.UseInMemory();
-      mg.Migrate();
+      db.Database.EnsureCreated();
 
       return db;
     }
@@ -31,7 +44,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.HttpPushers.Add(new HttpPusher {
+      db.Add(new HttpPusher {
         id = 0,
         name = "name",
         number = "1",
@@ -49,13 +62,42 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.Plcs.Add(new Plc() {
+      db.Add(new Plc() {
         model = "test",
         name = "name",
         number = "1",
         host = "localhost",
         port = 102,
         comment = "comment",
+        states = new() {
+          new() {
+            name = "name",
+            number = "1",
+            type = "uint16",
+            address = "d100",
+            length = 1,
+            is_heartbeat = true,
+            heartbeat_interval = 1000,
+            heartbeat_max_value = 1000,
+            is_collect = true,
+            collect_interval = 1000,
+            is_read_log_on = true,
+            is_write_log_on = true,
+            state_http_pushers = new() {
+              new() {
+                pusher = new () {
+                  id = 0,
+                  name = "name",
+                  number = "1",
+                  url = "localhost",
+                  header = "",
+                  body = "{\"id\": 1}",
+                  field = "value",
+                }
+              }
+            }
+          }
+        }
       });
 
       db.SaveChanges();
@@ -66,53 +108,12 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.KeyValues.Add(new KeyValue {
+      db.Add(new KeyValue {
         key = "key",
         value = "value"
       });
 
       db.SaveChanges();
     }
-
-    [Test]
-    public void TestPlcState()
-    {
-      var db = GetDb();
-
-      db.PlcStates.Add(new PlcState {
-        id = 0,
-        plc_id = 0,
-        name = "name",
-        number = "1",
-        type = "uint16",
-        address = "d100",
-        length = 1,
-        is_heartbeat = true,
-        heartbeat_interval = 1000,
-        heartbeat_max_value = 1000,
-        is_collect = true,
-        collect_interval = 1000,
-        is_read_log_on = true,
-        is_write_log_on = true,
-      });
-
-      db.SaveChanges();
-    }
-
-    [Test]
-    public void TestStateHttpPushers()
-    {
-      var db = GetDb();
-
-      db.PlcStateHttpPushers.Add(new PlcStateHttpPusher {
-        id = 0,
-        state_id = 0,
-        pusher_id = 0,
-      });
-
-      db.SaveChanges();
-    }
-
   }
-
 }

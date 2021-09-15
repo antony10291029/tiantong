@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Tiantong.Iot.Api
 {
@@ -41,6 +42,10 @@ namespace Tiantong.Iot.Api
 
     public PlcManager(IServiceProvider services, IServiceScopeFactory scopeFactory)
     {
+      if (!Directory.Exists("./Data")) {
+        Directory.CreateDirectory("./Data");
+      }
+
       var domain = services.GetService<DomainContextFactory>();
 
       domain.Migrate();

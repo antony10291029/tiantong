@@ -3,8 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Midos.Utils;
 using Midos.Web;
 using Tiantong.Iot.Entities;
-using Tiantong.Iot.Sqlite.Log;
-using Tiantong.Iot.Sqlite.System;
 
 namespace Tiantong.Iot.Api
 {
@@ -22,8 +20,8 @@ namespace Tiantong.Iot.Api
       services.AddSingleton<IRandom, Random>();
       services.AddSingleton<HttpPusherClient>();
       services.AddSingleton<DomainContextFactory>();
-      services.AddScoped<LogContext, SqliteLogContext>();
-      services.AddScoped<SystemContext, SqliteSystemContext>();
+      services.AddDbContext<LogContext, AppLogContext>();
+      services.AddDbContext<SystemContext, AppSystemContext>();
       services.AddScoped<HttpPusherRepository>();
       services.AddScoped<PlcRepository>();
       services.AddScoped<PlcLogRepository>();

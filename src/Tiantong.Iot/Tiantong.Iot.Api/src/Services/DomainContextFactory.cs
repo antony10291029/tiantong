@@ -1,74 +1,59 @@
+using System;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Tiantong.Iot.Entities;
-using Tiantong.Iot.Sqlite.Log;
-using Tiantong.Iot.Sqlite.System;
 
 namespace Tiantong.Iot.Api
 {
   public class DomainContextFactory
   {
-    public LogContext LogContext()
+    private readonly IServiceProvider _services;
+
+    public DomainContextFactory(IServiceProvider services)
     {
-      return new SqliteLogContext();
+      _services = services;
     }
 
-    public SystemContext SystemContext()
+    public void UseLogContext(Action<LogContext> handler)
     {
-      return new SqliteSystemContext();
+      using var scope = _services.CreateScope();
+      using var context = scope.ServiceProvider.GetService<LogContext>();
+
+      handler(context);
+    }
+
+    public void UseSystemContext(Action<SystemContext> handler)
+    {
+      using var scope = _services.CreateScope();
+      using var context = scope.ServiceProvider.GetService<SystemContext>();
+
+      handler(context);
     }
 
     public void Migrate()
     {
-      using (var db = LogContext())
-      {
-        var mg = new SqliteLogMigrator(db);
-        mg.Migrate();
-      }
-
-      using (var db = SystemContext())
-      {
-        var mg = new SqliteSystemMigrator(db);
-        mg.Migrate();
-      }
+      UseLogContext(context => context.Database.EnsureCreated());
+      UseSystemContext(context => context.Database.EnsureCreated());
     }
 
     public void Rollback()
     {
-      using (var db = LogContext())
-      {
-        var mg = new SqliteLogMigrator(db);
-        mg.Rollback();
-      }
-
-      using (var db = SystemContext())
-      {
-        var mg = new SqliteSystemMigrator(db);
-        mg.Rollback();
-      }
+      UseLogContext(context => context.Database.EnsureDeleted());
+      UseSystemContext(context => context.Database.EnsureDeleted());
     }
 
     public void Refresh()
     {
-      using (var db = LogContext())
-      {
-        var mg = new SqliteLogMigrator(db);
-        mg.Refresh();
-      }
-
-      using (var db = SystemContext())
-      {
-        var mg = new SqliteSystemMigrator(db);
-        mg.Refresh();
-      }
+      Rollback();
+      Migrate();
     }
 
     public void Log<T>(T log)
     {
-      using (var db = LogContext()) {
-        db.Add(log);
-        db.SaveChanges();
-      }
+      UseLogContext(context => {
+        context.Add(log);
+        context.SaveChanges();
+      });
     }
-
   }
-
 }

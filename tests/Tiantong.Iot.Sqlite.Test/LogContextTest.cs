@@ -1,19 +1,32 @@
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Tiantong.Iot.Entities;
-using Tiantong.Iot.Sqlite.Log;
 
 namespace Tiantong.Iot.Sqlite.Test
 {
+  public class TesgLogContext: LogContext
+  {
+    static SqliteConnection _connection = new("DataSource=log;mode=memory;cache=shared");
+
+    protected override void OnConfiguring(DbContextOptionsBuilder builder)
+    {
+      if (_connection.State == 0) {
+        _connection.Open();
+      }
+
+      builder.UseSqlite(_connection);
+    }
+  }
+
   [TestFixture]
   public class DbContextTest
   {
     private LogContext GetDb()
     {
-      var db = new SqliteLogContext();
-      var mg = new SqliteLogMigrator(db);
+      var db = new TesgLogContext();
 
-      db.UseInMemory();
-      mg.Migrate();
+      db.Database.EnsureCreated();
 
       return db;
     }
@@ -31,7 +44,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.EmailVerifyCodes.Add(new EmailVerifyCode() {
+      db.Add(new EmailVerifyCode() {
         email = "test",
         verify_code = "100000"
       });
@@ -44,7 +57,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.PlcLogs.Add(new PlcLog {
+      db.Add(new PlcLog {
         id = 0,
         plc_id = 0,
         message = "message",
@@ -58,7 +71,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.PlcStateLogs.Add(new PlcStateLog {
+      db.Add(new PlcStateLog {
         id = 0,
         plc_id = 0,
         state_id = 0,
@@ -74,7 +87,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.PlcStateErrors.Add(new PlcStateError {
+      db.Add(new PlcStateError {
         id = 0,
         plc_id = 0,
         state_id = 0,
@@ -91,7 +104,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.HttpPusherLogs.Add(new HttpPusherLog {
+      db.Add(new HttpPusherLog {
         id = 0,
         pusher_id = 0,
         request = "data",
@@ -107,7 +120,7 @@ namespace Tiantong.Iot.Sqlite.Test
     {
       var db = GetDb();
 
-      db.HttpPusherErrors.Add(new HttpPusherError {
+      db.Add(new HttpPusherError {
         id = 0,
         pusher_id = 0,
         message = "error",
