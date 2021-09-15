@@ -1,4 +1,3 @@
-using DotNetCore.CAP.Messages;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
