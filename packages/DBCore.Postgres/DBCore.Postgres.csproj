@@ -4,6 +4,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DBCore\DBCore.csproj" />
   </ItemGroup>
 
@@ -11,7 +15,4 @@
     <EmbeddedResource Include="Sql/*.sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
-  </ItemGroup>
 </Project>
