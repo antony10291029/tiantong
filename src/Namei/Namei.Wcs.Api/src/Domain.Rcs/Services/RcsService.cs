@@ -300,9 +300,9 @@ namespace Namei.Wcs.Api
         return new() { Code = -1, Message = e.Message };
       }
 
-      var result = await response.Content.ReadFromJsonAsync<RcsDoorNotifyResult>(new(
-        JsonSerializerDefaults.Web
-      ));
+      var result = await response.Content.ReadFromJsonAsync<RcsDoorNotifyResult>(
+        new JsonSerializerOptions(JsonSerializerDefaults.Web)
+      );
 
       scope.Success("已通知 RCS 任务完成", result);
 

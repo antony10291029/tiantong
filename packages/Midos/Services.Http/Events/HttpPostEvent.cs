@@ -17,7 +17,7 @@ namespace Midos.Services.Http
       => new() {
         Url = url,
         Data = JsonSerializer.SerializeToUtf8Bytes(
-          data, new(JsonSerializerDefaults.Web)
+          data, new JsonSerializerOptions(JsonSerializerDefaults.Web)
         )
       };
   }
