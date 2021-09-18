@@ -51,8 +51,13 @@ namespace Tiantong.Iot.Api
     public void Log<T>(T log)
     {
       UseLogContext(context => {
-        context.Add(log);
-        context.SaveChanges();
+        try {
+          context.Add(log);
+          context.SaveChanges();
+          Console.WriteLine("==================");
+        } catch (Exception e) {
+          Console.WriteLine(e);
+        }
       });
     }
   }

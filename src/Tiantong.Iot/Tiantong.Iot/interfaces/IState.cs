@@ -19,10 +19,6 @@ namespace Tiantong.Iot
 
     string Address();
 
-    bool IsReadLogOn();
-
-    bool IsWriteLogOn();
-
     IState Id(int id);
 
     IState PlcId(int plcId);
@@ -33,11 +29,9 @@ namespace Tiantong.Iot
 
     IState Length(int length);
 
-    IState IsReadLogOn(bool flag);
-
-    IState IsWriteLogOn(bool flag);
-
     IState OnError(Action<PlcStateError> onError);
+
+    IState OnLog(Action<PlcStateLog> onLog);
 
     IState Build(IStateDriver driver);
 

@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { PlcState } from "../../entities";
 import { useIotHttp } from "../../services/iot-http-client";
 
@@ -76,7 +76,6 @@ export default defineComponent({
       },
       data: []
     });
-    const stateIds = computed(() => Object.values(states.value).map(pusher => pusher.id));
 
     async function getStates() {
       const result = await http.dataArray("/plcs/states/all", {
@@ -93,7 +92,7 @@ export default defineComponent({
 
     async function getLogs() {
       const result = await http.post("/plcs/state-logs/paginate", {
-        ids: stateIds.value,
+        plc_id: props.plcId,
         page: page.value,
         page_size: pageSize.value
       });

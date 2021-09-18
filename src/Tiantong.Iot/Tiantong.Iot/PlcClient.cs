@@ -22,6 +22,7 @@ namespace Tiantong.Iot
 
       var states = _options.States.Select(state =>
         state.OnError(_options.OnStateError)
+          .OnLog(_options.OnStateLog)
           .Build(_driverProvider.Resolve())
       );
 
@@ -84,10 +85,13 @@ namespace Tiantong.Iot
 
     public readonly Action<PlcStateError> OnStateError;
 
+    public readonly Action<PlcStateLog> OnStateLog;
+
     public PlcClientOptions(
       int id, string name,
       string model, string host, int port,
-      Action<PlcStateError> onStateError
+      Action<PlcStateError> onStateError,
+      Action<PlcStateLog> onStateLog
     ) {
       Id = id;
       Name = name;
@@ -95,6 +99,7 @@ namespace Tiantong.Iot
       Host = host;
       Port = port;
       OnStateError = onStateError;
+      OnStateLog = onStateLog;
     }
 
     private PlcClientOptions Configure(Action handler)

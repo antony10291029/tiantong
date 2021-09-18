@@ -19,7 +19,15 @@ namespace Tiantong.Iot.Api
 
     public PlcClient BuildClient(Plc plc)
     {
-      var options = new PlcClientOptions(plc.id, plc.name, plc.model, plc.host, plc.port, OnStateError);
+      var options = new PlcClientOptions(
+        plc.id,
+        plc.name,
+        plc.model,
+        plc.host,
+        plc.port,
+        OnStateError,
+        OnStateLog
+      );
 
       foreach (var st in plc.states) {
         IState state = st.type switch {
@@ -31,8 +39,7 @@ namespace Tiantong.Iot.Api
         };
 
         state.Id(st.id).PlcId(st.plc_id).Name(st.name)
-          .Address(st.address).Length(st.length)
-          .IsReadLogOn(st.is_read_log_on).IsWriteLogOn(st.is_write_log_on);
+          .Address(st.address).Length(st.length);
         state.IsCollect = st.is_collect;
       }
 
@@ -54,6 +61,11 @@ namespace Tiantong.Iot.Api
     private void OnStateError(PlcStateError error)
     {
       _domain.Log(error);
+    }
+
+    private void OnStateLog(PlcStateLog log)
+    {
+      _domain.Log(log);
     }
 
     private void ResolveState(PlcClient client, IntervalManager manager, PlcState st)

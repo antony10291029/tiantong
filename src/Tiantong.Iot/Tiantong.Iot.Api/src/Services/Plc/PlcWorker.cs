@@ -54,15 +54,6 @@ namespace Tiantong.Iot.Api
         Reconnect(e);
         throw;
       }
-
-      if (state.IsWriteLogOn()) {
-        _domain.Log(new PlcStateLog {
-          plc_id = _client.Options().Id,
-          state_id = state.Id(),
-          operation = StateOperation.Write,
-          value = value?.ToString() ?? "",
-        });
-      }
     }
 
     public string Get(string name)
@@ -75,15 +66,6 @@ namespace Tiantong.Iot.Api
       } catch (Exception e) {
         Reconnect(e);
         throw;
-      }
-
-      if (state.IsReadLogOn()) {
-        _domain.Log(new PlcStateLog {
-          plc_id = _client.Options().Id,
-          state_id = state.Id(),
-          operation = StateOperation.Read,
-          value = value.ToString() ?? "",
-        });
       }
 
       return value;

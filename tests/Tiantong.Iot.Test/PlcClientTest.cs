@@ -9,7 +9,7 @@ namespace Tiantong.Iot.Test
     [Test]
     public void TestClient()
     {
-      var options = new PlcClientOptions(0, "name", PlcModel.Test, "", 0, null);
+      var options = new PlcClientOptions(0, "name", PlcModel.Test, "", 0, null, null);
 
       options.State<int>().Id(1).Name("int").Address("D100");
 

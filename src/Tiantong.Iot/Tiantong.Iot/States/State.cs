@@ -23,11 +23,9 @@ namespace Tiantong.Iot
 
     protected int _length;
 
-    protected bool _isReadLogOn = false;
-
-    protected bool _isWriteLogOn = false;
-
     protected Action<PlcStateError> _onError = _ => {};
+
+    protected Action<PlcStateLog> _onLog = _ => {};
 
     public IStateDriver _driver;
 
@@ -38,10 +36,6 @@ namespace Tiantong.Iot
     public string Name() => _name;
 
     public string Address() => _address;
-
-    public bool IsReadLogOn() => _isReadLogOn;
-
-    public bool IsWriteLogOn() => _isWriteLogOn;
 
     private IState Builder(Action handler)
     {
@@ -60,13 +54,16 @@ namespace Tiantong.Iot
 
     public IState Length(int length) => Builder(() => _length = length);
 
-    public IState IsReadLogOn(bool value) => Builder(() => _isReadLogOn = value);
-
-    public IState IsWriteLogOn(bool value) => Builder(() => _isWriteLogOn = value);
-
     public IState OnError(Action<PlcStateError> onError)
     {
-      _onError = onError;
+      _onError ??= onError;
+
+      return this;
+    }
+
+    public IState OnLog(Action<PlcStateLog> onLog)
+    {
+      _onLog ??= onLog;
 
       return this;
     }
@@ -126,6 +123,14 @@ namespace Tiantong.Iot
 
       try {
         value = ToString(HandleGet());
+
+        _onLog(new PlcStateLog {
+          plc_id = _plcId,
+          state_id = _id,
+          operation = StateOperation.Read,
+          value = value?.ToString() ?? "",
+        });
+
       } catch (Exception e) {
         _onError(new PlcStateError {
           state_id = _id,
@@ -158,6 +163,14 @@ namespace Tiantong.Iot
 
       try {
         HandleSet(data);
+
+        _onLog(new PlcStateLog {
+          plc_id = _plcId,
+          state_id = _id,
+          operation = StateOperation.Write,
+          value = value?.ToString() ?? "",
+        });
+
       } catch (Exception e) {
         _onError(new PlcStateError {
           state_id = _id,

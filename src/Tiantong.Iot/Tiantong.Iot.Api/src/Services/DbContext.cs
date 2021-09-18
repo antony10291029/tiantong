@@ -7,7 +7,7 @@ namespace Tiantong.Iot.Api
   {
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-      builder.UseSqlite("Filename=./Data/log.db");
+      builder.UseSqlite("Filename=./Data/app.db");
     }
   }
 
@@ -15,7 +15,7 @@ namespace Tiantong.Iot.Api
   {
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-      builder.UseSqlite("Filename=./Data/system.db");
+      builder.UseSqlite("Filename=./Data/app-log.db");
     }
   }
 }
