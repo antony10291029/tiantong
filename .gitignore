@@ -11,3 +11,4 @@ release/
 Properties/
 log.txt
 *.db-journal
+*.db-*
