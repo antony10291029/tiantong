@@ -31,7 +31,6 @@ namespace Tiantong.Iot.Entities
 
     public virtual bool is_heartbeat { get; set; }
 
-    [Range(500, 3600000, ErrorMessage = "心跳间隔必须在 0.5 至 3600s 之间")]
     public virtual int heartbeat_interval { get; set; } = 1000;
 
     [Range(100, 10000, ErrorMessage = "心跳范围必须在 100 至 10000 之间")]
@@ -39,7 +38,6 @@ namespace Tiantong.Iot.Entities
 
     public virtual bool is_collect { get; set; }
 
-    [Range(500, 3600000, ErrorMessage = "数据采集间隔必须在 0.5 至 3600s 之间")]
     public virtual int collect_interval { get; set; } = 10000;
 
     public virtual bool is_read_log_on { get; set; }
