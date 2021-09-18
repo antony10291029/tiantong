@@ -913,10 +913,12 @@
   resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.14.tgz#02c4a0f22dc8091fbc7cc94c57df4327170fd3eb"
   integrity sha512-Cpr3LGuhuF+m+J8nKMLB5ZAWp5C9h8POXxU8ML2b8yV2yNtH/BQGhQFUPBtACrWKGI1zQx3U0GwpiZXXTdOCog==
 
-"@midos/app-namei-wcs@0.0.59":
-  version "0.0.59"
-  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.59.tgz#4551ca13afbe7c3fdae45456f1ef512417cbe23e"
-  integrity sha512-3HWWLCf/pXnfusunfQSLDo1t0gTU8ipFJOMnotfAnllO6Wrw8SLDqhtz2n8JnK+PfikNr/4IIQ4X55Ua5VstwA==
+"@midos/app-namei-wcs@0.0.60":
+  version "0.0.60"
+  resolved "https://registry.yarnpkg.com/@midos/app-namei-wcs/-/app-namei-wcs-0.0.60.tgz#88f57fbbfff546e47b5c3ad390feb1ab405d1f08"
+  integrity sha512-o06nmdDcUjr+nZ9c/V7QyzGHIqDz/QAZA5km5DHR+U9nH4E/VCHDAgxxC+ZU8tcdVTy2UhrTo3hABHGU3t0bng==
+  dependencies:
+    flatpickr "^4.6.9"
 
 "@midos/core@^0.0.28":
   version "0.0.28"
@@ -4450,6 +4452,11 @@ flat-cache@^2.0.1:
     flatted "^2.0.0"
     rimraf "2.6.3"
     write "1.0.3"
+
+flatpickr@^4.6.9:
+  version "4.6.9"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.9.tgz#9a13383e8a6814bda5d232eae3fcdccb97dc1499"
+  integrity sha512-F0azNNi8foVWKSF+8X+ZJzz8r9sE1G4hl06RyceIaLvyltKvDl6vqk9Lm/6AUUCi5HWaIjiUbk7UpeE/fOXOpw==
 
 flatted@^2.0.0:
   version "2.0.2"

@@ -10,5 +10,5 @@ release/
 .ionide/
 Properties/
 log.txt
-*.db-journal
+*.db
 *.db-*

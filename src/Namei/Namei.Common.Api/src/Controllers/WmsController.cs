@@ -72,13 +72,26 @@ namespace Namei.Common.Api
       return query.ToArray();
     }
 
-    [HttpPost("/wms/pick-ticket-tasks/search")]
-    public object SearchPickTicketTasks()
+    public record SearchPickTicketTaskParams
     {
-      var day = DateTime.Now.Add(-DateTime.Now.TimeOfDay);
+      public DateTime Date { get; set; }
+    }
+
+    [HttpPost("/wms/pick-ticket-tasks/search")]
+    public object SearchPickTicketTasks([FromBody] SearchPickTicketTaskParams param)
+    {
+      if (param.Date == default(DateTime)) {
+        param.Date = DateTime.Now;
+      }
+
+      var min = param.Date.Add(-param.Date.TimeOfDay);
+      var max = min.AddDays(1);
+
+      Console.WriteLine(max);
+      Console.WriteLine(min);
 
       var data =  _wms.Set<WmsPickTicketTask>()
-        .Where(task => task.CreatedAt > day)
+        .Where(task => task.CreatedAt < max && task.CreatedAt > min)
         .OrderByDescending(task => task.OrderNumber)
         .ThenByDescending(task => task.ItemCode)
         .ThenByDescending(task => task.Id)
@@ -150,7 +163,7 @@ namespace Namei.Common.Api
 
       var response = await _client.PostAsJsonAsync(url, data);
       var result = await response.Content.ReadFromJsonAsync<CreateTaskDTO>(
-        new(JsonSerializerDefaults.Web)
+        new JsonSerializerOptions(JsonSerializerDefaults.Web)
       );
 
       if (((int) response.StatusCode) < 400) {

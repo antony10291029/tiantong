@@ -8,7 +8,15 @@
       <SearchField
         @search="handleSearch"
         style="margin-bottom: 0"
-      />
+      >
+        <div class="control">
+          <DatePicker
+            v-model:value="param.date"
+            initial="now"
+            style="width: 120px"
+          />
+        </div>
+      </SearchField>
 
       <AsyncButton
         class="button is-info"
@@ -20,7 +28,10 @@
       </AsyncButton>
     </div>
 
-    <table class="table is-fullwidth is-bordered is-centered is-nowrap is-clickable is-hoverable">
+    <table
+      v-show="!isPending"
+      class="table is-fullwidth is-bordered is-centered is-nowrap is-clickable is-hoverable"
+    >
       <thead>
         <th @click="selectAll">
           <Checkbox :value="selectedStatus"/>
@@ -78,8 +89,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { DataMap, Pagination, QueryParams } from "@midos/seed-work";
-import { useConfirm } from "@midos/vue-ui";
+import { DataMap, Pagination } from "@midos/seed-work";
+import { useConfirm, DateTime } from "@midos/vue-ui";
 import { useRcsExtHttp } from "../../services/rcs-ext-http";
 import { WmsPickTicketTask } from "./entities/pick-ticket-task";
 import { RestQuantity } from "./entities/rest-quantity";
@@ -87,6 +98,7 @@ import SearchField from "../../components/SearchField.vue";
 import TheStatus from "./TheStatus.vue";
 import TheOperation from "./TheOperation.vue";
 import TheRestQuantityCell from "./TheRestQuantityCell.vue";
+import DatePicker from "../../components/DatePicker.vue";
 
 type RestQuantityMap = { [ key: string ]: RestQuantity }
 
@@ -97,13 +109,15 @@ export default defineComponent({
     SearchField,
     TheStatus,
     TheOperation,
-    TheRestQuantityCell
+    TheRestQuantityCell,
+    DatePicker,
   },
 
   setup() {
     const api = useRcsExtHttp();
     const confirm = useConfirm();
-    const param = ref(new QueryParams());
+    const isPending = ref(false);
+    const param = ref({ date: DateTime.now, query: "" });
     const data = ref(new DataMap<WmsPickTicketTask>());
     const restQuantities = ref<RestQuantityMap>({});
     const isRestQuantityLoaded = ref(false);
@@ -121,9 +135,15 @@ export default defineComponent({
     });
 
     async function getTasks() {
-      data.value = await api.post<Pagination<WmsPickTicketTask>>(
-        "/wms/pick-ticket-tasks/search", param.value
-      );
+      isPending.value = true;
+
+      try {
+        data.value = await api.post<Pagination<WmsPickTicketTask>>(
+          "/wms/pick-ticket-tasks/search", param.value
+        );
+      } finally {
+        isPending.value = false;
+      }
 
       const palletCodes = data.value.keys.map(
         key => data.value.values[key].palletCode
@@ -187,10 +207,11 @@ export default defineComponent({
 
     return {
       data,
-      restQuantities,
+      isPending,
       isRestQuantityLoaded,
       selectedTasks,
       selectedStatus,
+      param,
       getTasks,
       selectTask,
       selectAll,
