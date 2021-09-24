@@ -21,6 +21,8 @@ namespace Namei.Common.Api
 
     public readonly string WcsDb;
 
+    public readonly string MesDatabase;
+
     public bool IsProduction { get => Env == "Production"; }
 
     public bool IsDevelopment { get => Env == "Development"; }
@@ -35,6 +37,7 @@ namespace Namei.Common.Api
       SapUrl = config.GetValue<string>("sap.url");
       WmsUrl = config.GetValue<string>("wms.url");
       WcsDb = config.GetValue<string>("wcs.db");
+      MesDatabase = config.GetValue<string>("mes.database");
     }
   }
 }

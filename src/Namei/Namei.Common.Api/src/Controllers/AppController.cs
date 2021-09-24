@@ -4,7 +4,7 @@ namespace Namei.Common.Api
 {
   public class AppController: BaseController
   {
-    [Route("/")]
+    [HttpPost("/")]
     public object Home()
     {
       return new {

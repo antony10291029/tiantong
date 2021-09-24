@@ -31,6 +31,8 @@ namespace Namei.Common.Api
 
     public DbSet<WmsInventoryRestQuantity> InventoryRestQuantities { get; private set; }
 
+    public DbSet<WmsItemWarehouseInventory> ItemWarehouseInventory { get; set; }
+
     public WmsContext(Config config)
     {
       _config = config;

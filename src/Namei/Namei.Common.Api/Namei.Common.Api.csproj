@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.13" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../../../packages/Midos/Midos.csproj" />
-    <ProjectReference Include="../Namei.Common.Database/Namei.Common.Database.csproj" />
   </ItemGroup>
 </Project>

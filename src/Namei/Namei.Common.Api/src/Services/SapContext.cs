@@ -9,6 +9,8 @@ namespace Namei.Common.Api
 
     public DbSet<SapItemBatch> ItemBatches { get; set; }
 
+    public DbSet<SapItemWarehouseInventory> SapItemWarehouseInventory { get; set; }
+
     public SapContext(Config config)
     {
       _config = config;
