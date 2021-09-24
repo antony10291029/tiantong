@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Namei.Open.Server
 {
@@ -62,13 +62,26 @@ namespace Namei.Open.Server
     public SearchResult Search([FromBody] QueryParams param)
     {
       var now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+      if (!param.Code.StartsWith("http://qr.hznamei.com/pd/")) {
+        return new() {
+          Title = "无效二维码",
+          RecordedAt = now,
+          Records = new() {
+            new() { Key = "编码值", Value = param.Code },
+          }
+        };
+      }
+
       var record = _mes.Set<MesRetrospectCode>().FirstOrDefault(item => item.ItemBarCode == param.Code);
 
       if (record == null) {
         return new() {
-          Title = "无效编码",
+          Title = "流水号查询失败",
           RecordedAt = now,
-          Records = new() {}
+          Records = new() {
+            new() { Key = "流水号", Value = param.Code }
+          }
         };
       }
 
@@ -85,6 +98,7 @@ namespace Namei.Open.Server
       var moveDoc = _wms.Set<WmsMoveDoc>().FirstOrDefault(item => item.Code == moveDocCode);
       var pickTicketId = moveDoc?.RelatedBillId;
       var pickTicket = _wms.Set<WmsPickTicket>().FirstOrDefault(item => item.Id == pickTicketId);
+      var pickTicketCode = pickTicket?.Code;
       var shipToName = pickTicket?.ShipToName;
       var shipDate = boxBind?.BindTime.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -96,7 +110,7 @@ namespace Namei.Open.Server
           new() { Key = "产品编码", Value = itemCode },
           new() { Key = "产品批次", Value = batchId },
           new() { Key = "生产订单", Value = record.WoOrderNo },
-          new() { Key = "出货订单", Value = pickTicket.Code },
+          new() { Key = "出货订单", Value = pickTicketCode },
           new() { Key = "经销商名", Value = shipToName },
           new() { Key = "发货时间", Value = shipDate },
         }
