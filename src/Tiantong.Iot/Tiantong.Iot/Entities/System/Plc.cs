@@ -13,24 +13,23 @@ namespace Tiantong.Iot.Entities
     public virtual int id { get; set; }
 
     [PlcModel]
-    public virtual string model { get; set; }
-
+    public virtual string model { get; set; } = PlcModel.Test;
 
     [MaxLength(20, ErrorMessage = "设备名称长度不可超过20")]
     [Required(AllowEmptyStrings = false, ErrorMessage = "设备名称不可为空")]
     public virtual string name { get; set; }
 
     [MaxLength(20, ErrorMessage = "编号长度不可超过20")]
-    public virtual string number { get; set; }
+    public virtual string number { get; set; } = "0";
 
     [IPAddress]
-    public virtual string host { get; set; }
+    public virtual string host { get; set; } = "localhost";
 
     [IPPort]
-    public virtual int port { get; set; }
+    public virtual int port { get; set; } = 80;
 
     [MaxLength(255, ErrorMessage = "备注长度不可超过 255")]
-    public virtual string comment { get; set; }
+    public virtual string comment { get; set; } = "";
 
     public virtual DateTime created_at { get; set; } = DateTime.Now;
 
