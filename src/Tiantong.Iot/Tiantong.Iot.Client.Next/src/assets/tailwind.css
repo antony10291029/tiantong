@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.table th, td {
+  @apply px-4;
+  @apply py-4;
+  @apply text-sm;
+}

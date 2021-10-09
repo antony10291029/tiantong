@@ -1,0 +1,5 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@midos/eslint': ^0.0.2
+  '@midos/eslint-config': ^0.0.2
