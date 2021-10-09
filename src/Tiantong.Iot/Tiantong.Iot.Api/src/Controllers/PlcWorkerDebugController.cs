@@ -22,7 +22,7 @@ namespace Tiantong.Iot.Api
       _plcRepository = plcRepository;
     }
 
-    public string ResolveGet(int plcId, IState state)
+    private string ResolveGet(int plcId, IState state)
     {
       var value = "";
 
@@ -43,7 +43,7 @@ namespace Tiantong.Iot.Api
       return $"读取数据：{state.Address()} => {value}";
     }
 
-    public string ResolveSet(int plcId, IState state, string value)
+    private string ResolveSet(int plcId, IState state, string value)
     {
       if (_manager.Has(plcId)) {
          _manager.Get(plcId).Set(state, value);
