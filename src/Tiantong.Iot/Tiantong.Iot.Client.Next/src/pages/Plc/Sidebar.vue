@@ -21,8 +21,9 @@
     <ul class="flex flex-col space-y-1 flex-auto">
       <li>
         <SidebarMenu
-          route="/"
-          text="数据读写"
+          :route="{ name: 'PlcSettings', params: { plcId } }"
+          icon="settings"
+          text="配置管理"
           @click="toggleMenu(false)"
         />
       </li>
@@ -55,6 +56,11 @@ export default defineComponent({
 
     toggleMenu: {
       type: Function as PropType<(value?: boolean) => void>,
+      required: true
+    },
+
+    plcId: {
+      type: Number,
       required: true
     }
   },

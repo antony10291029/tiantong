@@ -33,11 +33,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from "vue";
-import axios from "../../services/http-client";
+import { PlcConfig, PlcConfigContext } from "../../domain";
 import ListItem from "./ListItem.vue";
 import TheSearch from "./Search.vue";
 import TheCreate from "./TheCreate.vue";
-import { PlcDTO } from "./DTO";
 
 export default defineComponent({
   components: {
@@ -47,7 +46,7 @@ export default defineComponent({
   },
 
   setup() {
-    const data = ref<PlcDTO[]>([]);
+    const data = ref<PlcConfig[]>([]);
     const query = ref("");
     const listData = computed(() => {
       if (query.value === "") {
@@ -58,7 +57,7 @@ export default defineComponent({
     });
 
     async function getDataSource() {
-      const response = await axios.post("/plcs/all");
+      const response = await PlcConfigContext.toArray();
 
       data.value = response.data;
     }

@@ -14,7 +14,14 @@
 
     <td class="text-left">
       <div class="flex items-center">
-        <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-success-300 text-success-800 text-xs">
+        <span
+          class="
+            px-2 inline-flex
+            leading-5 font-semibold
+            rounded-full bg-success-300
+            text-success-800 text-xs
+          "
+        >
           运行中
         </span>
       </div>
@@ -64,9 +71,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { PlcDTO } from "./DTO";
 import { useConfirm } from "../../shared/Confirm";
-import axios from "../../services/http-client";
+import { PlcConfig, PlcConfigContext } from "../../domain";
 
 export default defineComponent({
   props: {
@@ -76,7 +82,7 @@ export default defineComponent({
     },
 
     plc: {
-      type: Object as PropType<PlcDTO>,
+      type: Object as PropType<PlcConfig>,
       required: true
     }
   },
@@ -90,7 +96,7 @@ export default defineComponent({
         title: "提示",
         content: "删除后设备将无法恢复",
         callback: async () => {
-          await axios.post("/plcs/delete", { plc_id: props.plc.id });
+          await PlcConfigContext.removeById(props.plc.id);
           emit("deleted");
         }
       });

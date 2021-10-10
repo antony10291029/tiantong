@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, nextTick } from "vue";
-import axios from "../../services/http-client";
+import { PlcConfigContext } from "../../domain";
 
 export default defineComponent({
   emits: [
@@ -79,9 +79,7 @@ export default defineComponent({
       nextTick(() => input.value?.focus());
     };
     const handleSubmit = async () => {
-      await axios.post("/plcs/create", {
-        name: inputValue.value
-      });
+      await PlcConfigContext.addByName(inputValue.value);
       emit("created");
       isCreateShow.value = false;
     };

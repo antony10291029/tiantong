@@ -1,9 +1,10 @@
-import axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 import { notify } from "../shared/Notify";
 
-const baseUrl = import.meta.env.VITE_API_URL as string;
-
-axios.defaults.baseURL = baseUrl;
+const axios = Axios.create({
+  method: "post",
+  baseURL: import.meta.env.VITE_API_URL as string,
+});
 
 axios.interceptors.response.use(
   response => {
@@ -30,4 +31,13 @@ axios.interceptors.response.use(
   }
 );
 
-export default axios;
+const httpClient = {
+  post<TData, TParams = any>(url: string, params?: TParams): Promise<AxiosResponse<TData>> {
+    return axios.post(url, params);
+  }
+};
+
+export {
+  axios,
+  httpClient
+};

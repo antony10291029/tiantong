@@ -16,12 +16,13 @@
 
     <div class="flex flex-row flex-auto w-full overflow-hidden">
       <TheSidebar
+        :plcId="plcId"
         :isMenuShow="isMenuShow"
         :toggleMenu="toggleMenu"
       />
 
       <div class="is-flex-auto">
-        <router-view />
+        <router-view :plcId="plcId" />
       </div>
     </div>
   </div>
@@ -38,7 +39,14 @@ export default defineComponent({
     TheSidebar
   },
 
-  setup() {
+  props: {
+    plcId: {
+      type: Number,
+      required: true
+    }
+  },
+
+  setup(props) {
     const isMenuShow = ref(false);
     const plc = ref<any>(null);
 

@@ -10,7 +10,10 @@
   },
   "eslintConfig": {
     "root": true,
-    "extends": "@midos"
+    "extends": "@midos",
+    "rules": {
+      "camelcase": "off"
+    }
   },
   "dependencies": {
     "@midos/eslint-config": "^0.1.20-alpha",

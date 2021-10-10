@@ -27,7 +27,7 @@ module.exports = {
       link: colors.blue,
       dark: colors.trueGray,
       primary: colors.sky,
-      info: colors.sky,
+      info: colors.cyan,
     }
   },
   variants: {
