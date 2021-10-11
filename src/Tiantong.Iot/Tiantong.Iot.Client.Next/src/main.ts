@@ -1,11 +1,9 @@
 import { createApp } from "vue";
 import { router } from "./services/router";
 import App from "./App.vue";
-import Confirm from "./shared/Confirm";
-import Notify from "./shared/Notify";
+import components from "./shared/components";
 
 createApp(App)
   .use(router)
-  .use(Confirm)
-  .use(Notify)
+  .use(components)
   .mount("#app");
