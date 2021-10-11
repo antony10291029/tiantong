@@ -12,8 +12,10 @@
     `"
   >
     <div class="p-4 py-3 hidden sm:flex items-center select-none">
-      <img class="w-6" src="../../assets/logo.svg">
-      <p class="text-grey-200 text-2xl ml-3">PLC</p>
+      <i class="iconfont icon-plc w-6 text-primary-500 text-xl"></i>
+      <p class="text-grey-200 text-xl ml-3">
+        <slot name="title"></slot>
+      </p>
     </div>
 
     <p class="mb-4 sm:hidden"></p>
@@ -42,6 +44,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import SidebarMenu from "./SidebarMenu.vue";
+import { PlcConfig } from "../../domain";
 
 export default defineComponent({
   components: {
@@ -61,6 +64,11 @@ export default defineComponent({
 
     plcId: {
       type: Number,
+      required: true
+    },
+
+    plcConfig: {
+      type: Object as PropType<PlcConfig>,
       required: true
     }
   },

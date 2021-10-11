@@ -25,15 +25,18 @@ module.exports = {
       warning: colors.amber,
       success: colors.emerald,
       link: colors.blue,
-      dark: colors.trueGray,
+      dark: colors.gray,
+      info: colors.sky,
       primary: colors.sky,
-      info: colors.cyan,
     }
   },
   variants: {
     extend: {
       width: ["hover", "focus"],
       backgroundColor: ["active"],
+      opacity: ["disabled"],
+      cursor: ["disabled"],
+      borderColor: ["last"],
     },
   },
 };

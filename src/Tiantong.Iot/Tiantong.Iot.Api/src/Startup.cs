@@ -40,6 +40,9 @@ namespace Tiantong.Iot.Api
       services.AddSwaggerGen(options => {
         options.CustomSchemaIds(type => type.ToString());
       });
+
+      services.AddDbContext<AppContext>();
+      services.AddScoped<PlcConfigContext>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

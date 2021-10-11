@@ -27,7 +27,10 @@
         </div>
         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex-shrink-0 flex items-center">
-            <p class="text-white text-2xl ml-3">PLC</p>
+            <i class="iconfont icon-plc w-6 text-primary-500 text-xl"></i>
+            <p class="text-white text-xl ml-2">
+              <slot name="title"></slot>
+            </p>
           </div>
         </div>
       </div>

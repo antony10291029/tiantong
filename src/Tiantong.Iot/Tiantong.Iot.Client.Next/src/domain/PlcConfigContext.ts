@@ -1,9 +1,16 @@
 import { httpClient } from "../services";
 
+enum PlcModel {
+  test = "test",
+  mc3eBinary = "mc3e-binary",
+  mc1eBinary = "mc1e-binary",
+  s7200Smart = "s7200smart",
+}
+
 interface PlcConfig {
   id: number;
   name: string;
-  model: string;
+  model: PlcModel;
   number: string;
   host: string;
   port: number;
@@ -16,12 +23,15 @@ const PlcConfigContext = {
 
   removeById: (id: number) => httpClient.post("plcs/delete", { plc_id: id }),
 
-  getById: (id: number) => httpClient.post<PlcConfig>("plcs/get", { id }),
+  update: (plc: PlcConfig) => httpClient.post("plcConfigs/update", plc),
+
+  getById: (id: number) => httpClient.post<PlcConfig>("plcConfigs/get", { id }),
 
   toArray: () => httpClient.post<PlcConfig[]>("/plcs/all"),
 };
 
 export {
+  PlcModel,
   PlcConfig,
   PlcConfigContext
 };

@@ -13,7 +13,7 @@
   >
     <div class="p-4 py-3 hidden sm:flex items-center select-none">
       <img class="w-6" src="../../assets/logo.svg">
-      <p class="text-grey-200 text-2xl ml-3">LinkFlow</p>
+      <p class="text-grey-200 text-xl ml-3">LinkFlow</p>
     </div>
 
     <p class="mb-4 sm:hidden"></p>

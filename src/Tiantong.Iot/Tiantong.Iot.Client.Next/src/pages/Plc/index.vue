@@ -9,29 +9,46 @@
       overflow-hidden
     "
   >
-    <TheNavbar
-      :isMenuShow="isMenuShow"
-      :toggleMenu="toggleMenu"
-    />
-
-    <div class="flex flex-row flex-auto w-full overflow-hidden">
-      <TheSidebar
-        :plcId="plcId"
+    <template v-if="plcConfig">
+      <TheNavbar
+        :plcConfig="plcConfig"
         :isMenuShow="isMenuShow"
         :toggleMenu="toggleMenu"
-      />
+      >
+        <template #title>
+          <span>{{plcConfig.name}}</span>
+        </template>
+      </TheNavbar>
 
-      <div class="is-flex-auto">
-        <router-view :plcId="plcId" />
+      <div class="flex flex-row flex-auto w-full overflow-hidden">
+        <TheSidebar
+          :plcId="plcId"
+          :plcConfig="plcConfig"
+          :isMenuShow="isMenuShow"
+          :toggleMenu="toggleMenu"
+        >
+          <template #title>
+            <span>{{plcConfig.name}}</span>
+          </template>
+        </TheSidebar>
+
+        <div class="is-flex-auto w-full">
+          <router-view
+            :plcId="plcId"
+            :plcConfig="plcConfig"
+            @updated="getPlc"
+          />
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import TheNavbar from "./Navbar.vue";
 import TheSidebar from "./Sidebar.vue";
+import { PlcConfig, PlcConfigContext } from "../../domain";
 
 export default defineComponent({
   components: {
@@ -48,16 +65,25 @@ export default defineComponent({
 
   setup(props) {
     const isMenuShow = ref(false);
-    const plc = ref<any>(null);
+    const plcConfig = ref<PlcConfig>();
 
     function toggleMenu(value?: boolean) {
       isMenuShow.value = value ?? !isMenuShow.value;
     }
 
+    const getPlc = async () => {
+      const response = await PlcConfigContext.getById(props.plcId);
+
+      plcConfig.value = response.data;
+    };
+
+    onMounted(getPlc);
+
     return {
       isMenuShow,
       toggleMenu,
-      plc,
+      plcConfig,
+      getPlc
     };
   }
 });
