@@ -1,5 +1,5 @@
 import Axios, { AxiosResponse } from "axios";
-import { notify } from "../shared/Notify";
+import { notify } from "../shared/components/Notify";
 
 const axios = Axios.create({
   method: "post",

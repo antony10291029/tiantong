@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { useConfirm } from "../../shared/Confirm";
+import { useConfirm } from "../../shared/components/Confirm";
 import { PlcConfig, PlcConfigContext } from "../../domain";
 
 export default defineComponent({

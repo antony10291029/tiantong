@@ -23,7 +23,7 @@ export default defineComponent({
   props: {
     value: {
       type: String,
-      required: true
+      default: ""
     }
   },
 

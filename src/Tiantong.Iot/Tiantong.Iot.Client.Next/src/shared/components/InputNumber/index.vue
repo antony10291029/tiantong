@@ -1,5 +1,5 @@
 <template>
-  <TheInput
+  <Input
     :value="inputValue"
     @update:value="handleInput"
     @mounted="handleMounted"
@@ -8,11 +8,11 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import TheInput from "./TheInput.vue";
+import Input from "../Input/index.vue";
 
 export default defineComponent({
   components: {
-    TheInput
+    Input
   },
 
   props: {
@@ -28,14 +28,20 @@ export default defineComponent({
     let el: HTMLInputElement;
     const inputValue = ref(props.value.toString());
     const handleInput = (event: any) => {
+      if (props.value.toString() === el.value.toString()) {
+        return;
+      }
+
       const value = parseInt(event);
 
-      console.log(value);
-
-      if (!Number.isNaN(value)) {
+      if (value !== props.value && !Number.isNaN(value)) {
         emit("update:value", value);
-      } else {
+      }
+
+      if (Number.isNaN(value)) {
         el.value = props.value.toString();
+      } else if (el.value.toString() !== value.toString()) {
+        el.value = value.toString();
       }
     };
     const handleMounted = (event: any) => {

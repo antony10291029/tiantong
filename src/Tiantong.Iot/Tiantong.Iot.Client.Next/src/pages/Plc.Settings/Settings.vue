@@ -9,7 +9,7 @@
     <div class="flex items-center flex-shrink">
       <p class="whitespace-nowrap w-28">设备名称</p>
       <div class="w-full sm:w-80">
-        <TheInput v-model:value="params.name" />
+        <Input v-model:value="params.name" />
       </div>
     </div>
 
@@ -18,7 +18,7 @@
     <div class="flex items-center flex-shrink">
       <p class="whitespace-nowrap w-28">设备编号</p>
       <div class="w-full sm:w-80">
-        <TheInput v-model:value="params.number" />
+        <Input v-model:value="params.number" />
       </div>
     </div>
 
@@ -36,7 +36,7 @@
     <div class="flex items-center">
       <p class="whitespace-nowrap w-28">IP 地址</p>
       <div class="w-full sm:w-80">
-        <TheInput v-model:value="params.host" />
+        <Input v-model:value="params.host" />
       </div>
     </div>
 
@@ -45,7 +45,7 @@
     <div class="flex items-center">
       <p class="whitespace-nowrap w-28">IP 端口</p>
       <div class="w-full sm:w-80">
-        <TheInputNumber v-model:value="params.port" />
+        <InputNumber v-model:value="params.port" />
       </div>
     </div>
 
@@ -54,7 +54,7 @@
     <div class="flex items-start">
       <p class="whitespace-nowrap w-28">备注</p>
       <div class="w-full sm:w-96">
-        <TheTextarea v-model:value="params.comment"/>
+        <Textarea v-model:value="params.comment"/>
       </div>
     </div>
 
@@ -64,20 +64,9 @@
       <p class="whitespace-nowrap w-28"></p>
 
       <div class="w-full sm:w-96">
-        <button
-          @click="handleSubmit"
-          class="
-            cursor-pointer z-50
-            flex px-4 py-1.5
-            items-center justify-center
-            ring-2 ring-transparent bg-info-600
-            hover:bg-info-700
-            active:bg-info-800
-            disabled:opacity-50 disabled:cursor-not-allowed
-          "
-        >
+        <Button @click="handleSubmit">
           保存
-        </button>
+        </Button>
       </div>
     </div>
   </div>
@@ -86,17 +75,19 @@
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
 import { PlcConfig, PlcConfigContext } from "../../domain";
-import TheInput from "./TheInput.vue";
-import TheTextarea from "./TheTextarea.vue";
-import TheInputNumber from "./TheInputNumber.vue";
+import Input from "../../shared/components/Input/index.vue";
+import Textarea from "../../shared/components/Textarea/index.vue";
+import InputNumber from "../../shared/components/InputNumber/index.vue";
 import PlcModelSelector from "../../components/PlcModelSelector.vue";
+import Button from "../../shared/components/Button/index.vue";
 
 export default defineComponent({
   components: {
-    TheInput,
-    TheTextarea,
-    TheInputNumber,
-    PlcModelSelector
+    Button,
+    PlcModelSelector,
+    Input,
+    Textarea,
+    InputNumber,
   },
 
   props: {

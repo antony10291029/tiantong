@@ -4,9 +4,9 @@
       v-for="model in models" :key="model.value"
       @click="handleUpdate(model.value)"
       class="
-        px-3 py-2 cursor-pointer
+        px-3 py-1.5 cursor-pointer
         border-b border-dark-700 last:border-transparent
-        hover:bg-dark-800
+        hover:bg-dark-800 group
       "
     >
       <Radio :value="value === model.value"></Radio>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { PlcModel } from "../domain";
-import Radio from "../shared/Radio/index.vue";
+import Radio from "../shared/components/Radio/index.vue";
 
 const models = [
   {

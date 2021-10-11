@@ -1,52 +1,48 @@
 <template>
-  <div
-    class="
-      fixed
-      bg-dark-900 z-0
-      text-dark-300
-      flex flex-col
-      h-screen w-screen
-      overflow-hidden
-    "
-  >
-    <TheNavbar
-      :isMenuShow="isMenuShow"
-      :toggleMenu="toggleMenu"
-    />
+  <Layout>
+    <template #title>
+      <span class="text-2xl">LinkFlow</span>
+    </template>
 
-    <div class="flex flex-row flex-auto w-full overflow-hidden">
-      <TheSidebar
-        :isMenuShow="isMenuShow"
-        :toggleMenu="toggleMenu"
+    <template #menu="{ toggleMenu }">
+      <SidebarMenu
+        route="/"
+        text="工作台"
+        @click="toggleMenu(false)"
+      >
+        <span
+          class="
+            px-2 py-0.5 ml-auto
+            text-xs font-medium tracking-wide
+            text-link-500 bg-primary-50 rounded-full
+          "
+        >
+          PLC
+        </span>
+      </SidebarMenu>
+      <SidebarMenu
+        route="/workspace/settings"
+        icon="settings"
+        text="系统设置"
+        @click="toggleMenu(false)"
       />
+    </template>
 
+    <template #body>
       <router-view />
-    </div>
-  </div>
+    </template>
+  </Layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import TheNavbar from "./Navbar.vue";
-import TheSidebar from "./Sidebar.vue";
+import { defineComponent } from "vue";
+import Layout from "../../components/Layout/index.vue";
+import SidebarMenu from "../../components/Layout/SidebarMenu.vue";
 
 export default defineComponent({
   components: {
-    TheNavbar,
-    TheSidebar
-  },
-
-  setup() {
-    const isMenuShow = ref(false);
-
-    function toggleMenu(value?: boolean) {
-      isMenuShow.value = value ?? !isMenuShow.value;
-    }
-
-    return {
-      isMenuShow,
-      toggleMenu,
-    };
+    Layout,
+    SidebarMenu,
   }
 });
 </script>

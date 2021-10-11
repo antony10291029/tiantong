@@ -15,25 +15,24 @@
       <i class="iconfont icon-search"></i>
     </span>
 
-    <input
+    <TheInput
       type="text"
-      class="
-        w-48 px-3 py-1.5 pl-8
-        text-md relative
-        outline-none ring-1 ring-transparent
-        focus:ring-dark-500 focus:bg-dark-700
-        bg-dark-800 hover:bg-dark-700
-      "
+      class="pl-8"
       :value="inputValue"
       @input="handleInput"
-    >
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, } from "vue";
+import TheInput from "../../shared/components/Input/index.vue";
 
 export default defineComponent({
+  components: {
+    TheInput
+  },
+
   props: {
     value: {
       type: String,

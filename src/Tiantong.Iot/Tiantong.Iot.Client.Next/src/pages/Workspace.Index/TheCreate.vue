@@ -3,35 +3,21 @@
     v-if="isCreateShow"
     class="absolute flex items-center"
   >
-    <input
-      ref="input"
-      type="text"
-      placeholder="请输入设备名称......"
-      class="
-        transform relative
-        w-48 px-3 py-1.5
-        z-50 text-grey-200
-        placeholder-gray-500
-        outline-none ring-1 ring-transparent
-        bg-dark-800 hover:bg-dark-700 focus:bg-dark-700
-      "
-      :value="inputValue"
-      @input="handleInput"
-    >
+    <div class="w-48">
+      <Input
+        class="z-50"
+        placeholder="请输入设备名称......"
+        :value="inputValue"
+        @input="handleInput"
+      />
+    </div>
 
-    <button
-      class="
-        cursor-pointer z-50
-        ml-2 flex px-4 py-1.5
-        items-center justify-center
-        ring-2 ring-transparent bg-primary-600
-        hover:bg-primary-700
-        active:bg-primary-800
-      "
+    <Button
+      class="z-50 ml-2"
       @click="handleSubmit"
     >
       创建
-    </button>
+    </Button>
 
     <button
       class="
@@ -63,8 +49,15 @@
 <script lang="ts">
 import { defineComponent, ref, nextTick } from "vue";
 import { PlcConfigContext } from "../../domain";
+import Button from "../../shared/components/Button/index.vue";
+import Input from "../../shared/components/Input/index.vue";
 
 export default defineComponent({
+  components: {
+    Button,
+    Input,
+  },
+
   emits: [
     "created"
   ],

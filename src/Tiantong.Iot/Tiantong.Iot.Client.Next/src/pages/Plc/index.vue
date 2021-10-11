@@ -1,59 +1,46 @@
 <template>
-  <div
-    class="
-      fixed
-      bg-dark-900 z-0
-      text-dark-300
-      flex flex-col
-      h-screen w-screen
-      overflow-hidden
-    "
-  >
-    <template v-if="plcConfig">
-      <TheNavbar
-        :plcConfig="plcConfig"
-        :isMenuShow="isMenuShow"
-        :toggleMenu="toggleMenu"
-      >
-        <template #title>
-          <span>{{plcConfig.name}}</span>
-        </template>
-      </TheNavbar>
-
-      <div class="flex flex-row flex-auto w-full overflow-hidden">
-        <TheSidebar
-          :plcId="plcId"
-          :plcConfig="plcConfig"
-          :isMenuShow="isMenuShow"
-          :toggleMenu="toggleMenu"
-        >
-          <template #title>
-            <span>{{plcConfig.name}}</span>
-          </template>
-        </TheSidebar>
-
-        <div class="is-flex-auto w-full">
-          <router-view
-            :plcId="plcId"
-            :plcConfig="plcConfig"
-            @updated="getPlc"
-          />
-        </div>
-      </div>
+  <Layout icon="plc">
+    <template #title>
+      {{plcConfig?.name}}
     </template>
-  </div>
+
+    <template #menu="{ toggleMenu }">
+      <SidebarMenu
+        :route="{ name: 'PlcSettings', params: { plcId } }"
+        icon="settings"
+        text="配置管理"
+        @click="toggleMenu(false)"
+      />
+
+      <SidebarMenu
+        route="/"
+        text="返回工作台"
+        icon="back"
+        @click="toggleMenu(false)"
+      />
+    </template>
+
+    <template #body>
+      <router-view
+        v-if="plcConfig"
+        :plcId="plcId"
+        :plcConfig="plcConfig"
+        @updated="getPlc"
+      />
+    </template>
+  </Layout>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import TheNavbar from "./Navbar.vue";
-import TheSidebar from "./Sidebar.vue";
 import { PlcConfig, PlcConfigContext } from "../../domain";
+import Layout from "../../components/Layout/index.vue";
+import SidebarMenu from "../../components/Layout/SidebarMenu.vue";
 
 export default defineComponent({
   components: {
-    TheNavbar,
-    TheSidebar
+    Layout,
+    SidebarMenu
   },
 
   props: {
@@ -64,12 +51,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const isMenuShow = ref(false);
     const plcConfig = ref<PlcConfig>();
-
-    function toggleMenu(value?: boolean) {
-      isMenuShow.value = value ?? !isMenuShow.value;
-    }
 
     const getPlc = async () => {
       const response = await PlcConfigContext.getById(props.plcId);
@@ -80,8 +62,6 @@ export default defineComponent({
     onMounted(getPlc);
 
     return {
-      isMenuShow,
-      toggleMenu,
       plcConfig,
       getPlc
     };
