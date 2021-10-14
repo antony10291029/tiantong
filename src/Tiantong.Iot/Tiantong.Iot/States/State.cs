@@ -56,14 +56,14 @@ namespace Tiantong.Iot
 
     public IState OnError(Action<PlcStateError> onError)
     {
-      _onError ??= onError;
+      _onError = onError;
 
       return this;
     }
 
     public IState OnLog(Action<PlcStateLog> onLog)
     {
-      _onLog ??= onLog;
+      _onLog = onLog;
 
       return this;
     }
@@ -124,12 +124,13 @@ namespace Tiantong.Iot
       try {
         value = ToString(HandleGet());
 
-        _onLog(new PlcStateLog {
-          plc_id = _plcId,
-          state_id = _id,
-          operation = StateOperation.Read,
-          value = value?.ToString() ?? "",
-        });
+        // 暂时关闭读取日志
+        // _onLog(new PlcStateLog {
+        //   plc_id = _plcId,
+        //   state_id = _id,
+        //   operation = StateOperation.Read,
+        //   value = value?.ToString() ?? "",
+        // });
 
       } catch (Exception e) {
         _onError(new PlcStateError {

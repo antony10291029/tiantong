@@ -41,6 +41,12 @@ namespace Tiantong.Iot.Api
         state.Id(st.id).PlcId(st.plc_id).Name(st.name)
           .Address(st.address).Length(st.length);
         state.IsCollect = st.is_collect;
+
+        if (st.is_heartbeat) {
+          state.OnLog(_ => {});
+        } else {
+          state.OnLog(OnStateLog);
+        }
       }
 
       return new PlcClient(options);

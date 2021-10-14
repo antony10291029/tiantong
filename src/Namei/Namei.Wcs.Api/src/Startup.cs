@@ -53,10 +53,9 @@ namespace Namei.Wcs.Api
 
     public void Configure(IApplicationBuilder app)
     {
-      app.UseMiddleware<JsonBody>();
       app.AddExceptionHandler();
       app.UseRouting();
-      app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+      app.UseCors(policy => policy.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
       app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
   }

@@ -22,7 +22,6 @@ namespace Tiantong.Iot
 
       var states = _options.States.Select(state =>
         state.OnError(_options.OnStateError)
-          .OnLog(_options.OnStateLog)
           .Build(_driverProvider.Resolve())
       );
 
