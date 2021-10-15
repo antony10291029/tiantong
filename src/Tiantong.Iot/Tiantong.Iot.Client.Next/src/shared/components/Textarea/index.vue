@@ -4,14 +4,14 @@
     :class="`
       px-3 py-2 w-full
       text-md relative rounded
+      bg-dark-900
       outline-none
       border border-dark-700
       ring-2 ring-transparent
       ${readonly || 'focus:border-link-500' }
       ${readonly || 'focus:bg-dark-700' }
-      ${readonly && 'active:border-link-800 active:ring-opacity-80 active:ring-link-900'}
+      ${readonly && 'active:border-link-800 active:ring-opacity-30 active:ring-link-500'}
       ${readonly || 'focus:ring-opacity-30 focus:ring-link-500'}
-      bg-dark-900 hover:bg-dark-800
     `"
     :value="value"
     rows="3"

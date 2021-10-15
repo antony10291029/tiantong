@@ -7,7 +7,7 @@
       outline-none
       border border-dark-700 focus:border-link-500
       hover:border-dark-600
-      ring-2 ring-transparent focus:ring-opacity-30 focus:ring-link-500
+      ring-1 ring-transparent focus:ring-opacity-30 focus:ring-link-500
       bg-transparent focus:bg-dark-800
     "
     :value="value"

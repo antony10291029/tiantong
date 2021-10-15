@@ -41,6 +41,10 @@ namespace Namei.Common.Api
 
       public decimal OtherQuantity { get; set; }
 
+      public decimal ReportingQuantity { get; set; }
+
+      public decimal ErrorQuantity { get; set; }
+
       public decimal DiffQuantity { get; set; }
 
       public string OtherSystem { get; set; }
@@ -75,6 +79,7 @@ namespace Namei.Common.Api
       var result = sapData.Select(item => {
         var otherSystem = "无";
         var otherQuantity = default(decimal);
+        var reportingQuantity = default(decimal);
 
         if (wmsData.ContainsKey(item.Key)) {
           otherSystem = "wms";
@@ -82,6 +87,7 @@ namespace Namei.Common.Api
         } else if (mesData.ContainsKey(item.Key)) {
           otherSystem = "mes";
           otherQuantity = (decimal) mesData[item.Key].Quantity;
+          reportingQuantity = (decimal) mesData[item.Key].ReportingQuantity;
         }
 
         return new DTO() {
@@ -95,6 +101,8 @@ namespace Namei.Common.Api
           SapQuantity = item.Value.Quantity,
           OtherQuantity = otherQuantity,
           DiffQuantity = item.Value.Quantity - otherQuantity,
+          ReportingQuantity = reportingQuantity,
+          ErrorQuantity = item.Value.Quantity - otherQuantity - reportingQuantity,
           OtherSystem = otherSystem
         };
       });
@@ -102,9 +110,9 @@ namespace Namei.Common.Api
       return result
         .Where(dto => dto.OtherSystem != "无")
         .Where(dto => Math.Abs(dto.DiffQuantity) > 0)
-        .OrderBy(dto => dto.WarehouseCode)
+        .OrderByDescending(dto => dto.BatchCode)
+        .ThenBy(dto => dto.WarehouseCode)
         .ThenBy(dto => dto.ItemCode)
-        .ThenBy(dto => dto.BatchCode)
         .ToArray();
     }
   }

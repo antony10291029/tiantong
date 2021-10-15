@@ -15,6 +15,8 @@ namespace Namei.Common.Api
 
     public double Quantity { get; set; }
 
+    public double ReportingQuantity { get; set; }
+
     public string Unit { get; set; }
   }
 }
