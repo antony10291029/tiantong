@@ -13,6 +13,13 @@
       />
 
       <SidebarMenu
+        :route="{ name: 'PlcDebug', params: { plcId } }"
+        icon="debug"
+        text="数据调试"
+        @click="toggleMenu(false)"
+      />
+
+      <SidebarMenu
         route="/"
         text="返回工作台"
         icon="back"

@@ -8,7 +8,7 @@ const axios = Axios.create({
 
 axios.interceptors.response.use(
   response => {
-    if (response.data.message) {
+    if (response.status === 201 && response.data.message) {
       notify.success({ content: response.data.message });
     }
 

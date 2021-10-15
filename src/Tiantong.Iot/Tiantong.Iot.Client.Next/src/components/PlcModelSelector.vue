@@ -4,9 +4,10 @@
       v-for="model in models" :key="model.value"
       @click="handleUpdate(model.value)"
       class="
-        px-3 py-1.5 cursor-pointer
-        border-b border-dark-700 last:border-transparent
-        hover:bg-dark-800 group
+        px-3 py-1.5 cursor-pointer group
+        border-b border-dark-700
+        hover:bg-dark-800
+        first:rounded-t last:border-0 last:rounded-b
       "
     >
       <Radio :value="value === model.value"></Radio>

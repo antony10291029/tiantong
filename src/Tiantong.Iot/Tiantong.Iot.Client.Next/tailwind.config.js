@@ -36,7 +36,10 @@ module.exports = {
       backgroundColor: ["active"],
       opacity: ["disabled"],
       cursor: ["disabled"],
-      borderColor: ["last"],
+      borderWidth: ["first", "last"],
+      borderColor: ["first", "last", "active"],
+      borderRadius: ["first", "last"],
+      ringColor: ["active"],
     },
   },
 };

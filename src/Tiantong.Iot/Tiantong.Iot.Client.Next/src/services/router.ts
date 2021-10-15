@@ -4,6 +4,7 @@ import WorkspaceIndex from "../pages/Workspace.Index/Index.vue";
 import WorkspaceSettings from "../pages/Workspace.Settings/Settings.vue";
 import PlcLayout from "../pages/Plc/index.vue";
 import PlcSettings from "../pages/Plc.Settings/Settings.vue";
+import PlcDebug from "../pages/Plc.Debug/index.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,6 +38,11 @@ const router = createRouter({
           path: "",
           name: "PlcSettings",
           component: PlcSettings,
+        },
+        {
+          path: "debug",
+          name: "PlcDebug",
+          component: PlcDebug
         }
       ]
     }
