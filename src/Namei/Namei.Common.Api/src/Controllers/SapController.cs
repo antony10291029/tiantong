@@ -56,7 +56,7 @@ namespace Namei.Common.Api
 
     [HttpGet("/SapMesWms/Inventories")]
     [Produces("application/xml")]
-    public object GetInventorys([FromQuery] string warehouse)
+    public object GetInventorys([FromQuery] string warehouse, [FromQuery] string itemCode, [FromQuery] string filter)
     {
       var sapQuery = _sap.Set<SapItemWarehouseInventory>().AsQueryable();
       var wmsQuery = _wms.Set<WmsItemWarehouseInventory>().AsQueryable();
@@ -70,6 +70,11 @@ namespace Namei.Common.Api
         sapQuery = sapQuery.Where(item => item.WarehouseCode == warehouse);
         mesQuery = mesQuery.Where(item => item.WarehouseCode == warehouse);
         wmsQuery = wmsQuery.Where(item => false);
+      }
+
+      if(!string.IsNullOrWhiteSpace(itemCode)) {
+        sapQuery = sapQuery.Where(item => item.ItemCode == itemCode);
+        mesQuery = mesQuery.Where(item => item.ItemCode == itemCode);
       }
 
       var sapData = sapQuery.ToArray().ToDictionary(item => $"{item.ItemCode},{item.WarehouseCode},{item.BatchCode}", item => item);
@@ -107,9 +112,14 @@ namespace Namei.Common.Api
         };
       });
 
+      if (filter == "qty") {
+        result = result.Where(dto => Math.Abs(dto.DiffQuantity) != 0);
+      } else if (filter == "errorQty") {
+        result = result.Where(dto => dto.ErrorQuantity != 0);
+      }
+
       return result
         .Where(dto => dto.OtherSystem != "无")
-        .Where(dto => Math.Abs(dto.DiffQuantity) > 0)
         .OrderByDescending(dto => dto.BatchCode)
         .ThenBy(dto => dto.WarehouseCode)
         .ThenBy(dto => dto.ItemCode)
