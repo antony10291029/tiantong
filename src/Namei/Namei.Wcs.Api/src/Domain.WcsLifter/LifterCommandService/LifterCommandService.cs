@@ -63,11 +63,10 @@ namespace Namei.Wcs.Aggregates
 
       GetLifter(lifterId).SetTaken(floor, true);
 
-      if (lifterId != "1") {
-        Task.Delay(2000).GetAwaiter().GetResult();
-
+      Task.Delay(2000).ContinueWith(async _ => {
+        await _;
         lifter.SetTaken(floor, false);
-      }
+      });
     }
 
     public void Clear(string lifterId, string floor)
