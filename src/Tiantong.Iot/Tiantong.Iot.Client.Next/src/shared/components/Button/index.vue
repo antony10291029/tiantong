@@ -6,7 +6,7 @@
       items-center justify-center
       ring-2 ring-transparent bg-${type}-700
       hover:bg-${type}-600 hover:text-dark-300
-      active:bg-${type}-800
+      active:bg-${type}-700 active:text-dark-400
       disabled:opacity-50 disabled:cursor-not-allowed
     `"
     style="padding-top: calc(0.375rem + 1px);padding-bottom: calc(0.375rem + 1px); "
