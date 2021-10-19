@@ -56,6 +56,10 @@ namespace Namei.Common.Api
       "101", "103", "104", "108", "201", "301", "302", "307", "412", "903"
     };
 
+    static readonly string[] WorkshopWarehouses = new string[] {
+      "105", "201", "211"
+    };
+
     [HttpGet("/SapMesWms/Inventories")]
     [Produces("application/xml")]
     public object GetInventorys([FromQuery] string warehouse, [FromQuery] string itemCode, [FromQuery] string filter)
@@ -68,9 +72,9 @@ namespace Namei.Common.Api
         sapQuery = sapQuery.Where(item => LogisticWarehouses.Contains(item.WarehouseCode));
         mesQuery = mesQuery.Where(item => false);
         wmsQuery = wmsQuery.Where(item => true);
-      } else if (!string.IsNullOrWhiteSpace(warehouse)) {
-        sapQuery = sapQuery.Where(item => item.WarehouseCode == warehouse);
-        mesQuery = mesQuery.Where(item => item.WarehouseCode == warehouse);
+      } else if (warehouse == "mes") {
+        sapQuery = sapQuery.Where(item => WorkshopWarehouses.Contains(item.WarehouseCode));
+        mesQuery = mesQuery.Where(item => WorkshopWarehouses.Contains(item.WarehouseCode));
         wmsQuery = wmsQuery.Where(item => false);
       }
 
