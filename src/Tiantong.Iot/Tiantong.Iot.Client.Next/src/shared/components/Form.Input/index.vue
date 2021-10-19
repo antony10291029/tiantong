@@ -1,15 +1,7 @@
 <template>
   <input
     type="text"
-    class="
-      px-3 py-1.5 w-full
-      relative rounded
-      outline-none
-      border border-dark-700 focus:border-link-500
-      hover:border-dark-600
-      ring-1 ring-transparent focus:ring-opacity-30 focus:ring-link-500
-      bg-transparent focus:bg-dark-800
-    "
+    class="input"
     :value="value"
     v-on:[event]="handleUpdate"
     ref="el"
@@ -18,6 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted } from "vue";
+import "../Form/input.css";
 
 type Event = "change" | "input" | "blur";
 
@@ -31,7 +24,12 @@ export default defineComponent({
     event: {
       type: String as PropType<Event>,
       default: "change"
-    }
+    },
+
+    readonly: {
+      type: Boolean,
+      default: false
+    },
   },
 
   emits: [

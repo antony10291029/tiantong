@@ -91,8 +91,8 @@
 import { defineComponent, ref, computed } from "vue";
 import { PlcStateCommand, PlcStateType, PlcWorkerContext, DebugParams } from "../../domain";
 import { DateTime } from "../../shared/data-time";
-import Input from "../../shared/components/Input/index.vue";
-import Textarea from "../../shared/components/Textarea/index.vue";
+import Input from "../../shared/components/Form.Input/index.vue";
+import Textarea from "../../shared/components/Form.Textarea/index.vue";
 import Button from "../../shared/components/Button/index.vue";
 import PlcStateTypeSelector from "../../components/PlcStateTypeSelector.vue";
 import TheCommand from "./TheCommand.vue";

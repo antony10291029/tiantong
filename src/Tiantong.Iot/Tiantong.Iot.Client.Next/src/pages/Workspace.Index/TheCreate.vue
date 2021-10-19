@@ -50,7 +50,7 @@
 import { defineComponent, ref, nextTick } from "vue";
 import { PlcConfigContext } from "../../domain";
 import Button from "../../shared/components/Button/index.vue";
-import Input from "../../shared/components/Input/index.vue";
+import Input from "../../shared/components/Form.Input/index.vue";
 
 export default defineComponent({
   components: {

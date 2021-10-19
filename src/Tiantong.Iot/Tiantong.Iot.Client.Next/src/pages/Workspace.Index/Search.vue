@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, } from "vue";
-import TheInput from "../../shared/components/Input/index.vue";
+import TheInput from "../../shared/components/Form.Input/index.vue";
 
 export default defineComponent({
   components: {

@@ -40,6 +40,7 @@ module.exports = {
       borderColor: ["first", "last", "active"],
       borderRadius: ["first", "last"],
       ringColor: ["active"],
+      ringOpacity: ["active"],
       textColor: ["active"],
     },
   },

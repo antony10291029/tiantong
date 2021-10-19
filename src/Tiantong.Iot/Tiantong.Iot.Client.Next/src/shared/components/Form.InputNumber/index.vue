@@ -1,6 +1,7 @@
 <template>
   <Input
     :value="inputValue"
+    v-bind="$attrs"
     @update:value="handleInput"
     @mounted="handleMounted"
   />
@@ -8,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import Input from "../Input/index.vue";
+import Input from "../Form.Input/index.vue";
 
 export default defineComponent({
   components: {

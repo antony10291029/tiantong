@@ -75,9 +75,9 @@
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
 import { PlcConfig, PlcConfigContext } from "../../domain";
-import Input from "../../shared/components/Input/index.vue";
-import Textarea from "../../shared/components/Textarea/index.vue";
-import InputNumber from "../../shared/components/InputNumber/index.vue";
+import Input from "../../shared/components/Form.Input/index.vue";
+import Textarea from "../../shared/components/Form.Textarea/index.vue";
+import InputNumber from "../../shared/components/Form.InputNumber/index.vue";
 import PlcModelSelector from "../../components/PlcModelSelector.vue";
 import Button from "../../shared/components/Button/index.vue";
 
