@@ -7,16 +7,16 @@ namespace Namei.Common.Api
   [Table("MesItemWarehouseInventory")]
   public class MesItemWarehouseInventory
   {
-    public string ItemCode { get; set; }
+    public string? ItemCode { get; set; }
 
-    public string WarehouseCode { get; set; }
+    public string? WarehouseCode { get; set; }
 
-    public string BatchCode { get; set; }
+    public string? BatchCode { get; set; }
 
-    public double Quantity { get; set; }
+    public double? Quantity { get; set; }
 
-    public double ReportingQuantity { get; set; }
+    public double? ReportingQuantity { get; set; }
 
-    public string Unit { get; set; }
+    public double? ConfirmingQty { get; set; }
   }
 }
