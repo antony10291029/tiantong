@@ -4,7 +4,7 @@
       button
       bg-${type}-700
       hover:bg-${type}-600
-      active:bg-${type}-700
+      active:bg-${type}-900
     `"
     style="padding-top: calc(0.375rem + 1px);padding-bottom: calc(0.375rem + 1px); "
   >
@@ -23,14 +23,6 @@ export default defineComponent({
       type: String as PropType<Type>,
       default: "info"
     }
-  },
-
-  setup(props) {
-    return {
-      bg500: `bg-${props.type}-500`,
-      bg600: `bg-${props.type}-600`,
-      bg700: `bg-${props.type}-700`
-    };
   }
 });
 </script>
@@ -48,12 +40,14 @@ export default defineComponent({
 }
 
 .button:active {
-  @apply text-dark-400;
+  @apply text-dark-500;
 }
 
-.button::disabled {
+.button:disabled {
   @apply opacity-50 cursor-not-allowed;
 }
+
+/* !! Tailwind Purge !! */
 
 /* bg-info-600 hover:bg-info-600 active:bg-info-600 */
 /* bg-info-600 hover:bg-info-600 active:bg-info-600 */

@@ -1,7 +1,7 @@
 <template>
   <router-link
     custom :to="route"
-    #="{ isExactActive, navigate, href }"
+    #="{ isExactActive, navigate }"
   >
     <a
       :class="`
@@ -10,7 +10,7 @@
         border-l-2
         focus:outline-none
         hover:bg-dark-700 hover:text-grey-200
-        ${isExactActive ? 'bg-dark-700 border-primary-500' : 'border-transparent' }
+        ${isExactActive ? 'bg-dark-700 text-info-500 border-primary-500' : 'border-transparent' }
       `"
       @click="navigate"
       @click.capture="$emit('click')"

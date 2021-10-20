@@ -1,10 +1,10 @@
 <template>
-  <div class="p-4 flex flex-col text-md last:mb-0 flex-auto h-full overflow-y-auto">
+  <div class="p-4 text-md last:mb-0 flex-auto h-full overflow-y-auto sm:flex sm:flex-col">
     <p class="text-2xl mt-2">
       数据调试
     </p>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
     <div class="sm:flex gap-4 sm:flex-auto">
       <div class="w-full sm:max-w-min">
@@ -16,7 +16,7 @@
           </div>
         </div>
 
-        <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+        <hr>
 
         <div class="flex items-start">
           <p class="whitespace-nowrap w-28">数据类型</p>
@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+        <hr>
 
         <template v-if="isString">
           <div class="flex items-center">
@@ -39,7 +39,7 @@
             </div>
           </div>
 
-          <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+          <hr>
         </template>
 
         <div class="flex items-center">
@@ -49,7 +49,7 @@
           </div>
         </div>
 
-        <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+        <hr>
 
         <template v-if="!isGet">
           <div class="flex items-center">
@@ -59,7 +59,7 @@
             </div>
           </div>
 
-          <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+          <hr>
         </template>
 
         <div class="flex items-center">
@@ -73,7 +73,7 @@
         </div>
       </div>
 
-      <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+      <hr>
 
       <div class="w-full h-80 sm:h-full sm:flex-auto">
         <Textarea

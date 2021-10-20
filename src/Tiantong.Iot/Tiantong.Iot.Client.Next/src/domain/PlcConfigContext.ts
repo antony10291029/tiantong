@@ -1,11 +1,9 @@
 import { httpClient } from "../services";
 
-enum PlcModel {
-  test = "test",
-  mc3eBinary = "mc3e-binary",
-  mc1eBinary = "mc1e-binary",
-  s7200Smart = "s7200smart",
-}
+type PlcModel = "test"
+  | "mc3e-binary"
+  | "mc1e-binary"
+  | "s7200smart";
 
 interface PlcConfig {
   id: number;

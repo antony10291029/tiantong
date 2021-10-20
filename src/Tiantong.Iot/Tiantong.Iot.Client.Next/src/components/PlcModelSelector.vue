@@ -21,21 +21,26 @@ import { defineComponent, PropType } from "vue";
 import { PlcModel } from "../domain";
 import Radio from "../shared/components/Radio/index.vue";
 
-const models = [
+type SelectOption = {
+  value: PlcModel,
+  text: string,
+};
+
+const models: Array<SelectOption> = [
   {
-    value: PlcModel.mc1eBinary,
+    value: "mc1e-binary",
     text: "三菱 MC1E - TCP（二进制）",
   },
   {
-    value: PlcModel.mc3eBinary,
+    value: "mc3e-binary",
     text: "三菱 MC3E - TCP（二进制）",
   },
   {
-    value: PlcModel.s7200Smart,
+    value: "s7200smart",
     text: "西门子 S7 - 200Smart",
   },
   {
-    value: PlcModel.test,
+    value: "test",
     text: "测试协议",
   },
 ];

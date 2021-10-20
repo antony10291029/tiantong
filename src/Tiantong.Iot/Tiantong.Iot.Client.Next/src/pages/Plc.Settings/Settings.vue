@@ -1,69 +1,81 @@
 <template>
-  <div class="p-4 flex flex-col text-md last:mb-0 flex-auto h-full overflow-y-auto">
+  <div class="p-4 text-md last:mb-0 flex-auto h-full overflow-y-auto">
     <p class="text-2xl mt-2">
       配置管理
     </p>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex items-center flex-shrink">
-      <p class="whitespace-nowrap w-28">设备名称</p>
-      <div class="w-full sm:w-80">
+    <div class="field">
+      <label class="w-28">
+        设备名称
+      </label>
+      <div class="control sm:w-80">
         <Input v-model:value="params.name" />
       </div>
     </div>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex items-center flex-shrink">
-      <p class="whitespace-nowrap w-28">设备编号</p>
-      <div class="w-full sm:w-80">
+    <div class="field">
+      <label class="w-28">
+        设备编号
+      </label>
+      <div class="control sm:w-80">
         <Input v-model:value="params.number" />
       </div>
     </div>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex">
-      <p class="whitespace-nowrap w-28">通信协议</p>
-      <div class="w-full sm:w-80">
+    <div class="field items-start">
+      <label class="w-28 self-start">
+        通信协议
+      </label>
+      <div class="control sm:w-80">
         <PlcModelSelector v-model:value="params.model" />
       </div>
     </div>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex items-center">
-      <p class="whitespace-nowrap w-28">IP 地址</p>
-      <div class="w-full sm:w-80">
+    <div class="field">
+      <label class="w-28">
+        IP 地址
+      </label>
+      <div class="control sm:w-80">
         <Input v-model:value="params.host" />
       </div>
     </div>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex items-center">
-      <p class="whitespace-nowrap w-28">IP 端口</p>
-      <div class="w-full sm:w-80">
+    <div class="field">
+      <label class="w-28">
+        IP 端口
+      </label>
+      <div class="control sm:w-80">
         <InputNumber v-model:value="params.port" />
       </div>
     </div>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex items-start">
-      <p class="whitespace-nowrap w-28">备注</p>
-      <div class="w-full sm:w-96">
-        <Textarea v-model:value="params.comment"/>
+    <div class="field">
+      <label class="self-start w-28">
+        备注
+      </label>
+      <div class="control sm:w-96">
+        <Textarea v-model:value="params.comment"></Textarea>
       </div>
     </div>
 
-    <hr class="border-0 h-0.5 rounded-full bg-dark-800 my-6">
+    <hr>
 
-    <div class="flex items-center">
-      <p class="whitespace-nowrap w-28"></p>
+    <div class="field">
+      <label class="w-28"></label>
 
-      <div class="w-full sm:w-96">
+      <div class="control sm:w-96">
         <Button @click="handleSubmit">
           保存
         </Button>

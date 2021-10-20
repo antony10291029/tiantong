@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex rounded"
-  >
+  <div class="flex rounded">
     <button
       v-for="method in methods" :key="method.value"
       :class="`
@@ -10,8 +8,8 @@
         border rounded-none
         first:rounded-l last:rounded-r
         ring-2 ring-transparent ring-opacity-40
-        active:border-link-800
-        ${method.value === value ? 'border-link-500 ring-link-500 z-10' : 'border-dark-700  hover:border-dark-600'}
+        active:border-link-600
+        ${method.value === value ? 'border-link-600 ring-link-600 z-10' : 'border-dark-700  hover:border-dark-600'}
       `"
       style="margin-right: -1px"
       @click="$emit('update:value', method.value)"

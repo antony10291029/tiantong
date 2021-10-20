@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted } from "vue";
-import "../Form/input.css";
 
 type Event = "change" | "input" | "blur";
 
