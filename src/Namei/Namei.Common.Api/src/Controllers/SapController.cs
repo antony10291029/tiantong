@@ -57,7 +57,7 @@ namespace Namei.Common.Api
     };
 
     static readonly string[] WorkshopWarehouses = new string[] {
-      "105", "201", "211"
+      "105", "203", "211"
     };
 
     [HttpGet("/SapMesWms/Inventories")]
