@@ -47,6 +47,8 @@ namespace Namei.Common.Api
 
       public decimal ConfirmingQty { get; set; }
 
+      public decimal CountingQty { get; set; }
+
       public decimal ErrorQuantity { get; set; }
 
       public string OtherSystem { get; set; }
@@ -92,6 +94,7 @@ namespace Namei.Common.Api
         var otherQuantity = default(decimal);
         var reportingQuantity = default(decimal);
         var confirmingQty = default(decimal);
+        var countingQty = default(decimal);
 
         if (wmsData.ContainsKey(item.Key)) {
           otherSystem = "wms";
@@ -101,6 +104,7 @@ namespace Namei.Common.Api
           otherQuantity = (decimal) mesData[item.Key].Quantity;
           reportingQuantity = (decimal) mesData[item.Key].ReportingQuantity;
           confirmingQty = (decimal) mesData[item.Key].ConfirmingQty;
+          countingQty = (decimal) mesData[item.Key].CountingQty;
         }
 
         return new DTO() {
@@ -116,7 +120,8 @@ namespace Namei.Common.Api
           DiffQuantity = item.Value.Quantity - otherQuantity,
           ReportingQuantity = reportingQuantity,
           ConfirmingQty = confirmingQty,
-          ErrorQuantity = item.Value.Quantity - otherQuantity - reportingQuantity - confirmingQty,
+          CountingQty = countingQty,
+          ErrorQuantity = item.Value.Quantity - otherQuantity - reportingQuantity - confirmingQty - countingQty,
           OtherSystem = otherSystem
         };
       });
