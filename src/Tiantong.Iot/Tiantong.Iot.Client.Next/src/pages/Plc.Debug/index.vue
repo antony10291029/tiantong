@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 text-md last:mb-0 flex-auto h-full overflow-y-auto sm:flex sm:flex-col">
     <p class="text-2xl mt-2">
-      数据调试
+      实时调试
     </p>
 
     <hr>

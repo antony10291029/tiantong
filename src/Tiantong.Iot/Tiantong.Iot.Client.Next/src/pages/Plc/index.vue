@@ -15,7 +15,14 @@
       <SidebarMenu
         :route="{ name: 'PlcDebug', params: { plcId } }"
         icon="debug"
-        text="数据调试"
+        text="实时调试"
+        @click="toggleMenu(false)"
+      />
+
+      <SidebarMenu
+        :route="{ name: 'PlcStates', params: { plcId } }"
+        icon="table"
+        text="数据定义"
         @click="toggleMenu(false)"
       />
 
