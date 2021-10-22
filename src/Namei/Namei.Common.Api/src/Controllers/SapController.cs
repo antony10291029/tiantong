@@ -39,6 +39,8 @@ namespace Namei.Common.Api
 
       public decimal SapQuantity { get; set; }
 
+      public decimal? SapOpenQty { get; set; }
+
       public decimal OtherQuantity { get; set; }
 
       public decimal DiffQuantity { get; set; }
@@ -95,6 +97,7 @@ namespace Namei.Common.Api
         var reportingQuantity = default(decimal);
         var confirmingQty = default(decimal);
         var countingQty = default(decimal);
+        var sapOpenQty = item.Value.OpenQty;
 
         if (wmsData.ContainsKey(item.Key)) {
           otherSystem = "wms";
@@ -121,7 +124,8 @@ namespace Namei.Common.Api
           ReportingQuantity = reportingQuantity,
           ConfirmingQty = confirmingQty,
           CountingQty = countingQty,
-          ErrorQuantity = item.Value.Quantity - otherQuantity - reportingQuantity - confirmingQty - countingQty,
+          SapOpenQty = sapOpenQty,
+          ErrorQuantity = item.Value.Quantity - otherQuantity - reportingQuantity - confirmingQty - countingQty - sapOpenQty ?? 0,
           OtherSystem = otherSystem
         };
       });

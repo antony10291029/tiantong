@@ -22,5 +22,7 @@ namespace Namei.Common.Api
     public string BatchCode { get; set; }
 
     public decimal Quantity { get; set; }
+
+    public decimal? OpenQty { get; set; }
   }
 }
