@@ -2,20 +2,20 @@
   <div class="box">
     <Table
       colspan="2"
-      class="table is-fullwidth"
+      class="table is-fullwidth is-nowrap"
     >
       <template #head>
         <thead>
-          <th>日志</th>
           <th>时间</th>
+          <th>日志</th>
         </thead>
       </template>
 
       <template #body>
         <tbody v-if="logs.data.length > 0">
           <tr v-for="log in logs.data" :key="log.id">
+            <td>{{getTime(log.created_at)}}</td>
             <td>{{log.message}}</td>
-            <td>{{log.created_at.split('.')[0].split('T')[1]}}</td>
           </tr>
         </tbody>
       </template>
@@ -79,6 +79,14 @@ export default defineComponent({
       await getLogs();
     };
 
+    const getTime = (source: string) => {
+      const dateTime = source.split(".")[0];
+      const date = dateTime.split("T")[0].split("-").slice(1).join("-");
+      const time = dateTime.split("T")[1];
+
+      return `${date} ${time}`;
+    };
+
     getLogs();
     useInterval(getLogs, toRefs(props).isRunning);
 
@@ -88,6 +96,7 @@ export default defineComponent({
       logs,
       interval,
       getLogs,
+      getTime,
       changePage
     };
   }

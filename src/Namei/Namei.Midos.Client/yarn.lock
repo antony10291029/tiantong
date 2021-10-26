@@ -908,10 +908,10 @@
     js-htmlencode "^0.3.0"
     xml-formatter "^2.4.0"
 
-"@midos/app-iot@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.15.tgz#ebe10dacc67c4db2f876dc9b02fd4d0efc899e91"
-  integrity sha512-Hmk/PtbwyUq5URun2l0qZ50ZNg11/047bGbxa31EKq0xCgJgIWFSM0k2jRYtxy9xLbAaySdKaV4rsPu3z2EoMw==
+"@midos/app-iot@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@midos/app-iot/-/app-iot-0.0.17.tgz#bebaa7a56dcdf1239ddfb6a6ebedfe028337ee7f"
+  integrity sha512-hA4t8NrCNhbv6kjySFZx7vb6LF9TgBc4ZioNErQ4aVJ+kOjqSDAzc7I0CXrJWAa11HoPHwWn9pqPkJiXXZtczg==
 
 "@midos/app-namei-wcs@0.0.60":
   version "0.0.60"
