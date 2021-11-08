@@ -3,7 +3,7 @@
     class="
       fixed p-4 top-0 right-0 z-0
       flex flex-col items-end bg-transparent
-      w-full sm:w-auto
+      w-auto
     "
   >
     <Notify

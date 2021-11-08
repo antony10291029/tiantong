@@ -1,17 +1,17 @@
 <template>
-  <div class="p-4 text-md last:mb-0 flex-auto h-full overflow-y-auto sm:flex sm:flex-col">
+  <div class="p-4 text-md last:mb-0 flex-auto h-full overflow-y-auto flex flex-col">
     <p class="text-2xl mt-2">
       实时调试
     </p>
 
     <hr>
 
-    <div class="sm:flex gap-4 sm:flex-auto">
-      <div class="w-full sm:max-w-min">
+    <div class="flex gap-4 flex-auto">
+      <div class="w-full max-w-min">
         <div class="flex items-center">
           <p class="whitespace-nowrap w-28">操作</p>
 
-          <div class="w-full sm:w-72">
+          <div class="w-72">
             <TheCommand v-model:value="params.command" />
           </div>
         </div>
@@ -21,7 +21,7 @@
         <div class="flex items-start">
           <p class="whitespace-nowrap w-28">数据类型</p>
 
-          <div class="w-full sm:w-72">
+          <div class="w-72">
             <PlcStateTypeSelector
               v-model:value="params.dataType"
               :length="params.length"
@@ -34,7 +34,7 @@
         <template v-if="isString">
           <div class="flex items-center">
             <p class="whitespace-nowrap w-28">字符串长度</p>
-            <div class="w-full sm:w-72">
+            <div class="w-72">
               <Input value="4"/>
             </div>
           </div>
@@ -44,7 +44,7 @@
 
         <div class="flex items-center">
           <p class="whitespace-nowrap w-28">地址</p>
-          <div class="w-full sm:w-72">
+          <div class="w-72">
             <Input v-model:value="params.address" />
           </div>
         </div>
@@ -54,7 +54,7 @@
         <template v-if="!isGet">
           <div class="flex items-center">
             <p class="whitespace-nowrap w-28">数据</p>
-            <div class="w-full sm:w-72">
+            <div class="w-72">
               <Input v-model:value="params.value"/>
             </div>
           </div>
@@ -65,7 +65,7 @@
         <div class="flex items-center">
           <p class="whitespace-nowrap w-28"></p>
 
-          <div class="w-full sm:w-72">
+          <div class="w-72">
             <Button @click="handleSubmit">
               执行
             </Button>
@@ -75,7 +75,7 @@
 
       <hr>
 
-      <div class="w-full h-80 sm:h-full sm:flex-auto">
+      <div class="w-full h-80 h-full flex-auto">
         <Textarea
           :value="messages.join('\n')"
           class="h-full"

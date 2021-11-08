@@ -1,5 +1,5 @@
 import { httpClient } from "../services";
-import { PlcStateType, PlcStateCommand } from "./PlcStateContext";
+import { PlcStateType, PlcStateCommand } from "./PlcStateConfigContext";
 
 interface DebugParams {
   plcId: number,

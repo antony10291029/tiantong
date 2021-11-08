@@ -10,7 +10,7 @@
       <div
         class="
           w-screen h-screen
-          sm:p-4 text-center
+          p-4 text-center
           flex items-center justify-center
         "
       >
@@ -26,14 +26,14 @@
             v-show="isShow"
             class="
               transform transition-all
-              bg-dark-700 px-6 py-6 sm:w-96 w-full
+              bg-dark-700 px-6 py-6 w-96
               inline-block align-bottom text-gray-200
               rounded text-left overflow-hidden
-              z-50 m-4 sm:m-0
+              z-50 m-0
             "
           >
-            <div class="sm:flex sm:items-start mb-6">
-              <div class="text-center sm:text-left">
+            <div class="flex items-start mb-6">
+              <div class="text-left">
                 <h3 class="text-xl leading-6 mb-4">
                   {{ title }}
                 </h3>
@@ -48,11 +48,11 @@
               <button
                 type="button"
                 class="
-                  w-full inline-flex justify-center
+                  inline-flex justify-center
                   rounded border border-transparent shadow-sm
                   px-4 py-1.5 font-medium bg-dark-600
                   focus:outline-none hover:bg-dark-500
-                  focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm
+                  focus:ring-red-500 ml-3 w-auto text-sm
                 "
                 @click="close"
               >
@@ -61,13 +61,13 @@
               <button
                 type="button"
                 class="
-                  mt-3 w-full inline-flex justify-center
+                  inline-flex justify-center
                   rounded
                   shadow-sm px-4 py-1.5 font-medium
                   bg-danger-500 outline-none
-                  mb-2 sm:mb-0
+                  mb-0
                   hover:bg-danger-600 focus:outline-none
-                  focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
+                  focus:ring-indigo-500 mt-0 ml-3 w-auto text-sm
                 "
                 @click="handleConfirm"
               >
@@ -134,10 +134,10 @@ export default defineComponent({
 
 .ease-out-modal-enter-active,
 .ease-out-modal-leave-active {
-  @apply opacity-100 translate-y-0 sm:scale-100 duration-300;
+  @apply opacity-100 translate-y-0 scale-100 duration-300;
 }
 
 .ease-out-modal-enter, .ease-out-modal-leave-to {
-  @apply ease-in opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 duration-200;
+  @apply ease-in opacity-0 translate-y-4 scale-95 duration-200;
 }
 </style>

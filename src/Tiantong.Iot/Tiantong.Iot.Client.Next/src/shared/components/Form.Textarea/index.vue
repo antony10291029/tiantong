@@ -2,7 +2,14 @@
   <textarea
     rows="4"
     type="text"
-    class="input"
+    class="
+      input
+      px-3 py-1.5 w-full
+      relative rounded
+      outline-none bg-transparent
+      border border-dark-700
+      ring-2 ring-transparent
+    "
     :value="value"
     @input="handleInput"
     :readonly="readonly"

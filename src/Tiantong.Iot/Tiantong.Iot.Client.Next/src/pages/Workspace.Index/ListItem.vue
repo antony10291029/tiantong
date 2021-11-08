@@ -55,12 +55,12 @@
         </a>
       </router-link>
 
-      <a class="hidden sm:inline text-link-500 hover:text-gray-300 cursor-pointer ml-2">
+      <a class="inline text-link-500 hover:text-gray-300 cursor-pointer ml-2">
         停止
       </a>
 
       <a
-        class="hidden sm:inline text-link-500 hover:text-gray-300 cursor-pointer ml-2"
+        class="inline text-link-500 hover:text-gray-300 cursor-pointer ml-2"
         @click="handleDelete"
       >
         删除

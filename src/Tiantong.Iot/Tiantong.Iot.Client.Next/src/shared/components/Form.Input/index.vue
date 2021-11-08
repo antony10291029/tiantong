@@ -1,7 +1,14 @@
 <template>
   <input
     type="text"
-    class="input"
+    class="
+      input
+      px-3 py-1.5 w-full
+      relative rounded
+      outline-none bg-transparent
+      border border-dark-700
+      ring-2 ring-transparent
+    "
     :value="value"
     v-on:[event]="handleUpdate"
     ref="el"

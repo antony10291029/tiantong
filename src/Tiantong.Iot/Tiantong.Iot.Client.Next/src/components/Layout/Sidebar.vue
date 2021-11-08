@@ -1,25 +1,17 @@
 <template>
   <div
     :class="`
-      container bg-dark-800 h-full
-      flex-shrink-0 shadow
-      border-r border-dark-900
+      bg-dark-800 h-full
+      flex-shrink-0 text-gray-400
       overflow-y-auto overflow-x-hidden
-      sm:block sm:w-72
-      ${ isMenuShow ? 'w-screen' : 'hidden' }
     `"
+    style="width: 60px"
   >
-    <div class="p-4 py-3 hidden sm:flex items-center select-none">
-      <i :class="`iconfont icon-${icon} text-primary-500 text-2xl`"></i>
-
-      <p class="text-grey-200 text-lg ml-3">
-        <slot name="title"></slot>
-      </p>
+    <div class="flex items-center justify-center select-none my-4">
+      <i :class="`iconfont icon-${icon} text-primary-500 text-3xl`"></i>
     </div>
 
-    <p class="mb-4 sm:hidden"></p>
-
-    <ul class="flex flex-col space-y-1 flex-auto">
+    <ul class="flex flex-col space-y-2 flex-auto">
       <slot></slot>
 
       <div class="flex-auto"></div>
@@ -28,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

@@ -4,7 +4,7 @@
       shadow-lg rounded-lg whitespace-nowrap
       text-gray-300 mb-4 z-50 overflow-hidden
       flex items-center bg-dark-700
-      w-full max-w-full sm:w-80 sm:min-w-max
+     w-80 min-w-max
     "
     @mouseover="handleMouseover"
     @mouseout="handleMouseout"

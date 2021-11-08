@@ -5,31 +5,28 @@
   >
     <a
       :class="`
-        relative flex flex-row items-center
-        h-11 pr-6
-        border-l-2
+        flex flex-col items-center justify-center
+        w-full py-2 cursor-pointer
         focus:outline-none
-        hover:bg-dark-700 hover:text-grey-200
-        ${isExactActive ? 'bg-dark-700 text-info-500 border-primary-500' : 'border-transparent' }
+        hover:text-dark-200
+        ${isExactActive ? 'text-gray-300 border-gray-300' : 'text-gray-500' }
       `"
-      @click="navigate"
+      @click="navigate()"
       @click.capture="$emit('click')"
     >
-      <span class="ml-4">
-        <i :class="`iconfont icon-${icon}`"></i>
+      <span class="mb-0.5">
+        <i :class="`iconfont icon-${icon} text-xl`"></i>
       </span>
 
-      <span class="ml-2 text-sm tracking-wide truncate">
+      <span class="text-sm">
         {{text}}
       </span>
-
-      <slot></slot>
     </a>
   </router-link>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

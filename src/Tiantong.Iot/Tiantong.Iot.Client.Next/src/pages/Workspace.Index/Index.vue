@@ -1,32 +1,33 @@
 <template>
-  <div class="p-4 flex-auto overflow-auto">
-    <p class="mb-4 text-2xl">
-      工作台
-    </p>
+  <div class="flex flex-col flex-auto">
+    <TheNavbar />
 
-    <div class="mb-6 text-dark-300 flex items-center">
-      <TheSearch v-model:value="query" />
+    <div class="p-4 flex-auto overflow-auto">
 
-      <TheCreate @created="getDataSource" />
-    </div>
+      <div class="mb-6 text-dark-300 flex items-center">
+        <TheSearch v-model:value="query" />
 
-    <div
-      class="
-        flex-auto
-        w-full h-auto rounded
-        divide-y divide-dark-600
-      "
-    >
-      <table class="table divide-y-2 divide-dark-600 w-full z-0 text-sm">
-        <tbody class="divide-y divide-dark-800">
-          <ListItem
-            v-for="(plc, key) in listData" :key="plc.id"
-            :index="key + 1"
-            :plc="plc"
-            @deleted="getDataSource"
-          />
-        </tbody>
-      </table>
+        <TheCreate @created="getDataSource" />
+      </div>
+
+      <div
+        class="
+          flex-auto
+          w-full h-auto rounded
+          divide-y divide-dark-600
+        "
+      >
+        <table class="table divide-y-2 divide-dark-600 w-full z-0 text-sm">
+          <tbody class="divide-y divide-dark-800">
+            <ListItem
+              v-for="(plc, key) in listData" :key="plc.id"
+              :index="key + 1"
+              :plc="plc"
+              @deleted="getDataSource"
+            />
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -37,9 +38,11 @@ import { PlcConfig, PlcConfigContext } from "../../domain";
 import ListItem from "./ListItem.vue";
 import TheSearch from "./Search.vue";
 import TheCreate from "./TheCreate.vue";
+import TheNavbar from "./Navbar.vue";
 
 export default defineComponent({
   components: {
+    TheNavbar,
     ListItem,
     TheSearch,
     TheCreate,

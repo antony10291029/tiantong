@@ -8,27 +8,27 @@
       <SidebarMenu
         :route="{ name: 'PlcSettings', params: { plcId } }"
         icon="settings"
-        text="配置管理"
+        text="配置"
         @click="toggleMenu(false)"
       />
 
       <SidebarMenu
         :route="{ name: 'PlcDebug', params: { plcId } }"
         icon="debug"
-        text="实时调试"
+        text="调试"
         @click="toggleMenu(false)"
       />
 
       <SidebarMenu
         :route="{ name: 'PlcStates', params: { plcId } }"
         icon="table"
-        text="数据定义"
+        text="数据点"
         @click="toggleMenu(false)"
       />
 
       <SidebarMenu
         route="/"
-        text="返回工作台"
+        text="返回"
         icon="back"
         @click="toggleMenu(false)"
       />

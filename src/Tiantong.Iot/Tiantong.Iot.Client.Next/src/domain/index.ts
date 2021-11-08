@@ -1,3 +1,3 @@
 export * from "./PlcConfigContext";
-export * from "./PlcStateContext";
+export * from "./PlcStateConfigContext";
 export * from "./PlcWorkerContext";

@@ -9,7 +9,7 @@
       overflow-hidden
     "
   >
-    <TheNavbar
+    <!-- <TheNavbar
       :icon="icon"
       :isMenuShow="isMenuShow"
       :toggleMenu="toggleMenu"
@@ -17,7 +17,7 @@
       <template #title>
         <slot name="title"></slot>
       </template>
-    </TheNavbar>
+    </TheNavbar> -->
 
     <div class="flex flex-row flex-auto w-full overflow-hidden">
       <TheSidebar
@@ -38,12 +38,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import TheNavbar from "./Navbar.vue";
 import TheSidebar from "./Sidebar.vue";
 
 export default defineComponent({
   components: {
-    TheNavbar,
     TheSidebar
   },
 

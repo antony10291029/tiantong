@@ -1,17 +1,19 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  purge: ["./src/**/*.{vue,js,ts,jsx,tsx}"],
+  // purge: ["./src/**/*.{vue,js,ts,jsx,tsx}"],
   darkMode: false,
   plugins: [],
   theme: {
     screens: {
-      sm: "768px",
+
     },
     extend: {
       colors: {
         dark: {
-          "900": "#202020"
+          "900": "#202020",
+          "800": "#252525",
+          "300": "#b1b1b1"
         },
       },
     },

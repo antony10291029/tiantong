@@ -8,14 +8,6 @@
   @apply text-sm;
 }
 
-.input {
-  @apply px-3 py-1.5 w-full;
-  @apply relative rounded;
-  @apply outline-none bg-transparent;
-  @apply border border-dark-700;
-  @apply ring-2 ring-transparent;
-}
-
 .input:hover {
   @apply border-dark-600;
 }
@@ -34,10 +26,6 @@ hr {
 
 .field {
   @apply flex items-center flex-shrink;
-}
-
-.control {
-  @apply w-full;
 }
 
 .field > label {
