@@ -164,7 +164,9 @@ namespace Tiantong.Iot.Api
 
         try {
           _client.Close();
-        } catch {}
+        } catch (Exception e) {
+          Log($"通信服务关闭失败: {e.Message}");
+        }
 
         if (!_stoppingToken.IsCancellationRequested) {
           Log("通信服务正在重启...");
