@@ -13,9 +13,9 @@ namespace System.Net.Sockets
 
     private TcpClient _client;
 
-    private int _ioTimeout = 3000;
+    private int _ioTimeout = 10000;
 
-    private int BufferLength = 1024;
+    private int BufferLength = 10240;
 
     private readonly object _sendingLock = new object();
 
@@ -29,14 +29,14 @@ namespace System.Net.Sockets
 
     public void Dispose()
     {
-      _client?.Dispose();
       _stream?.Dispose();
+      _client?.Dispose();
     }
 
     public void Close()
     {
-      _client?.Close();
       _stream?.Close();
+      _client?.Close();
     }
 
     public byte[] Send(byte[] message)
@@ -63,8 +63,8 @@ namespace System.Net.Sockets
     public void Connect()
     {
       _client = new TcpClient();
-      _client.SendBufferSize = 512;
-      _client.ReceiveBufferSize = 512;
+      _client.ReceiveBufferSize = _client.SendBufferSize = BufferLength;
+
       if (_client.ConnectAsync(Host, Port).Wait(_ioTimeout)) {
         _stream = _client.GetStream();
         _stream.ReadTimeout = _stream.WriteTimeout = _ioTimeout;
